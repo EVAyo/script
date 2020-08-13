@@ -16,8 +16,8 @@ echo 读取myfc_config.ini,注意你的CPU负载！
 echo -e "你的remote:$fclone_name"
 echo -e "你的sa保存目录:$safolder"
 echo -e "你的sa检测目标文件夹id:$fsa_id"
-echo -e "开启sa服务所需的gen_sa_accounts.py文件所在目录：$pyfolder"
-echo -e "以上如需修改，请打开ini文件修改fclone_name\safolder\pyfolder\fsa_id数值"
+echo -e "开启sa服务所需的gen_sa_accounts.py文件所在目录：$pyfolder,请确认该目录有权限文件"
+echo -e "以上如需修改，请打开ini文件修改"fclone_name\safolder\pyfolder\fsa_id"数值"
 echo -e "检测NG.文件目录：$safolder/invalid"
 echo -e "检测ok文件将移至：/root/AutoRclone/$fclone_name，如需更改，请修改本脚本相应目录行即可"
 mkdir -p $safolder/invalid
