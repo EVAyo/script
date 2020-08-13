@@ -27,16 +27,17 @@ echo -e "█║▌║▌║待检测sa $sa1_sum 个，开始检测║▌║▌�
 find $safolder -type f -name "*.json" | xargs -I {} -n 1 -P 10 bash -c 'fclone lsd '$fclone_name':{'$fsa_id'} --drive-service-account-file={} --drive-service-account-file-path=""  &> /dev/null || mv {} '$safolder'/invalid '
 xsa_sum=$(ls -l $safolder/invalid|grep "^-"| wc -l)
 sa_sum=$(ls -l $safolder|grep "^-"| wc -l)
-ok_sum=$(ls -l /root/AutoRclone/$fclone_name|grep "^-"| wc -l)
 if [ x$xsa_sum = x0 ];then
 echo -e "█║▌║▌║恭喜你！你的sa[$sa_sum],全部检测ok║▌║▌║█"
 mv -f $safolder/*.json /root/AutoRclone/"$fclone_name"
+ok_sum=$(ls -l /root/AutoRclone/$fclone_name|grep "^-"| wc -l)
 echo -e "检测ok sa已移至/root/AutoRclone/$fclone_name,现$fclone_name文件夹共有$ok_sum个sa"
 elif [ x$sa_sum = x0 ];then
 echo -e "█║▌║▌║非常遗憾，你的sa[$sa_sum],全部检测NG.║▌║▌║█\n"
 open_sa_server
 else
 mv -f $safolder/*.json /root/AutoRclone/"$fclone_name"
+ok_sum=$(ls -l /root/AutoRclone/$fclone_name|grep "^-"| wc -l)
 echo -e "检测ok sa $sa_sum 个，已移至/root/AutoRclone/$fclone_name,现$fclone_name文件夹共有$ok_sum个sa"
 echo -e "█║▌║▌║检测NG sa $xsa_sum 个║▌║▌║█\n"
 open_sa_server
