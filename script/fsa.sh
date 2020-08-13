@@ -29,13 +29,13 @@ sa_sum=$(ls -l $safolder|grep "^-"| wc -l)
 ok_sum=$(ls -l /root/AutoRclone/$fclone_name|grep "^-"| wc -l)
 if [ x$xsa_sum = x0 ];then
 echo 恭喜你！你的sa[$sa_sum]全部检测ok！
-mv $safolder/*.json /root/AutoRclone/"$fclone_name"
+mv -f $safolder/*.json /root/AutoRclone/"$fclone_name"
 echo -e "检测ok sa已移至/root/AutoRclone/$fclone_name,现$fclone_name文件夹共有$ok_sum个sa"
 elif [ x$sa_sum = x0 ];then
 echo 非常遗憾，$sa_sum 个sa,竟然没有一个是ok的，没关系，即将为你开启服务
 open_sa_server
 else
-mv $safolder/*.json /root/AutoRclone/"$fclone_name"
+mv -f $safolder/*.json /root/AutoRclone/"$fclone_name"
 echo -e "检测ok sa $sa_sum 个，已移至/root/AutoRclone/$fclone_name,现$fclone_name文件夹共有$ok_sum个sa"
 echo -e "检测完毕，异常sa $xsa_sum 个,即将为你开启服务！！！"
 open_sa_server
