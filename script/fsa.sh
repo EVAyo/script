@@ -7,7 +7,7 @@ open_sa_server() {
     do
     cd /root/AutoRclone && python3 gen_sa_accounts.py --enable-services $saf_id
     sumsa=$((sumsa+1))
-    echo -e "已开启 第"$sumsa"个sa；共"$sum_check"个sa"
+    echo -e "已开启 第"$sumsa"个sa；共"$xsa_sum"个sa"
     done
 }
 
@@ -32,7 +32,7 @@ echo 恭喜你！你的sa[$sa_sum]全部检测ok！
 mv -f $safolder/*.json /root/AutoRclone/"$fclone_name"
 echo -e "检测ok sa已移至/root/AutoRclone/$fclone_name,现$fclone_name文件夹共有$ok_sum个sa"
 elif [ x$sa_sum = x0 ];then
-echo 非常遗憾，$sa1_sum 个sa,全军覆没了，没关系，即将为你开启服务
+echo 非常遗憾，$sa1_sum 个sa,全部检测NG.，没关系，即将为你开启服务
 open_sa_server
 else
 mv -f $safolder/*.json /root/AutoRclone/"$fclone_name"
