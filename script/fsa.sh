@@ -2,7 +2,7 @@
 source /root/fclone_shell_bot/myfc_config.ini
 # ★★★开启sa服务-已完成★★★
 open_sa_server() {
-    echo ▂▃▄▅▆▇█▓▒░ 开启|服务░▒▓█▇▆▅▄▃▂
+    echo "▂▃▄▅▆▇█▓▒░ 开启|服务░▒▓█▇▆▅▄▃▂"
     sumsa=0
     for saf_id in $(sort -u $safolder/invalid/*.json | grep "project_id" | awk '{print $2}' | tr -d ',"')
     do
@@ -29,14 +29,14 @@ xsa_sum=$(ls -l $safolder/invalid|grep "^-"| wc -l)
 sa_sum=$(ls -l $safolder|grep "^-"| wc -l)
 ok_sum=$(ls -l /root/AutoRclone/$fclone_name|grep "^-"| wc -l)
 if [ x$xsa_sum = x0 ];then
-echo █║▌║▌║恭喜你！你的sa[$sa_sum],全部检测ok║▌║▌║█
-mv -f $safolder/*.json /root/AutoRclone/"$fclone_name\n"
+echo "█║▌║▌║恭喜你！你的sa[$sa_sum],全部检测ok║▌║▌║█"
+mv -f $safolder/*.json /root/AutoRclone/"$fclone_name"
 echo -e "检测ok sa已移至/root/AutoRclone/$fclone_name,现$fclone_name文件夹共有$ok_sum个sa\n"
 elif [ x$sa_sum = x0 ];then
 echo -e "█║▌║▌║非常遗憾，你的sa[$sa_sum],全部检测NG.║▌║▌║█\n"
 open_sa_server
 else
-mv -f $safolder/*.json /root/AutoRclone/"$fclone_name\n"
+mv -f $safolder/*.json /root/AutoRclone/"$fclone_name"
 echo -e "检测ok sa $sa_sum 个，已移至/root/AutoRclone/$fclone_name,现$fclone_name文件夹共有$ok_sum个sa\n"
 echo -e "█║▌║▌║检测NG sa $xsa_sum 个║▌║▌║█\n"
 open_sa_server
