@@ -2,7 +2,7 @@
 source /root/fclone_shell_bot/myfc_config.ini
 # ★★★开启sa服务-已完成★★★
 open_sa_server() {
-    echo "▂▃▄▅▆▇█▓▒░ 开启|服务░▒▓█▇▆▅▄▃▂"
+    echo -e "▂▃▄▅▆▇█ 开启|服务 █▇▆▅▄▃▂"
     sumsa=0
     for saf_id in $(sort -u $safolder/invalid/*.json | grep "project_id" | awk '{print $2}' | tr -d ',"')
     do
