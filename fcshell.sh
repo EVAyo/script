@@ -83,6 +83,7 @@ install_script() {
     echo -e "alias fc="~/fclone_shell_bot/script/fcheck.sh""  >> /root/.bashrc
     echo -e "alias fcl="~/fclone_shell_bot/script/fcleanup.sh""  >> /root/.bashrc
     echo -e "alias fcshell="~/fcshell.sh""  >> /root/.bashrc
+    echo -e "alias avdc=`cd /home/gdrive/test && AV_Data_Capture`"  >> /root/.bashrc
     source /root/.bashrc
     echo -e "已完成安装，并设置系统级脚本别名"
     echo -e "输入fcshell  安装配置脚本"
