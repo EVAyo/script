@@ -20,9 +20,15 @@ else
 size_info=`fclone size "$fclone_nameb":{$link} --checkers="$fs_chercker"`
 file_num=$(echo "$size_info" | awk 'BEGIN{FS=" "}/^Total objects/{print $3}')
 file_size=$(echo "$size_info" | awk 'BEGIN{FS=" "}/^Total size/{print $3,$4}')
-echo -e "▣▣▣▣▣▣任务信息▣▣▣▣▣▣\n"
-echo -e "┋资源名称┋:"$rootname"\n"
-echo -e "┋资源数量┋:"$file_num"\n"
-echo -e "┋资源大小┋:"$file_size"\n"
+echo -e "资源名称："$rootname"\n"
+echo -e "——————————————————————————————————————"
+echo -e "| 类型 |    文件数    |    文件大小    |"
+echo -e "├——————+—————————————+————————————————|"
+echo -e "├ 视频 + "$file_num1" + "$file_size1" |"
+echo -e "| 图片 + "$file_num2" + "$file_size2" |"
+echo -e "| 文本 + "$file_num3" + "$file_size3" |"
+echo -e "├——————+——————————————+———————————————|"
+echo -e "| 总计 + "$file_num0" + "$file_size0" |"
+echo -e "——————————————————————————————————————"
 fi
 exit
