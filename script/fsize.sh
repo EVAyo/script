@@ -26,16 +26,17 @@ size_mode_num() {
     file_num2=$(fclone ls "$fclone_name3":{$link} --include "*.{png,jpg,jpeg,gif,webp,tif}" --ignore-case --disable listR --checkers="$fs_chercker" | wc -l)
     file_num3=$(fclone ls "$fclone_name3":{$link} --include "*.{html,htm,txt,pdf,nfo}" --ignore-case --disable listR --checkers="$fs_chercker" | wc -l)
     echo -e "资源名称："$rootname"\n"
-    printf "----------------------\n"
+    echo -e "----------------------\n"
     printf "|%-5s|%-8s|\n" 类型 文件数量
-    printf "----------------------\n"
+    echo -e "----------------------\n"
     printf "|%-5s|%-8s|\n" 视频 "$file_num1"
-    printf "----------------------\n"
+    echo -e "----------------------\n"
     printf "|%-5s|%-8s|\n" 图片 "$file_num2"
-    printf "----------------------\n"
+    echo -e "----------------------\n"
     printf "|%-5s|%-8s|\n" 文本 "$file_num3"
-    printf "----------------------\n"
+    echo -e "----------------------\n"
     printf "|%-5s|%-8s|\n" 合计 "$file_num0"
+    echo -e "----------------------\n"
 }
 #2号，size基础模式
 size_mode_simple() {
@@ -62,16 +63,17 @@ size_mode_fully() {
     file_num3=$(echo "$size_info3" | awk 'BEGIN{FS=" "}/^Total objects/{print $3}')
     file_size3=$(echo "$size_info3" | awk 'BEGIN{FS=" "}/^Total size/{print $3,$4}')
     echo -e "资源名称："$rootname"\n"
-    printf "---------------------------------------------\n"
+    echo -e "---------------------------------------------\n"
     printf "|%-5s|%-8s|%-18s|\n" 类型 文件数量 文件大小
-    printf "---------------------------------------------\n"
-    printf "|%-5s|%-8s|%-18.2s|\n" 视频 "$file_num1" "$file_size1"
-    printf "---------------------------------------------\n"
-    printf "|%-5s|%-8s|%-18.2s|\n" 图片 "$file_num2" "$file_size2"
-    printf "---------------------------------------------\n"
-    printf "|%-5s|%-8s|%-18.2s|\n" 文本 "$file_num3" "$file_size3"
-    printf "---------------------------------------------\n"
-    printf "|%-5s|%-8s|%-18.2s|\n" 合计 "$file_num0" "$file_size0"
+    echo -e "---------------------------------------------\n"
+    printf "|%-5s|%-8s|%-18s|\n" 视频 "$file_num1" "$file_size1"
+    echo -e "---------------------------------------------\n"
+    printf "|%-5s|%-8s|%-18s|\n" 图片 "$file_num2" "$file_size2"
+    echo -e "---------------------------------------------\n"
+    printf "|%-5s|%-8s|%-18s|\n" 文本 "$file_num3" "$file_size3"
+    echo -e "---------------------------------------------\n"
+    printf "|%-5s|%-8s|%-18s|\n" 合计 "$file_num0" "$file_size0"
+    echo -e "---------------------------------------------\n"
 }
 if [ x"$size_mode" == x"1" ];then
 echo -e "读取myfc_config.ini,size_mode为1，文件数模式"
