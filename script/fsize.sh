@@ -24,7 +24,7 @@ size_mode_num() {
     file_num0=$(fclone ls "$fclone_name3":{$link} --disable listR --checkers="$fs_chercker" | wc -l)
     file_num1=$(fclone ls "$fclone_name3":{$link} --include "*.{avi,mpeg,wmv,mp4,mkv,rm,rmvb,3gp,mov,flv,vob}" --ignore-case --disable listR --checkers="$fs_chercker" | wc -l)
     file_num2=$(fclone ls "$fclone_name3":{$link} --include "*.{png,jpg,jpeg,gif,webp,tif}" --ignore-case --disable listR --checkers="$fs_chercker" | wc -l)
-    file_num3=$(fclone ls "$fclone_name3":{$link} --include "*.{html,htm,txt,pdf}" --ignore-case --disable listR --checkers="$fs_chercker" | wc -l)
+    file_num3=$(fclone ls "$fclone_name3":{$link} --include "*.{html,htm,txt,pdf,nfo}" --ignore-case --disable listR --checkers="$fs_chercker" | wc -l)
     echo -e "资源名称："$rootname"\n"
     echo -e "----------------------"
     echo -e "| 类型 |    文件数    |"
@@ -57,7 +57,7 @@ size_mode_fully() {
     size_info2=`fclone size "$fclone_name3":{$link} --include "*.{png,jpg,jpeg,gif,webp,tif}" --ignore-case --disable listR --checkers="$fs_chercker"`
     file_num2=$(echo "$size_info2" | awk 'BEGIN{FS=" "}/^Total objects/{print $3}')
     file_size2=$(echo "$size_info2" | awk 'BEGIN{FS=" "}/^Total size/{print $3,$4}')
-    size_info3=`fclone size "$fclone_name3":{$link} --include "*.{html,htm,txt,pdf}" --ignore-case --disable listR --checkers="$fs_chercker"`
+    size_info3=`fclone size "$fclone_name3":{$link} --include "*.{html,htm,txt,pdf,nfo}" --ignore-case --disable listR --checkers="$fs_chercker"`
     file_num3=$(echo "$size_info3" | awk 'BEGIN{FS=" "}/^Total objects/{print $3}')
     file_size3=$(echo "$size_info3" | awk 'BEGIN{FS=" "}/^Total size/{print $3,$4}')
     echo -e "资源名称："$rootname"\n"
