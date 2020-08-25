@@ -42,7 +42,7 @@ size_mode_simple() {
     file_num=$(echo "$size_info" | awk 'BEGIN{FS=" "}/^Total objects/{print $3}')
     file_size=$(echo "$size_info" | awk 'BEGIN{FS=" "}/^Total size/{print $3,$4}')
     echo -e "▣▣▣▣▣▣▣▣查询信息▣▣▣▣▣▣▣▣\n" 
-    echo -e "┋资源名称┋:$rootName \n"
+    echo -e "┋资源名称┋:$rootname \n"
     echo -e "┋资源数量┋:$file_num \n"
     echo -e "┋资源大小┋:$file_size \n"
 }
