@@ -94,6 +94,9 @@ size_mode_quick() {
     if ( $i =~ *"Pre-creating directories before transfers"* ); then
     echo 查询完毕
     exit
+    else
+    sleep 5s
+    continue
     fi
     done
 }
