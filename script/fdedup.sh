@@ -16,5 +16,5 @@ else
 link=${link#*id=};link=${link#*folders/};link=${link#*d/};link=${link%?usp*}
 fi
 echo -e "▣▣▣▣▣▣正在执行查重▣▣▣▣▣▣"
-fclone dedupe smallest "$fclone_nameb":{$link} --drive-server-side-across-configs --drive-use-trash=false --checkers="$fs_chercker" --transfers="$fs_transfer" --log-level=ERROR --log-file=/root/fclone_shell_bot/log/fdedupe.log --check-first
+fclone dedupe smallest "$fclone_name2":{$link} --drive-server-side-across-configs --drive-use-trash=false --checkers="$fs_chercker" --transfers="$fs_transfer" --log-level=ERROR --log-file=/root/fclone_shell_bot/log/fdedupe.log --check-first
 echo "|▉▉▉▉▉▉▉▉▉▉▉▉|100%  查重完毕"
