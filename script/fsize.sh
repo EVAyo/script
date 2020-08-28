@@ -3,16 +3,16 @@
 # https://github.com/cgkings/fclone_shell_bot
 # File Name: fsize.sh
 # Author: cgking
-# Created Time : 2020.7.8
+# Created Time : 2020.8.28
 # Description:size查询
 # System Required: Debian/Ubuntu
-# Version: final
+# Version: 3.0
 #=============================================================
 
 source /root/fclone_shell_bot/myfc_config.ini
 
-#三种模式，在myfc_config.ini中选择size_mode
-#其中：1#，ls基础模式，2#，ls列表模式，3#，size基础模式,3#size列表模式
+#五种模式，在myfc_config.ini中选择size_mode
+#其中：1#，ls基础模式，2#，ls列表模式，3#，size基础模式,4#，size列表模式,5#，极速查询模式
 read -p "请输入查询链接==>" link
 link=${link#*id=};link=${link#*folders/};link=${link#*d/};link=${link%?usp*}
 rootname=$(fclone lsd "$fclone_name3":{$link} --disable listR --dump bodies -vv 2>&1 | awk 'BEGIN{FS="\""}/^{"id/{print $8}')
@@ -85,12 +85,28 @@ size_mode_fully() {
     printf "|%-5s|%-8s|%-18s|\n" 合计 "$file_num0" "$file_size0"
     echo -e "----------------------------------"
 }
+#5号，大文件极速查询模式
+size_mode_quick() {
+    fclone copy "$fclone_name":{$link} "$fclone_name":{$myid} --drive-server-side-across-configs --stats=1s -P --checkers="$fb_chercker" --transfers="$fb_transfer" --drive-pacer-min-sleep="$fb_min_sleep"ms --drive-pacer-burst="$fb_BURST" --min-size "$fb_min_size"M --check-first --ignore-existing --log-level=INFO --log-file=/root/fclone_shell_bot/log/fbcopy.log &
+    for ((;;))
+    do
+    i=$(cat /root/fclone_shell_bot/log/fbcopy.log)
+    if ( $i =~ *"Pre-creating directories before transfers"* ); then
+    echo 查询完毕
+    exit
+    else
+    sleep 5s
+    continue
+    fi
+    done
+}
 echo -e " 选择模式
 [1]. ls基础模式
 [2]. ls列表模式
 [3]. size基础模式
-[4]. size列表模式"
-read -p "请输入数字 [1-4]:" num
+[4]. size列表模式
+[5]. 极速模式"
+read -p "请输入数字 [1-5]:" num
 case "$num" in
 1)
     echo -e "你的选择，ls基础模式"
@@ -112,6 +128,13 @@ case "$num" in
     size_mode_fully
     exit
     ;;
+5)
+    echo -e "你的选择，极速查询模式"
+    size_mode_quick
+    exit
+    ;;
+
+
 *)
     echo -e "请输入正确的数字"
     exit
