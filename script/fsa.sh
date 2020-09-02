@@ -11,13 +11,11 @@ sa_creat() {
 sa_check() {
     echo "▂▃▄▅▆▇█▓▒░ sa|执行检测 ░▒▓█▇▆▅▄▃▂"
     if [ -a /root/fclone_shell_bot/myfc_config.ini];then
-    break
     else
     read -p "请输入sa保存地址" safolder
     read -p "请输入用于sa检测的fclone账号名，即remote" fclone_name
     read -p "请输入用于sa检测的团队盘id,为了检测速度，请尽量选择文件较少的团队盘，但不能选择空盘" fsa_id
     read -p "请输入gen_sa_accounts.py所在地址" pyfolder
-    break
     fi
     stty erase '^H'
     echo "注意：请先将credentials.json和token.pickle文件放至gen_sa_accounts.py文件所在目录"
@@ -68,17 +66,59 @@ sa_openserver() {
     echo "开启服务已运行完毕，invalid内json文件已移回$safolder！"
     sa_check
 }
+# ★★★安装环境及软件-已完成★★★
+sa_Foreplay_install() {
+    echo 步骤一：安装依赖环境及软件（请使用root账户）
+    read -e -p "请确认是否需要安装依赖环境及软件(Python/autorclone/test2.1):[y/n]" sa_Foreplay_needs
+    if [ x"$sa_Foreplay_needs" == x"y" ];then
+    read -e -p "请输入vps系统：1.debian&ubuntu 2.centos" system_stats
+        if [ x"$system_stats" == x"1" ];then
+        install_commend="apt"
+        apt update -y &&　apt upgrade -y
+        elif [ x"$system_stats" == x"2" ];then
+        install_commend="yum"
+        yum update -y
+        else
+        echo 请输入1或者2！
+        exit
+        fi
+    echo 步骤一：1.安装python
+    $install_commend install wget curl screen git sudo python3-distutils -y
+    $install_commend install python3 python3-pip -y
+    curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+    python3 get-pip.py
+    echo 步骤一：2.安装autorclone
+    cd ~
+    git clone https://github.com/xyou365/AutoRclone && cd AutoRclone && sudo pip3 install -r requirements.txt
+    echo 步骤一：3.安装test2.1
+
+
+    elif [ x"$sa_Foreplay_needs" == x"n" ];then
+    else
+    echo "请输入y或者n!"
+    exit
+    fi
+}
+
+
+# ★★★完全安装-已完成★★★
+sa_full_install() {
+    sa_Foreplay_install
+    
+}
+
 # ★★★主目录-已完成★★★
 echo && echo -e " fclone sa mangement [v 1.0] by cgkings
 
 说明：本脚本基于test2.1.py! 
+ 0.  全新账号&空白VPS
  ———————————————————————
  1.  sa_生成&下载
  2.  sa_检测
  3.  sa_批量提取csv
- 4.  安装更新 转存脚本
+ 4.  sa_安装环境和软件
  ———————————————————————
- 0.  退出脚本" && echo 
+ 5.  退出脚本" && echo 
 read -e -p " 请输入数字 [0-4]:" chose_num
 case "$chose_num" in
 0)
@@ -95,6 +135,9 @@ case "$chose_num" in
     ;;
 4)
     install_script
+    ;;
+5)
+    exit
     ;;
 *)
     echo
