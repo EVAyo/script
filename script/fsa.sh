@@ -10,9 +10,12 @@ open_sa_server() {
     sumsa=$((sumsa+1))
     echo -e "已开启 第"$sumsa"个sa；共"$xsa_sum"个sa"
     done
+    mv -f $safolder/invalid/*.json $safolder
+    echo "开启服务已运行完毕，invalid内json文件已移回$safolder，请再次运行fsa进行验证！"
 }
 
 stty erase '^H'
+echo "注意：请先将credentials.json和token.pickle文件放至gen_sa_accounts.py文件所在目录"
 echo 读取myfc_config.ini,注意你的CPU负载！
 echo -e "你的remote:$fclone_name"
 echo -e "你的sa保存目录:$safolder"
