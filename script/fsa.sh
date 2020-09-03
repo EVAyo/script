@@ -89,17 +89,15 @@ sa_Foreplay_install() {
     python3 get-pip.py
     echo 步骤一：2.安装autorclone
     cd ~
-    git clone https://github.com/xyou365/AutoRclone && cd AutoRclone && sudo pip3 install -r requirements.txt
+    git clone https://github.com/xyou365/AutoRclone && cd AutoRclone && pip3 install -r requirements.txt
     echo 步骤一：3.安装test2.1
-    cd AutoRclone && 
-
+    cd AutoRclone && wget -N https://raw.githubusercontent.com/cgkings/fclone_shell_bot/master/script/py/test2.1.py
     elif [ x"$sa_Foreplay_needs" == x"n" ];then
     else
     echo "请输入y或者n!"
     exit
     fi
 }
-
 
 # ★★★完全安装-已完成★★★
 sa_full_install() {
@@ -122,19 +120,19 @@ echo && echo -e " fclone sa mangement [v 1.0] by cgkings
 read -e -p " 请输入数字 [0-4]:" chose_num
 case "$chose_num" in
 0)
-    exit
+    sa_full_install
     ;;
 1)
-    install_exp
+    sa_creat
     ;;
 2)
-    install_shellbot
+    sa_check
     ;;
 3)
-    install_clone
+    exit
     ;;
 4)
-    install_script
+    sa_Foreplay_install
     ;;
 5)
     exit
