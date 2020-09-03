@@ -93,6 +93,7 @@ sa_csv() {
 sa_check() {
     echo "▂▃▄▅▆▇█▓▒░ sa|执行检测 ░▒▓█▇▆▅▄▃▂"
     if [ -a /root/fclone_shell_bot/myfc_config.ini];then
+    echo 加载myfc_config.ini
     else
     read -p "请输入sa保存地址" safolder
     read -p "请输入用于sa检测的fclone账号名，即remote" fclone_name
@@ -175,6 +176,7 @@ sa_Foreplay_install() {
     echo 步骤一：3.安装test2.1
     cd AutoRclone && wget -N https://raw.githubusercontent.com/cgkings/fclone_shell_bot/master/script/py/test2.1.py
     elif [ x"$sa_Foreplay_needs" == x"n" ];then
+    echo -e "\n"
     else
     echo "请输入y或者n!"
     exit
@@ -184,14 +186,13 @@ sa_Foreplay_install() {
 # ★★★完全安装-已完成★★★
 sa_full_install() {
     sa_Foreplay_install
-    
 }
 
 # ★★★主目录-已完成★★★
 echo && echo -e " fclone sa mangement [v 1.0] by cgkings
 
 说明：本脚本基于test2.1.py! 
- 0.  全新账号&空白VPS
+ 0.  全新账号&空白VPS(未完成)
  ———————————————————————
  1.  sa_生成&下载
  2.  sa_检测
