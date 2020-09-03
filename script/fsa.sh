@@ -4,16 +4,91 @@ source /root/fclone_shell_bot/myfc_config.ini
 # ★★★sa生成&下载服务-已完成★★★
 sa_creat() {
     echo "▂▃▄▅▆▇█▓▒░ sa|生成下载 ░▒▓█▇▆▅▄▃▂"
-    echo 
+    echo "https://developers.google.com/drive/api/v3/quickstart/python"
+    echo "在网页开启DRIVER API，并下载credentials.json文件"
+    echo "在vps输入rz上传credentials.json"
+    echo && echo -e " 
+    说明：本脚本基于test2.1.py!
+    0.  退出脚本 
+    ———————————————————————
+    1.  sa_首次/增量生成
+    2.  sa_覆盖重新生成（没写完）
+    3.  sa_删除项目(没写完)
+    4.  sa_列表功能（没写完）
+    ———————————————————————" && echo
+    read -e -p " 请输入数字 [0-4]:" chose_creat_num
+    case "$chose_creat_num" in
+    0)
+        exit
+        ;;
+    1)
+        echo 注意1：首次生成，需要网页授权生成token文件，并网页开启项目的api服务
+        echo 注意2：请确保test2.1py和cred、token权限文件目录在/root/AutoRclone
+        echo 注意3：sa名称一般按邮箱命名，本脚本默认采为项目-邮箱前缀命名方式
+        read -p "请输入单位项目sa数量：（即sa/proj，建议10）：" sa_proj_per
+        echo -e "一次创建项目数量，建议少于50，杜甫随意"
+        read -p "请输入创建项目数量：" sa_proj_num
+        echo -e "sa名称默认为sa邮箱名称，如sa_name3@project_name1.iam.gserviceaccount.com.json"
+        echo -e "project_name要求：可以包含小写字母、数字或连字符，必须以小写字母开头并以字母或数字结尾，6-30字符之间，不得与其他项目同名"
+        read -p "请输入自定义项目前缀名称(project_name)：" sa_proj_name
+        echo -e "项目序号说明：增量生成注意不可与之前重复，如设置为2，生成2个项目，则为project_name2,project_name3,累加"
+        read -p "请输入自定义项目前缀起始序号：" sa_proj_name_num
+        echo -e "sa_name要求：必须以小写字母开头，后跟一个或多个小写字母、数字字符（可使用连字符分隔），6-30字符之间"
+        read -p "请输入自定义sa邮箱前缀名称（sa_name）：" sa_name
+        echo -e "sa序号说明：增量生成注意不可与之前重复，如设置为2，如生成2个项目，1sa/proj，则为sa_name2,sa_name3,跨项目累加"
+        read -p "请输入自定义sa邮箱前缀起始序号（增量生成注意不可与之前重复）：" sa_name_num
+        cd /root/AutoRclone
+        python3 test2.1.py --new-only --quick-setup "$sa_proj_num" --sa-quantity "$sa_proj_per" --project-prefix "$sa_proj_name" --sa-prefix $sa_name -n "$sa_proj_name_num" -x $sa_name_num --max-projects 9999 --email-name 3
+        ;;
+    2)
+        exit
+        ;;
+    3)
+        exit
+        ;;
+    4)
+        exit
+        ;;
+    *)
+        echo
+        echo -e " ${Error} 请输入正确的数字"
+        ;;
+    esac
 }
-# ★★★crde&token生成&下载服务-已完成★★★
-
-
-
-
-
-
-
+# ★★★sa提取服务-已完成★★★
+sa_csv() {
+    echo "▂▃▄▅▆▇█▓▒░ sa|提取 ░▒▓█▇▆▅▄▃▂"
+    echo && echo -e " 
+    说明：本脚本使用test2.1.py! 
+    ———————————————————————
+    1.  普通用户  提取邮件列表
+    2.  Gsuit用户 提取上传用csv
+    ———————————————————————
+    0.  退出" && echo
+    read -e -p " 请输入数字 [0-4]:" chose_creat_num
+    case "$chose_num" in
+    0)
+        exit
+        ;;
+    1)
+        read -p "请输入sa文件夹路径：" sa_path
+        echo 下面将$sa_path内json文件的sa_email信息提取至~/sa_email.txt
+        cat $sa_path/*.json | grep "client_email" | awk '{print $2}'| tr -d ',"' | sed 'N;N;N;N;N;N;N;N;N;/^$/d;G' > ~/sa_email.txt
+        echo done！！！
+        ;;
+    2)
+        read -p "请输入sa文件夹路径：" sa_path
+        read -p "请输入要添加到的群组邮箱地址：" group_email
+        echo 下面将$sa_path内json文件的sa_email信息提取至~/sa_members.csv
+        cat $sa_path/*.json | grep "client_email" | awk '{print $2}'| tr -d ',"' > ~/sa_email.txt && sed '/./{s/^/$group_email,/;s/$/,USER,MEMBER/}' sa_email.txt >> sa_members.csv && sed -i '1i\"Group Email [Required]","Member Email","Member Type","Member Role"' sa_members.csv
+        echo done！！！
+        ;;
+    *)
+        echo
+        echo -e " ${Error} 请输入正确的数字"
+        ;;
+    esac
+}
 # ★★★sa检查-已完成★★★
 sa_check() {
     echo "▂▃▄▅▆▇█▓▒░ sa|执行检测 ░▒▓█▇▆▅▄▃▂"
@@ -90,7 +165,7 @@ sa_Foreplay_install() {
         exit
         fi
     echo 步骤一：1.安装python
-    $install_commend install wget curl screen git sudo python3-distutils -y
+    $install_commend install wget curl lrzsz tree vim nano tmux unzip htop screen git sudo python3-distutils -y
     $install_commend install python3 python3-pip -y
     curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
     python3 get-pip.py
@@ -136,7 +211,7 @@ case "$chose_num" in
     sa_check
     ;;
 3)
-    exit
+    sa_csv
     ;;
 4)
     sa_Foreplay_install
