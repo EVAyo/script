@@ -91,7 +91,7 @@ sa_Foreplay_install() {
     cd ~
     git clone https://github.com/xyou365/AutoRclone && cd AutoRclone && sudo pip3 install -r requirements.txt
     echo 步骤一：3.安装test2.1
-
+    cd AutoRclone && 
 
     elif [ x"$sa_Foreplay_needs" == x"n" ];then
     else
