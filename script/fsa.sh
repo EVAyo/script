@@ -76,7 +76,7 @@ sa_csv() {
         read -p "请输入sa文件夹路径：" sa_path
         read -p "请输入要添加到的群组邮箱地址：" group_email
         echo 下面将$sa_path内json文件的sa_email信息提取至~/sa_members.csv
-        cat $sa_path/*.json | grep "client_email" | awk '{print $2}'| tr -d ',"' > ~/sa_email.txt && sed '/./{s/^/$group_email,/;s/$/,USER,MEMBER/}' sa_email.txt >> sa_members.csv && sed -i '1i\"Group email [Required]","Member Email","Member Type","Member Role"' sa_members.csv
+        cat $sa_path/*.json | grep "client_email" | awk '{print $2}'| tr -d ',"' > ~/sa_email.txt && sed '/./{s/^/"$group_email",/;s/$/,USER,MEMBER/}' sa_email.txt >> sa_members.csv && sed -i '1i\"Group email [Required]","Member Email","Member Type","Member Role"' sa_members.csv
         echo done！！！
         ;;
     *)
