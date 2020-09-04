@@ -61,8 +61,8 @@ sa_csv() {
     2.  Gsuit用户 提取上传用csv
     ———————————————————————
     0.  退出" && echo
-    read -e -p " 请输入数字 [0-4]:" chose_creat_num
-    case "$chose_num" in
+    read -e -p " 请输入数字 [0-2]:" chose_creat_num
+    case "$chose_creat_num" in
     0)
         exit
         ;;
