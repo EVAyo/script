@@ -243,7 +243,7 @@ case "$chose_num" in
     for i in $(sort /root/AutoRclone/sa_account_list.csv)
     do
     sa_list=$(python3 test2.1.py --list-sas $i)
-    printf "%-s;%-s;\n" "$i" "$sa_list" >> /root/AutoRclone/sa_list.csv
+    printf "%-s;\t;%-s;\n" "$i" "$sa_list" >> /root/AutoRclone/sa_list.csv
     done
     rm -f /root/AutoRclone/sa_account_list.csv
     exit
