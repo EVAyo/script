@@ -192,10 +192,10 @@ echo && echo -e " fclone sa mangement [v 1.0] by cgkings
  ———————————————————————
  1.  sa_生成&下载
  2.  sa_检测
- 3.  sa_定向开启服务
- 3.  sa_批量提取csv
- 4.  sa_安装环境和软件
- 5.  sa_列表功能（没写完）
+ 3.  sa_定向开启服务（没写完）
+ 4.  sa_批量提取csv
+ 5.  sa_安装环境和软件
+ 6.  sa_列表功能
  ———————————————————————
  5.  退出脚本" && echo 
 read -e -p " 请输入数字 [0-4]:" chose_num
@@ -210,12 +210,15 @@ case "$chose_num" in
     sa_check
     ;;
 3)
-    sa_csv
+    exit
     ;;
 4)
-    sa_Foreplay_install
+    sa_csv
     ;;
 5)
+    sa_Foreplay_install
+    ;;
+6)
     echo "▂▃▄▅▆▇█▓▒░ sa|查询列表 ░▒▓█▇▆▅▄▃▂"
     if [ -a /root/AutoRclone/credentials.json ];then
     echo "/root/AutoRclone/credentials.json确认Ok"
