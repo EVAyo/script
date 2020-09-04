@@ -92,7 +92,7 @@ sa_csv() {
 # ★★★sa检查-已完成★★★
 sa_check() {
     echo "▂▃▄▅▆▇█▓▒░ sa|执行检测 ░▒▓█▇▆▅▄▃▂"
-    if [ -a /root/fclone_shell_bot/myfc_config.ini];then
+    if [ -a /root/fclone_shell_bot/myfc_config.ini ];then
     echo 加载myfc_config.ini
     else
     read -p "请输入sa保存地址" safolder
