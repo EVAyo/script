@@ -14,9 +14,8 @@ sa_creat() {
     1.  sa_首次/增量生成
     2.  sa_覆盖重新生成（没写完）
     3.  sa_删除项目(没写完)
-    4.  sa_列表功能（没写完）
     ———————————————————————" && echo
-    read -e -p " 请输入数字 [0-4]:" chose_creat_num
+    read -e -p " 请输入数字 [0-3]:" chose_creat_num
     case "$chose_creat_num" in
     0)
         exit
@@ -44,9 +43,6 @@ sa_creat() {
         exit
         ;;
     3)
-        exit
-        ;;
-    4)
         exit
         ;;
     *)
@@ -196,8 +192,10 @@ echo && echo -e " fclone sa mangement [v 1.0] by cgkings
  ———————————————————————
  1.  sa_生成&下载
  2.  sa_检测
+ 3.  sa_定向开启服务
  3.  sa_批量提取csv
  4.  sa_安装环境和软件
+ 5.  sa_列表功能（没写完）
  ———————————————————————
  5.  退出脚本" && echo 
 read -e -p " 请输入数字 [0-4]:" chose_num
@@ -218,7 +216,26 @@ case "$chose_num" in
     sa_Foreplay_install
     ;;
 5)
+    echo "▂▃▄▅▆▇█▓▒░ sa|查询列表 ░▒▓█▇▆▅▄▃▂"
+    if [ -a /root/AutoRclone/credentials.json ];then
+    echo "/root/AutoRclone/credentials.json确认Ok"
+    else
+    echo /root/AutoRclone/credentials.json不存在
     exit
+    fi
+    if [ -a /root/AutoRclone/token.pickle ];then
+    echo "/root/AutoRclone/token.pickle确认Ok"
+    else
+    echo /root/AutoRclone/token.pickle不存在
+    exit
+    fi
+    cd /root/AutoRclone
+    proj_list=$(python3 test2.1.py --list-projects)
+    for i in $proj_list
+    do
+    sa_list=$(python3 test2.1.py --list-sas $i)
+    printf "%-s;%-s;\n" "$i" "$sa_list" >> sa_account_list.csv
+    done
     ;;
 *)
     echo
