@@ -238,13 +238,13 @@ case "$chose_num" in
     exit
     fi
     cd /root/AutoRclone
-    python3 test2.1.py --list-projects > sa_account_list.csv
-    for i in sa_account_list.csv
+    python3 test2.1.py --list-projects > /root/AutoRclone/sa_account_list.csv
+    for i in $(sort /root/AutoRclone/sa_account_list.csv)
     do
     sa_list=$(python3 test2.1.py --list-sas $i)
     printf "%-s;%-s;\n" "$i" "$sa_list" >> sa_list.csv
-    sleep 2s
     done
+    rm -f /root/AutoRclone/sa_account_list.csv
     exit
     ;;
 *)
