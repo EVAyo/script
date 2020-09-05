@@ -105,7 +105,8 @@ sa_check() {
     echo -e "开启sa服务所需的gen_sa_accounts.py文件所在目录：$pyfolder,请确认该目录有权限文件"
     echo -e "以上如需修改，请打开ini文件修改fclone_name、safolder、pyfolder、fsa_id数值"
     echo -e "检测NG.文件目录：$safolder/invalid"
-    echo -e "检测ok文件将移至：/root/AutoRclone/$fclone_name，如需更改，请修改本脚本相应目录行即可\n"
+    echo -e "检测ok文件将移至：$safolder/ok，如需更改，请修改本脚本相应目录行即可\n"
+    mkdir -p $safolder/ok
     mkdir -p $safolder/invalid
     sa1_sum=$(ls -l $safolder|grep "^-"| wc -l)
     echo -e "█║▌║▌║待检测sa $sa1_sum 个，开始检测║▌║▌║█\n"
@@ -114,17 +115,17 @@ sa_check() {
     sa_sum=$(ls -l $safolder|grep "^-"| wc -l)
     if [ x$xsa_sum = x0 ];then
     echo -e "█║▌║▌║恭喜你！你的sa[$sa_sum],全部检测ok║▌║▌║█"
-    mv -f $safolder/*.json /root/AutoRclone/"$fclone_name"
-    ok_sum=$(ls -l /root/AutoRclone/$fclone_name|grep "^-"| wc -l)
-    echo -e "检测ok sa已移至/root/AutoRclone/$fclone_name,现$fclone_name文件夹共有$ok_sum个sa"
+    mv -f $safolder/*.json $safolder/ok
+    ok_sum=$(ls -l $safolder/ok|grep "^-"| wc -l)
+    echo -e "检测ok sa已移至$safolder/ok,现$safolder/ok文件夹共有$ok_sum个sa"
     exit
     elif [ x$sa_sum = x0 ];then
     echo -e "█║▌║▌║非常遗憾，你的sa[$sa_sum],全部检测NG.║▌║▌║█\n"
     sa_openserver
     else
-    mv -f $safolder/*.json /root/AutoRclone/"$fclone_name"
-    ok_sum=$(ls -l /root/AutoRclone/$fclone_name|grep "^-"| wc -l)
-    echo -e "检测ok sa $sa_sum 个，已移至/root/AutoRclone/$fclone_name,现$fclone_name文件夹共有$ok_sum个sa"
+    mv -f $safolder/*.json $safolder/ok
+    ok_sum=$(ls -l $safolder/ok|grep "^-"| wc -l)
+    echo -e "检测ok sa $sa_sum 个，已移至$safolder/ok,现$safolder/ok文件夹共有$ok_sum个sa"
     echo -e "█║▌║▌║检测NG sa $xsa_sum 个║▌║▌║█\n"
     sa_openserver
     fi
