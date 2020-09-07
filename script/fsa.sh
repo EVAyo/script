@@ -110,7 +110,7 @@ sa_check() {
     mkdir -p $safolder/invalid
     sa1_sum=$(ls -l $safolder|grep "^-"| wc -l)
     echo -e "█║▌║▌║待检测sa $sa1_sum 个，开始检测║▌║▌║█\n"
-    find $safolder -type f -name "*.json" | xargs -I {} -n 1 -P 10 bash -c 'fclone lsd '$fclone_name':{'$fsa_id'} --drive-service-account-file={} --drive-service-account-file-path=""  &> /dev/null || mv {} '$safolder'/invalid '
+    find $safolder -type f -name "*.json" | xargs -I {} -n 1 -P 10 bash -c 'fclone lsd '$fclone_name':{'$fsa_id'} --drive-service-account-file={} --drive-service-account-file-path=""  &> /dev/null || mv -f {} '$safolder'/invalid '
     xsa_sum=$(ls -l $safolder/invalid|grep "^-"| wc -l)
     sa_sum=$(ls -l $safolder|grep "^-"| wc -l)
     if [ x$xsa_sum = x0 ];then
