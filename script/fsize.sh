@@ -3,16 +3,16 @@
 # https://github.com/cgkings/fclone_shell_bot
 # File Name: fsize.sh
 # Author: cgking
-# Created Time : 2020.8.28
+# Created Time : 2020.7.8
 # Description:size查询
 # System Required: Debian/Ubuntu
-# Version: 3.0
+# Version: final
 #=============================================================
 
 source /root/fclone_shell_bot/myfc_config.ini
 
-#五种模式，在myfc_config.ini中选择size_mode
-#其中：1#，ls基础模式，2#，ls列表模式，3#，size基础模式,4#，size列表模式,5#，极速查询模式
+#三种模式，在myfc_config.ini中选择size_mode
+#其中：1#，ls基础模式，2#，ls列表模式，3#，size基础模式,3#size列表模式
 read -p "请输入查询链接==>" link
 link=${link#*id=};link=${link#*folders/};link=${link#*d/};link=${link%?usp*}
 rootname=$(fclone lsd "$fclone_name2":{$link} --disable listR --dump bodies -vv 2>&1 | awk 'BEGIN{FS="\""}/^{"id/{print $8}')
@@ -23,7 +23,7 @@ fi
 size_mode_num_simple() {
     file_num=$(fclone ls "$fclone_name2":{$link} --disable listR --checkers="$fs_chercker" | wc -l)
     folder_num=$(fclone lsd "$fclone_name2":{$link} --disable listR -R --checkers="$fs_chercker" | wc -l)
-    echo -e "▣▣▣▣▣▣▣▣查询信息▣▣▣▣▣▣▣▣\n" 
+    echo -e "▣▣▣▣▣▣▣▣查询信息▣▣▣▣▣▣▣▣\n"
     echo -e "┋ name  ┋:$rootname \n"
     echo -e "┋ file  ┋:$file_num \n"
     echo -e "┋ folder┋:$folder_num \n"
@@ -53,7 +53,7 @@ size_mode_simple() {
     size_info=`fclone size "$fclone_name2":{$link} --disable listR --checkers="$fs_chercker"`
     file_num=$(echo "$size_info" | awk 'BEGIN{FS=" "}/^Total objects/{print $3}')
     file_size=$(echo "$size_info" | awk 'BEGIN{FS=" "}/^Total size/{print $3,$4}')
-    echo -e "▣▣▣▣▣▣▣▣查询信息▣▣▣▣▣▣▣▣\n" 
+    echo -e "▣▣▣▣▣▣▣▣查询信息▣▣▣▣▣▣▣▣\n"
     echo -e "┋资源名称┋:$rootname \n"
     echo -e "┋资源数量┋:$file_num \n"
     echo -e "┋资源大小┋:$file_size \n"
@@ -69,7 +69,7 @@ size_mode_fully() {
     size_info2=`fclone size "$fclone_name2":{$link} --include "*.{png,jpg,jpeg,gif,webp,tif}" --ignore-case --disable listR --checkers="$fs_chercker"`
     file_num2=$(echo "$size_info2" | awk 'BEGIN{FS=" "}/^Total objects/{print $3}')
     file_size2=$(echo "$size_info2" | awk 'BEGIN{FS=" "}/^Total size/{print $3,$4}')
-    size_info3=`fclone size "$fclone_name2":{$link} --include "*.{html,htm,txt,pdf,nfo}" --ignore-case --disable listR --checkers="$fs_chercker"`
+    size_info3=`fclone size "$fclone_name3":{$link} --include "*.{html,htm,txt,pdf,nfo}" --ignore-case --disable listR --checkers="$fs_chercker"`
     file_num3=$(echo "$size_info3" | awk 'BEGIN{FS=" "}/^Total objects/{print $3}')
     file_size3=$(echo "$size_info3" | awk 'BEGIN{FS=" "}/^Total size/{print $3,$4}')
     echo -e "资源名称："$rootname""
@@ -85,28 +85,12 @@ size_mode_fully() {
     printf "|%-5s|%-8s|%-18s|\n" 合计 "$file_num0" "$file_size0"
     echo -e "----------------------------------"
 }
-#5号，大文件极速查询模式
-size_mode_quick() {
-    fclone copy "$fclone_name2":{$link} "$fclone_name2":{$myid} --drive-server-side-across-configs --stats=1s -P --checkers="$fb_chercker" --transfers="$fb_transfer" --drive-pacer-min-sleep="$fb_min_sleep"ms --drive-pacer-burst="$fb_BURST" --min-size "$fb_min_size"M --check-first --ignore-existing --log-level=INFO --log-file=/root/fclone_shell_bot/log/fbcopy.log &
-    for ((;;))
-    do
-    i=$(cat /root/fclone_shell_bot/log/fbcopy.log)
-    if ( $i =~ *"Pre-creating directories before transfers"* ); then
-    echo 查询完毕
-    exit
-    else
-    sleep 5s
-    continue
-    fi
-    done
-}
 echo -e " 选择模式
 [1]. ls基础模式
 [2]. ls列表模式
 [3]. size基础模式
-[4]. size列表模式
-[5]. 极速模式"
-read -p "请输入数字 [1-5]:" num
+[4]. size列表模式"
+read -p "请输入数字 [1-4]:" num
 case "$num" in
 1)
     echo -e "你的选择，ls基础模式"
@@ -128,13 +112,6 @@ case "$num" in
     size_mode_fully
     exit
     ;;
-5)
-    echo -e "你的选择，极速查询模式"
-    size_mode_quick
-    exit
-    ;;
-
-
 *)
     echo -e "请输入正确的数字"
     exit

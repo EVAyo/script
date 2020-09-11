@@ -7,9 +7,9 @@ sa_creat() {
     echo "https://developers.google.com/drive/api/v3/quickstart/python"
     echo "在网页开启DRIVER API，并下载credentials.json文件"
     echo "在vps输入rz上传credentials.json"
-    echo && echo -e " 
+    echo && echo -e "
     说明：本脚本基于test2.1.py!
-    0.  退出脚本 
+    0.  退出脚本
     ———————————————————————
     1.  sa_首次/增量生成
     2.  sa_覆盖重新生成（没写完）
@@ -76,7 +76,8 @@ sa_csv() {
         read -p "请输入sa文件夹路径：" sa_path
         read -p "请输入要添加到的群组邮箱地址：" group_email
         echo 下面将$sa_path内json文件的sa_email信息提取至~/sa_members.csv
-        cat $sa_path/*.json | grep "client_email" | awk '{print $2}'| tr -d ',"' > ~/sa_email.txt && sed '/./{s/^/"$group_email",/;s/$/,USER,MEMBER/}' sa_email.txt >> sa_members.csv && sed -i '1i\"Group email [Required]","Member Email","Member Type","Member Role"' sa_members.csv
+        cat $sa_path/*.json | grep "client_email" | awk '{print $2}'| tr -d ',"' > ~/sa_email.txt && sed '/./{s/^/$group_email,/;s/$/,USER,MEMBER/}' sa_email.txt >> sa_members.csv && sed -i '1i\"Group email [Required]","Member Email","Member Type","Member Role"' sa_members.csv
+        rm -f ~/sa_email.txt
         echo done！！！
         ;;
     *)
@@ -105,27 +106,27 @@ sa_check() {
     echo -e "开启sa服务所需的gen_sa_accounts.py文件所在目录：$pyfolder,请确认该目录有权限文件"
     echo -e "以上如需修改，请打开ini文件修改fclone_name、safolder、pyfolder、fsa_id数值"
     echo -e "检测NG.文件目录：$safolder/invalid"
-    echo -e "检测ok文件将移至：$safolder/ok，如需更改，请修改本脚本相应目录行即可\n"
-    mkdir -p $safolder/ok
+    echo -e "检测ok文件将移至：/root/AutoRclone/ok，如需更改，请修改本脚本相应目录行即可\n"
     mkdir -p $safolder/invalid
+    mkdir -p $safolder/ok
     sa1_sum=$(ls -l $safolder|grep "^-"| wc -l)
     echo -e "█║▌║▌║待检测sa $sa1_sum 个，开始检测║▌║▌║█\n"
-    find $safolder -type f -name "*.json" | xargs -I {} -n 1 -P 10 bash -c 'fclone lsd '$fclone_name':{'$fsa_id'} --drive-service-account-file={} --drive-service-account-file-path=""  &> /dev/null || mv -f {} '$safolder'/invalid '
+    find $safolder -type f -name "*.json" | xargs -I {} -n 1 -P 10 bash -c 'fclone lsd '$fclone_name':{'$fsa_id'} --drive-service-account-file={} --drive-service-account-file-path=""  &> /dev/null || mv {} '$safolder'/invalid '
     xsa_sum=$(ls -l $safolder/invalid|grep "^-"| wc -l)
     sa_sum=$(ls -l $safolder|grep "^-"| wc -l)
     if [ x$xsa_sum = x0 ];then
     echo -e "█║▌║▌║恭喜你！你的sa[$sa_sum],全部检测ok║▌║▌║█"
-    mv -f $safolder/*.json $safolder/ok
-    ok_sum=$(ls -l $safolder/ok|grep "^-"| wc -l)
-    echo -e "检测ok sa已移至$safolder/ok,现$safolder/ok文件夹共有$ok_sum个sa"
+    mv -f $safolder/*.json /root/AutoRclone/test/ok
+    ok_sum=$(ls -l /root/AutoRclone/test/ok|grep "^-"| wc -l)
+    echo -e "检测ok sa已移至/root/AutoRclone/test/ok,现ok文件夹共有$ok_sum个sa"
     exit
     elif [ x$sa_sum = x0 ];then
     echo -e "█║▌║▌║非常遗憾，你的sa[$sa_sum],全部检测NG.║▌║▌║█\n"
     sa_openserver
     else
-    mv -f $safolder/*.json $safolder/ok
-    ok_sum=$(ls -l $safolder/ok|grep "^-"| wc -l)
-    echo -e "检测ok sa $sa_sum 个，已移至$safolder/ok,现$safolder/ok文件夹共有$ok_sum个sa"
+    mv -f $safolder/*.json /root/AutoRclone/test/ok
+    ok_sum=$(ls -l /root/AutoRclone/test/ok|grep "^-"| wc -l)
+    echo -e "检测ok sa $sa_sum 个，已移至/root/AutoRclone/test/ok,现ok文件夹共有$ok_sum个sa"
     echo -e "█║▌║▌║检测NG sa $xsa_sum 个║▌║▌║█\n"
     sa_openserver
     fi
