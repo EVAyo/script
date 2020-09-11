@@ -12,8 +12,6 @@
 source /root/fclone_shell_bot/myfc_config.ini
 : > /root/fclone_shell_bot/log/fpcopy.log
 : > /root/fclone_shell_bot/log/fpsync.log
-: > /root/fclone_shell_bot/log/fdedupe.log
-: > /root/fclone_shell_bot/log/fcleanup.log
 
 read -p "【点对点模式】请输入from ID==>" link1
 link1=${link1#*id=};link1=${link1#*folders/};link1=${link1#*d/};link1=${link1%?usp*}
@@ -31,16 +29,8 @@ echo -e "|▉▉▉▉▉▉▉▉▉▉▉▉|100%  拷贝完毕"
 echo -e "▣▣▣▣▣▣执行同步▣▣▣▣▣▣"
 fclone sync "$fclone_name1":{$link1} "$fclone_name1":{$link2} --drive-server-side-across-configs --drive-use-trash=false --stats=1s --stats-one-line -P --checkers="$fb_chercker" --transfers="$fb_transfer" --drive-pacer-min-sleep="$fb_min_sleep"ms --drive-pacer-burst="$fb_BURST" --min-size "$fb_min_size"M --check-first --log-level="$fp_log_level" --log-file=/root/fclone_shell_bot/log/fpsync.log
 echo -e "|▉▉▉▉▉▉▉▉▉▉▉▉|100%  补缺完毕"
-echo -e "▣▣▣▣▣▣正在执行查重▣▣▣▣▣▣"
-fclone dedupe smallest "$fclone_name1":{$link2} --drive-server-side-across-configs --drive-use-trash=false --checkers="$fs_chercker" --transfers="$fs_transfer" --drive-pacer-min-sleep="$fs_min_sleep"ms --drive-pacer-burst="$fs_BURST" --log-level="$fp_log_level" --log-file=/root/fclone_shell_bot/log/fdedupe.log --check-first
-echo "|▉▉▉▉▉▉▉▉▉▉▉▉|100%  查重完毕"
-echo -e "▣▣▣▣▣▣正在执行删空▣▣▣▣▣▣"
-fclone rmdirs "$fclone_name1":{$link2} --drive-use-trash=false -vvP --checkers="$fs_chercker" --transfers="$fs_transfer" --drive-pacer-min-sleep="$fs_min_sleep"ms --drive-pacer-burst="$fs_BURST" --log-level="$fp_log_level" --log-file=/root/fclone_shell_bot/log/fcleanup.log --check-first
-echo "|▉▉▉▉▉▉▉▉▉▉▉▉|100%  删空完毕"
 cat /root/fclone_shell_bot/log/fpcopy.log | grep "Changing Service Account File from" | awk '{print $10}' >> /root/fclone_shell_bot/log/invalid_list.log
 cat /root/fclone_shell_bot/log/fpsync.log | grep "Changing Service Account File from" | awk '{print $10}' >> /root/fclone_shell_bot/log/invalid_list.log
-cat /root/fclone_shell_bot/log/fdedupe.log | grep "Changing Service Account File from" | awk '{print $10}' >> /root/fclone_shell_bot/log/invalid_list.log
-cat /root/fclone_shell_bot/log/fcleanup.log | grep "Changing Service Account File from" | awk '{print $10}' >> /root/fclone_shell_bot/log/invalid_list.log
 if [ -s /root/fclone_shell_bot/log/invalid_list.log ] ; then
 sa_invalid_num=$(sed -n '$=' /root/fclone_shell_bot/log/invalid_list.log)
 mkdir -p /root/AutoRclone/"$fclone_name1"/invalid
