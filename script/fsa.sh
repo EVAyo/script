@@ -93,14 +93,14 @@ sa_check() {
     echo 加载myfc_config.ini
     else
     read -p "请输入sa保存地址" safolder
-    read -p "请输入用于sa检测的fclone账号名，即remote" fclone_name
+    read -p "请输入用于sa检测的fclone账号名，即remote" fclone_name1
     read -p "请输入用于sa检测的团队盘id,为了检测速度，请尽量选择文件较少的团队盘，但不能选择空盘" fsa_id
     read -p "请输入gen_sa_accounts.py所在地址" pyfolder
     fi
     stty erase '^H'
     echo "注意：请先将credentials.json和token.pickle文件放至gen_sa_accounts.py文件所在目录"
     echo 读取myfc_config.ini,注意你的CPU负载！
-    echo -e "你的remote:$fclone_name"
+    echo -e "你的remote:$fclone_name1"
     echo -e "你的sa保存目录:$safolder"
     echo -e "你的sa检测目标文件夹id:$fsa_id"
     echo -e "开启sa服务所需的gen_sa_accounts.py文件所在目录：$pyfolder,请确认该目录有权限文件"
@@ -111,7 +111,7 @@ sa_check() {
     mkdir -p $safolder/ok
     sa1_sum=$(ls -l $safolder|grep "^-"| wc -l)
     echo -e "█║▌║▌║待检测sa $sa1_sum 个，开始检测║▌║▌║█\n"
-    find $safolder -type f -name "*.json" | xargs -I {} -n 1 -P 10 bash -c 'fclone lsd '$fclone_name':{'$fsa_id'} --drive-service-account-file={} --drive-service-account-file-path=""  &> /dev/null || mv {} '$safolder'/invalid '
+    find $safolder -type f -name "*.json" | xargs -I {} -n 1 -P 10 bash -c 'fclone lsd '$fclone_name1':{'$fsa_id'} --drive-service-account-file={} --drive-service-account-file-path=""  &> /dev/null || mv {} '$safolder'/invalid '
     xsa_sum=$(ls -l $safolder/invalid|grep "^-"| wc -l)
     sa_sum=$(ls -l $safolder|grep "^-"| wc -l)
     if [ x$xsa_sum = x0 ];then

@@ -69,7 +69,7 @@ size_mode_fully() {
     size_info2=`fclone size "$fclone_name2":{$link} --include "*.{png,jpg,jpeg,gif,webp,tif}" --ignore-case --disable listR --checkers="$fs_chercker"`
     file_num2=$(echo "$size_info2" | awk 'BEGIN{FS=" "}/^Total objects/{print $3}')
     file_size2=$(echo "$size_info2" | awk 'BEGIN{FS=" "}/^Total size/{print $3,$4}')
-    size_info3=`fclone size "$fclone_name3":{$link} --include "*.{html,htm,txt,pdf,nfo}" --ignore-case --disable listR --checkers="$fs_chercker"`
+    size_info3=`fclone size "$fclone_name2":{$link} --include "*.{html,htm,txt,pdf,nfo}" --ignore-case --disable listR --checkers="$fs_chercker"`
     file_num3=$(echo "$size_info3" | awk 'BEGIN{FS=" "}/^Total objects/{print $3}')
     file_size3=$(echo "$size_info3" | awk 'BEGIN{FS=" "}/^Total size/{print $3,$4}')
     echo -e "资源名称："$rootname""

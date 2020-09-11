@@ -16,7 +16,7 @@ source /root/fclone_shell_bot/myfc_config.ini
 clear
 read -p "【极速任务队列模式】请输入分享链接任务，任务序号【01】==>" link
 link=${link#*id=};link=${link#*folders/};link=${link#*d/};link=${link%?usp*}
-rootname=$(fclone lsd "$fclone_name":{$link} --dump bodies -vv 2>&1 | awk 'BEGIN{FS="\""}/^{"id/{print $8}')
+rootname=$(fclone lsd "$fclone_name1":{$link} --dump bodies -vv 2>&1 | awk 'BEGIN{FS="\""}/^{"id/{print $8}')
 if [ -z "$link" ] ; then
 echo "不允许输入为空" && exit ;
 elif [ -z "$rootname" ] ; then
@@ -31,7 +31,7 @@ while [ $link!=[0] ];do
     echo -e "队列任务模式,任务序号【$suma】"
     read -p "请继续输入分享链接任务，如需终止添加队列则回复"0"==>" link
     link=${link#*id=};link=${link#*folders/};link=${link#*d/};link=${link%?usp*}
-    rootname=$(fclone lsd "$fclone_name":{$link} --dump bodies -vv 2>&1 | awk 'BEGIN{FS="\""}/^{"id/{print $8}')
+    rootname=$(fclone lsd "$fclone_name1":{$link} --dump bodies -vv 2>&1 | awk 'BEGIN{FS="\""}/^{"id/{print $8}')
     if [ x"$link" == x"0" ];then
     echo -e "总共添加了【$suma】项任务,队列任务即将执行"
     break;
@@ -54,16 +54,16 @@ sumh=$(grep -n '' /root/fclone_shell_bot/log/fqtask.txt | awk -F : 'END{print $1
 for input_id in $(cat ~/fclone_shell_bot/log/fqtask.txt)
 do
 sumb=$((sumb+1))
-rootname=$(fclone lsd "$fclone_name":{$input_id} --dump bodies -vv 2>&1 | awk 'BEGIN{FS="\""}/^{"id/{print $8}')
+rootname=$(fclone lsd "$fclone_name1":{$input_id} --dump bodies -vv 2>&1 | awk 'BEGIN{FS="\""}/^{"id/{print $8}')
 echo -e "▣▣▣▣▣▣▣任务信息▣▣▣▣▣▣▣\n"
 echo -e "┋资源名称┋:"$rootname"\n"
 echo -e "┋资源地址┋:"$input_id"\n"
 echo -e "┋任务信息┋:第"$sumb"项/共"$sumh"项\n"
 echo -e "▣▣▣▣▣▣执行转存▣▣▣▣▣▣"
-fclone copy "$fclone_name":{$input_id} "$fclone_name":{$gd_id}/"$rootname" --drive-server-side-across-configs --stats=1s --stats-one-line -P --checkers="$fq_chercker" --transfers="$fq_transfer" --drive-pacer-min-sleep="$fq_min_sleep"ms --drive-pacer-burst="$fq_BURST" --min-size "$fq_min_size"M --check-first --log-level=DEBUG --log-file=/root/fclone_shell_bot/log/fqcopy1.log
+fclone copy "$fclone_name1":{$input_id} "$fclone_name1":{$gd_id}/"$rootname" --drive-server-side-across-configs --stats=1s --stats-one-line -P --checkers="$fq_chercker" --transfers="$fq_transfer" --drive-pacer-min-sleep="$fq_min_sleep"ms --drive-pacer-burst="$fq_BURST" --min-size "$fq_min_size"M --check-first --log-level=DEBUG --log-file=/root/fclone_shell_bot/log/fqcopy1.log
 echo "|▉▉▉▉▉▉▉▉▉▉▉▉|100%  拷贝完毕"
 echo -e "▣▣▣▣▣▣查漏补缺▣▣▣▣▣▣"
-fclone copy "$fclone_name":{$input_id} "$fclone_name":{$gd_id}/"$rootname" --drive-server-side-across-configs --stats=1s --stats-one-line -P --checkers="$fq_chercker" --transfers="$fq_transfer" --drive-pacer-min-sleep="$fq_min_sleep"ms --drive-pacer-burst="$fq_BURST" --min-size "$fq_min_size"M --check-first --log-level=DEBUG --log-file=/root/fclone_shell_bot/log/fqcopy2.log
+fclone copy "$fclone_name1":{$input_id} "$fclone_name1":{$gd_id}/"$rootname" --drive-server-side-across-configs --stats=1s --stats-one-line -P --checkers="$fq_chercker" --transfers="$fq_transfer" --drive-pacer-min-sleep="$fq_min_sleep"ms --drive-pacer-burst="$fq_BURST" --min-size "$fq_min_size"M --check-first --log-level=DEBUG --log-file=/root/fclone_shell_bot/log/fqcopy2.log
 echo "|▉▉▉▉▉▉▉▉▉▉▉▉|100%  补缺完毕"
 done
 : > /root/fclone_shell_bot/log/fqtask.txt
