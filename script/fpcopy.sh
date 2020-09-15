@@ -41,7 +41,7 @@ do
 mv -f "$sa_invalid" /root/AutoRclone/"$fclone_name1"/invalid
 done
 invalid_sum=$(ls -l /root/AutoRclone/"$fclone_name1"/invalid|grep "^-"| wc -l)
-echo -e "已转移"$invalid_sum"个sa，过24h自动转回"
+echo -e "阵亡文件夹中有"$invalid_sum"个sa，过24h自动转回"
 else
 echo -e "转存太轻松，没有阵亡的sa"
 exit
