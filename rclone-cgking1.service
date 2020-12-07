@@ -30,16 +30,18 @@ ExecStart = /usr/bin/rclone mount cgking1: /home/gd \
 --transfers 4 \
 #这用于将文件缓存到本地磁盘以进行流传输
 --vfs-cache-mode full \
+#使用高速缓存模式完整时，额外读取--buffer-size
+--vfs-read-ahead 8G
 #用于缓存的本地磁盘
 --cache-dir=/home/cache \
 #将缓存大小限制为以下值
---vfs-cache-max-size 10G \
+--vfs-cache-max-size 8G \
 #用于预先缓冲数据的内存量
---buffer-size 64M \
+--buffer-size 512M \
 #读取块大小，不理解用的到底是内存还是硬盘
---vfs-read-chunk-size 128M \
+--vfs-read-chunk-size 64M \
 #读取块分块限制
---vfs-read-chunk-size-limit 1G \
+--vfs-read-chunk-size-limit 512M \
 #日志级别输出 
 --log-level INFO \
 #日志文件的位置
