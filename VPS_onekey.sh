@@ -30,7 +30,7 @@ apt-get update --fix-missing -y && apt upgrade -y
 #系统常用
 echo 第二步：安装常用软件
 apt-get -y install build-essential #yum groupinstall "Development Tools"
-apt-get -y install git curl wget tree vim nano tmux unzip htop zsh parted screen sudo python3 python3-pip ntpdate manpages-zh python3-distutils screenfetch fonts-powerline
+apt-get -y install git curl wget tree vim nano tmux unzip htop zsh parted nethogs screen sudo python3 python3-pip ntpdate manpages-zh python3-distutils screenfetch fonts-powerline
 #设置时区
 echo 第三步：设置上海市区，时间同步
 rm -rf /etc/localtime
