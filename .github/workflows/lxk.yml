@@ -1,5 +1,5 @@
 # File: .github/workflows/repo-sync.yml
-name: sync-lxk0301-scripts #action名字，随便起
+name: lxk0301 #action名字，随便起
 on:
   schedule:
     - cron: '1 0,15 * * *'
