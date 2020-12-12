@@ -27,7 +27,7 @@ jobs:
         with:
           source_repo: "https://github.com/Sunert/Scripts.git" #关键内容，对方github库信息
           source_branch: "master"
-          destination_branch: "master"
+          destination_branch: "sunert"
           github_token: ${{ secrets.PAT }}
       # 我自己同步到gitee使用，其他人可忽略
       - name: sync github -> gitee
