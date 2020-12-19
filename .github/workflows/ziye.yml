@@ -1,8 +1,8 @@
 # File: .github/workflows/repo-sync.yml
 env:
   ID: ziye
-  URL: https://github.com/ziye12/JavaScript.git
-name: sync-${ID} #action名字，随便起
+  URL: 
+name: sync-ziye #action名字，随便起
 on:
   schedule:
     - cron: '1 0,15 * * *'
@@ -12,7 +12,7 @@ on:
   push:
     branches: [ master ]
   repository_dispatch:
-    types: sync-${ID} #同随便起
+    types: sync #同随便起
 jobs:
   repo-sync:
     env:
