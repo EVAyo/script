@@ -2,7 +2,7 @@
 env:
   ID: ziye
   URL: 
-name: sync-ziye #action名字，随便起
+name: ${ID} #action名字，随便起
 on:
   schedule:
     - cron: '1 0,15 * * *'
