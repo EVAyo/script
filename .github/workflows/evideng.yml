@@ -1,7 +1,7 @@
 # File: .github/workflows/repo-sync.yml
-名字: evideng_jd-base #action名字，随便起
+name: evideng_jd-base #action名字，随便起
 env:
-  ID: evideng
+  ID: evideng_jd-base
   URL: https://github.com/EvineDeng/jd-base.git
 on:
   schedule:
