@@ -28,6 +28,7 @@ from .util import (
     email
 
 )
+from .datastorage import DataStorage
 
 from datetime import datetime, timedelta
 
@@ -377,6 +378,8 @@ class JdSeckill(object):
         self.nick_name = None
 
         self.running_flag = True
+        
+        self.data_storage = DataStorage()
 
     def login_by_qrcode(self):
         """
@@ -414,7 +417,10 @@ class JdSeckill(object):
         """
         预约
         """
-        self._reserve()
+        if self.data_storage.is_reserve_get() == "0":
+            self._reserve()
+        else:
+            logger.info('已经预约过！')
 
     @check_login_and_jdtdufp
     def seckill(self):
@@ -424,7 +430,7 @@ class JdSeckill(object):
         self._seckill()
 
     @check_login_and_jdtdufp
-    def seckill_by_proc_pool(self, work_count=5):
+    def seckill_by_proc_pool(self, work_count=1):
         """
         多进程进行抢购
         work_count：进程数量
@@ -496,6 +502,7 @@ class JdSeckill(object):
         while True:
             try:
                 self.session.get(url='https:' + reserve_url)
+                self.data_storage.is_reserve_set("1")
                 logger.info('预约成功，已获得抢购资格 / 您已成功预约过了，无需重复预约')
                 if global_config.getRaw('messenger', 'server_chan_enable') == 'true':
                     success_message = "预约成功，已获得抢购资格 / 您已成功预约过了，无需重复预约"
