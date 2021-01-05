@@ -28,7 +28,6 @@ from .util import (
     email
 
 )
-from .datastorage import DataStorage
 
 from datetime import datetime, timedelta
 
@@ -322,11 +321,11 @@ class JdTdudfp:
             # 点击事件会打开一个新的tab页，但是browser.pages()无法获取新打开的tab页，导致无法引用新打开的page对象
             # 所以获取href，使用goto跳转的方式
             # 下面类似goto写法都是这个原因
-            a_href = await page.querySelectorAllEval(".cate_menu_lk", "(elements) => elements[0].href")
+            a_href = await page.querySelectorAllEval(".cate_menu_lk", "(elements) => elements[{}].href".format(str(random.randint(0,5))))
             await page.goto(a_href)
             await page.waitFor(".goods_item_link")
             logger.info("page_title：【%s】, page_url：【%s】" % (await page.title(), page.url))
-            a_href = await page.querySelectorAllEval(".goods_item_link", "(elements) => elements[{}].href".format(str(random.randint(1,20))))
+            a_href = await page.querySelectorAllEval(".goods_item_link", "(elements) => elements[{}].href".format(str(random.randint(0,30))))
             await page.goto(a_href)
             await page.waitFor("#InitCartUrl")
             logger.info("page_title：【%s】, page_url：【%s】" % (await page.title(), page.url))
@@ -378,8 +377,6 @@ class JdSeckill(object):
         self.nick_name = None
 
         self.running_flag = True
-        
-        self.data_storage = DataStorage()
 
     def login_by_qrcode(self):
         """
@@ -417,10 +414,7 @@ class JdSeckill(object):
         """
         预约
         """
-        if self.data_storage.is_reserve_get() == "0":
-            self._reserve()
-        else:
-            logger.info('已经预约过！')
+        self._reserve()
 
     @check_login_and_jdtdufp
     def seckill(self):
@@ -430,7 +424,7 @@ class JdSeckill(object):
         self._seckill()
 
     @check_login_and_jdtdufp
-    def seckill_by_proc_pool(self, work_count=1):
+    def seckill_by_proc_pool(self, work_count=5):
         """
         多进程进行抢购
         work_count：进程数量
@@ -502,7 +496,6 @@ class JdSeckill(object):
         while True:
             try:
                 self.session.get(url='https:' + reserve_url)
-                self.data_storage.is_reserve_set("1")
                 logger.info('预约成功，已获得抢购资格 / 您已成功预约过了，无需重复预约')
                 if global_config.getRaw('messenger', 'server_chan_enable') == 'true':
                     success_message = "预约成功，已获得抢购资格 / 您已成功预约过了，无需重复预约"
