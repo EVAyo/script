@@ -18,7 +18,6 @@ class Timer(object):
         # 自动设置当前的日期为buy_time的日期,并未判断其是否为服务器可用的秒杀日期时间
         self.date_now = datetime.now()
         self.buy_time = self.buy_time.replace(self.date_now.year, self.date_now.month, self.date_now.day)
-        logger.info('自动替换抢购日期为当前日期:buy_time = {}'.format(self.buy_time))
         self.buy_time_ms = int(time.mktime(self.buy_time.timetuple()) * 1000.0 + self.buy_time.microsecond / 1000)
         self.sleep_interval = sleep_interval
 
