@@ -435,7 +435,7 @@ class JdSeckill(object):
         self._seckill()
 
     @check_login_and_jdtdufp
-    def seckill_by_proc_pool(self, work_count=1):
+    def seckill_by_proc_pool(self, work_count=5):
         """
         多进程进行抢购
         work_count：进程数量
