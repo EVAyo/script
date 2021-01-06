@@ -112,7 +112,6 @@ venv.bak/
 # project
 *.log
 .logs
-logs/
 .test
 test/
 cookies/
