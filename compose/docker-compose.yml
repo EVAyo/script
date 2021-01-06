@@ -9,5 +9,5 @@ services:
     env_file:
       - ../dockerfile/docker.env
     volumes: 
-      - ../logs_volumes/lys: /logs
-      - ../cookies_volumes/lys: /cookies
+      - ../logs_volumes/lys:/logs
+      - ../cookies_volumes/lys:/cookies
