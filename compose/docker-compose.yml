@@ -2,12 +2,12 @@ version: "2.2"
 services:
   lys:
     container_name: lys
-    image: huanghyw/jd-seckill:latest
+    image: jd-seckill:latest
     build:
       context: ../dockerfile
       dockerfile: Dockerfile
     env_file:
-      - ../dockerfile/docker.env
+      - ../dockerfile/docker_lys.env
     volumes: 
       - "../logs_volumes/lys:/app/logs"
       - "../cookies_volumes/lys:/app/cookies"
