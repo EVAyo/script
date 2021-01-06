@@ -112,10 +112,10 @@ venv.bak/
 # project
 *.log
 .logs
-logs/*
+
 .test
 test/
-cookies/*
+
 *.cookies
 qr_code.png
 logs_volumes
