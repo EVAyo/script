@@ -9,6 +9,8 @@ import json
 import os
 import pickle
 import asyncio
+import base64
+import hashlib
 
 from lxml import etree
 from concurrent.futures import ProcessPoolExecutor
@@ -91,6 +93,7 @@ class SpiderSession:
         with open(cookies_file, 'rb') as f:
             local_cookies = pickle.load(f)
         self.set_cookies(local_cookies)
+        return cookies_file.split('.')[0]
 
     def save_cookies_to_local(self, cookie_file_name):
         """
@@ -120,7 +123,7 @@ class QrLogin:
         :param spider_session:
         """
         self.qrcode_img_file = 'qr_code.png'
-
+        self.server_name = global_config.getRaw('messenger', 'server_name')
         self.spider_session = spider_session
         self.session = self.spider_session.get_session()
 
@@ -186,6 +189,11 @@ class QrLogin:
         logger.info('二维码获取成功，请打开京东APP扫描')
 
         open_image(add_bg_for_qr(self.qrcode_img_file))
+        if global_config.getRaw('messenger', 'server_chan_enable') == 'true':
+            send_wechat(self.server_name,'', '请打开京东APP扫描下方二维码登陆')
+            with open(self.qrcode_img_file,'rb') as f:
+                file_data = f.read()
+                send_wechat('','', '', base64.b64encode(file_data).decode(), hashlib.md5(file_data).hexdigest())
         if global_config.getRaw('messenger', 'email_enable') == 'true':
             email.send('二维码获取成功，请打开京东APP扫描', "<img src='cid:qr_code.png'>", [email.mail_user], 'qr_code.png')
         return True
@@ -321,11 +329,11 @@ class JdTdudfp:
             # 点击事件会打开一个新的tab页，但是browser.pages()无法获取新打开的tab页，导致无法引用新打开的page对象
             # 所以获取href，使用goto跳转的方式
             # 下面类似goto写法都是这个原因
-            a_href = await page.querySelectorAllEval(".cate_menu_lk", "(elements) => elements[{}].href".format(str(random.randint(0,5))))
+            a_href = await page.querySelectorAllEval(".cate_menu_lk", "(elements) => elements[0].href")
             await page.goto(a_href)
             await page.waitFor(".goods_item_link")
             logger.info("page_title：【%s】, page_url：【%s】" % (await page.title(), page.url))
-            a_href = await page.querySelectorAllEval(".goods_item_link", "(elements) => elements[{}].href".format(str(random.randint(0,30))))
+            a_href = await page.querySelectorAllEval(".goods_item_link", "(elements) => elements[{}].href".format(str(random.randint(1,30))))
             await page.goto(a_href)
             await page.waitFor("#InitCartUrl")
             logger.info("page_title：【%s】, page_url：【%s】" % (await page.title(), page.url))
@@ -358,8 +366,12 @@ class JdTdudfp:
 
 class JdSeckill(object):
     def __init__(self):
+        self.nick_name = None
+        self.server_name = global_config.getRaw('messenger', 'server_name')
         self.spider_session = SpiderSession()
-        self.spider_session.load_cookies_from_local()
+        is_get_cookie = self.spider_session.load_cookies_from_local()
+        if is_get_cookie:
+            self.nick_name = is_get_cookie
 
         self.qrlogin = QrLogin(self.spider_session)
         self.jd_tdufp = JdTdudfp(self.spider_session)
@@ -374,7 +386,6 @@ class JdSeckill(object):
 
         self.session = self.spider_session.get_session()
         self.user_agent = self.spider_session.user_agent
-        self.nick_name = None
 
         self.running_flag = True
 
@@ -424,7 +435,7 @@ class JdSeckill(object):
         self._seckill()
 
     @check_login_and_jdtdufp
-    def seckill_by_proc_pool(self, work_count=5):
+    def seckill_by_proc_pool(self, work_count=1):
         """
         多进程进行抢购
         work_count：进程数量
@@ -499,7 +510,7 @@ class JdSeckill(object):
                 logger.info('预约成功，已获得抢购资格 / 您已成功预约过了，无需重复预约')
                 if global_config.getRaw('messenger', 'server_chan_enable') == 'true':
                     success_message = "预约成功，已获得抢购资格 / 您已成功预约过了，无需重复预约"
-                    send_wechat(success_message)
+                    send_wechat(self.server_name, self.nick_name, success_message)
                 break
             except Exception as e:
                 logger.error('预约失败正在重试...')
@@ -727,7 +738,7 @@ class JdSeckill(object):
             logger.info('抢购成功，订单号:{}, 总价:{}, 电脑端付款链接:{}'.format(order_id, total_money, pay_url))
             if global_config.getRaw('messenger', 'server_chan_enable') == 'true':
                 success_message = "抢购成功，订单号:{}, 总价:{}, 电脑端付款链接:{}".format(order_id, total_money, pay_url)
-                send_wechat(success_message)
+                send_wechat(self.server_name, self.nick_name, success_message)
                 self.running_flag = False
             return True
         else:

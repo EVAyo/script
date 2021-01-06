@@ -50,6 +50,7 @@ RUN set -ex; \
         -e 's/^random_useragent.*/random_useragent=$JD_SECKILL_RANDOM_USERAGENT/g' \
         -e 's/^payment_pwd.*/payment_pwd=$JD_SECKILL_PAYMENT_PWD/g' \
         -e 's/^server_chan_enable.*/server_chan_enable=$JD_SECKILL_SERVER_CHAN_ENABLE/g' \
+        -e 's/^server_name.*/server_name=$JD_SECKILL_SERVER_NAME/g' \
         -e 's/^server_chan_sckey.*/server_chan_sckey=$JD_SECKILL_SERVER_CHAN_SCKEY/g' \
         -e 's/^email_enable.*/email_enable=$JD_SECKILL_EMAIL_ENABLE/g' \
         -e 's/^email_host.*/email_host=$JD_SECKILL_EMAIL_HOST/g' \

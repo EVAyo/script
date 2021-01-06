@@ -86,18 +86,30 @@ def wait_some_time():
     time.sleep(random.randint(100, 300) / 1000)
 
 
-def send_wechat(message):
+def send_wechat(server_name, nick_name, message, image_base64 = None, image_md5 = None):
     """推送信息到微信"""
-    url = 'http://sc.ftqq.com/{}.send'.format(global_config.getRaw('messenger', 'server_chan_sckey'))
-    payload = {
-        "text": '抢购结果',
-        "desp": message
-    }
+    url = 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key={}'.format(global_config.getRaw('messenger', 'server_chan_sckey'))
     headers = {
         'User-Agent': global_config.getRaw('config', 'default_user_agent')
     }
-    requests.get(url, params=payload, headers=headers)
-
+    if not image_base64:
+        payload = {
+            "msgtype": "markdown",
+            "markdown": {
+                "content": "容器<font color=\"warning\">[{}]</font>  用户<font color=\"warning\">[{}]</font>  消息内容\n \
+                > <font color=\"comment\">{}</font>".format(server_name, nick_name, message)
+            }
+        }
+    else:
+        payload = {
+            "msgtype": "image",
+            "image": {
+                "base64": image_base64,
+                "md5": image_md5
+            }
+        }
+    requests.post(url, json=payload, headers=headers)
+        
 
 def response_status(resp):
     if resp.status_code != requests.codes.OK:

@@ -118,6 +118,9 @@ test/
 cookies/
 *.cookies
 qr_code.png
+logs_volumes
+cookies_volumes
+
 # jupyter
 .ipynb_checkpoints
 /test/

@@ -1,10 +1,13 @@
 version: "2.2"
 services:
-  jd-seckill:
-    container_name: jd-seckill
+  lys:
+    container_name: lys
     image: huanghyw/jd-seckill:latest
     build:
       context: ../dockerfile
       dockerfile: Dockerfile
     env_file:
       - ../dockerfile/docker.env
+    volumes: 
+      - ../logs_volumes/lys: /logs
+      - ../cookies_volumes/lys: /cookies
