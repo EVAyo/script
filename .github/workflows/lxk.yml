@@ -25,7 +25,7 @@ jobs:
         uses: repo-sync/github-sync@v2
         if: env.PAT
         with:
-          source_repo: "https://github.com/lxk0301/jd_Scripts.git" #关键内容，对方github库信息
+          source_repo: "https://github.com/lxk9301/jd_Scripts.git" #关键内容，对方github库信息
           source_branch: "master"
           destination_branch: "lxk0301"
           github_token: ${{ secrets.PAT }}
