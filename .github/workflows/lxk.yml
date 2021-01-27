@@ -2,7 +2,7 @@
 name: lxk0301 #action名字，随便起
 on:
   schedule:
-    - cron: '1 0,15 * * *'
+    - cron: '1 */2 * * *'
   workflow_dispatch:
   watch:
     types: started
