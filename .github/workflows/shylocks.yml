@@ -1,8 +1,8 @@
 # File: .github/workflows/repo-sync.yml
-name: chuhe #action名字，随便起
+name: shylocks #action名字，随便起
 env:
-  ID: chuhe
-  URL: https://github.com/ChuheGit/1.git
+  ID: shylocks
+  URL: https://github.com/vhzn/Loon.git
 on:
   schedule:
     - cron: '1 0,15 * * *'
