@@ -29,7 +29,7 @@ jobs:
         if: env.PAT
         with:
           source_repo: ${URL} #关键内容，对方github库信息
-          source_branch: "v3"
+          source_branch: "master"
           destination_branch: ${ID}
           github_token: ${{ secrets.PAT }}
       # 我自己同步到gitee使用，其他人可忽略
