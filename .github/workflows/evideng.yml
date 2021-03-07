@@ -2,7 +2,7 @@
 name: evideng_jd-base #action名字，随便起
 env:
   ID: evideng_jd-base
-  URL: https://github.com/EvineDeng/jd-base.git
+  URL: https://github.com/nevinee/jd_shell.git
 on:
   schedule:
     - cron: '1 0,15 * * *'
