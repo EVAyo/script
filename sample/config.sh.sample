@@ -1,6 +1,6 @@
-## Version: v3.32.1
-## Date: 2021-03-14
-## Update Content: 增加三个通知控制变量DDQ_NOTIFY_CONTROL、CASH_NOTIFY_CONTROL和JDZZ_NOTIFY_CONTROL。
+## Version: v3.32.2
+## Date: 2021-03-15
+## Update Content: 本次没有更新config.sh.sample，而是更新了jd.sh脚本的功能：并发执行，无论是否设置了随机延迟，均立即运行，前台不产生日志，直接记录在日志文件中。具体用法请输入bash jd.sh查看，如需要用在定时任务中，需要自己手动修改crontab.list。
 
 ## 上面版本号中，如果第2位数字有变化，那么代表增加了新的参数，如果只有第3位数字有变化，仅代表更新了注释，没有增加新的参数，可更新可不更新
 
