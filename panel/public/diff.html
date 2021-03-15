@@ -86,20 +86,21 @@
             });
 
         $('#prev').click(function () {
-            editor.edit.execCommand('goPrevDiff');
+            editor.editor().execCommand('goPrevDiff');
         });
 
         $('#next').click(function () {
-            editor.edit.execCommand('goNextDiff');
+            editor.editor().execCommand('goNextDiff');
         });
 
         $('#wrap').click(function () {
-            var lineWrapping = editor.edit.getOption('lineWrapping');
-            editor.edit.setOption('lineWrapping', !lineWrapping);
+            var lineWrapping = editor.editor().getOption('lineWrapping');
+            editor.editor().setOption('lineWrapping', !lineWrapping);
+            editor.rightOriginal().setOption('lineWrapping', !lineWrapping);
         });
 
         $('#save').click(function () {
-            var confContent = editor.edit.getValue();
+            var confContent = editor.editor().getValue();
             $.post('./api/save', { content: confContent, name: "config.sh" }, function (data) {
                 let icon = (data.err == 0) ? "success" : "error"
                     Swal.fire({
