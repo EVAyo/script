@@ -292,7 +292,7 @@ function Run_Concurrent {
   then
     [ ! -d ${LogDir}/${FileName} ] && mkdir -p ${LogDir}/${FileName}
     LogTime=$(date "+%Y-%m-%d-%H-%M-%S")
-    echo -e "\n各账号间已经开始并发执行，前台不输入日志，日志直接写入文件中。\n\n并发执行不会释放进程，如果是容器，请经常重启容器，如果是物理机，请经常杀多余的node进程。\n"
+    echo -e "\n各账号间已经在后台开始并发执行，前台不输入日志，日志直接写入文件中。\n\n并发执行不会释放进程，如果是容器，请经常重启容器，如果是物理机，请经常杀多余的node进程。\n"
     for ((user_num=1; user_num<=${UserSum}; user_num++)); do
       for num in ${TempBlockCookie}; do
         [[ $user_num -eq $num ]] && continue 2
