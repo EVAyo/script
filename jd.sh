@@ -14,6 +14,40 @@ ListCron=${ConfigDir}/crontab.list
 ListCronLxk=${ScriptsDir}/docker/crontab_list.sh
 ListJs=${LogDir}/js.list
 
+## 所有环境变量对应关系，必须一一对应
+EnvName=(
+  JD_COOKIE
+  FRUITSHARECODES
+  PETSHARECODES
+  PLANT_BEAN_SHARECODES
+  DREAM_FACTORY_SHARE_CODES
+  DDFACTORY_SHARECODES
+  JDZZ_SHARECODES
+  JDJOY_SHARECODES
+  JXNC_SHARECODES
+  BOOKSHOP_SHARECODES
+  JD_CASH_SHARECODES
+  JDSGMH_SHARECODES
+  JDCFD_SHARECODES
+  JDGLOBAL_SHARECODES
+  )
+VarName=(
+  Cookie
+  ForOtherFruit
+  ForOtherPet
+  ForOtherBean
+  ForOtherDreamFactory
+  ForOtherJdFactory
+  ForOtherJdzz
+  ForOtherJoy
+  ForOtherJxnc
+  ForOtherBookShop
+  ForOtherCash
+  ForOtherSgmh
+  ForOtherCfd
+  ForOtherGlobal
+  )
+
 ## 导入config.sh
 function Import_Conf {
   if [ -f ${FileConf} ]
@@ -80,23 +114,19 @@ function Combin_Sub {
   echo ${CombinAll} | perl -pe "{s|^&||; s|^@+||; s|&@|&|g; s|@+&|&|g; s|@+|@|g; s|@+$||}"
 }
 
-## 组合Cookie、Token与互助码
+## 正常依次运行时，组合所有账号的Cookie与互助码
 function Combin_All {
-  export JD_COOKIE=$(Combin_Sub Cookie)
-  export FRUITSHARECODES=$(Combin_Sub ForOtherFruit)
-  export PETSHARECODES=$(Combin_Sub ForOtherPet)
-  export PLANT_BEAN_SHARECODES=$(Combin_Sub ForOtherBean)
-  export DREAM_FACTORY_SHARE_CODES=$(Combin_Sub ForOtherDreamFactory)
-  export DDFACTORY_SHARECODES=$(Combin_Sub ForOtherJdFactory)
-  export JDZZ_SHARECODES=$(Combin_Sub ForOtherJdzz)
-  export JDJOY_SHARECODES=$(Combin_Sub ForOtherJoy)
-  export JXNC_SHARECODES=$(Combin_Sub ForOtherJxnc)
-  export JXNCTOKENS=$(Combin_Sub TokenJxnc)
-  export BOOKSHOP_SHARECODES=$(Combin_Sub ForOtherBookShop)
-  export JD_CASH_SHARECODES=$(Combin_Sub ForOtherCash)
-  export JDSGMH_SHARECODES=$(Combin_Sub ForOtherSgmh)
-  export JDCFD_SHARECODES=$(Combin_Sub ForOtherCfd)
-  export JDGLOBAL_SHARECODES=$(Combin_Sub ForOtherGlobal)
+  for ((i=0; i<${#EnvName[*]}; i++)); do
+    export ${EnvName[i]}=$(Combin_Sub ${VarName[i]})
+  done
+}
+
+## 并发运行时，直接申明每个账号的Cookie与互助码
+function Combin_One {
+  for ((i=0; i<${#EnvName[*]}; i++)); do
+    Tmp=${VarName[i]}$1
+    export ${EnvName[i]}=${!Tmp}
+  done
 }
 
 ## 转换JD_BEAN_SIGN_STOP_NOTIFY或JD_BEAN_SIGN_NOTIFY_SIMPLE
@@ -118,8 +148,7 @@ function Trans_UN_SUBSCRIBES {
 
 ## 申明全部变量
 function Set_Env {
-  Count_UserSum
-  Combin_All
+  [[ $1 == all ]] && Combin_All || Combin_One $1
   Trans_JD_BEAN_SIGN_NOTIFY
   Trans_UN_SUBSCRIBES
 }
@@ -139,12 +168,13 @@ function Random_Delay {
 ## 使用说明
 function Help {
   echo -e "本脚本的用法为："
-  echo -e "1. bash ${HelpJd} xxx      # 如果设置了随机延迟并且当时时间不在0-2、30-31、59分内，将随机延迟一定秒数"
-  echo -e "2. bash ${HelpJd} xxx now  # 无论是否设置了随机延迟，均立即运行"
-  echo -e "3. bash ${HelpJd} runall   # 运行所有非挂机脚本，非常耗时"
-  echo -e "4. bash ${HelpJd} hangup   # 重启挂机程序"
-  echo -e "5. bash ${HelpJd} resetpwd # 重置控制面板用户名和密码"
-  echo -e "\n针对用法1、用法2中的\"xxx\"，可以不输入后缀\".js\"，另外，如果前缀是\"jd_\"的话前缀也可以省略。"
+  echo -e "1.bash ${HelpJd} <js_name>       # 依次执行，如果设置了随机延迟并且当时时间不在0-2、30-31、59分内，将随机延迟一定秒数"
+  echo -e "2.bash ${HelpJd} <js_name> now   # 依次执行，无论是否设置了随机延迟，均立即运行，前台会输出日志，同时记录在日志文件中"
+  echo -e "3.bash ${HelpJd} <js_name> conc  # 并发执行，无论是否设置了随机延迟，均立即运行，前台不产生日志，直接记录在日志文件中" 
+  echo -e "4.bash ${HelpJd} runall          # 运行所有非挂机脚本，非常耗时"
+  echo -e "5.bash ${HelpJd} hangup          # 重启挂机程序"
+  echo -e "6.bash ${HelpJd} resetpwd        # 重置控制面板用户名和密码"
+  echo -e "\n针对用法1-3中的\"<js_name>\"，可以不输入后缀\".js\"，另外，如果前缀是\"jd_\"的话前缀也可以省略。"
   echo -e "当前有以下脚本可以运行（仅列出以jd_、jr_、jx_开头的脚本）："
   cd ${ScriptsDir}
   for ((i=0; i<${#ListScripts[*]}; i++)); do
@@ -155,13 +185,29 @@ function Help {
 
 ## nohup
 function Run_Nohup {
-  if [[ $(ps -ef | grep "${js}" | grep -v "grep") != "" ]]; then
-    ps -ef | grep "${js}" | grep -v "grep" | awk '{print $2}' | xargs kill -9
-  fi
-  [ ! -d ${LogDir}/${js} ] && mkdir -p ${LogDir}/${js}
-  LogTime=$(date "+%Y-%m-%d-%H-%M-%S")
-  LogFile="${LogDir}/${js}/${LogTime}.log"
-  nohup node ${js}.js > ${LogFile} &
+  nohup node $1.js 2>&1 > ${LogFile} &
+}
+
+## 查找脚本路径与准确的文件名
+function Find_FileDir {
+  FileNameTmp1=$(echo $1 | perl -pe "s|\.js||")
+  FileNameTmp2=$(echo $1 | perl -pe "{s|jd_||; s|\.js||; s|^|jd_|}")
+  SeekDir="${ScriptsDir} ${ScriptsDir}/backUp ${ConfigDir}"
+  FileName=""
+  WhichDir=""
+
+  for dir in ${SeekDir}
+  do
+    if [ -f ${dir}/${FileNameTmp1}.js ]; then
+      FileName=${FileNameTmp1}
+      WhichDir=${dir}
+      break
+    elif [ -f ${dir}/${FileNameTmp2}.js ]; then
+      FileName=${FileNameTmp2}
+      WhichDir=${dir}
+      break
+    fi
+  done
 }
 
 ## 运行挂机脚本
@@ -175,7 +221,13 @@ function Run_HangUp {
       pm2 flush
       pm2 start -a ${js}.js --watch "${ScriptsDir}/${js}.js" --name="${js}"
     else
-      Run_Nohup >/dev/null 2>&1
+      if [[ $(ps -ef | grep "${js}" | grep -v "grep") != "" ]]; then
+        ps -ef | grep "${js}" | grep -v "grep" | awk '{print $2}' | xargs kill -9
+      fi
+      [ ! -d ${LogDir}/${js} ] && mkdir -p ${LogDir}/${js}
+      LogTime=$(date "+%Y-%m-%d-%H-%M-%S")
+      LogFile="${LogDir}/${js}/${LogTime}.log"
+      Run_Nohup ${js} >/dev/null 2>&1
     fi
   done
 }
@@ -206,28 +258,13 @@ function Run_All {
 
 ## 正常运行单个脚本
 function Run_Normal {
-  Import_Conf $1 && Detect_Cron && Set_Env
+  Import_Conf $1
+  Detect_Cron
+  Count_UserSum
+  Find_FileDir $1
+  Set_Env all
   
-  FileNameTmp1=$(echo $1 | perl -pe "s|\.js||")
-  FileNameTmp2=$(echo $1 | perl -pe "{s|jd_||; s|\.js||; s|^|jd_|}")
-  SeekDir="${ScriptsDir} ${ScriptsDir}/backUp ${ConfigDir}"
-  FileName=""
-  WhichDir=""
-
-  for dir in ${SeekDir}
-  do
-    if [ -f ${dir}/${FileNameTmp1}.js ]; then
-      FileName=${FileNameTmp1}
-      WhichDir=${dir}
-      break
-    elif [ -f ${dir}/${FileNameTmp2}.js ]; then
-      FileName=${FileNameTmp2}
-      WhichDir=${dir}
-      break
-    fi
-  done
-  
-  if [ -n "${FileName}" ] && [ -n "${WhichDir}" ]
+  if [[ ${FileName} ]] && [[ ${WhichDir} ]]
   then
     [ $# -eq 1 ] && Random_Delay
     LogTime=$(date "+%Y-%m-%d-%H-%M-%S")
@@ -235,6 +272,33 @@ function Run_Normal {
     [ ! -d ${LogDir}/${FileName} ] && mkdir -p ${LogDir}/${FileName}
     cd ${WhichDir}
     node ${FileName}.js 2>&1 | tee ${LogFile}
+  else
+    echo -e "\n在${ScriptsDir}、${ScriptsDir}/backUp、${ConfigDir}三个目录下均未检测到 $1 脚本的存在，请确认...\n"
+    Help
+  fi
+}
+
+## 并发执行，因为是并发，所以日志只能直接记录在日志文件中（日志文件以Cookie编号结尾），前台执行并发跑时不会输出日志
+## 并发执行时，设定的 RandomDelay 不会生效，即所有任务立即执行
+function Run_Concurrent {
+  Import_Conf $1
+  Detect_Cron
+  Count_UserSum
+  Find_FileDir $1
+  
+  if [[ ${FileName} ]] && [[ ${WhichDir} ]]
+  then
+    [ ! -d ${LogDir}/${FileName} ] && mkdir -p ${LogDir}/${FileName}
+    LogTime=$(date "+%Y-%m-%d-%H-%M-%S")
+    for ((user_num=1; user_num<=${UserSum}; user_num++)); do
+      for num in ${TempBlockCookie}; do
+        [[ $user_num -eq $num ]] && continue 2
+      done
+      Set_Env $user_num
+      LogFile="${LogDir}/${FileName}/${LogTime}_$user_num.log"
+      cd ${WhichDir}
+      Run_Nohup ${FileName} >/dev/null 2>&1
+    done
   else
     echo -e "\n在${ScriptsDir}、${ScriptsDir}/backUp、${ConfigDir}三个目录下均未检测到 $1 脚本的存在，请确认...\n"
     Help
@@ -267,6 +331,9 @@ case $# in
     case $2 in
       now)
         Run_Normal $1 $2
+        ;;
+      conc)
+        Run_Concurrent $1 $2
         ;;
       *)
         echo -e "\n命令输入错误...\n"
