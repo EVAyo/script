@@ -215,7 +215,8 @@ function Run_HangUp {
   HangUpJs="jd_crazy_joy_coin"
   cd ${ScriptsDir}
   for js in ${HangUpJs}; do
-    Import_Conf ${js} && Set_Env
+    Import_Conf ${js}
+    Set_Env all
     if type pm2 >/dev/null 2>&1; then
       pm2 stop ${js}.js 2>/dev/null
       pm2 flush
