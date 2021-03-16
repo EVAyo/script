@@ -25,6 +25,6 @@ for log in $(ls); do
 
   if [[ -z $(grep "${BeanDate}" ${Total}) ]]; then
     echo -n "${BeanDate}," >> ${Total}
-    grep -E "当前京豆" ${log} | awk -F "：|(" '{print $2}' >> ${Total}
+    grep -E "当前京豆" ${log} | awk -F "：|\(" '{print $2}' >> ${Total}
   fi
 done
