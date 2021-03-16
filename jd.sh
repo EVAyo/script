@@ -138,6 +138,9 @@ function Trans_JD_BEAN_SIGN_NOTIFY {
     1)
       export JD_BEAN_SIGN_NOTIFY_SIMPLE="true"
       ;;
+    2)
+      export JD_BEAN_SIGN_NOTIFY_SIMPLE="false"
+      ;;
   esac
 }
 
