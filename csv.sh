@@ -5,6 +5,7 @@ ShellDir=${JD_DIR:-$(cd $(dirname $0); pwd)}
 LogDir=${ShellDir}/log
 Income=${LogDir}/bean_income.csv
 Outlay=${LogDir}/bean_outlay.csv
+Total=${LogDir}/bean_total.csv
 
 ## 执行
 cd ${LogDir}/jd_bean_change
@@ -20,5 +21,10 @@ for log in $(ls); do
   if [[ -z $(grep "${BeanDate}" ${Outlay}) ]]; then
     echo -n "${BeanDate}," >> ${Outlay}
     grep -E "昨日支出" ${log} | grep -oE "\d+" | perl -0777 -pe "s|\n(\d+)|,\1|g" >> ${Outlay}
+  fi
+
+  if [[ -z $(grep "${BeanDate}" ${Total}) ]]; then
+    echo -n "${BeanDate}," >> ${Total}
+    grep -E "当前京豆" ${log} | awk -F "：|(" '{print $2}' >> ${Total}
   fi
 done
