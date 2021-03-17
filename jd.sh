@@ -30,7 +30,8 @@ EnvName=(
   JDSGMH_SHARECODES
   JDCFD_SHARECODES
   JDGLOBAL_SHARECODES
-  )
+)
+
 VarName=(
   Cookie
   ForOtherFruit
@@ -46,7 +47,7 @@ VarName=(
   ForOtherSgmh
   ForOtherCfd
   ForOtherGlobal
-  )
+)
 
 ## 导入config.sh
 function Import_Conf {
