@@ -264,14 +264,13 @@ function Run_All {
 
 ## 正常运行单个脚本
 function Run_Normal {
-  Import_Conf $1
-  Detect_Cron
-  Count_UserSum
   Find_FileDir $1
-  Set_Env all
-  
   if [[ ${FileName} ]] && [[ ${WhichDir} ]]
   then
+    Import_Conf "${FileName}"
+    Detect_Cron
+    Count_UserSum
+    Set_Env all
     [ $# -eq 1 ] && Random_Delay
     LogTime=$(date "+%Y-%m-%d-%H-%M-%S")
     LogFile="${LogDir}/${FileName}/${LogTime}.log"
@@ -287,13 +286,12 @@ function Run_Normal {
 ## 并发执行，因为是并发，所以日志只能直接记录在日志文件中（日志文件以Cookie编号结尾），前台执行并发跑时不会输出日志
 ## 并发执行时，设定的 RandomDelay 不会生效，即所有任务立即执行
 function Run_Concurrent {
-  Import_Conf $1
-  Detect_Cron
-  Count_UserSum
   Find_FileDir $1
-  
   if [[ ${FileName} ]] && [[ ${WhichDir} ]]
   then
+    Import_Conf "${FileName}"
+    Detect_Cron
+    Count_UserSum
     [ ! -d ${LogDir}/${FileName} ] && mkdir -p ${LogDir}/${FileName}
     LogTime=$(date "+%Y-%m-%d-%H-%M-%S")
     echo -e "\n各账号间已经在后台开始并发执行，前台不输入日志，日志直接写入文件中。\n\n并发执行不会释放进程，如果是容器，请经常重启容器，如果是物理机，请经常杀多余的node进程。\n"
