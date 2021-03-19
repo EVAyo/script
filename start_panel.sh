@@ -4,7 +4,7 @@
 ShellDir=${JD_DIR:-$(cd $(dirname $0); pwd)}
 PanelDir=${ShellDir}/panel
 
-export PS1="\u@\h:\w $"
+export PS1="\u@\h:\w $ "
 
 ## 启动ttyd
 case "$(uname -m)" in
