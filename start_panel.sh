@@ -14,7 +14,7 @@ x86_64)
 aarch64)
     echo -e "CPU架构:aarch64\n"
     wget -O /usr/local/bin/ttyd https://github.com/tsl0922/ttyd/releases/download/1.6.3/ttyd.aarch64 && chmod +x /usr/local/bin/ttyd
-    ttyd -t fontSize=14 -t disableLeaveAlert=true -t rendererType=webgl sh >/dev/null 2>&1 &
+    nohup ttyd -t fontSize=14 -t disableLeaveAlert=true -t rendererType=webgl sh >/dev/null 2>&1 &
     ;;
 armv7l)
     echo -e "CPU架构:armv7l\n"
