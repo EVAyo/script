@@ -56,8 +56,7 @@ fi
 
 echo -e "========================4. 启动控制面板========================\n"
 if [[ ${ENABLE_WEB_PANEL} == true ]]; then
-  cd ${JD_DIR}/panel
-  pm2 start ecosystem.config.js
+  . ${JD_DIR}/start_panel.sh
   echo -e "控制面板启动成功...\n"
   echo -e "如未修改用户名密码，则初始用户名为：admin，初始密码为：adminadmin\n"
   echo -e "请访问 http://<ip>:5678 登陆并修改配置...\n"

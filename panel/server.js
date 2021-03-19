@@ -14,6 +14,8 @@ var got = require('got');
 var path = require('path');
 var fs = require('fs');
 var { execSync, exec } = require('child_process');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
 
 var rootPath = path.resolve(__dirname, '..')
 // config.sh 文件所在目录
@@ -311,6 +313,16 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// ttyd proxy
+app.use('/shell', createProxyMiddleware({ 
+    target: 'http://localhost:7681', 
+    ws: true, 
+    changeOrigin: true, 
+    pathRewrite: {
+        '^/shell': '/', 
+    }, 
+}));
+
 /**
  * 登录页面
  */
@@ -332,6 +344,18 @@ app.get('/changepwd', function (request, response) {
         response.redirect('/');
     }
 });
+
+/**
+ * terminal
+ */
+ app.get('/terminal', function (request, response) {
+    if (request.session.loggedin) {
+        response.sendFile(path.join(__dirname + '/public/terminal.html'));
+    } else {
+        response.redirect('/');
+    }
+});
+
 
 /**
  * 获取二维码链接
