@@ -8,17 +8,17 @@ PanelDir=${ShellDir}/panel
 case "$(uname -m)" in
 x86_64)
     echo -e "CPU架构:x86_64\n"
-    wget -O /usr/local/bin/ttyd https://github.com/tsl0922/ttyd/releases/download/1.6.3/ttyd.x86_64 && chmod +x /usr/local/bin/ttyd
+    cp -f ${PanelDir}/ttyd/ttyd.x86_64 /usr/local/bin/ttyd && chmod +x /usr/local/bin/ttyd
     nohup ttyd -t fontSize=14 -t disableLeaveAlert=true -t rendererType=webgl sh >/dev/null 2>&1 &
     ;;
 aarch64)
     echo -e "CPU架构:aarch64\n"
-    wget -O /usr/local/bin/ttyd https://github.com/tsl0922/ttyd/releases/download/1.6.3/ttyd.aarch64 && chmod +x /usr/local/bin/ttyd
+    cp -f ${PanelDir}/ttyd/ttyd.aarch64 /usr/local/bin/ttyd && chmod +x /usr/local/bin/ttyd
     nohup ttyd -t fontSize=14 -t disableLeaveAlert=true -t rendererType=webgl sh >/dev/null 2>&1 &
     ;;
 armv7l)
     echo -e "CPU架构:armv7l\n"
-    wget -O /usr/local/bin/ttyd https://github.com/tsl0922/ttyd/releases/download/1.6.3/ttyd.arm && chmod +x /usr/local/bin/ttyd
+    cp -f ${PanelDir}/ttyd/ttyd.arm /usr/local/bin/ttyd && chmod +x /usr/local/bin/ttyd
     nohup ttyd -t fontSize=14 -t disableLeaveAlert=true -t rendererType=webgl sh >/dev/null 2>&1 &
     ;;
 *)
