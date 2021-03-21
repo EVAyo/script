@@ -1,6 +1,6 @@
-## Version: v3.32.2
-## Date: 2021-03-15
-## Update Content: 本次没有更新config.sh.sample，而是更新了jd.sh脚本的功能：并发执行，无论是否设置了随机延迟，均立即运行，前台不产生日志，直接记录在日志文件中。具体用法请输入bash jd.sh查看，如需要用在定时任务中，需要自己手动修改crontab.list。
+## Version: v3.33.0
+## Date: 2021-03-21
+## Update Content: 增加jd_city互助填写。
 
 ## 上面版本号中，如果第2位数字有变化，那么代表增加了新的参数，如果只有第3位数字有变化，仅代表更新了注释，没有增加新的参数，可更新可不更新
 
@@ -406,6 +406,25 @@ ForOtherGlobal3=""
 ForOtherGlobal4=""
 ForOtherGlobal5=""
 ForOtherGlobal6=""
+
+
+################################## 定义jd_city活动互助（选填） ##################################
+## 具体填法及要求详见本文件最下方“互助码填法示例”
+MyCity1=""
+MyCity2=""
+MyCity3=""
+MyCity4=""
+MyCity5=""
+MyCity6=""
+MyCityA=""
+MyCityB=""
+
+ForOtherCity1=""
+ForOtherCity2=""
+ForOtherCity3=""
+ForOtherCity4=""
+ForOtherCity5=""
+ForOtherCity6=""
 
 
 ################################## 定义jd_superMarket蓝币兑换数量（选填） ##################################
