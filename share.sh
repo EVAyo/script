@@ -2,7 +2,7 @@
 dir_panel=$dir_root/panel
 dir_config=$dir_root/config
 dir_scripts=$dir_root/scripts
-dir_diy=$dir_root/diy
+dir_own=$dir_root/own
 dir_sample=$dir_root/sample
 dir_log=$dir_root/log
 dir_list_tmp=$dir_log/.tmp
@@ -134,11 +134,10 @@ import_config_no_check () {
     [ -f $file_config_user ] && . $file_config_user
 }
 
-## 发送通知，依赖于import_config_and_check或import_config_no_check
+## 发送通知，依赖于import_config_and_check或import_config_no_check，$1：标题，$2：内容
 notify () {
-    title=$(echo $1 | perl -ne 's|-|_|g')
-    echo $title
-    msg="$(echo $2 | perl -ne 's| |\\n|g')"
+    local title=$(echo $1 | perl -pe 's|-|_|g')
+    local msg="$(echo -e $2)"
     if [ -d $dir_scripts_node_modules ]; then
         node $dir_root/notify.js "$title" "$msg"
     fi

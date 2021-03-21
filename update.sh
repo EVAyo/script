@@ -93,7 +93,7 @@ gen_list_task () {
 ## 生成 own 清单
 # gen_list_own () {
 #     rm -f $dir_list_tmp/own*.list >/dev/null 2>&1
-#     for dir in $(ls $dir_diy); do
+#     for dir in $(ls $dir_own); do
 
 # }
 
@@ -133,9 +133,10 @@ detect_config_version () {
     ## 如果是今天，并且版本号不一致，则发送通知
     if [ -f $file_config_user ] && [[ $ver_config_user != $ver_config_sample ]] && [[ $update_date == $(date "+%Y-%m-%d") ]]; then
         if [ ! -f $send_mark ]; then
-            notify_content="更新日期: $update_date\n用户版本: $ver_config_user\n新的版本: $ver_config_sample\n更新内容: $update_content\n更新说明: 如需使用新功能请对照config.sample.sh，将相关新参数手动增加到你自己的config.sh中，否则请无视本消息。本消息只在该新版本配置文件更新当天发送一次。\n"
+            local notify_title="配置文件更新通知"
+            local notify_content="更新日期: $update_date\n用户版本: $ver_config_user\n新的版本: $ver_config_sample\n更新内容: $update_content\n更新说明: 如需使用新功能请对照config.sample.sh，将相关新参数手动增加到你自己的config.sh中，否则请无视本消息。本消息只在该新版本配置文件更新当天发送一次。\n"
             echo -e $notify_content
-            notify "配置文件更新通知" "$notify_content"
+            notify "$notify_title" "$notify_content"
             [[ $? -eq 0 ]] && echo $ver_config_sample > $send_mark
         fi
     else
@@ -232,7 +233,7 @@ add_cron_own () {
         echo -e "开始尝试自动添加 diy 脚本定时任务...\n"
         local detail=$(cat $list_add)
         for cron in $detail; do
-            local file_full_path=$dir_diy/$cron.js
+            local file_full_path=$dir_own/$cron.js
             local file_name=$(echo $file_full_path | awk -F "/" '{print $NF}')
             if [ -f $file_full_path ]; then
                 perl -ne "{
@@ -258,7 +259,9 @@ add_cron_own () {
 add_cron_notify () {
     local status_code=$1
     local list_add=$2
-    local detail="$(cat $list_add)"
+    local tmp=$(echo $(cat $list_add))
+    local detail=$(echo $tmp | perl -pe "s| |\\\n|g")
+    echo "detail=$detail"
     local type=$3
     if [[ $status_code -eq 0 ]]; then
         crontab $list_crontab_user
@@ -282,7 +285,7 @@ echo "
 
 jd_scripts目录：$dir_scripts
 
-DIY脚本目录：$dir_diy
+DIY脚本目录：$dir_own
 
 --------------------------------------------------------------
 "
