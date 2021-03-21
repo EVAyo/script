@@ -30,7 +30,6 @@ EnvName=(
   JDSGMH_SHARECODES
   JDCFD_SHARECODES
   JDGLOBAL_SHARECODES
-  CITY_SHARECODES
 )
 
 VarName=(
@@ -48,7 +47,6 @@ VarName=(
   ForOtherSgmh
   ForOtherCfd
   ForOtherGlobal
-  ForOtherCity
 )
 
 ## 导入config.sh
