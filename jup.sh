@@ -7,6 +7,9 @@ url_shell=${JD_SHELL_URL:-git@jd_shell_gitee:evine/jd_shell.git}
 url_scripts=${JD_SCRIPTS_URL:-git@jd_scripts_gitee:lxk0301/jd_scripts.git}
 send_mark=$dir_shell/send_mark
 
+## 导入通用变量与函数
+. $dir_shell/share.sh
+
 ## 命令识别
 if [[ $JD_DIR ]]; then
     cmd_task=task
@@ -16,9 +19,6 @@ else
     cmd_task="bash $dir_shell/task.sh"
     cmd_own="bash $dir_shell/own.sh"
 fi
-
-## 导入通用变量与函数
-. $dir_shell/share.sh
 
 ## 更新crontab，gitee服务器同一时间限制5个链接，因此每个人更新代码必须错开时间，每次执行git_pull随机生成。
 ## 每天次数随机，更新时间随机，更新秒数随机，至少6次，至多12次，大部分为8-10次，符合正态分布。

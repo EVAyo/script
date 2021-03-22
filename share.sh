@@ -65,7 +65,7 @@ var_name=(
 
 ## 所有有互助码的活动，把脚本名称列在 code_name1 中，将其中文名称列在 code_name2 中，对应 config.sh 中互助码后缀列在 code_name3 中即可。
 ## code_name1、code_name2 和 code_name3 中的三个名称必须一一对应。
-code_name1=(
+code_name_1=(
     jd_fruit
     jd_pet
     jd_plantBean
@@ -80,7 +80,7 @@ code_name1=(
     jd_cfd
     jd_global
 )
-code_name2=(
+code_name_2=(
     东东农场
     东东萌宠
     京东种豆得豆
@@ -95,7 +95,7 @@ code_name2=(
     京喜财富岛
     环球挑战赛
 )
-code_name3=(
+code_name_3=(
     Fruit
     Pet
     Bean
@@ -160,12 +160,12 @@ make_log_dir () {
 
 ## 检测termux
 detect_termux () {
-    [[ ${ANDROID_RUNTIME_ROOT}${ANDROID_ROOT} ]] && echo 1 || echo 0
+    [[ ${ANDROID_RUNTIME_ROOT}${ANDROID_ROOT} ]] && is_termux=1 || is_termux=0
 }
 
 ## 检测macos
 detect_macos () {
-    [[ $(uname -s) == Darwin ]] && echo 1 || echo 0
+    [[ $(uname -s) == Darwin ]] && is_macos=1 || is_macos=0
 }
 
 ## 生成随机数，$1：用来求余的数字
