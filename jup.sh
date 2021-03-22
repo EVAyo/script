@@ -76,7 +76,7 @@ git_clone_scripts () {
     local dir=$2
     local branch=$3
     [[ $branch ]] && local cmd="-b $branch "
-    echo -e "克隆仓库 $url 到 $dir\n"
+    echo -e "开始克隆仓库 $url 到 $dir\n"
     git clone $cmd $url $dir
     exit_status=$?
 }
@@ -86,7 +86,7 @@ git_pull_scripts () {
     local dir_current=$(pwd)
     local dir_work=$1
     cd $dir_work
-    echo -e "更新脚本：$dir_work\n"
+    echo -e "开始更新仓库：$dir_work\n"
     git fetch --all
     exit_status=$?
     git reset --hard
@@ -229,18 +229,26 @@ npm_install_sub () {
 
 ## npm install，$1：package.json文件所在路径
 npm_install_1 () {
-    local dir=$1
+    local dir_current=$(pwd)
+    local dir_work=$1
+
+    cd $dir_work
     echo -e "运行 npm install...\n"
     npm_install_sub
-    [[ $? -ne 0 ]] && echo -e "\nnpm install 运行不成功，请进入 $dir 目录后手动运行 npm install...\n"
+    [[ $? -ne 0 ]] && echo -e "\nnpm install 运行不成功，请进入 $dir_work 目录后手动运行 npm install...\n"
+    cd $dir_current
 }
 
 npm_install_2 () {
-    local dir=$1
-    echo -e "检测到 $dir 的依赖包有变化，运行 npm install...\n"
+    local dir_current=$(pwd)
+    local dir_work=$1
+
+    cd $dir_work
+    echo -e "检测到 $dir_work 的依赖包有变化，运行 npm install...\n"
     npm_install_sub
-    [[ $? -ne 0 ]] && echo -e "\n安装 $dir 的依赖包运行不成功，再次尝试一遍...\n"
-    npm_install_1 $dir
+    [[ $? -ne 0 ]] && echo -e "\n安装 $dir_work 的依赖包运行不成功，再次尝试一遍...\n"
+    npm_install_1 $dir_work
+    cd $dir_current
 }
 
 ## 输出是否有新的或失效的定时任务，$1：新的或失效的任务清单文件路径，$2：新/失效
@@ -276,7 +284,7 @@ del_cron () {
     fi
 }
 
-## 自动增加jd_scripts新的定时任务，需要：1.AutoAddCron 设置为 true；2.正常更新js脚本，没有报错；3.存在新任务；4.crontab.list存在并且不为空
+## 自动增加jd_scripts新的定时任务，需要：1.AutoAddOwnCron 设置为 true；2.正常更新js脚本，没有报错；3.存在新任务；4.crontab.list存在并且不为空
 ## $1：新任务清单文件路径
 add_cron_jd_scripts () {
     local list_add=$1
@@ -326,7 +334,7 @@ add_cron_own () {
     [ -f $list_crontab_own_tmp ] && rm -f $list_crontab_own_tmp
 }
 
-## 向系统添加定时任务以及通知，$1：写入crontab.list时的exit状态，$2：新增清单文件路径，$3：scripts脚本/own脚本
+## 向系统添加定时任务以及通知，$1：写入crontab.list时的exit状态，$2：新增清单文件路径，$3：jd_scripts脚本/own脚本
 add_cron_notify () {
     local status_code=$1
     local list_add=$2
@@ -390,8 +398,8 @@ DIY脚本目录：$dir_own
 random_update_cron
 
 ## 重置仓库romote url
-reset_romote_url $dir_shell $url_shell
-reset_romote_url $dir_scripts $url_scripts
+reset_romote_url $dir_shell $url_shell >/dev/null
+reset_romote_url $dir_scripts $url_scripts >/dev/null
 
 ## 更新shell
 [ -f $dir_panel/package.json ] && panel_depend_old=$(cat $dir_panel/package.json)
@@ -400,10 +408,7 @@ if [[ $exit_status -eq 0 ]]; then
     echo -e "\n更新$dir_shell成功...\n"
     [ ! -d $dir_panel/node_modules ] && npm_install_1 $dir_panel
     [ -f $dir_panel/package.json ] && panel_depend_new=$(cat $dir_panel/package.json)
-    if [[ "$panel_depend_old" != "$panel_depend_new" ]]; then
-        cd $dir_panel
-        npm_install_2 $dir_panel
-    fi
+    [[ "$panel_depend_old" != "$panel_depend_new" ]] && npm_install_2 $dir_panel
     cp -f $file_config_sample $dir_config/config.sample.sh
     update_docker_entrypoint
     detect_config_version
@@ -418,10 +423,7 @@ if [[ $exit_status -eq 0 ]]; then
     echo -e "\n更新$dir_scripts成功...\n"
     [ ! -d $dir_scripts/node_modules ] && npm_install_1 $dir_scripts
     [ -f $dir_scripts/package.json ] && scripts_depend_new=$(cat $dir_scripts/package.json)
-    if [[ "$scripts_depend_old" != "$scripts_depend_new" ]]; then
-        cd $dir_scripts
-        npm_install_2 $dir_scripts
-    fi
+    [[ "$scripts_depend_old" != "$scripts_depend_new" ]] && npm_install_2 $dir_scripts
     gen_list_task
     diff_cron $list_task_jd_scripts $list_task_user $list_task_add $list_task_drop
     if [ -s $list_task_drop ]; then
@@ -431,7 +433,7 @@ if [[ $exit_status -eq 0 ]]; then
     if [ -s $list_task_add ]; then
         output_list_add_drop $list_task_add "新"
         add_cron_jd_scripts $list_task_add
-        add_cron_notify $exit_status $list_task_add "scripts脚本"
+        add_cron_notify $exit_status $list_task_add "jd_scripts脚本"
     fi
 else
     echo -e "\n更新$dir_scripts失败，请检查原因...\n"
