@@ -44,7 +44,7 @@ random_update_cron () {
         for ((i=1; i<14; i++)); do
             j=$(($i - 1))
             tmp=$(($(gen_random_num 3) + ${random_hour_array[j]} + 2))
-            [[ $tmp -lt 24 ]] && random_hour_array[i]=${tmp} || break
+            [[ $tmp -lt 24 ]] && random_hour_array[i]=$tmp || break
         done
 
         for ((i=1; i<${#random_hour_array[*]}; i++)); do
@@ -393,11 +393,11 @@ DIY脚本目录：$dir_own
 --------------------------------------------------------------
 "
 
-## 更新update任务的cron
+## 更新jup任务的cron
 random_update_cron
 
 ## 重置仓库romote url
-if [[ ${JD_DIR} ]] && [[ ${ENABLE_RESET_REPO_URL} == true ]]; then
+if [[ $JD_DIR ]] && [[ $ENABLE_RESET_REPO_URL == true ]]; then
     reset_romote_url $dir_shell $url_shell >/dev/null
     reset_romote_url $dir_scripts $url_scripts >/dev/null
 fi
