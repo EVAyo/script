@@ -1,6 +1,6 @@
 scripts*
 log*
-config*
+config/*
 own*
 panel/package-lock.json
 panel/yarn.lock
