@@ -354,7 +354,11 @@ add_cron_notify () {
 update_own_repo () {
     [[ ${#array_own_repo_url[*]} -gt 0 ]] && echo -e "--------------------------------------------------------------\n"
     for ((i=0; i<${#array_own_repo_url[*]}; i++)); do
-        [ -d ${array_own_repo_path[i]}/.git ] && git_pull_scripts ${array_own_repo_path[i]} || git_clone_scripts ${array_own_repo_url[i]} ${array_own_repo_path[i]} ${array_own_repo_branch[i]}
+        if [ -d ${array_own_repo_path[i]}/.git ]; then
+            git_pull_scripts ${array_own_repo_path[i]}
+        else
+            git_clone_scripts ${array_own_repo_url[i]} ${array_own_repo_path[i]} ${array_own_repo_branch[i]}
+        fi
         [[ $exit_status -eq 0 ]] && echo -e "\n更新${array_own_repo_path[i]}成功...\n" || echo -e "\n更新${array_own_repo_path[i]}失败，请检查原因...\n"
     done
 }
@@ -419,7 +423,12 @@ fi
 
 ## 更新scripts
 [ -f $dir_scripts/package.json ] && scripts_depend_old=$(cat $dir_scripts/package.json)
-[ -d $dir_scripts/.git ] && git_pull_scripts $dir_scripts || git_clone_scripts $url_scripts $dir_scripts
+if [ -d $dir_scripts/.git ]; then
+    git_pull_scripts $dir_scripts
+else
+    git_clone_scripts $url_scripts $dir_scripts
+fi
+
 if [[ $exit_status -eq 0 ]]; then
     echo -e "\n更新$dir_scripts成功...\n"
     [ ! -d $dir_scripts/node_modules ] && npm_install_1 $dir_scripts
