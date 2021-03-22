@@ -398,8 +398,10 @@ DIY脚本目录：$dir_own
 random_update_cron
 
 ## 重置仓库romote url
-reset_romote_url $dir_shell $url_shell >/dev/null
-reset_romote_url $dir_scripts $url_scripts >/dev/null
+if [[ ${JD_DIR} ]] && [[ ${ENABLE_RESET_REPO_URL} == true ]]; then
+    reset_romote_url $dir_shell $url_shell >/dev/null
+    reset_romote_url $dir_scripts $url_scripts >/dev/null
+fi
 
 ## 更新shell
 [ -f $dir_panel/package.json ] && panel_depend_old=$(cat $dir_panel/package.json)
