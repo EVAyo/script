@@ -398,6 +398,7 @@ reset_romote_url $dir_scripts $url_scripts
 git_pull_scripts $dir_shell
 if [[ $exit_status -eq 0 ]]; then
     echo -e "\n更新$dir_shell成功...\n"
+    [ ! -d $dir_panel/node_modules ] && npm_install_1 $dir_panel
     [ -f $dir_panel/package.json ] && panel_depend_new=$(cat $dir_panel/package.json)
     if [[ "$panel_depend_old" != "$panel_depend_new" ]]; then
         cd $dir_panel
@@ -415,6 +416,7 @@ fi
 [ -d $dir_scripts/.git ] && git_pull_scripts $dir_scripts || git_clone_scripts $url_scripts $dir_scripts
 if [[ $exit_status -eq 0 ]]; then
     echo -e "\n更新$dir_scripts成功...\n"
+    [ ! -d $dir_scripts/node_modules ] && npm_install_1 $dir_scripts
     [ -f $dir_scripts/package.json ] && scripts_depend_new=$(cat $dir_scripts/package.json)
     if [[ "$scripts_depend_old" != "$scripts_depend_new" ]]; then
         cd $dir_scripts
