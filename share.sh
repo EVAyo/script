@@ -173,3 +173,14 @@ gen_random_num () {
     local divi=$1
     echo $((${RANDOM} % $divi))
 }
+
+## 形成 own 仓库的文件夹名清单，依赖于import_config_and_check或import_config_no_check，
+gen_own_dir_list () {
+    for ((i=0; i<${#OwnRepoUrl[*]}; i++)); do
+        array_own_repo_dir[i]=$(echo ${OwnRepoUrl[i]} | perl -pe "s|.+com/([\w-]+)/([\w-]+)(\.git)?|\1_\2|")
+        local tmp1="${array_own_repo_dir[i]}/${OwnRepoPath[i]}"
+        local tmp2=$(echo $tmp1 | perl -pe "{s|//|/|g; s|/$||}")
+        array_own_repo_dir_specify[i]=$tmp2
+        array_own_repo_path[i]=$dir_own/${array_own_repo_dir[i]}
+    done
+}

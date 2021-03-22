@@ -87,15 +87,32 @@ git_pull_scripts () {
 gen_list_task () {
     make_log_dir $dir_list_tmp
     grep -E "node.+j[drx]_\w+\.js" $list_crontab_jd_scripts | perl -pe "s|.+(j[drx]_\w+)\.js.+|\1|" | sort -u > $list_task_jd_scripts
-    grep -E "task.* j[drx]_\w+" $list_crontab_user | perl -pe "s|.+ (j[drx]_\w+).*|\1|" | sort -u > $list_task_user
+    grep -E "task(\.sh)? j[drx]_\w+" $list_crontab_user | perl -pe "s|.+ (j[drx]_\w+).*|\1|" | sort -u > $list_task_user
 }
 
 ## 生成 own 清单
-# gen_list_own () {
-#     rm -f $dir_list_tmp/own*.list >/dev/null 2>&1
-#     for dir in $(ls $dir_own); do
-
-# }
+gen_list_own () {
+    local dir_current=$(pwd)
+    rm -f $dir_list_tmp/own*.list >/dev/null 2>&1
+    for ((i=0; i<${#OwnRepoUrl[*]}; i++)); do
+        cd $dir_own/${array_own_repo_dir_specify[i]}
+        for file in $(ls *.js); do
+            if [ -f $file ]; then
+                perl -ne "{
+                    print if /.*([\d\*]*[\*-\/,\d]*[\d\*] ){5}.*$file/
+                }" $file | \
+                perl -pe "{
+                    s|.*(([\d\*]*[\*-\/,\d]*[\d\*] ){5}).*/?$file.*|$file|g;
+                    s|\.js||;
+                    s|^(.+)|${array_own_repo_dir_specify[i]}/\1|
+                }" | \
+                head -1 >> $list_own_scripts
+            fi
+        done
+    done
+    grep -E "own(\.sh)? " $list_crontab_user | perl -pe "s|.*own(\.sh)? ([\w-\/]+\w+).*|\2|" | sort -u > $list_own_user
+    cd $dir_current
+}
 
 ## 检测cron的差异，$1：脚本清单文件路径，$2：cron任务清单文件路径，$3：增加任务清单文件路径，$4：删除任务清单文件路径
 diff_cron () {
@@ -104,8 +121,16 @@ diff_cron () {
     local list_task="$2"
     local list_add="$3"
     local list_drop="$4"
-    grep -vwf $list_task $list_scripts > $list_add
-    grep -vwf $list_scripts $list_task > $list_drop
+    if [ -s $list_task ]; then
+        grep -vwf $list_task $list_scripts > $list_add
+    else
+        cp -f $list_scripts $list_add
+    fi
+    if [ -s $list_scripts ]; then
+        grep -vwf $list_scripts $list_task > $list_drop
+    else
+        cp -f $list_task $list_drop
+    fi
 }
 
 
@@ -188,9 +213,9 @@ output_list_add_drop () {
 del_cron () {
     local list_drop=$1
     local type=$2
-    local detail type2
+    local detail type2 detail2
     if [[ ${AutoDelCron} == true ]] && [ -s $list_drop ] && [ -s $list_crontab_user ]; then
-        detail="$(cat $list_drop)"
+        detail=$(cat $list_drop)
         [[ $type == task ]] && type2="scipts脚本" || type2="DIY脚本"
         
         echo -e "开始尝试自动删除定时任务...\n"
@@ -198,8 +223,9 @@ del_cron () {
             perl -i -ne "{print unless /$type.+$cron( |$)/}" $list_crontab_user
         done
         crontab $list_crontab_user
+        detail2=$(echo $detail | perl -pe "s| |\\\n|g")
         echo -e "成功删除失效的脚本与定时任务...\n"
-        notify "删除失效任务通知" "成功删除以下失效的定时任务（$type2）：\n$detail"
+        notify "删除失效任务通知" "成功删除以下失效的定时任务（$type2）：\n$detail2"
     fi
 }
 
@@ -230,7 +256,7 @@ add_cron_own () {
     [ -f $list_crontab_own_tmp ] && rm -f $list_crontab_own_tmp
 
     if [[ ${AutoAddCron} == true ]] && [ -s $list_add ] && [ -s $list_crontab_user ]; then
-        echo -e "开始尝试自动添加 diy 脚本定时任务...\n"
+        echo -e "开始尝试自动添加 own 脚本定时任务...\n"
         local detail=$(cat $list_add)
         for cron in $detail; do
             local file_full_path=$dir_own/$cron.js
@@ -240,15 +266,15 @@ add_cron_own () {
                     print if /.*([\d\*]*[\*-\/,\d]*[\d\*] ){5}.*$file_name/
                 }" $file_full_path | \
                 perl -pe "{
-                    s|.*(([\d\*]*[\*-\/,\d]*[\d\*] ){5}).*/$file_name.*|\1 own $file_name|g;
+                    s|.*(([\d\*]*[\*-\/,\d]*[\d\*] ){5}).*/$file_name.*|\1 $cmd_own $file_name|g;
                     s|  | |g;
-                    s|\.js||
+                    s|$file_name|$cron|
                 }" | \
                 head -1 >> $list_crontab_own_tmp
             fi
         done
         crontab_tmp="$(cat $list_crontab_own_tmp)"
-        perl -i -pe "s|(# own_end.+)|$crontab_tmp\n\1|" $list_crontab_user
+        perl -i -pe "s|(# 自有任务结束.+)|$crontab_tmp\n\1|" $list_crontab_user
         exit_status=$?
     fi
 
@@ -261,7 +287,6 @@ add_cron_notify () {
     local list_add=$2
     local tmp=$(echo $(cat $list_add))
     local detail=$(echo $tmp | perl -pe "s| |\\\n|g")
-    echo "detail=$detail"
     local type=$3
     if [[ $status_code -eq 0 ]]; then
         crontab $list_crontab_user
@@ -342,11 +367,48 @@ else
     echo -e "\n更新$dir_scripts失败，请检查原因...\n"
 fi
 
+## 更新own脚本
+if [[ ${#OwnRepoUrl[*]} -gt 0 ]]; then
+    gen_own_dir_list
+    for ((i=0; i<${#OwnRepoUrl[*]}; i++)); do
+        [ -d ${array_own_repo_path[i]}/.git ] && git_pull_scripts ${array_own_repo_path[i]} || git_clone_scripts ${OwnRepoUrl[i]} ${array_own_repo_path[i]}
+        [[ $exit_status -eq 0 ]] && echo -e "\n更新${array_own_repo_path[i]}成功...\n" || echo -e "\n更新${array_own_repo_path[i]}失败，请检查原因...\n"
+    done
+    gen_list_own
+    diff_cron $list_own_scripts $list_own_user $list_own_add $list_own_drop
+
+    echo -e "开始复制指定脚本（不含jd_scripts项目中已经存在的同名文件）...\n"
+    for ((i=0; i<${#OwnRepoUrl[*]}; i++)); do
+        for file in $(grep -E "${array_own_repo_dir_specify[i]}/" $list_own_scripts); do
+            file_name=$(cat $dir_own/$file.js | awk -F "/" '{print $NF}')
+            if [[ $(grep -E "^$file_name$" $list_task_jd_scripts) ]]; then
+                continue
+            else
+                cp -fv $dir_own/$file.js $dir_scripts
+            fi
+        done
+    done
+
+    if [ -s $list_own_drop ]; then
+        output_list_add_drop $list_own_drop "失效"
+        del_cron $list_own_drop own
+    fi
+    if [ -s $list_own_add ]; then
+        output_list_add_drop $list_own_add "新"
+        add_cron_own $list_own_add
+        add_cron_notify $exit_status $list_own_add "own脚本"
+    fi
+else
+    perl -i -ne "{print unless /own(\.sh)? /}" $list_crontab_user
+fi
+
+
+
 ## 调用用户自定义的diy.sh
 if [[ ${EnableExtraShell} == true ]]; then
   if [ -f $file_diy_shell ]
   then
-    . $$file_diy_shell
+    . $file_diy_shell
   else
     echo -e "$file_diy_shell文件不存在，跳过执行DIY脚本...\n"
   fi
