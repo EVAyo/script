@@ -3,6 +3,7 @@ dir_panel=$dir_root/panel
 dir_config=$dir_root/config
 dir_scripts=$dir_root/scripts
 dir_own=$dir_root/own
+dir_raw=$dir_own/raw
 dir_sample=$dir_root/sample
 dir_log=$dir_root/log
 dir_list_tmp=$dir_log/.tmp
@@ -153,7 +154,7 @@ count_user_sum () {
 }
 
 ## 创建日志目录，$1：目录的绝对路径
-make_log_dir () {
+make_dir () {
     local dir=$1
     [ ! -d $dir ] && mkdir -p $dir
 }
@@ -174,15 +175,40 @@ gen_random_num () {
     echo $((${RANDOM} % $divi))
 }
 
+## 统计 own 仓库数量
+count_own_repo_sum () {
+    if [[ -z ${OwnRepoUrl1} ]]; then
+        own_repo_sum=0
+    else
+        for ((i=1; i<=1000; i++)); do
+            local tmp1=OwnRepoUrl$i
+            local tmp2=${!tmp1}
+            [[ $tmp2 ]] && own_repo_sum=$i || break
+        done
+    fi
+}
+
 ## 形成 own 仓库的文件夹名清单，依赖于import_config_and_check或import_config_no_check，
 gen_own_dir_and_path () {
-    for ((i=0; i<${#OwnRepoUrl[*]}; i++)); do
-        array_own_repo_dir[i]=$(echo ${OwnRepoUrl[i]} | perl -pe "s|.+com/([\w-]+)/([\w-]+)(\.git)?|\1_\2|")
-        array_own_repo_path[i]=$dir_own/${array_own_repo_dir[i]}
-        local tmp1="${array_own_repo_dir[i]}/${OwnRepoPath[i]}"
-        local tmp2=$(echo $tmp1 | perl -pe "{s|//|/|g; s|/$||}")
-        array_own_scripts_path[i]="$dir_own/$tmp2"
-    done
+    if [[ $own_repo_sum -ge 1 ]]; then
+        for ((i=1; i<=$own_repo_sum; i++)); do
+            local j=$((i - 1))
+            local tmp1=OwnRepoUrl$i
+            array_own_repo_url[j]=${!tmp1}
+            local tmp2=OwnRepoBranch$i
+            array_own_repo_branch[j]=${!tmp2}
+            local tmp3=OwnRepoPath$i            
+            array_own_repo_dir[j]=$(echo ${array_own_repo_url[j]} | perl -pe "s|.+com/([\w-]+)/([\w-]+)(\.git)?|\1_\2|")
+            array_own_repo_path[j]=$dir_own/${array_own_repo_dir[j]}
+            local tmp4="${array_own_repo_dir[j]}/${!tmp3}"
+            local tmp5=$(echo $tmp4 | perl -pe "{s|//|/|g; s|/$||}")  # 去掉多余的/
+            array_own_scripts_path[j]="$dir_own/$tmp5"
+        done
+    fi
+
+    if [[ ${#OwnRawFile[*]} -ge 1 ]]; then
+        array_own_scripts_path[$own_repo_sum]=$dir_raw  # 只有own脚本所在绝对路径附加了raw文件夹，其他数组均不附加
+    fi
 }
 
 ## 创建软连接并确定命令形式，$1：软连接文件路径，$2：要连接的对象

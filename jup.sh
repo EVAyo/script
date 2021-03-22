@@ -93,7 +93,7 @@ git_pull_scripts () {
 
 ## 生成 jd_scripts task 清单，仅有去掉后缀的文件名
 gen_list_task () {
-    make_log_dir $dir_list_tmp
+    make_dir $dir_list_tmp
     grep -E "node.+j[drx]_\w+\.js" $list_crontab_jd_scripts | perl -pe "s|.+(j[drx]_\w+)\.js.+|\1|" | sort -u > $list_task_jd_scripts
     grep -E "$cmd_jtask j[drx]_\w+" $list_crontab_user | perl -pe "s|.*$cmd_jtask (j[drx]_\w+).*|\1|" | sort -u > $list_task_user
 }
@@ -102,7 +102,7 @@ gen_list_task () {
 gen_list_own () {
     local dir_current=$(pwd)
     rm -f $dir_list_tmp/own*.list >/dev/null 2>&1
-    for ((i=0; i<${#OwnRepoUrl[*]}; i++)); do
+    for ((i=0; i<${#array_own_scripts_path[*]}; i++)); do
         cd ${array_own_scripts_path[i]}
         for file in $(ls *.js); do
             if [ -f $file ]; then
@@ -123,7 +123,7 @@ gen_list_own () {
 
 ## 检测cron的差异，$1：脚本清单文件路径，$2：cron任务清单文件路径，$3：增加任务清单文件路径，$4：删除任务清单文件路径
 diff_cron () {
-    make_log_dir $dir_list_tmp
+    make_dir $dir_list_tmp
     local list_scripts="$1"
     local list_task="$2"
     local list_add="$3"
@@ -256,14 +256,14 @@ add_cron_jd_scripts () {
 }
 
 ## 自动增加自己额外的脚本的定时任务，需要：1.AutoAddCron 设置为 true；2.正常更新js脚本，没有报错；3.存在新任务；4.crontab.list存在并且不为空
-## $1：新任务清单文件路径，$2：脚本文件所在的绝对路径
+## $1：新任务清单文件路径
 add_cron_own () {
     local list_add=$1
     local list_crontab_own_tmp=$dir_list_tmp/crontab_own.list
 
     [ -f $list_crontab_own_tmp ] && rm -f $list_crontab_own_tmp
 
-    if [[ ${AutoAddCron} == true ]] && [ -s $list_add ] && [ -s $list_crontab_user ]; then
+    if [[ ${AutoAddOwnCron} == true ]] && [ -s $list_add ] && [ -s $list_crontab_user ]; then
         echo -e "开始尝试自动添加 own 脚本定时任务...\n"
         local detail=$(cat $list_add)
         for file_full_path in $detail; do
@@ -287,7 +287,7 @@ add_cron_own () {
     [ -f $list_crontab_own_tmp ] && rm -f $list_crontab_own_tmp
 }
 
-## 向系统添加定时任务以及通知，$1：写入crontab.list时的exit状态，$2：新增清单文件路径，$3：scripts脚本/DIY脚本
+## 向系统添加定时任务以及通知，$1：写入crontab.list时的exit状态，$2：新增清单文件路径，$3：scripts脚本/own脚本
 add_cron_notify () {
     local status_code=$1
     local list_add=$2
@@ -302,6 +302,32 @@ add_cron_notify () {
         echo -e "添加新的定时任务出错，请手动添加...\n"
         notify "新任务添加失败通知" "尝试自动添加以下新的定时任务出错，请手动添加（$type）：\n$detail"
     fi
+}
+
+## 更新 own 所有仓库
+update_own_repo () {
+    [[ ${#array_own_repo_url[*]} -gt 0 ]] && echo -e "--------------------------------------------------------------\n"
+    for ((i=0; i<${#array_own_repo_url[*]}; i++)); do
+        [ -d ${array_own_repo_path[i]}/.git ] && git_pull_scripts ${array_own_repo_path[i]} || git_clone_scripts ${array_own_repo_url[i]} ${array_own_repo_path[i]} ${array_own_repo_branch[i]}
+        [[ $exit_status -eq 0 ]] && echo -e "\n更新${array_own_repo_path[i]}成功...\n" || echo -e "\n更新${array_own_repo_path[i]}失败，请检查原因...\n"
+    done
+}
+
+## 更新 own 所有 raw 文件
+update_own_raw () {
+    [[ ${#OwnRawFile[*]} -gt 0 ]] && echo -e "--------------------------------------------------------------\n"
+    for ((i=0; i<${#OwnRawFile[*]}; i++)); do
+        raw_file_name=$(echo ${OwnRawFile[i]} | awk -F "/" '{print $NF}')
+        echo -e "开始下载：${OwnRawFile[i]} \n\n保存路径：$dir_raw/$raw_file_name\n"
+        wget -q --no-check-certificate -O "$dir_raw/$raw_file_name.new" ${OwnRawFile[i]}
+        if [[ $? -eq 0 ]]; then
+            mv "$dir_raw/$raw_file_name.new" "$dir_raw/$raw_file_name"
+            echo -e "下载 $raw_file_name 成功...\n"
+        else
+            echo -e "下载 $raw_file_name 失败，保留之前正常下载的版本...\n"
+            [ -f "$dir_raw/$raw_file_name.new" ] && rm -f "$dir_raw/$raw_file_name.new"
+        fi
+    done
 }
 
 #################################################################################################################################
@@ -374,12 +400,12 @@ else
 fi
 
 ## 更新own脚本
-if [[ ${#OwnRepoUrl[*]} -gt 0 ]]; then
-    gen_own_dir_and_path
-    for ((i=0; i<${#OwnRepoUrl[*]}; i++)); do
-        [ -d ${array_own_repo_path[i]}/.git ] && git_pull_scripts ${array_own_repo_path[i]} || git_clone_scripts ${OwnRepoUrl[i]} ${array_own_repo_path[i]}
-        [[ $exit_status -eq 0 ]] && echo -e "\n更新${array_own_repo_path[i]}成功...\n" || echo -e "\n更新${array_own_repo_path[i]}失败，请检查原因...\n"
-    done
+count_own_repo_sum
+gen_own_dir_and_path
+if [[ ${#array_own_scripts_path[*]} -gt 0 ]]; then
+    make_dir $dir_raw
+    update_own_repo
+    update_own_raw
     gen_list_own
     diff_cron $list_own_scripts $list_own_user $list_own_add $list_own_drop
 
@@ -395,8 +421,6 @@ if [[ ${#OwnRepoUrl[*]} -gt 0 ]]; then
 else
     perl -i -ne "{print unless / $cmd_otask /}" $list_crontab_user
 fi
-
-
 
 ## 调用用户自定义的diy.sh
 if [[ ${EnableExtraShell} == true ]]; then
