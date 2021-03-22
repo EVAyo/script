@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
-
+    echo -e "开始复制指定脚本（不含jd_scripts项目中已经存在的同名文件）...\n"
+    for file_full_path in $(cat $list_own_scripts); do
+        file_name=$(cat $file_full_path | awk -F "/" '{print $NF}')
+        if [[ $(grep -E "^$file_name$" $list_task_jd_scripts) ]]; then
+            echo -e "jd_scripts仓库中含有同名文件 $file_name ，跳过复制 $file_full_path ...\n"
+            continue
+        else
+            cp -fv $file_full_path $dir_scripts
+            echo
+        fi
+    done
 ## 路径
 ShellDir=${JD_DIR:-$(cd $(dirname $0); pwd)}
 [[ ${JD_DIR} ]] && HelpJd=jd || HelpJd=jd.sh

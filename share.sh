@@ -175,12 +175,22 @@ gen_random_num () {
 }
 
 ## 形成 own 仓库的文件夹名清单，依赖于import_config_and_check或import_config_no_check，
-gen_own_dir_list () {
+gen_own_dir_and_path () {
     for ((i=0; i<${#OwnRepoUrl[*]}; i++)); do
         array_own_repo_dir[i]=$(echo ${OwnRepoUrl[i]} | perl -pe "s|.+com/([\w-]+)/([\w-]+)(\.git)?|\1_\2|")
+        array_own_repo_path[i]=$dir_own/${array_own_repo_dir[i]}
         local tmp1="${array_own_repo_dir[i]}/${OwnRepoPath[i]}"
         local tmp2=$(echo $tmp1 | perl -pe "{s|//|/|g; s|/$||}")
-        array_own_repo_dir_specify[i]=$tmp2
-        array_own_repo_path[i]=$dir_own/${array_own_repo_dir[i]}
+        array_own_scripts_path[i]="$dir_own/$tmp2"
     done
+}
+
+## 创建软连接并确定命令形式，$1：软连接文件路径，$2：要连接的对象
+link_shell () {
+    local link_path="$1"
+    local original_path="$2"
+    if [ ! -L $link_path ] || [[ $(readlink -f $link_path) != $original_path ]]; then
+        rm -f $link_path
+        ln -sf $original_path $link_path
+    fi
 }
