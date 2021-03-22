@@ -426,7 +426,7 @@ if [[ $exit_status -eq 0 ]]; then
     diff_cron $list_task_jd_scripts $list_task_user $list_task_add $list_task_drop
     if [ -s $list_task_drop ]; then
         output_list_add_drop $list_task_drop "失效"
-        del_cron $list_task_drop task
+        del_cron $list_task_drop jtask
     fi
     if [ -s $list_task_add ]; then
         output_list_add_drop $list_task_add "新"
@@ -449,7 +449,7 @@ if [[ ${#array_own_scripts_path[*]} -gt 0 ]]; then
 
     if [ -s $list_own_drop ]; then
         output_list_add_drop $list_own_drop "失效"
-        del_cron $list_own_drop own
+        del_cron $list_own_drop otask
     fi
     if [ -s $list_own_add ]; then
         output_list_add_drop $list_own_add "新"
