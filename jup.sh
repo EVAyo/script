@@ -179,7 +179,6 @@ diff_cron () {
     fi
 }
 
-
 ## 更新docker-entrypoint，docker专用
 update_docker_entrypoint () {
     if [[ $JD_DIR ]] && [[ $(cat $dir_root/docker/docker-entrypoint.sh) != $(cat /usr/local/bin/docker-entrypoint.sh) ]]; then
@@ -262,13 +261,13 @@ output_list_add_drop () {
     fi
 }
 
-## 自动删除失效的脚本与定时任务，需要：1.AutoDelCron 设置为 true；2.正常更新js脚本，没有报错；3.存在失效任务；4.crontab.list存在并且不为空
+## 自动删除失效的脚本与定时任务，需要：1.AutoDelCron/AutoDelOwnCron 设置为 true；2.正常更新js脚本，没有报错；3.存在失效任务；4.crontab.list存在并且不为空
 ## $1：失效任务清单文件路径，$2：jtask/otask
 del_cron () {
     local list_drop=$1
     local type=$2
     local detail type2 detail2
-    if [[ ${AutoDelCron} == true ]] && [ -s $list_drop ] && [ -s $list_crontab_user ]; then
+    if [ -s $list_drop ] && [ -s $list_crontab_user ]; then
         detail=$(cat $list_drop)
         [[ $type == jtask ]] && type2="jd_scipts脚本" 
         [[ $type == otask ]] && type2="own脚本"
@@ -284,7 +283,7 @@ del_cron () {
     fi
 }
 
-## 自动增加jd_scripts新的定时任务，需要：1.AutoAddOwnCron 设置为 true；2.正常更新js脚本，没有报错；3.存在新任务；4.crontab.list存在并且不为空
+## 自动增加jd_scripts新的定时任务，需要：1.AutoAddCron 设置为 true；2.正常更新js脚本，没有报错；3.存在新任务；4.crontab.list存在并且不为空
 ## $1：新任务清单文件路径
 add_cron_jd_scripts () {
     local list_add=$1
@@ -302,7 +301,7 @@ add_cron_jd_scripts () {
     fi
 }
 
-## 自动增加自己额外的脚本的定时任务，需要：1.AutoAddCron 设置为 true；2.正常更新js脚本，没有报错；3.存在新任务；4.crontab.list存在并且不为空
+## 自动增加自己额外的脚本的定时任务，需要：1.AutoAddOwnCron 设置为 true；2.正常更新js脚本，没有报错；3.存在新任务；4.crontab.list存在并且不为空
 ## $1：新任务清单文件路径
 add_cron_own () {
     local list_add=$1
@@ -430,7 +429,7 @@ if [[ $exit_status -eq 0 ]]; then
     diff_cron $list_task_jd_scripts $list_task_user $list_task_add $list_task_drop
     if [ -s $list_task_drop ]; then
         output_list_add_drop $list_task_drop "失效"
-        del_cron $list_task_drop jtask
+        [[ ${AutoDelCron} == true ]] && del_cron $list_task_drop jtask
     fi
     if [ -s $list_task_add ]; then
         output_list_add_drop $list_task_add "新"
@@ -453,7 +452,7 @@ if [[ ${#array_own_scripts_path[*]} -gt 0 ]]; then
 
     if [ -s $list_own_drop ]; then
         output_list_add_drop $list_own_drop "失效"
-        del_cron $list_own_drop otask
+        [[ ${AutoDelOwnCron} == true ]] && del_cron $list_own_drop otask
     fi
     if [ -s $list_own_add ]; then
         output_list_add_drop $list_own_add "新"
