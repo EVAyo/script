@@ -8,10 +8,10 @@ url_scripts=${JD_SCRIPTS_URL:-git@jd_scripts_gitee:lxk0301/jd_scripts.git}
 send_mark=$dir_shell/send_mark
 
 ## 导入通用变量与函数
-. $dir_shell/share.sh
+. $dir_shell/jshare.sh
 
-## 导入配置文件并检验
-import_config_no_check update
+## 导入配置文件，不检验
+import_config_no_check jup
 
 ## 命令识别
 detect_termux
