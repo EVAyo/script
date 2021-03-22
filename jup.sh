@@ -51,7 +51,7 @@ random_update_cron () {
             random_hour="$random_hour,${random_hour_array[i]}"
         done
 
-        perl -i -pe "s|.+(update.+update.+log.*)|$random_min $random_hour \* \* \* sleep $random_sleep && \1|" $list_crontab_user
+        perl -i -pe "s|.+(jup .+jup.log.*)|$random_min $random_hour \* \* \* sleep $random_sleep && \1|" $list_crontab_user
         crontab $list_crontab_user
     fi
 }
