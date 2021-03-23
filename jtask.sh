@@ -136,6 +136,7 @@ usage () {
     echo -e "1.$cmd_otask <js_path>        # 依次执行，如果设置了随机延迟并且当时时间不在0-2、30-31、59分内，将随机延迟一定秒数"
     echo -e "2.$cmd_otask <js_path> now    # 依次执行，无论是否设置了随机延迟，均立即运行，前台会输出日志，同时记录在日志文件中"
     echo -e "3.$cmd_otask <js_path> conc   # 并发执行，无论是否设置了随机延迟，均立即运行，前台不产生日志，直接记录在日志文件中"
+    echo -e "\nmtask命令运行你自己添加的脚本，用法同jtask"
     echo -e "\n当前scripts目录下有以下脚本可以运行："
     for ((i=0; i<${#array_scripts[*]}; i++)); do
         echo -e "$(($i + 1)).${array_scripts_name[i]}：${array_scripts[i]}"
