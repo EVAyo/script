@@ -195,14 +195,18 @@ link_shell () {
     if [[ $is_termux -eq 1 ]]; then
         link_shell_sub "/data/data/com.termux/files/usr/bin/jtask" "$dir_shell/jtask.sh"
         link_shell_sub "/data/data/com.termux/files/usr/bin/otask" "$dir_shell/jtask.sh"
+        link_shell_sub "/data/data/com.termux/files/usr/bin/mtask" "$dir_shell/jtask.sh"
         link_shell_sub "/data/data/com.termux/files/usr/bin/jcsv" "$dir_shell/jcsv.sh"
+        link_shell_sub "/data/data/com.termux/files/usr/bin/jcode" "$dir_shell/jcode.sh"
         link_shell_sub "/data/data/com.termux/files/usr/bin/jlog" "$dir_shell/jlog.sh"
         link_shell_sub "/data/data/com.termux/files/usr/bin/jpanel" "$dir_shell/jpanel.sh"
         link_shell_sub "/data/data/com.termux/files/usr/bin/jup" "$dir_shell/jup.sh"
     elif [[ $PATH == */usr/local/bin* ]] && [ -d /usr/local/bin ]; then
         link_shell_sub "/usr/local/bin/jtask" "$dir_shell/jtask.sh"
         link_shell_sub "/usr/local/bin/otask" "$dir_shell/jtask.sh"
+        link_shell_sub "/usr/local/bin/mtask" "$dir_shell/jtask.sh"
         link_shell_sub "/usr/local/bin/jcsv" "$dir_shell/jcsv.sh"
+        link_shell_sub "/usr/local/bin/jcode" "$dir_shell/jcode.sh"
         link_shell_sub "/usr/local/bin/jlog" "$dir_shell/jlog.sh"
         link_shell_sub "/usr/local/bin/jpanel" "$dir_shell/jpanel.sh"
         link_shell_sub "/usr/local/bin/jup" "$dir_shell/jup.sh"
