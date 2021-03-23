@@ -269,7 +269,7 @@ run_concurrent () {
                 [[ $user_num -eq $num ]] && continue 2
             done
             export_all_env $user_num
-            log_path="$dir_log/$file_name/$log_time_$user_num.log"
+            log_path="$dir_log/$file_name/${log_time}_$user_num.log"
             cd $which_path
             node $file_name.js > $log_path 2>&1 &
         done
