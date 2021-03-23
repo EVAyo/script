@@ -12,7 +12,6 @@ import_config_no_check
 count_user_sum
 detect_termux
 [[ $is_termux -eq 1 ]] && opt=P || opt=E
-tips="从日志中未找到任何互助码"
 
 ## 生成pt_pin清单
 gen_pt_pin_array () {
@@ -63,7 +62,7 @@ export_codes_sub () {
                 echo "$config_name_my$j='$tmp_my_code'"
             done
         else
-            echo $tips
+            echo "从日志中未找到任何互助码"
         fi
 
         ## 输入ForOther系列变量
@@ -122,7 +121,7 @@ export_codes_sub () {
 ## 汇总输出
 export_all_codes () {
     gen_pt_pin_array
-    echo -e "\n从最后一个日志提取互助码，受日志内容影响，仅供参考。\n\n即使某个MyXxx变量未赋值，也可以将其变量名填在ForOtherXxx中，jtask脚本会将空值处理掉。"
+    echo -e "\n从最后一个日志提取互助码，受日志内容影响，仅供参考。\n\n即使某个MyXxx变量未赋值，也可以将其变量名填在ForOtherXxx中，jtask脚本会自动过滤空值。"
     for ((i=0; i<${#name_js[*]}; i++)); do
         echo -e "\n${name_chinese[i]}："
         export_codes_sub "${name_js[i]}" "${name_config[i]}" "${name_chinese[i]}"
