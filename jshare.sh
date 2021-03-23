@@ -112,6 +112,27 @@ name_chinese=(
     环球挑战赛
 )
 
+## 软连接及其原始文件对应关系
+link_name=(
+    jtask
+    otask
+    mtask
+    jcode
+    jcsv
+    jlog
+    jpanel
+    jup
+)
+original_name=(
+    jtask.sh
+    jtask.sh
+    jtask.sh
+    jcode.sh
+    jcsv.sh
+    jlog.sh
+    jpanel.sh
+    jup.sh
+)
 
 ## 导入配置文件并校验，$1：任务名称
 import_config_and_check () {
@@ -154,7 +175,7 @@ count_user_sum () {
     done
 }
 
-## 创建日志目录，$1：目录的绝对路径
+## 创建目录，$1：目录的绝对路径
 make_dir () {
     local dir=$1
     [ ! -d $dir ] && mkdir -p $dir
@@ -193,25 +214,17 @@ link_shell_sub () {
 ## 创建软连接
 link_shell () {
     if [[ $is_termux -eq 1 ]]; then
-        link_shell_sub "/data/data/com.termux/files/usr/bin/jtask" "$dir_shell/jtask.sh"
-        link_shell_sub "/data/data/com.termux/files/usr/bin/otask" "$dir_shell/jtask.sh"
-        link_shell_sub "/data/data/com.termux/files/usr/bin/mtask" "$dir_shell/jtask.sh"
-        link_shell_sub "/data/data/com.termux/files/usr/bin/jcsv" "$dir_shell/jcsv.sh"
-        link_shell_sub "/data/data/com.termux/files/usr/bin/jcode" "$dir_shell/jcode.sh"
-        link_shell_sub "/data/data/com.termux/files/usr/bin/jlog" "$dir_shell/jlog.sh"
-        link_shell_sub "/data/data/com.termux/files/usr/bin/jpanel" "$dir_shell/jpanel.sh"
-        link_shell_sub "/data/data/com.termux/files/usr/bin/jup" "$dir_shell/jup.sh"
+        local path="/data/data/com.termux/files/usr/bin/"
     elif [[ $PATH == */usr/local/bin* ]] && [ -d /usr/local/bin ]; then
-        link_shell_sub "/usr/local/bin/jtask" "$dir_shell/jtask.sh"
-        link_shell_sub "/usr/local/bin/otask" "$dir_shell/jtask.sh"
-        link_shell_sub "/usr/local/bin/mtask" "$dir_shell/jtask.sh"
-        link_shell_sub "/usr/local/bin/jcsv" "$dir_shell/jcsv.sh"
-        link_shell_sub "/usr/local/bin/jcode" "$dir_shell/jcode.sh"
-        link_shell_sub "/usr/local/bin/jlog" "$dir_shell/jlog.sh"
-        link_shell_sub "/usr/local/bin/jpanel" "$dir_shell/jpanel.sh"
-        link_shell_sub "/usr/local/bin/jup" "$dir_shell/jup.sh"
+        local path="/usr/local/bin/"
     else
+        local path=""
         echo -e "脚本功能受限，请自行添加命令的软连接...\n"
+    fi
+    if [[ $path ]]; then
+        for ((i=0; i<${#link_name[*]}; i++)); do
+            link_shell_sub "$path${link_name[i]}" "$dir_shell/${original_name[i]}"
+        done
     fi
 }
 
