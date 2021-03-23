@@ -20,8 +20,8 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 var rootPath = path.resolve(__dirname, '..')
 // config.sh 文件所在目录
 var confFile = path.join(rootPath, 'config/config.sh');
-// config.sh.sample 文件所在目录
-var sampleFile = path.join(rootPath, 'sample/config.sh.sample');
+// config.sample.sh 文件所在目录
+var sampleFile = path.join(rootPath, 'sample/config.sample.sh');
 // crontab.list 文件所在目录
 var crontabFile = path.join(rootPath, 'config/crontab.list');
 // config.sh 文件备份目录
@@ -179,7 +179,7 @@ async function checkLogin() {
 
 
 /**
- * 检查 config.sh 以及 config.sh.sample 文件是否存在
+ * 检查 config.sh 以及 config.sample.sh 文件是否存在
  */
 function checkConfigFile() {
     if (!fs.existsSync(confFile)) {
@@ -187,7 +187,7 @@ function checkConfigFile() {
         process.exit(1);
     }
     if (!fs.existsSync(sampleFile)) {
-        console.error('脚本启动失败，config.sh.sample 文件不存在！');
+        console.error('脚本启动失败，config.sample.sh 文件不存在！');
         process.exit(1);
     }
 }
