@@ -8,39 +8,6 @@ FileConf=${ConfigDir}/config.sh
 [[ ${ANDROID_RUNTIME_ROOT}${ANDROID_ROOT} ]] && Opt="P" || Opt="E"
 Tips="从日志中未找到任何互助码"
 
-## 所有有互助码的活动，只需要把脚本名称去掉前缀 jd_ 后列在 Name1 中，将其中文名称列在 Name2 中，对应 config.sh 中互助码后缀列在 Name3 中即可。
-## Name1、Name2 和 Name3 中的三个名称必须一一对应。
-Name1=(fruit pet plantBean dreamFactory jdfactory crazy_joy jdzz jxnc bookshop cash sgmh cfd global)
-Name2=(东东农场 东东萌宠 京东种豆得豆 京喜工厂 东东工厂 crazyJoy任务 京东赚赚 京喜农场 口袋书店 签到领现金 闪购盲盒 京喜财富岛 环球挑战赛)
-Name3=(Fruit Pet Bean DreamFactory JdFactory Joy Jdzz Jxnc BookShop Cash Sgmh Cfd Global)
-
-
-## 导入 config.sh
-function Import_Conf {
-  if [ -f ${FileConf} ]
-  then
-    . ${FileConf}
-    if [ -z "${Cookie1}" ]; then
-      echo -e "请先在 config.sh 中配置好 Cookie\n"
-      exit 1
-    fi
-  else
-    echo -e "配置文件 ${FileConf} 不存在，请先按教程配置好该文件\n"
-    exit 1
-  fi
-}
-
-
-## 用户数量 UserSum
-function Count_UserSum {
-  for ((i=1; i<=${SUM:-$((3 * 4))}; i++)); do
-    Tmp=Cookie$i
-    CookieTmp=${!Tmp}
-    [[ ${CookieTmp} ]] && UserSum=$i || break
-  done
-}
-
-
 ## 导出互助码的通用程序
 function Cat_Scodes {
   if [ -d ${LogDir}/jd_$1 ] && [[ $(ls ${LogDir}/jd_$1) != "" ]]; then

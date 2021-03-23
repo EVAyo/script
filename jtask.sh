@@ -1,363 +1,320 @@
 #!/usr/bin/env bash
-    echo -e "开始复制指定脚本（不含jd_scripts项目中已经存在的同名文件）...\n"
-    for file_full_path in $(cat $list_own_scripts); do
-        file_name=$(cat $file_full_path | awk -F "/" '{print $NF}')
-        if [[ $(grep -E "^$file_name$" $list_task_jd_scripts) ]]; then
-            echo -e "jd_scripts仓库中含有同名文件 $file_name ，跳过复制 $file_full_path ...\n"
-            continue
-        else
-            cp -fv $file_full_path $dir_scripts
-            echo
-        fi
-    done
+
 ## 路径
-ShellDir=${JD_DIR:-$(cd $(dirname $0); pwd)}
-[[ ${JD_DIR} ]] && HelpJd=jd || HelpJd=jd.sh
-[[ ${JD_DIR} ]] && ShellJd=jd || ShellJd=${ShellDir}/jd.sh
-ScriptsDir=${ShellDir}/scripts
-ConfigDir=${ShellDir}/config
-FileConf=${ConfigDir}/config.sh
-FileConfSample=${ShellDir}/sample/config.sh.sample
-LogDir=${ShellDir}/log
-ListScripts=($(cd ${ScriptsDir}; ls *.js | grep -E "j[drx]_"))
-ListCron=${ConfigDir}/crontab.list
-ListCronLxk=${ScriptsDir}/docker/crontab_list.sh
-ListJs=${LogDir}/js.list
+dir_shell=$(dirname $(readlink -f "$0"))
+dir_root=$dir_shell
 
-## 所有环境变量对应关系，必须一一对应
-EnvName=(
-  JD_COOKIE
-  FRUITSHARECODES
-  PETSHARECODES
-  PLANT_BEAN_SHARECODES
-  DREAM_FACTORY_SHARE_CODES
-  DDFACTORY_SHARECODES
-  JDZZ_SHARECODES
-  JDJOY_SHARECODES
-  JXNC_SHARECODES
-  BOOKSHOP_SHARECODES
-  JD_CASH_SHARECODES
-  JDSGMH_SHARECODES
-  JDCFD_SHARECODES
-  JDGLOBAL_SHARECODES
-)
-
-VarName=(
-  Cookie
-  ForOtherFruit
-  ForOtherPet
-  ForOtherBean
-  ForOtherDreamFactory
-  ForOtherJdFactory
-  ForOtherJdzz
-  ForOtherJoy
-  ForOtherJxnc
-  ForOtherBookShop
-  ForOtherCash
-  ForOtherSgmh
-  ForOtherCfd
-  ForOtherGlobal
-)
-
-## 导入config.sh
-function Import_Conf {
-  if [ -f ${FileConf} ]
-  then
-    . ${FileConf}
-    if [ -z "${Cookie1}" ]; then
-      echo -e "请先在config.sh中配置好Cookie...\n"
-      exit 1
-    fi
-  else
-    echo -e "配置文件 ${FileConf} 不存在，请先按教程配置好该文件...\n"
-    exit 1
-  fi
-}
+## 导入通用变量与函数
+. $dir_shell/jshare.sh
 
 ## 更新crontab
-function Detect_Cron {
-  if [[ $(cat ${ListCron}) != $(crontab -l) ]]; then
-    crontab ${ListCron}
-  fi
+update_crontab {
+    if [[ $(cat $list_crontab_user) != $(crontab -l) ]]; then
+        crontab ${ListCron}
+    fi
 }
 
-## 用户数量UserSum
-function Count_UserSum {
-  for ((i=1; i<=${SUM:-$((3 * 4))}; i++)); do
-    Tmp=Cookie$i
-    CookieTmp=${!Tmp}
-    [[ ${CookieTmp} ]] && UserSum=$i || break
-  done
-}
+## 组合Cookie和互助码子程序，$1：要组合的内容
+combine_sub () {
+    local what_combine=$1
+    local combined_all=""
+    if [[ ${AutoHelpOther} == true ]] && [[ $1 == ForOther* ]]; then
+        for_other_all=""
+        local my_name=$(echo $what_combine | perl -pe "s|ForOther|My|")
 
-## 组合Cookie和互助码子程序
-function Combin_Sub {
-  CombinAll=""
-  if [[ ${AutoHelpOther} == true ]] && [[ $1 == ForOther* ]]; then
+        for ((m=1; m<=$user_sum; m++)); do
+            local tmp1=$my_name$m
+            local tmp2=${!tmp1}
+            for_other_all="$for_other_all@$tmp2"
+        done
+      
+        for ((n=1; n<=$user_sum; n++)); do
+            for num in ${TempBlockCookie}; do
+                [[ $n -eq $num ]] && continue 2
+            done
+            combined_all="$combined_all&$for_other_all"
+        done
 
-    ForOtherAll=""
-    MyName=$(echo $1 | perl -pe "s|ForOther|My|")
+    else
+        for ((i=1; i<=$user_sum; i++)); do
+            for num in ${TempBlockCookie}; do
+                [[ $i -eq $num ]] && continue 2
+            done
+            local tmp3=$what_combine$i
+            local tmp4=${!tmp3}
+            combined_all="$combined_all&$tmp4"
+        done
+    fi
 
-    for ((m=1; m<=${UserSum}; m++)); do
-      TmpA=${MyName}$m
-      TmpB=${!TmpA}
-      ForOtherAll="${ForOtherAll}@${TmpB}"
-    done
-    
-    for ((n=1; n<=${UserSum}; n++)); do
-      for num in ${TempBlockCookie}; do
-        [[ $n -eq $num ]] && continue 2
-      done
-      CombinAll="${CombinAll}&${ForOtherAll}"
-    done
-
-  else
-    for ((i=1; i<=${UserSum}; i++)); do
-      for num in ${TempBlockCookie}; do
-        [[ $i -eq $num ]] && continue 2
-      done
-      Tmp1=$1$i
-      Tmp2=${!Tmp1}
-      CombinAll="${CombinAll}&${Tmp2}"
-    done
-  fi
-
-  echo ${CombinAll} | perl -pe "{s|^&||; s|^@+||; s|&@|&|g; s|@+&|&|g; s|@+|@|g; s|@+$||}"
+    echo $combined_all | perl -pe "{s|^&||; s|^@+||; s|&@|&|g; s|@+&|&|g; s|@+|@|g; s|@+$||}"
 }
 
 ## 正常依次运行时，组合所有账号的Cookie与互助码
-function Combin_All {
-  for ((i=0; i<${#EnvName[*]}; i++)); do
-    export ${EnvName[i]}=$(Combin_Sub ${VarName[i]})
-  done
+combine_all () {
+    for ((i=0; i<${#env_name[*]}; i++)); do
+        export ${env_name[i]}=$(combine_sub ${var_name[i]})
+    done
 }
 
-## 并发运行时，直接申明每个账号的Cookie与互助码
-function Combin_One {
-  for ((i=0; i<${#EnvName[*]}; i++)); do
-    Tmp=${VarName[i]}$1
-    export ${EnvName[i]}=${!Tmp}
-  done
+## 并发运行时，直接申明每个账号的Cookie与互助码，$1：用户Cookie编号
+combine_one () {
+    local user_num=$1
+    for ((i=0; i<${#env_name[*]}; i++)); do
+        local tmp=${var_name[i]}$user_num
+        export ${env_name[i]}=${!tmp}
+    done
 }
 
 ## 转换JD_BEAN_SIGN_STOP_NOTIFY或JD_BEAN_SIGN_NOTIFY_SIMPLE
-function Trans_JD_BEAN_SIGN_NOTIFY {
-  case ${NotifyBeanSign} in
-    0)
-      export JD_BEAN_SIGN_STOP_NOTIFY="true"
-      ;;
-    1)
-      export JD_BEAN_SIGN_NOTIFY_SIMPLE="true"
-      ;;
-    2)
-      export JD_BEAN_SIGN_NOTIFY_SIMPLE="false"
-      ;;
-  esac
+trans_JD_BEAN_SIGN_NOTIFY () {
+    case ${NotifyBeanSign} in
+        0)
+            export JD_BEAN_SIGN_STOP_NOTIFY="true"
+            ;;
+        1)
+            export JD_BEAN_SIGN_NOTIFY_SIMPLE="true"
+            ;;
+        2)
+            export JD_BEAN_SIGN_NOTIFY_SIMPLE="false"
+            ;;
+    esac
 }
 
 ## 转换UN_SUBSCRIBES
-function Trans_UN_SUBSCRIBES {
-  export UN_SUBSCRIBES="${goodPageSize}\n${shopPageSize}\n${jdUnsubscribeStopGoods}\n${jdUnsubscribeStopShop}"
+trans_UN_SUBSCRIBES () {
+    export UN_SUBSCRIBES="${goodPageSize}\n${shopPageSize}\n${jdUnsubscribeStopGoods}\n${jdUnsubscribeStopShop}"
 }
 
-## 申明全部变量
-function Set_Env {
-  [[ $1 == all ]] && Combin_All || Combin_One $1
-  Trans_JD_BEAN_SIGN_NOTIFY
-  Trans_UN_SUBSCRIBES
+## 申明全部变量，$1：all/Cookie编号
+export_all_env () {
+    local type=$1
+    [[ $type == all ]] && combine_all || combine_one $type
+    trans_JD_BEAN_SIGN_NOTIFY
+    trans_UN_SUBSCRIBES
 }
 
-## 随机延迟
-function Random_Delay {
-  if [[ -n ${RandomDelay} ]] && [[ ${RandomDelay} -gt 0 ]]; then
-    CurMin=$(date "+%-M")
-    if [[ ${CurMin} -gt 2 && ${CurMin} -lt 30 ]] || [[ ${CurMin} -gt 31 && ${CurMin} -lt 59 ]]; then
-      CurDelay=$((${RANDOM} % ${RandomDelay} + 1))
-      echo -e "\n命令未添加 \"now\"，随机延迟 ${CurDelay} 秒后再执行任务，如需立即终止，请按 CTRL+C...\n"
-      sleep ${CurDelay}
+random_delay () {
+    local random_delay_max=$RandomDelay
+    if [[ $random_delay_max ]] && [[ $random_delay_max -gt 0 ]]; then
+        local current_min=$(date "+%-M")
+        if [[ $current_min -gt 2 && $current_min -lt 30 ]] || [[ $current_min -gt 31 && $current_min -lt 59 ]]; then
+            delay_second=$(($(gen_random_num $random_delay_max) + 1))
+            echo -e "\n命令未添加 \"now\"，随机延迟 $delay_second 秒后再执行任务，如需立即终止，请按 CTRL+C...\n"
+            sleep $delay_second
+        fi
     fi
-  fi
+}
+
+## scripts目录下所有可运行脚本数组
+gen_array_scripts () {
+    local dir_current=$(pwd)
+    local i=0
+    cd $dir_scripts
+    for file in $(ls); do
+        if [ -f $file ] && [[ $(grep "new Env" $file) ]]; then
+            array_scripts[i]=$file
+            array_scripts_name[i]=$(grep "new Env" $file | awk -F "'|\"" '{print $2}' | head -1)
+            let i++
+        fi
+    done
+    cd $dir_current
 }
 
 ## 使用说明
-function Help {
-  echo -e "本脚本的用法为："
-  echo -e "1.bash ${HelpJd} <js_name>       # 依次执行，如果设置了随机延迟并且当时时间不在0-2、30-31、59分内，将随机延迟一定秒数"
-  echo -e "2.bash ${HelpJd} <js_name> now   # 依次执行，无论是否设置了随机延迟，均立即运行，前台会输出日志，同时记录在日志文件中"
-  echo -e "3.bash ${HelpJd} <js_name> conc  # 并发执行，无论是否设置了随机延迟，均立即运行，前台不产生日志，直接记录在日志文件中，如果是容器，运行的进程无法完全释放，建议使用此功能后经常重启容器，如果是物理机，建议经常杀进程" 
-  echo -e "4.bash ${HelpJd} runall          # 依次运行所有非挂机脚本，非常耗时"
-  echo -e "5.bash ${HelpJd} hangup          # 重启挂机程序"
-  echo -e "6.bash ${HelpJd} resetpwd        # 重置控制面板用户名和密码"
-  echo -e "\n针对用法1-3中的\"<js_name>\"，可以不输入后缀\".js\"，另外，如果前缀是\"jd_\"的话前缀也可以省略。"
-  echo -e "当前有以下脚本可以运行（仅列出以jd_、jr_、jx_开头的脚本）："
-  cd ${ScriptsDir}
-  for ((i=0; i<${#ListScripts[*]}; i++)); do
-    Name=$(grep "new Env" ${ListScripts[i]} | awk -F "'|\"" '{print $2}')
-    echo -e "$(($i + 1)).${Name}：${ListScripts[i]}"
-  done
+usage () {
+    define_cmd
+    gen_array_scripts
+    echo -e "jtask命令运行 jd_scripts 脚本，如果已经将非 jd_scripts 脚本复制到 scripts 目录下，也可以使用此命令，用法为："
+    echo -e "1.$cmd_jtask <js_name>        # 依次执行，如果设置了随机延迟并且当时时间不在0-2、30-31、59分内，将随机延迟一定秒数"
+    echo -e "2.$cmd_jtask <js_name> now    # 依次执行，无论是否设置了随机延迟，均立即运行，前台会输出日志，同时记录在日志文件中"
+    echo -e "3.$cmd_jtask <js_name> conc   # 并发执行，无论是否设置了随机延迟，均立即运行，前台不产生日志，直接记录在日志文件中"
+    echo -e "4.$cmd_jtask runall           # 依次运行所有jd_scripts中的非挂机脚本，非常耗时"
+    echo -e "5.$cmd_jtask hangup           # 重启挂机程序"
+    echo -e "6.$cmd_jtask resetpwd         # 重置控制面板用户名和密码"
+    echo -e "\notask命令运行 own 脚本，需要输入脚本的绝对路径或相对路径(定时任务中必须是绝对路径)，otask会将该脚本复制到 scripts 目录下再运行，用法为："
+    echo -e "1.$cmd_otask <js_path>        # 依次执行，如果设置了随机延迟并且当时时间不在0-2、30-31、59分内，将随机延迟一定秒数"
+    echo -e "2.$cmd_otask <js_path> now    # 依次执行，无论是否设置了随机延迟，均立即运行，前台会输出日志，同时记录在日志文件中"
+    echo -e "3.$cmd_otask <js_path> conc   # 并发执行，无论是否设置了随机延迟，均立即运行，前台不产生日志，直接记录在日志文件中"
+    echo -e "当前scripts目录下有以下脚本可以运行："
+    for ((i=0; i<${#array_scripts[*]}; i++)); do
+        echo -e "$(($i + 1)).${array_scripts_name[i]}：${array_scripts[i]}"
+    done
 }
 
-## nohup
-function Run_Nohup {
-  nohup node $1.js 2>&1 > ${LogFile} &
+## run nohup，$1：文件名，不含路径，带后缀
+run_nohup () {
+    local file_name=$1
+    nohup node $file_name 2>&1 > $log_path &
 }
 
-## 查找脚本路径与准确的文件名
-function Find_FileDir {
-  FileNameTmp1=$(echo $1 | perl -pe "s|\.js||")
-  FileNameTmp2=$(echo $1 | perl -pe "{s|jd_||; s|\.js||; s|^|jd_|}")
-  SeekDir="${ScriptsDir} ${ScriptsDir}/backUp ${ConfigDir}"
-  FileName=""
-  WhichDir=""
+## 查找脚本路径与准确的文件名，$1：脚本传入的参数，输出的file_name不带后缀.js
+find_file_and_path () {
+    local para=$1
+    local file_name_tmp1=$(echo $para | perl -pe "s|\.js||")
+    local file_name_tmp2=$(echo $para | perl -pe "{s|jd_||; s|\.js||; s|^|jd_|}")
+    local seek_path="$dir_scripts $dir_scripts/backUp $dir_config"
+    file_name=""
+    which_path=""
 
-  for dir in ${SeekDir}
-  do
-    if [ -f ${dir}/${FileNameTmp1}.js ]; then
-      FileName=${FileNameTmp1}
-      WhichDir=${dir}
-      break
-    elif [ -f ${dir}/${FileNameTmp2}.js ]; then
-      FileName=${FileNameTmp2}
-      WhichDir=${dir}
-      break
+    for path in $seek_path; do
+        if [ -f $path/$file_name_tmp1.js ]; then
+            file_name=$file_name_tmp1
+            which_path=$path
+            break
+        elif [ -f $path/$file_name_tmp2.js ]; then
+            file_name=$file_name_tmp2
+            which_path=$path
+            break
+        fi
+    done
+
+    if [ -f $para ]; then
+        local file_name_tmp3=$(echo $para | awk -F "/" '{print $NF}' | perl -pe "s|\.js||")
+        if [[ $(grep -E "^$file_name_tmp3$" $list_task_jd_scripts) ]]; then
+            echo -e "jd_scripts项目存在同名文件$file_name_tmp3.js，不复制$para，直接执行$dir_scripts/$file_name_tmp3.js ...\n"
+        else
+            echo -e "复制 $para 到 $dir_scripts 下，并执行...\n"
+            cp -f $para $dir_scripts
+        fi
+        file_name=$file_name_tmp3
+        which_path=$dir_scripts
     fi
-  done
 }
 
 ## 运行挂机脚本
-function Run_HangUp {
-  HangUpJs="jd_crazy_joy_coin"
-  cd ${ScriptsDir}
-  for js in ${HangUpJs}; do
-    Import_Conf ${js}
-    Count_UserSum
-    Set_Env all
-    if type pm2 >/dev/null 2>&1; then
-      pm2 stop ${js}.js 2>/dev/null
-      pm2 flush
-      pm2 start -a ${js}.js --watch "${ScriptsDir}/${js}.js" --name="${js}"
-    else
-      if [[ $(ps -ef | grep "${js}" | grep -v "grep") != "" ]]; then
-        ps -ef | grep "${js}" | grep -v "grep" | awk '{print $2}' | xargs kill -9
-      fi
-      [ ! -d ${LogDir}/${js} ] && mkdir -p ${LogDir}/${js}
-      LogTime=$(date "+%Y-%m-%d-%H-%M-%S")
-      LogFile="${LogDir}/${js}/${LogTime}.log"
-      Run_Nohup ${js} >/dev/null 2>&1
-    fi
-  done
+run_hungup () {
+    local hangup_file="jd_crazy_joy_coin"
+    cd $dir_scripts
+    for file in $hangup_file; do
+        import_config_and_check $file
+        count_user_sum
+        export_all_env all
+        if type pm2 >/dev/null 2>&1; then
+            pm2 stop $file.js 2>/dev/null
+            pm2 flush
+            pm2 start -a $file.js --watch "$dir_scripts/$file.js" --name=$file
+        else
+            if [[ $(ps -ef | grep "$file" | grep -v "grep") != "" ]]; then
+                ps -ef | grep "$file" | grep -v "grep" | awk '{print $2}' | xargs kill -9
+            fi
+            make_dir $dir_log/$file
+            log_time=$(date "+%Y-%m-%d-%H-%M-%S")
+            log_path="$dir_log/$file/$log_time.log"
+            run_nohup $file.js >/dev/null 2>&1
+        fi
+    done
 }
 
 ## 重置密码
-function Reset_Pwd {
-  cp -f ${ShellDir}/sample/auth.json ${ConfigDir}/auth.json
-  echo -e "控制面板重置成功，用户名：admin，密码：adminadmin\n"
+reset_user_password () {
+    cp -f $file_auth_sample $file_auth_user
+    echo -e "控制面板重置成功，用户名：admin，密码：adminadmin\n"
 }
 
-## 一次性运行所有脚本
-function Run_All {
-  if [ ! -f ${ListJs} ]; then
-    cat ${ListCronLxk} | grep -E "j[drx]_\w+\.js" | perl -pe "s|.+(j[drx]_\w+)\.js.+|\1|" | sort -u > ${ListJs}
-  fi
-  echo -e "\n==================== 开始运行所有非挂机脚本 ====================\n"
-  echo -e "请注意：本过程将非常非常耗时，一个账号可能长达几小时，账号越多耗时越长，如果是手动运行，退出终端也将终止运行。\n"
-  echo -e "倒计时5秒...\n"
-  for ((sec=5; sec>0; sec--)); do
-    echo -e "$sec...\n"
-    sleep 1
-  done
-  for file in $(cat ${ListJs}); do
-    echo -e "==================== 运行 $file.js 脚本 ====================\n"
-    bash ${ShellJd} $file now
-  done
+## 一次性运行所有jd_scripts脚本
+run_all_jd_scripts () {
+    if [ ! -f $list_task_jd_scripts ]; then
+        cat $list_crontab_jd_scripts | grep -E "j[drx]_\w+\.js" | perl -pe "s|.+(j[drx]_\w+)\.js.+|\1|" | sort -u > $list_task_jd_scripts
+    fi
+    echo -e "\n==================== 开始运行所有非挂机脚本 ====================\n"
+    echo -e "请注意：本过程将非常非常耗时，一个账号可能长达几小时，账号越多耗时越长，如果是手动运行，退出终端也将终止运行。\n"
+    echo -e "倒计时5秒...\n"
+    for ((sec=5; sec>0; sec--)); do
+        echo -e "$sec...\n"
+        sleep 1
+    done
+    for file in $(cat $list_task_jd_scripts); do
+        echo -e "==================== 运行 $file.js 脚本 ====================\n"
+        $cmd_jtask $file now
+    done
 }
 
-## 正常运行单个脚本
-function Run_Normal {
-  Find_FileDir $1
-  if [[ ${FileName} ]] && [[ ${WhichDir} ]]
-  then
-    Import_Conf "${FileName}"
-    Detect_Cron
-    Count_UserSum
-    Set_Env all
-    [ $# -eq 1 ] && Random_Delay
-    LogTime=$(date "+%Y-%m-%d-%H-%M-%S")
-    LogFile="${LogDir}/${FileName}/${LogTime}.log"
-    [ ! -d ${LogDir}/${FileName} ] && mkdir -p ${LogDir}/${FileName}
-    cd ${WhichDir}
-    node ${FileName}.js 2>&1 | tee ${LogFile}
-  else
-    echo -e "\n在${ScriptsDir}、${ScriptsDir}/backUp、${ConfigDir}三个目录下均未检测到 $1 脚本的存在，请确认...\n"
-    Help
-  fi
+## 正常运行单个脚本，$1：传入参数
+run_normal () {
+    local p=$1
+    find_file_and_path $p
+    if [[ $file_name ]] && [[ $which_path ]]; then
+        import_config_and_check "$file_name"
+        update_crontab
+        count_user_sum
+        export_all_env all
+        [[ $# -eq 1 ]] && random_delay
+        log_time=$(date "+%Y-%m-%d-%H-%M-%S")
+        log_path="$dir_log/$file_name/$log_time.log"
+        make_dir "$dir_log/$file_name"
+        cd $which_path
+        node $file_name.js 2>&1 | tee $log_path
+    else
+        echo -e "\n $p 脚本不存在，请确认...\n"
+        usage
+    fi
 }
 
 ## 并发执行，因为是并发，所以日志只能直接记录在日志文件中（日志文件以Cookie编号结尾），前台执行并发跑时不会输出日志
 ## 并发执行时，设定的 RandomDelay 不会生效，即所有任务立即执行
-function Run_Concurrent {
-  Find_FileDir $1
-  if [[ ${FileName} ]] && [[ ${WhichDir} ]]
-  then
-    Import_Conf "${FileName}"
-    Detect_Cron
-    Count_UserSum
-    [ ! -d ${LogDir}/${FileName} ] && mkdir -p ${LogDir}/${FileName}
-    LogTime=$(date "+%Y-%m-%d-%H-%M-%S")
-    echo -e "\n各账号间已经在后台开始并发执行，前台不输入日志，日志直接写入文件中。\n\n并发执行不会释放进程，如果是容器，请经常重启容器，如果是物理机，请经常杀多余的node进程。\n"
-    for ((user_num=1; user_num<=${UserSum}; user_num++)); do
-      for num in ${TempBlockCookie}; do
-        [[ $user_num -eq $num ]] && continue 2
-      done
-      Set_Env $user_num
-      LogFile="${LogDir}/${FileName}/${LogTime}_$user_num.log"
-      cd ${WhichDir}
-      Run_Nohup ${FileName} >/dev/null 2>&1
-    done
-  else
-    echo -e "\n在${ScriptsDir}、${ScriptsDir}/backUp、${ConfigDir}三个目录下均未检测到 $1 脚本的存在，请确认...\n"
-    Help
-  fi
+run_concurrent () {
+    local p=$1
+    find_file_and_path $p
+    if [[ $file_name ]] && [[ $which_path ]]; then
+        import_config_and_check "$file_name "
+        update_crontab
+        count_user_sum
+        make_dir $dir_log/$file_name
+        log_time=$(date "+%Y-%m-%d-%H-%M-%S")
+        echo -e "\n各账号间已经在后台开始并发执行，前台不输入日志，日志直接写入文件中。\n"
+        for ((user_num=1; user_num<=$user_sum; user_num++)); do
+            for num in ${TempBlockCookie}; do
+                [[ $user_num -eq $num ]] && continue 2
+            done
+            export_all_env $user_num
+            log_path="$dir_log/$file_name}/$log_time_$user_num.log"
+            cd $which_path
+            node $file_name.js > $log_path 2>&1 &
+        done
+    else
+        echo -e "\n $p 脚本不存在，请确认...\n"
+        usage
+    fi
 }
 
 ## 命令检测
 case $# in
-  0)
-    echo
-    Help
-    ;;
-  1)
-    case $1 in
-      hangup)
-        Run_HangUp
+    0)
+        echo
+        usage
         ;;
-      resetpwd)
-        Reset_Pwd
+    1)
+        case $1 in
+            hangup)
+                run_hungup
+                ;;
+            resetpwd)
+                reset_user_password
+                ;;
+            runall)
+                run_all_jd_scripts
+                ;;
+            *)
+                run_normal $1
+                ;;
+        esac
         ;;
-      runall)
-        Run_All
+    2)
+        case $2 in
+            now)
+                run_normal $1 $2
+                ;;
+            conc)
+                run_concurrent $1 $2
+                ;;
+            *)
+                echo -e "\n命令输入错误...\n"
+                usage
+                ;;
+        esac
         ;;
-      *)
-        Run_Normal $1
+    *)
+        echo -e "\n命令过多...\n"
+        usage
         ;;
-    esac
-    ;;
-  2)
-    case $2 in
-      now)
-        Run_Normal $1 $2
-        ;;
-      conc)
-        Run_Concurrent $1 $2
-        ;;
-      *)
-        echo -e "\n命令输入错误...\n"
-        Help
-        ;;
-    esac
-    ;;
-  *)
-    echo -e "\n命令过多...\n"
-    Help
-    ;;
 esac

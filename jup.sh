@@ -10,30 +10,20 @@ send_mark=$dir_shell/send_mark
 ## 导入通用变量与函数
 . $dir_shell/jshare.sh
 
-## 导入配置文件，不检验
+## 导入配置文件，检测平台
 import_config_no_check jup
+detect_termux
+detect_macos
 
 ## 命令识别
 detect_termux
 detect_macos
-if [[ $JD_DIR ]]; then
-    cmd_jtask=jtask
-    cmd_otask=otask
-elif [[ $is_termux -eq 1 ]]; then
-    link_shell "/data/data/com.termux/files/usr/bin/jtask" "$dir_shell/jtask.sh"
-    link_shell "/data/data/com.termux/files/usr/bin/otask" "$dir_shell/jtask.sh"
-    cmd_jtask="bash jtask"
-    cmd_otask="bash otask"
-elif [[ $PATH == */usr/local/bin* ]] && [ -x $dir_shell/jtask.sh ]; then
-    link_shell "/usr/local/bin/jtask" "$dir_shell/jtask.sh"
-    link_shell "/usr/local/bin/otask" "$dir_shell/jtask.sh"
-    cmd_jtask=jtask
-    cmd_otask=otask
-fi
+link_shell
+define_cmd
 
 ## 更新crontab，gitee服务器同一时间限制5个链接，因此每个人更新代码必须错开时间，每次执行git_pull随机生成。
 ## 每天次数随机，更新时间随机，更新秒数随机，至少6次，至多12次，大部分为8-10次，符合正态分布。
-random_update_cron () {
+random_update_jup_cron () {
     if [[ $(date "+%-H") -le 2 ]] && [ -f $list_crontab_user ]; then
         local random_min=$(gen_random_num 60)
         local random_sleep=$(gen_random_num 56)
@@ -216,14 +206,10 @@ detect_config_version () {
 
 ## npm install 子程序，判断是否为安卓，判断是否安装有yarn
 npm_install_sub () {
-    if [[ $(detect_termux) -eq 1 ]]; then
-        npm install --no-bin-links --registry=https://registry.npm.taobao.org || npm install --no-bin-links
-    elif type yarn >/dev/null 2>&1; then
-        echo -e "检测到本机安装了 yarn，使用 yarn 替代 npm...\n"
-        yarn install --registry=https://registry.npm.taobao.org || yarn install
-    else
-        npm install --registry=https://registry.npm.taobao.org || npm install
-    fi
+    local cmd_1 cmd_2
+    type yarn >/dev/null 2>&1 && cmd_1=yarn || cmd_1=npm
+    [[ $is_termux -eq 1 ]] && cmd_2="--no-bin-links" || cmd_2=""
+    $cmd_1 install $cmd_2 --registry=https://registry.npm.taobao.org || $cmd_1 install $cmd_2
 }
 
 ## npm install，$1：package.json文件所在路径
@@ -392,13 +378,13 @@ echo "
 
 jd_scripts目录：$dir_scripts
 
-DIY脚本目录：$dir_own
+own脚本目录：$dir_own
 
 --------------------------------------------------------------
 "
 
 ## 更新jup任务的cron
-random_update_cron
+random_update_jup_cron
 
 ## 重置仓库romote url
 if [[ $JD_DIR ]] && [[ $ENABLE_RESET_REPO_URL == true ]]; then
@@ -414,6 +400,7 @@ if [[ $exit_status -eq 0 ]]; then
     [ ! -d $dir_panel/node_modules ] && npm_install_1 $dir_panel
     [ -f $dir_panel/package.json ] && panel_depend_new=$(cat $dir_panel/package.json)
     [[ "$panel_depend_old" != "$panel_depend_new" ]] && npm_install_2 $dir_panel
+    make_dir $dir_config
     cp -f $file_config_sample $dir_config/config.sample.sh
     update_docker_entrypoint
     detect_config_version
@@ -474,10 +461,13 @@ fi
 
 ## 调用用户自定义的diy.sh
 if [[ ${EnableExtraShell} == true ]]; then
-  if [ -f $file_diy_shell ]
-  then
-    . $file_diy_shell
-  else
-    echo -e "$file_diy_shell文件不存在，跳过执行DIY脚本...\n"
-  fi
+    if [ -f $file_diy_shell ]
+    then
+        echo -e "--------------------------------------------------------------\n"
+        . $file_diy_shell
+    else
+        echo -e "$file_diy_shell文件不存在，跳过执行DIY脚本...\n"
+    fi
 fi
+
+exit 0

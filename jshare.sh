@@ -175,12 +175,54 @@ gen_random_num () {
     echo $((${RANDOM} % $divi))
 }
 
-## 创建软连接并确定命令形式，$1：软连接文件路径，$2：要连接的对象
-link_shell () {
+## 创建软连接的子函数，$1：软连接文件路径，$2：要连接的对象
+link_shell_sub () {
     local link_path="$1"
     local original_path="$2"
     if [ ! -L $link_path ] || [[ $(readlink -f $link_path) != $original_path ]]; then
-        rm -f $link_path
+        rm -f $link_path 2>/dev/null
         ln -sf $original_path $link_path
+    fi
+}
+
+## 创建软连接
+link_shell () {
+    if [[ $is_termux -eq 1 ]]; then
+        link_shell_sub "/data/data/com.termux/files/usr/bin/jtask" "$dir_shell/jtask.sh"
+        link_shell_sub "/data/data/com.termux/files/usr/bin/otask" "$dir_shell/jtask.sh"
+        link_shell_sub "/data/data/com.termux/files/usr/bin/jcsv" "$dir_shell/jcsv.sh"
+        link_shell_sub "/data/data/com.termux/files/usr/bin/jlog" "$dir_shell/jlog.sh"
+        link_shell_sub "/data/data/com.termux/files/usr/bin/jpanel" "$dir_shell/jpanel.sh"
+        link_shell_sub "/data/data/com.termux/files/usr/bin/jup" "$dir_shell/jup.sh"
+    elif [[ $PATH == */usr/local/bin* ]] && [ -d /usr/local/bin ]; then
+        link_shell_sub "/usr/local/bin/jtask" "$dir_shell/jtask.sh"
+        link_shell_sub "/usr/local/bin/otask" "$dir_shell/jtask.sh"
+        link_shell_sub "/usr/local/bin/jcsv" "$dir_shell/jcsv.sh"
+        link_shell_sub "/usr/local/bin/jlog" "$dir_shell/jlog.sh"
+        link_shell_sub "/usr/local/bin/jpanel" "$dir_shell/jpanel.sh"
+        link_shell_sub "/usr/local/bin/jup" "$dir_shell/jup.sh"
+    else
+        echo -e "脚本功能受限，请自行添加命令的软连接...\n"
+    fi
+}
+
+## 定义各命令
+define_cmd () {
+    if type jtask >/dev/null 2>&1; then
+        if [ -x "$dir_shell/jtask.sh" ]; then
+            cmd_jtask=jtask
+            cmd_otask=otask
+        else
+            cmd_jtask="bash jtask"
+            cmd_otask="bash otask"
+        fi
+    else
+        if [ -x "$dir_shell/jtask.sh" ]; then
+            cmd_jtask="$dir_shell/jtask.sh"
+            cmd_otask="$dir_shell/otask.sh"
+        else
+            cmd_jtask="bash $dir_shell/jtask.sh"
+            cmd_otask="bash $dir_shell/otask.sh"
+        fi
     fi
 }
