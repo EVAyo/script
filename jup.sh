@@ -260,7 +260,7 @@ del_cron () {
         
         echo -e "开始尝试自动删除定时任务...\n"
         for cron in $detail; do
-            perl -i -ne "{print unless # $type $cron( |$)#}" $list_crontab_user
+            perl -i -ne "{print unless | $type $cron( \|$)|}" $list_crontab_user
         done
         crontab $list_crontab_user
         detail2=$(echo $detail | perl -pe "s| |\\\n|g")
