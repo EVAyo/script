@@ -265,7 +265,7 @@ del_cron () {
         done
         crontab $list_crontab_user
         detail2=$(echo $detail | perl -pe "s| |\\\n|g")
-        echo -e "成功删除失效的脚本与定时任务...\n"
+        echo -e "成功删除失效的 $type2 脚本定时任务...\n"
         notify "删除失效任务通知" "成功删除以下失效的定时任务（$type2）：\n$detail2"
     fi
 }
