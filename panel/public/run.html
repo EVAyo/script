@@ -20,7 +20,7 @@
         <div class="diffs">
             <nav>
                 <ul>
-                    <li><a href="./home">首页</a></li>
+                    <li><a href="./home">配置设定</a></li>
                     <li><a href="./crontab">定时设定</a></li>
                     <li><a href="./diff">对比工具</a></li>
                     <li><a href="./diy">自定义脚本</a></li>
@@ -38,10 +38,10 @@
                 <button id="move-bottom" title="跳转底部">跳转底部</button>
                 <br/>
                 <button id="jd_list" class="cmd-btn" title="列出脚本">列出脚本</button>
-                <button id="git_pull" title="更新脚本文件">更新脚本文件</button>
+                <button id="jup" title="更新脚本文件">更新脚本文件</button>
                 <button id="rm_log" class="cmd-btn" title="删除旧日志">删除旧日志</button>
                 <button id="jd_get_share_code" class="cmd-btn" title="获取互助码">获取互助码</button>
-                <button id="export_sharecodes" title="导出互助码">导出互助码</button>
+                <button id="jcode" title="导出互助码">导出互助码</button>
                 <button id="ps" title="查看进程">查看进程</button>
                 <button id="jd-crazy-joy-coin" title="查看挂机日志">查看挂机日志</button>
                 <button id="hangup" title="重启挂机程序">重启挂机程序</button>
@@ -80,15 +80,15 @@
                 switch (this.id) {
                     case 'rm_log':
                         confirmTxt = '确认删除旧日志？';
-                        cmd = 'bash rm_log.sh 2>&1 | tee log/rm_log.log';
+                        cmd = 'bash jlog.sh 2>&1 | tee log/jlog.log';
                         break;
                     case 'jd_list':
                         // confirmTxt = '';
-                        cmd = 'bash jd.sh';
+                        cmd = 'bash jtask.sh';
                         break;
                     case 'jd_get_share_code':
                         confirmTxt = '确认获取互助码？';
-                        cmd = `bash jd.sh ${this.id} now`;
+                        cmd = `bash jtask.sh ${this.id} now`;
                         break;
                     default:
                         break;
@@ -128,14 +128,14 @@
                 }, 1000);
             });
 
-            $('#hangup, #resetpwd, #export_sharecodes, #git_pull, #ps, #jd-crazy-joy-coin').click(function() {
+            $('#hangup, #resetpwd, #jcode, #jup, #ps, #jd-crazy-joy-coin').click(function() {
                 let confirmTxt, cmd;
                 switch (this.id) {
-                    case 'git_pull':
+                    case 'jup':
                         confirmTxt = '确认更新脚本文件？';
-                        cmd = 'bash git_pull.sh 2>&1 | tee -a log/git_pull.log';
+                        cmd = 'bash jup.sh 2>&1 | tee -a log/jup.log';
                         break;
-                    case 'export_sharecodes':
+                    case 'jcode':
                         confirmTxt = '确认导出互助码？';
                         cmd = `bash ${this.id}.sh`;
                         break;
@@ -149,11 +149,11 @@
                         break;
                     case 'hangup':
                         confirmTxt = '确认重启挂机程序？';
-                        cmd = `bash jd.sh ${this.id}`;
+                        cmd = `bash jtask.sh ${this.id}`;
                         break;
                     case 'resetpwd':
                         confirmTxt = '重置用户名密码？';
-                        cmd = `bash jd.sh ${this.id}`;
+                        cmd = `bash jtask.sh ${this.id}`;
                         break;
                     default:
                         break;
@@ -202,7 +202,7 @@
                 }
                 editor.setValue('');
 
-                const cmd = `bash jd.sh ${jdScript} now`;
+                const cmd = `bash jtask.sh ${jdScript} now`;
                 $.post('./runCmd', {cmd: cmd, delay: 1000}, function (data) {
                     editor.setValue(data.msg);
 
