@@ -24,11 +24,13 @@ echo -e "======================== 3. 检测配置文件 ========================
 if [ -s ${JD_DIR}/config/crontab.list ]
 then
     echo -e "检测到config配置目录下存在crontab.list，自动导入定时任务...\n"
+    perl -i -pe "{s|CMD_UPDATE|jup|g; s|CMD_RMLOG|jlog|g; s|CMD_CODE|jcode|g; s|CMD_JTASK|jtask|g}" ${JD_DIR}/config/crontab.list
     crontab ${JD_DIR}/config/crontab.list
     echo -e "成功添加定时任务...\n"
 else
     echo -e "检测到config配置目录下不存在crontab.list，从示例文件复制一份用于初始化...\n"
-    cp -fv ${JD_DIR}/sample/docker.sample.list ${JD_DIR}/config/crontab.list
+    cp -fv ${JD_DIR}/sample/crontab.sample.list ${JD_DIR}/config/crontab.list
+    perl -i -pe "{s|CMD_UPDATE|jup|g; s|CMD_RMLOG|jlog|g; s|CMD_CODE|jcode|g; s|CMD_JTASK|jtask|g}" ${JD_DIR}/config/crontab.list
     echo
     crontab ${JD_DIR}/config/crontab.list
     echo -e "成功添加定时任务...\n"
