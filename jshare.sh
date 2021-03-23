@@ -13,7 +13,7 @@ dir_scripts_node_modules=$dir_scripts/node_modules
 file_config_sample=$dir_sample/config.sample.sh
 file_cookie=$dir_config/cookie.sh
 file_config_user=$dir_config/config.sh
-file_auth_sample=$dir_sample/auth.json
+file_auth_sample=$dir_sample/auth.sample.json
 file_auth_user=$dir_config/auth.json
 file_diy_shell=$dir_config/diy.sh
 
