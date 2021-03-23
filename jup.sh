@@ -146,7 +146,7 @@ gen_list_own () {
             fi
         done
     done
-    grep -E "$cmd_otask " $list_crontab_user | perl -pe "s|.*$cmd_otask ([\w-\/]+\w+).*|\2|" | sort -u > $list_own_user
+    grep -E "$cmd_otask " $list_crontab_user | perl -pe "s|.*$cmd_otask ([^\s]+)( \|$)|\1|" | sort -u > $list_own_user
     cd $dir_current
 }
 
@@ -157,6 +157,7 @@ diff_cron () {
     local list_task="$2"
     local list_add="$3"
     local list_drop="$4"
+    perl -i -pe -0777 "s|\n+|\n|g" 
     if [ -s $list_task ]; then
         grep -vwf $list_task $list_scripts > $list_add
     else
