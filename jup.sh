@@ -158,12 +158,12 @@ diff_cron () {
     local list_add="$3"
     local list_drop="$4"
     perl -i -pe -0777 "s|\n+|\n|g" 
-    if [ -s $list_task ]; then
+    if [ ! -s $list_task ]; then
         grep -vwf $list_task $list_scripts > $list_add
     else
         cp -f $list_scripts $list_add
     fi
-    if [ -s $list_scripts ]; then
+    if [ ! -s $list_scripts ]; then
         grep -vwf $list_scripts $list_task > $list_drop
     else
         cp -f $list_task $list_drop
