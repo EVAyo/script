@@ -258,14 +258,14 @@ del_cron () {
         [[ $type == jtask ]] && type2="jd_scipts脚本" 
         [[ $type == otask ]] && type2="own脚本"
         
-        echo -e "开始尝试自动删除定时任务...\n"
+        echo -e "开始尝试自动删除$type2的定时任务...\n"
         for cron in $detail; do
             local tmp=$(echo $cron | perl -pe "s|/|\.|g")
             perl -i -ne "{print unless / $type $tmp( |$)/}" $list_crontab_user
         done
         crontab $list_crontab_user
         detail2=$(echo $detail | perl -pe "s| |\\\n|g")
-        echo -e "成功删除失效的 $type2 脚本定时任务...\n"
+        echo -e "成功删除失效的$type2的定时任务...\n"
         notify "删除失效任务通知" "成功删除以下失效的定时任务（$type2）：\n$detail2"
     fi
 }
@@ -275,7 +275,7 @@ del_cron () {
 add_cron_jd_scripts () {
     local list_add=$1
     if [[ ${AutoAddCron} == true ]] && [ -s $list_add ] && [ -s $list_crontab_user ]; then
-        echo -e "开始尝试自动添加 jd_scipts 定时任务...\n"
+        echo -e "开始尝试自动添加 jd_scipts 的定时任务...\n"
         local detail=$(cat $list_add)
         for cron in $detail; do
             if [[ $cron == jd_bean_sign ]]; then
@@ -297,7 +297,7 @@ add_cron_own () {
     [ -f $list_crontab_own_tmp ] && rm -f $list_crontab_own_tmp
 
     if [[ ${AutoAddOwnCron} == true ]] && [ -s $list_add ] && [ -s $list_crontab_user ]; then
-        echo -e "开始尝试自动添加 own 脚本定时任务...\n"
+        echo -e "开始尝试自动添加 own 脚本的定时任务...\n"
         local detail=$(cat $list_add)
         for file_full_path in $detail; do
             local file_name=$(echo $file_full_path | awk -F "/" '{print $NF}')
