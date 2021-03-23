@@ -258,7 +258,7 @@ run_concurrent () {
     local p=$1
     find_file_and_path $p
     if [[ $file_name ]] && [[ $which_path ]]; then
-        import_config_and_check "$file_name "
+        import_config_and_check "$file_name"
         update_crontab
         count_user_sum
         make_dir $dir_log/$file_name
