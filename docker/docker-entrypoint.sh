@@ -48,19 +48,23 @@ fi
 
 echo -e "======================== 4. 启动网页终端 ========================\n"
 rm -rf /root/.pm2/logs/* 2>/dev/null  # 清空pm2日志
-if [[ $ENABLE_TTYD == true ]]; then
-    pm2 start ttyd --name="ttyd" -- "-t fontSize=14 -t disableLeaveAlert=true -t rendererType=webgl bash"
-    if [[ $? -eq 0 ]]; then
-        echo -e "网页终端启动成功...\n"
-    else
-        echo -e "网页终端启动失败，但容器将继续启动...\n"
+if [[ $ENABLE_WEB_PANEL == true ]]; then
+    if [[ $ENABLE_TTYD == true ]]; then
+        pm2 start ttyd --name="ttyd" -- "-t fontSize=14 -t disableLeaveAlert=true -t rendererType=webgl bash"
+        if [[ $? -eq 0 ]]; then
+            echo -e "网页终端启动成功...\n"
+        else
+            echo -e "网页终端启动失败，但容器将继续启动...\n"
+        fi
+    elif [[ $ENABLE_TTYD == false ]]; then
+        echo -e "已设置为不自动启动网页终端，跳过...\n"
     fi
-elif [[ $ENABLE_TTYD == false ]]; then
-    echo -e "已设置为不自动启动网页终端，跳过...\n"
+else
+    echo -e "已设置为不自动启动控制面板，因此也不启动网页终端...\n"
 fi
 
 echo -e "======================== 5. 启动控制面板 ========================\n"
-if [[ ${ENABLE_WEB_PANEL} == true ]]; then
+if [[ $ENABLE_WEB_PANEL == true ]]; then
     cd ${JD_DIR}/panel
     pm2 start ecosystem.config.js
     if [[ $? -eq 0 ]]; then
@@ -70,7 +74,7 @@ if [[ ${ENABLE_WEB_PANEL} == true ]]; then
     else
         echo -e "控制面板启动失败，但容器将继续启动...\n"
     fi
-elif [[ ${ENABLE_WEB_PANEL} == false ]]; then
+elif [[ $ENABLE_WEB_PANEL == false ]]; then
     echo -e "已设置为不自动启动控制面板，跳过...\n"
 fi
 
