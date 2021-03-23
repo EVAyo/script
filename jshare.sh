@@ -64,9 +64,9 @@ var_name=(
     ForOtherGlobal
 )
 
-## 所有有互助码的活动，把脚本名称列在 code_name1 中，将其中文名称列在 code_name2 中，对应 config.sh 中互助码后缀列在 code_name3 中即可。
-## code_name1、code_name2 和 code_name3 中的三个名称必须一一对应。
-code_name_1=(
+## 所有有互助码的活动，把脚本名称列在 name_js 中，对应 config.sh 中互助码后缀列在 name_config 中，中文名称列在 name_chinese 中。
+## name_js、name_config 和 name_chinese 中的三个名称必须一一对应。
+name_js=(
     jd_fruit
     jd_pet
     jd_plantBean
@@ -81,22 +81,7 @@ code_name_1=(
     jd_cfd
     jd_global
 )
-code_name_2=(
-    东东农场
-    东东萌宠
-    京东种豆得豆
-    京喜工厂
-    东东工厂
-    crazyJoy任务
-    京东赚赚
-    京喜农场
-    口袋书店
-    签到领现金
-    闪购盲盒
-    京喜财富岛
-    环球挑战赛
-)
-code_name_3=(
+name_config=(
     Fruit
     Pet
     Bean
@@ -111,6 +96,22 @@ code_name_3=(
     Cfd
     Global
 )
+name_chinese=(
+    东东农场
+    东东萌宠
+    京东种豆得豆
+    京喜工厂
+    东东工厂
+    crazyJoy任务
+    京东赚赚
+    京喜农场
+    口袋书店
+    签到领现金
+    闪购盲盒
+    京喜财富岛
+    环球挑战赛
+)
+
 
 ## 导入配置文件并校验，$1：任务名称
 import_config_and_check () {
@@ -161,7 +162,11 @@ make_dir () {
 
 ## 检测termux
 detect_termux () {
-    [[ ${ANDROID_RUNTIME_ROOT}${ANDROID_ROOT} ]] && is_termux=1 || is_termux=0
+    if [[ ${ANDROID_RUNTIME_ROOT}${ANDROID_ROOT} ]] || [[ $PATH == *com.termux* ]]; then
+        is_termux=1
+    else
+        is_termux=0
+    fi
 }
 
 ## 检测macos

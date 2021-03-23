@@ -1,110 +1,136 @@
 #!/usr/bin/env bash
 
 ## 路径、环境判断
-ShellDir=${JD_DIR:-$(cd $(dirname $0); pwd)}
-LogDir=${ShellDir}/log
-ConfigDir=${ShellDir}/config
-FileConf=${ConfigDir}/config.sh
-[[ ${ANDROID_RUNTIME_ROOT}${ANDROID_ROOT} ]] && Opt="P" || Opt="E"
-Tips="从日志中未找到任何互助码"
+dir_shell=$(dirname $(readlink -f "$0"))
+dir_root=$dir_shell
 
-## 导出互助码的通用程序
-function Cat_Scodes {
-  if [ -d ${LogDir}/jd_$1 ] && [[ $(ls ${LogDir}/jd_$1) != "" ]]; then
-    cd ${LogDir}/jd_$1
-    
-    ## 导出助力码变量（My）
-    for log in $(ls -r); do
-      case $# in
-        2)
-          codes=$(cat ${log} | grep -${Opt} "开始【京东账号|您的(好友)?助力码为" | uniq | perl -0777 -pe "{s|\*||g; s|开始||g; s|\n您的(好友)?助力码为(：)?:?|：|g; s|，.+||g}" | sed -r "s/【京东账号/My$2/;s/】.*?：/='/;s/】.*?/='/;s/$/'/;s/\(每次运行都变化,不影响\)//")
-          ;;
-        3)
-          codes=$(grep -${Opt} $3 ${log} | uniq | sed -r "s/【京东账号/My$2/;s/（.*?】/='/;s/$/'/")
-          ;;
-      esac
-      if [[ ${codes} ]]; then
-        ## 添加判断，若未找到该用户互助码，则设置为空值
-        for ((user_num=1;user_num<=${UserSum};user_num++)); do
-          echo -e "${codes}" | grep -${Opt}q "My$2${user_num}="
-          if [ $? -eq 1 ]; then
-            if [ $user_num == 1 ]; then
-              codes=$(echo "${codes}" | sed -r "1i My${2}1=''")
-            else
-              codes=$(echo "${codes}" | sed -r "/My$2$(expr ${user_num} - 1)=/a\My$2${user_num}=''")
-            fi
-          fi
-        done
-        break
-      fi
+## 导入通用变量与函数
+. $dir_shell/jshare.sh
+
+## 导入配置文件，检测平台，确定命令
+import_config_no_check
+count_user_sum
+detect_termux
+[[ $is_termux -eq 1 ]] && opt=P || opt=E
+tips="从日志中未找到任何互助码"
+
+## 生成pt_pin清单
+gen_pt_pin_array () {
+    local tmp1 tmp2 i pt_pin_temp
+    for ((user_num=1; user_num<=$user_sum; user_num++)); do
+        tmp1=Cookie$user_num
+        tmp2=${!tmp1}
+        i=$(($user_num - 1))
+        pt_pin_temp=$(echo $tmp2 | perl -pe "{s|.*pt_pin=([^;]+)(?=;).*|\1|; s|%|\\\x|g}")
+        pt_pin[i]=$(printf $pt_pin_temp)
     done
+}
 
-    ## 导出为他人助力变量（ForOther）
-    if [[ ${codes} ]]; then
-      help_code=""
-      for ((user_num=1;user_num<=${UserSum};user_num++)); do
-        echo -e "${codes}" | grep -${Opt}q "My$2${user_num}=''"
-        if [ $? -eq 1 ]; then
-          help_code=${help_code}"\${My"$2${user_num}"}@"
+## 导出互助码的通用程序，$1：去掉后缀的脚本名称，$2：config.sh中的后缀，$3：活动中文名称
+export_codes_sub () {
+    local task_name=$1
+    local config_name=$2
+    local chinese_name=$3
+    local config_name_my=My$config_name
+    local config_name_for_other=ForOther$config_name
+    local i j k m n tmp_grep tmp_my_code tmp_for_other
+    if [ -d $dir_log/$task_name ] && [[ $(ls $dir_log/$task_name) ]]; then
+        cd $dir_log/$task_name
+
+        ## 寻找所有互助码以及对应的pt_pin
+        for log in $(ls -r); do
+            i=0
+            tmp_grep=$(grep -$opt "的$chinese_name好友互助码" $log | perl -pe "s| ||g" | uniq)
+            for line in $tmp_grep; do
+                pt_pin_in_code[i]=$(echo $line | awk -F "（|）" '{print $2}')
+                code[i]=$(echo $line | awk -F "】" '{print $2}')
+                let i++
+            done
+            [[ ${#code[*]} -gt 0 ]] && break
+        done
+
+        ## 输出My系列变量
+        if [[ ${#code[*]} -gt 0 ]]; then
+            for ((m=0; m<${#pt_pin[*]}; m++)); do
+                j=$((m + 1))
+                for ((n=0; n<${#code[*]}; n++)); do
+                    tmp_my_code=""
+                    if [[ ${pt_pin[m]} == ${pt_pin_in_code[n]} ]]; then
+                        tmp_my_code=${code[n]}
+                        break
+                    fi
+                done
+                echo "$config_name_my$j='$tmp_my_code'"
+            done
+        else
+            echo $tips
         fi
-      done
-      ## 生成互助规则模板
-      for_other_codes=""
-      case $HelpType in
-        0) ### 统一优先级助力模板
-          new_code=$(echo ${help_code} | sed "s/@$//")
-          for ((user_num=1;user_num<=${UserSum};user_num++)); do
-            if [ $user_num == 1 ]; then
-              for_other_codes=${for_other_codes}"ForOther"$2${user_num}"=\""${new_code}"\"\n"
-            else
-              for_other_codes=${for_other_codes}"ForOther"$2${user_num}"=\"\${ForOther"${2}1"}\"\n"
-            fi
-          done
-          ;;
-        1) ### 均匀助力模板
-          for ((user_num=1;user_num<=${UserSum};user_num++)); do
-            echo ${help_code} | grep "\${My"$2${user_num}"}@" > /dev/null
-            if [ $? -eq 0 ]; then
-              left_str=$(echo ${help_code} | sed "s/\${My$2${user_num}}@/ /g" | awk '{print $1}')
-              right_str=$(echo ${help_code} | sed "s/\${My$2${user_num}}@/ /g" | awk '{print $2}')
-              mark="\${My$2${user_num}}@"
-            else
-              left_str=$(echo ${help_code} | sed "s/${mark}/ /g" | awk '{print $1}')${mark}
-              right_str=$(echo ${help_code} | sed "s/${mark}/ /g" | awk '{print $2}')
-            fi
-            new_code=$(echo ${right_str}${left_str} | sed "s/@$//")
-            for_other_codes=${for_other_codes}"ForOther"$2${user_num}"=\""${new_code}"\"\n"
-          done
-          ;;
-        *) ### 普通优先级助力模板
-          for ((user_num=1;user_num<=${UserSum};user_num++)); do
-            new_code=$(echo ${help_code} | sed "s/\${My"$2${user_num}"}@//;s/@$//")
-            for_other_codes=${for_other_codes}"ForOther"$2${user_num}"=\""${new_code}"\"\n"
-          done
-          ;;
-      esac
-      echo -e "${codes}\n\n${for_other_codes}" | sed s/[[:space:]]//g
+
+        ## 输入ForOther系列变量
+        if [[ ${#code[*]} -gt 0 ]]; then
+            echo
+            case $HelpType in
+                0)  ## 全部一致
+                    tmp_for_other=""
+                    for ((m=0; m<${#pt_pin[*]}; m++)); do
+                        j=$((m + 1))
+                        tmp_for_other="$tmp_for_other@\${$config_name_my$j}"
+                    done
+                    echo "${config_name_for_other}1=\"$tmp_for_other\"" | perl -pe "s|($config_name_for_other\d+=\")@|\1|"
+                    for ((m=1; m<${#pt_pin[*]}; m++)); do
+                        j=$((m + 1))
+                        echo "$config_name_for_other$j=\"\${${config_name_for_other}1}\""
+                    done
+                    ;;
+
+                1)  ## 均等助力
+                    for ((m=0; m<${#pt_pin[*]}; m++)); do
+                        tmp_for_other=""
+                        j=$((m + 1))
+                        for ((n=$m; n<$(($user_sum + $m)); n++)); do
+                            [[ $m -eq $n ]] && continue
+                            if [[ $((n + 1)) -le $user_sum ]]; then
+                                k=$((n + 1))
+                            else
+                                k=$((n + 1 - $user_sum))
+                            fi
+                            tmp_for_other="$tmp_for_other@\${$config_name_my$k}"
+                        done
+                        echo "$config_name_for_other$j=\"$tmp_for_other\"" | perl -pe "s|($config_name_for_other\d+=\")@|\1|"
+                    done
+                    ;;
+
+                *)  ## 按编号优先
+                    for ((m=0; m<${#pt_pin[*]}; m++)); do
+                        tmp_for_other=""
+                        j=$((m + 1))
+                        for ((n=0; n<${#pt_pin[*]}; n++)); do
+                            [[ $m -eq $n ]] && continue
+                            k=$((n + 1))
+                            tmp_for_other="$tmp_for_other@\${$config_name_my$k}"
+                        done
+                        echo "$config_name_for_other$j=\"$tmp_for_other\"" | perl -pe "s|($config_name_for_other\d+=\")@|\1|"
+                    done
+                    ;;
+            esac
+        fi
     else
-      echo ${Tips}
+        echo "未运行过 $1.js 脚本，未产生日志"
     fi
-  else
-    echo "未运行过 jd_$1 脚本，未产生日志"
-  fi
 }
 
-
-## 汇总
-function Cat_All {
-  echo -e "\n从最后一个日志提取互助码，受日志内容影响，仅供参考。"
-  for ((i=0; i<${#Name1[*]}; i++)); do
-    echo -e "\n${Name2[i]}："
-    [[ $(Cat_Scodes "${Name1[i]}" "${Name3[i]}" "的${Name2[i]}好友互助码") == ${Tips} ]] && Cat_Scodes "${Name1[i]}" "${Name3[i]}" || Cat_Scodes "${Name1[i]}" "${Name3[i]}" "的${Name2[i]}好友互助码"
-  done
+## 汇总输出
+export_all_codes () {
+    gen_pt_pin_array
+    echo -e "\n从最后一个日志提取互助码，受日志内容影响，仅供参考。\n\n即使某个MyXxx变量未赋值，也可以将其变量名填在ForOtherXxx中，jtask脚本会将空值处理掉。"
+    for ((i=0; i<${#name_js[*]}; i++)); do
+        echo -e "\n${name_chinese[i]}："
+        export_codes_sub "${name_js[i]}" "${name_config[i]}" "${name_chinese[i]}"
+    done
 }
-
 
 ## 执行并写入日志
-LogTime=$(date "+%Y-%m-%d-%H-%M-%S")
-LogFile="${LogDir}/export_sharecodes/${LogTime}.log"
-[ ! -d "${LogDir}/export_sharecodes" ] && mkdir -p ${LogDir}/export_sharecodes
-Import_Conf && Count_UserSum && Cat_All | perl -pe "{s|京东种豆|种豆|; s|crazyJoy任务|疯狂的JOY|}" | tee ${LogFile}
+log_time=$(date "+%Y-%m-%d-%H-%M-%S")
+log_path="$dir_log/jcode/$log_time.log"
+make_dir "$dir_log/jcode"
+export_all_codes | perl -pe "{s|京东种豆|种豆|; s|crazyJoy任务|疯狂的JOY|}" | tee $log_path
