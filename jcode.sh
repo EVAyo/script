@@ -8,7 +8,7 @@ dir_root=$dir_shell
 . $dir_shell/jshare.sh
 
 ## 导入配置文件，检测平台，确定命令
-import_config_no_check
+import_config_and_check
 count_user_sum
 detect_termux
 [[ $is_termux -eq 1 ]] && opt=P || opt=E
