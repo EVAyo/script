@@ -10,12 +10,8 @@ send_mark=$dir_shell/send_mark
 ## 导入通用变量与函数
 . $dir_shell/jshare.sh
 
-## 导入配置文件，检测平台
+## 导入配置文件，检测平台，创建软连接，识别命令
 import_config_no_check jup
-detect_termux
-detect_macos
-
-## 命令识别
 detect_termux
 detect_macos
 link_shell
