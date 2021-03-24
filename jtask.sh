@@ -215,6 +215,7 @@ reset_user_password () {
 
 ## 一次性运行所有jd_scripts脚本
 run_all_jd_scripts () {
+    define_cmd
     if [ ! -f $list_task_jd_scripts ]; then
         cat $list_crontab_jd_scripts | grep -E "j[drx]_\w+\.js" | perl -pe "s|.+(j[drx]_\w+)\.js.+|\1|" | sort -u > $list_task_jd_scripts
     fi
