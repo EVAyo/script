@@ -248,7 +248,6 @@ define_cmd () {
     fi
     for ((i=0; i<${#link_name[*]}; i++)); do
         export cmd_${link_name[i]}="${cmd_prefix}${link_name[i]}${cmd_suffix}"
-        echo "cmd_${link_name[i]}=${cmd_prefix}${link_name[i]}${cmd_suffix}"
     done
 }
 
