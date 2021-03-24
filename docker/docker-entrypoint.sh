@@ -16,7 +16,6 @@ if [ ! -d $JD_DIR/own ]; then
 fi
 
 echo -e "\n======================== 2. 更新源代码 ========================\n"
-crond -f
 jup
 echo
 
@@ -95,8 +94,6 @@ fi
 
 echo -e "容器启动成功...\n"
 
-# if [ "${1#-}" != "${1}" ] || [ -z "$(command -v "${1}")" ]; then
-    # set -- node "$@"
-# fi
+crond -f
 
 exec "$@"
