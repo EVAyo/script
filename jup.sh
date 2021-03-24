@@ -107,7 +107,7 @@ gen_own_dir_and_path () {
             local tmp2=OwnRepoBranch$i
             array_own_repo_branch[j]=${!tmp2}
             local tmp3=OwnRepoPath$i            
-            array_own_repo_dir[j]=$(echo ${array_own_repo_url[j]} | perl -pe "s|.+com/([\w-]+)/([\w-]+)(\.git)?|\1_\2|")
+            array_own_repo_dir[j]=$(echo ${array_own_repo_url[j]} | perl -pe "s|.+com(/\|:)([\w-]+)/([\w-]+)(\.git)?|\2_\3|")
             array_own_repo_path[j]=$dir_own/${array_own_repo_dir[j]}
             local tmp4="${array_own_repo_dir[j]}/${!tmp3}"
             local tmp5=$(echo $tmp4 | perl -pe "{s|//|/|g; s|/$||}")  # 去掉多余的/
