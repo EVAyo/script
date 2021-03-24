@@ -16,7 +16,7 @@ if [ ! -d $JD_DIR/own ]; then
 fi
 
 echo -e "\n======================== 2. 更新源代码 ========================\n"
-crond
+crond -f
 jup
 echo
 
