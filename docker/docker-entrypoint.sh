@@ -95,8 +95,8 @@ fi
 
 echo -e "容器启动成功...\n"
 
-if [ "${1#-}" != "${1}" ] || [ -z "$(command -v "${1}")" ]; then
-    set -- node "$@"
-fi
+# if [ "${1#-}" != "${1}" ] || [ -z "$(command -v "${1}")" ]; then
+    # set -- node "$@"
+# fi
 
 exec "$@"
