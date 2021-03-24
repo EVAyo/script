@@ -39,6 +39,8 @@ export_codes_sub () {
         ## 寻找所有互助码以及对应的pt_pin
         for log in $(ls -r); do
             i=0
+            pt_pin_in_code=()
+            code=()
             tmp_grep=$(grep -$opt "的$chinese_name好友互助码" $log | perl -pe "s| ||g" | uniq)
             for line in $tmp_grep; do
                 pt_pin_in_code[i]=$(echo $line | awk -F "（|）" '{print $2}')
