@@ -123,7 +123,7 @@ export_codes_sub () {
 ## 汇总输出
 export_all_codes () {
     gen_pt_pin_array
-    echo -e "\n从最后一个日志提取互助码，受日志内容影响，仅供参考。\n\n即使某个MyXxx变量未赋值，也可以将其变量名填在ForOtherXxx中，jtask脚本会自动过滤空值。"
+    echo -e "\n从最后一个日志提取互助码，编号和配置文件中Cookie编号完全对应，如果为空就是最新日志中没有。\n\n即使某个MyXxx变量未赋值，也可以将其变量名填在ForOtherXxx中，jtask脚本会自动过滤空值。"
     for ((i=0; i<${#name_js[*]}; i++)); do
         echo -e "\n${name_chinese[i]}："
         export_codes_sub "${name_js[i]}" "${name_config[i]}" "${name_chinese[i]}"
