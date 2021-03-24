@@ -51,9 +51,9 @@ export_codes_sub () {
         ## 输出My系列变量
         if [[ ${#code[*]} -gt 0 ]]; then
             for ((m=0; m<${#pt_pin[*]}; m++)); do
+                tmp_my_code=""
                 j=$((m + 1))
                 for ((n=0; n<${#code[*]}; n++)); do
-                    tmp_my_code=""
                     if [[ ${pt_pin[m]} == ${pt_pin_in_code[n]} ]]; then
                         tmp_my_code=${code[n]}
                         break

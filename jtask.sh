@@ -10,7 +10,7 @@ dir_root=$dir_shell
 ## 更新crontab
 update_crontab () {
     if [[ $(cat $list_crontab_user) != $(crontab -l) ]]; then
-        crontab ${ListCron}
+        crontab $list_crontab_user
     fi
 }
 
