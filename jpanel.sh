@@ -23,7 +23,7 @@ fi
 ## 运行ttyd和控制面板
 cd $dir_panel
 if type pm2 >/dev/null 2>&1; then
-    [[ $ttyd_status -eq 0 ]] && pm2 start $cmd --name="$cmd" -- $run_param
+    [[ $ttyd_status -eq 0 ]] && pm2 start /usr/local/bin/ttyd --name="$cmd" -- $run_param
     pm2 start ecosystem.config.js
 else
     [[ $ttyd_status -eq 0 ]] && nohup $cmd $run_param >/dev/null 2>&1 &
