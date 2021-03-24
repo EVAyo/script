@@ -32,22 +32,19 @@ export_codes_sub () {
     local chinese_name=$3
     local config_name_my=My$config_name
     local config_name_for_other=ForOther$config_name
-    local i j k m n tmp_grep tmp_my_code tmp_for_other
+    local i j k m n pt_pin_in_log code tmp_grep tmp_my_code tmp_for_other
     if [ -d $dir_log/$task_name ] && [[ $(ls $dir_log/$task_name) ]]; then
         cd $dir_log/$task_name
 
         ## 寻找所有互助码以及对应的pt_pin
-        for log in $(ls -r); do
-            i=0
-            pt_pin_in_code=()
-            code=()
-            tmp_grep=$(grep -$opt "的$chinese_name好友互助码" $log | perl -pe "s| ||g" | uniq)
-            for line in $tmp_grep; do
-                pt_pin_in_code[i]=$(echo $line | awk -F "（|）" '{print $2}')
-                code[i]=$(echo $line | awk -F "】" '{print $2}')
-                let i++
-            done
-            [[ ${#code[*]} -gt 0 ]] && break
+        i=0
+        pt_pin_in_log=()
+        code=()
+        tmp_grep=$(cat *.log | grep -$opt "的$chinese_name好友互助码" | perl -pe "s| ||g" | awk -F "（|）|】" '{print $2 "&" $4}' | sort -u)
+        for line in $tmp_grep; do
+            pt_pin_in_log[i]=$(echo $line | awk -F "&" '{print $1}')
+            code[i]=$(echo $line | awk -F "&" '{print $2}')
+            let i++
         done
 
         ## 输出My系列变量
@@ -56,7 +53,7 @@ export_codes_sub () {
                 tmp_my_code=""
                 j=$((m + 1))
                 for ((n=0; n<${#code[*]}; n++)); do
-                    if [[ ${pt_pin[m]} == ${pt_pin_in_code[n]} ]]; then
+                    if [[ ${pt_pin[m]} == ${pt_pin_in_log[n]} ]]; then
                         tmp_my_code=${code[n]}
                         break
                     fi
@@ -123,7 +120,19 @@ export_codes_sub () {
 ## 汇总输出
 export_all_codes () {
     gen_pt_pin_array
-    echo -e "\n从最后一个日志提取互助码，编号和配置文件中Cookie编号完全对应，如果为空就是最新日志中没有。\n\n即使某个MyXxx变量未赋值，也可以将其变量名填在ForOtherXxx中，jtask脚本会自动过滤空值。"
+    echo -e "\n从日志提取互助码，编号和配置文件中Cookie编号完全对应，如果为空就是所有日志中都没有。\n\n即使某个MyXxx变量未赋值，也可以将其变量名填在ForOtherXxx中，jtask脚本会自动过滤空值。\n"
+    echo -n "你选择的互助码模板为："
+    case $HelpType in
+        0)
+            echo "所有账号助力码全部一致。"
+            ;;
+        1)
+            echo "均等助力。"
+            ;;
+        *)
+            echo "按编号优先。"
+            ;;
+    esac
     for ((i=0; i<${#name_js[*]}; i++)); do
         echo -e "\n${name_chinese[i]}："
         export_codes_sub "${name_js[i]}" "${name_config[i]}" "${name_chinese[i]}"
