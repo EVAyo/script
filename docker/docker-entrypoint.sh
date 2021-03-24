@@ -51,6 +51,9 @@ echo -e "======================== 4. 启动网页终端 ========================
 rm -rf /root/.pm2/logs/* 2>/dev/null  # 清空pm2日志
 if [[ $ENABLE_WEB_PANEL == true ]]; then
     if [[ $ENABLE_TTYD == true ]]; then
+        ## 增加环境变量
+        export PS1="\u@\h:\w $ "
+        
         pm2 start ttyd --name="ttyd" -- -t fontSize=14 -t disableLeaveAlert=true -t rendererType=webgl bash
         if [[ $? -eq 0 ]]; then
             echo -e "网页终端启动成功...\n"
