@@ -10,12 +10,13 @@ send_mark=$dir_shell/send_mark
 ## 导入通用变量与函数
 . $dir_shell/jshare.sh
 
-## 导入配置文件，检测平台，创建软连接，识别命令
+## 导入配置文件，检测平台，创建软连接，识别命令，修复配置文件
 import_config_no_check jup
 detect_termux
 detect_macos
 link_shell
 define_cmd
+fix_config
 
 ## 更新crontab，gitee服务器同一时间限制5个链接，因此每个人更新代码必须错开时间，每次执行git_pull随机生成。
 ## 每天次数随机，更新时间随机，更新秒数随机，至少4次，至多6次，大部分为5次，符合正态分布。

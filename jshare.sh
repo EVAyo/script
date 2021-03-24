@@ -230,21 +230,39 @@ link_shell () {
 
 ## 定义各命令
 define_cmd () {
+    local cmd_prefix cmd_suffix
     if type jtask >/dev/null 2>&1; then
+        cmd_suffix=""
         if [ -x "$dir_shell/jtask.sh" ]; then
-            cmd_jtask=jtask
-            cmd_otask=otask
+            cmd_prefix=""
         else
-            cmd_jtask="bash jtask"
-            cmd_otask="bash otask"
+            cmd_prefix="bash "
         fi
     else
+        cmd_suffix=".sh"
         if [ -x "$dir_shell/jtask.sh" ]; then
-            cmd_jtask="$dir_shell/jtask.sh"
-            cmd_otask="$dir_shell/otask.sh"
+            cmd_prefix="$dir_shell/"
         else
-            cmd_jtask="bash $dir_shell/jtask.sh"
-            cmd_otask="bash $dir_shell/otask.sh"
+            cmd_prefix="bash $dir_shell/"
         fi
     fi
+    for ((i=0; i<${#link_name[*]}; i++)); do
+        export cmd_${link_name[i]}="${cmd_prefix}${link_name[i]}${cmd_suffix}"
+        echo "cmd_${link_name[i]}=${cmd_prefix}${link_name[i]}${cmd_suffix}"
+    done
+}
+
+## 修复配置文件
+fix_config () {
+    make_dir $dir_config
+    [ ! -s $file_config_user ] && cp -fv $file_config_sample $file_config_user
+    [ ! -s $list_crontab_user ] && cp -fv $list_crontab_sample $list_crontab_user
+    perl -i -pe "{
+        s|CMD_UPDATE|$cmd_jup|g;
+        s|ROOT_DIR|$dir_root|g;
+        s|CMD_RMLOG|$cmd_jlog|g;
+        s|CMD_CODE|$cmd_jcode|g;
+        s|CMD_JTASK|$cmd_jtask|g;
+        s|CMD_MTASK|$cmd_mtask|g
+    }" $list_crontab_user
 }
