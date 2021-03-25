@@ -8,7 +8,10 @@ dir_panel=$dir_root/panel
 ## 增加环境变量
 export PS1="\u@\h:\w $ "
 
-## 导入配置文件，检测平台，创建软连接，识别命令，修复配置文件
+## 导入通用变量与函数
+. $dir_shell/jshare.sh
+
+## 检测平台，创建软连接，识别命令，修复配置文件
 detect_termux
 detect_macos
 link_shell
