@@ -126,7 +126,7 @@ export_codes_sub () {
             esac
         fi
     else
-        echo "未运行过 $1.js 脚本，未产生日志"
+        echo "未运行过 $task_name.js 脚本，未产生日志"
     fi
 }
 
