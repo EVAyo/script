@@ -254,8 +254,16 @@ define_cmd () {
 ## 修复配置文件
 fix_config () {
     make_dir $dir_config
-    [ ! -s $file_config_user ] && cp -fv $file_config_sample $file_config_user
-    [ ! -s $list_crontab_user ] && cp -fv $list_crontab_sample $list_crontab_user
+    if [ ! -s $file_config_user ]; then
+        echo -e "复制一份 $file_config_sample 为 $file_config_user，随后请按注释编辑你的配置文件：$file_config_user\n"
+        cp -fv $file_config_sample $file_config_user
+        echo
+    fi
+    if [ ! -s $list_crontab_user ]; then
+        echo -e "复制一份 $list_crontab_sample 为 $list_crontab_user，这是你自己的 crontab.list\n"
+        cp -fv $list_crontab_sample $list_crontab_user
+        echo 
+    fi
     perl -i -pe "{
         s|CMD_UPDATE|$cmd_jup|g;
         s|ROOT_DIR|$dir_root|g;
