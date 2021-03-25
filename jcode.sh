@@ -32,7 +32,7 @@ export_codes_sub () {
     local chinese_name=$3
     local config_name_my=My$config_name
     local config_name_for_other=ForOther$config_name
-    local i j k m n pt_pin_in_log code tmp_grep tmp_my_code tmp_for_other
+    local i j k m n pt_pin_in_log code tmp_grep tmp_my_code tmp_for_other user_num random_num_list
     if [ -d $dir_log/$task_name ] && [[ $(ls $dir_log/$task_name) ]]; then
         cd $dir_log/$task_name
 
@@ -97,6 +97,19 @@ export_codes_sub () {
                         echo "$config_name_for_other$j=\"$tmp_for_other\"" | perl -pe "s|($config_name_for_other\d+=\")@|\1|"
                     done
                     ;;
+                
+                2)  ## 本套脚本内账号间随机顺序助力
+                    for ((m=0; m<${#pt_pin[*]}; m++)); do
+                        tmp_for_other=""
+                        random_num_list=$(for user_num in $(seq $user_sum); do echo $user_num; done | sort -R)
+                        j=$((m + 1))
+                        for n in $random_num_list; do
+                            [[ $j -eq $n ]] && continue
+                            tmp_for_other="$tmp_for_other@\${$config_name_my$n}"
+                        done
+                        echo "$config_name_for_other$j=\"$tmp_for_other\"" | perl -pe "s|($config_name_for_other\d+=\")@|\1|"
+                    done
+                    ;;
 
                 *)  ## 按编号优先
                     for ((m=0; m<${#pt_pin[*]}; m++)); do
@@ -127,10 +140,13 @@ export_all_codes () {
             echo "所有账号助力码全部一致。"
             ;;
         1)
-            echo "均等助力。"
+            echo "所有账号机会均等助力。"
+            ;;
+        2)
+            echo "本套脚本内账号间随机顺序助力。"
             ;;
         *)
-            echo "按编号优先。"
+            echo "按账号编号优先。"
             ;;
     esac
     for ((i=0; i<${#name_js[*]}; i++)); do
