@@ -38,7 +38,7 @@ docker exec -it jd jcsv    # 记录豆豆变化情况，在log目录下存为csv
 ## 非Docker用户
 linux、macos、android termux用户自行安装依赖：`perl nodejs npm yarn perl wget git crond ssh-client`以及node包`pm2`，自行解决ssh key的问题，并备份好自己的crontab以后，再进行下列操作：
 ```
-git clone git@<你设置的HOST>:nevinee/jd_shell.git jd
+git clone -b v4 git@<你设置的HOST>:nevinee/jd_shell.git jd
 cd jd
 ./jup.sh
 ```
