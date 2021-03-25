@@ -61,10 +61,10 @@ export_codes_sub () {
                 echo "$config_name_my$j='$tmp_my_code'"
             done
         else
-            echo "从日志中未找到任何互助码"
+            echo "## 从日志中未找到任何互助码"
         fi
 
-        ## 输入ForOther系列变量
+        ## 输出ForOther系列变量
         if [[ ${#code[*]} -gt 0 ]]; then
             echo
             case $HelpType in
@@ -126,15 +126,15 @@ export_codes_sub () {
             esac
         fi
     else
-        echo "未运行过 $task_name.js 脚本，未产生日志"
+        echo "## 未运行过 $task_name.js 脚本，未产生日志"
     fi
 }
 
 ## 汇总输出
 export_all_codes () {
     gen_pt_pin_array
-    echo -e "\n从日志提取互助码，编号和配置文件中Cookie编号完全对应，如果为空就是所有日志中都没有。\n\n即使某个MyXxx变量未赋值，也可以将其变量名填在ForOtherXxx中，jtask脚本会自动过滤空值。\n"
-    echo -n "你选择的互助码模板为："
+    echo -e "\n# 从日志提取互助码，编号和配置文件中Cookie编号完全对应，如果为空就是所有日志中都没有。\n\n# 即使某个MyXxx变量未赋值，也可以将其变量名填在ForOtherXxx中，jtask脚本会自动过滤空值。\n"
+    echo -n "# 你选择的互助码模板为："
     case $HelpType in
         0)
             echo "所有账号助力码全部一致。"
@@ -150,7 +150,7 @@ export_all_codes () {
             ;;
     esac
     for ((i=0; i<${#name_js[*]}; i++)); do
-        echo -e "\n${name_chinese[i]}："
+        echo -e "\n## ${name_chinese[i]}："
         export_codes_sub "${name_js[i]}" "${name_config[i]}" "${name_chinese[i]}"
     done
 }
