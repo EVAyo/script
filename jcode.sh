@@ -97,11 +97,11 @@ export_codes_sub () {
                         echo "$config_name_for_other$j=\"$tmp_for_other\"" | perl -pe "s|($config_name_for_other\d+=\")@|\1|"
                     done
                     ;;
-                
+
                 2)  ## 本套脚本内账号间随机顺序助力
                     for ((m=0; m<${#pt_pin[*]}; m++)); do
                         tmp_for_other=""
-                        random_num_list=$(for user_num in $(seq $user_sum); do echo $user_num; done | sort -R)
+                        random_num_list=$(seq $user_sum | sort -R)
                         j=$((m + 1))
                         for n in $random_num_list; do
                             [[ $j -eq $n ]] && continue
