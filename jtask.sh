@@ -27,7 +27,7 @@ combine_sub () {
             local tmp2=${!tmp1}
             for_other_all="$for_other_all@$tmp2"
         done
-      
+
         for ((n=1; n<=$user_sum; n++)); do
             for num in ${TempBlockCookie}; do
                 [[ $n -eq $num ]] && continue 2
@@ -154,7 +154,7 @@ find_file_and_path () {
     local para=$1
     local file_name_tmp1=$(echo $para | perl -pe "s|\.js||")
     local file_name_tmp2=$(echo $para | perl -pe "{s|jd_||; s|\.js||; s|^|jd_|}")
-    local seek_path="$dir_scripts $dir_scripts/backUp $dir_config"
+    local seek_path="$dir_scripts $dir_scripts/backUp"
     file_name=""
     which_path=""
 
