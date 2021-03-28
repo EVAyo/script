@@ -146,7 +146,7 @@ usage () {
 ## run nohup，$1：文件名，不含路径，带后缀
 run_nohup () {
     local file_name=$1
-    nohup node $file_name > $log_path 2>&1 &
+    nohup node $file_name &>$log_path &
 }
 
 ## 查找脚本路径与准确的文件名，$1：脚本传入的参数，输出的file_name不带后缀.js
@@ -270,9 +270,9 @@ run_concurrent () {
                 [[ $user_num -eq $num ]] && continue 2
             done
             export_all_env $user_num
-            log_path="$dir_log/$file_name/${log_time}_$user_num.log"
+            log_path="$dir_log/$file_name/${log_time}_${user_num}.log"
             cd $which_path
-            node $file_name.js > $log_path 2>&1 &
+            node $file_name.js &>$log_path &
         done
     else
         echo -e "\n $p 脚本不存在，请确认...\n"
