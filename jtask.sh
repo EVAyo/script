@@ -146,7 +146,7 @@ usage () {
 ## run nohup，$1：文件名，不含路径，带后缀
 run_nohup () {
     local file_name=$1
-    nohup node $file_name 2>&1 > $log_path &
+    nohup node $file_name > $log_path 2>&1 &
 }
 
 ## 查找脚本路径与准确的文件名，$1：脚本传入的参数，输出的file_name不带后缀.js
