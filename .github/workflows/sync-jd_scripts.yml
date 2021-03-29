@@ -34,18 +34,7 @@ jobs:
       with:
         directory: master
         github_token: ${{ secrets.PAT }}
-        branch: master
-
-    - name: Clone Main
-      run: |
-        git clone -b main git@gitee.com:lxk0301/jd_scripts.git main
-
-    - name: Push Main
-      uses: ad-m/github-push-action@master
-      with:
-        directory: main
-        github_token: ${{ secrets.PAT }}
-        branch: main
+        branch: lxk0301
 
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
