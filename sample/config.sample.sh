@@ -1,15 +1,11 @@
-## Version: v4.0.1
-## Date: 2021-03-25
-## Update Content: 增加jcode脚本用到的HelpType的一个可选值：填“2”使用“随机顺序助力模板”，本套脚本内账号间随机顺序助力，每次生成的顺序都不一致。
+## Version: v4.1.0
+## Date: 2021-03-29
+## Update Content: 重新修改AutoHelpOther的功能，启动AutoHelpOther后，将直接导入jcode最新日志来进行互助，jcode日志中含有的互助信息（包括MyXxx和ForOtherXxx）均不用在 config.sh 中填写（填写了也无效）。
 
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第一区域：jd_scripts特有变量填写区域（需要shell转换的） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 ## Cookie（必填，由脚本去export JD_COOKIE，无需在config.sh中export）
 ## 请依次填入每个用户的Cookie，Cookie的具体形式（只有pt_key字段和pt_pin字段，没有其他字段）：pt_key=xxxxxxxxxx;pt_pin=xxxx;
-## 1. 如果是通过控制面板编辑本文件，点击页面上方“扫码获取Cookie”即可获取，此方式获取的Cookie有效期为3个月
-## 2. 还可以通过浏览器开发工具获取，此方式获得的Cookie只有1个月有效期
-## 必须按数字顺序1、2、3、4...依次编号下去，例子只有6个，超出6个你继续往下编号即可
-## 不允许有汉字，如果ID有汉字，请在PC浏览器上获取Cookie，会自动将汉字转换为URL编码
 Cookie1=""
 Cookie2=""
 
@@ -28,6 +24,7 @@ jdUnsubscribeStopShop=""   ## 遇到此店铺不再取关此店铺以及它后�
 
 
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第二区域：jd_scripts特有变量填写区域（不需要shell转换的） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
 ## 请在本区域补充其他你需要用到变量，export 变量名="变量值"，或：export 变量名='变量值'
 ## 其他变量详见：https://gitee.com/lxk0301/jd_docker/blob/master/githubAction.md
 ## 该链接中除JD_COOKIE、JD_BEAN_SIGN_STOP_NOTIFY、JD_BEAN_SIGN_NOTIFY_SIMPLE、UN_SUBSCRIBES这四个变量以及所有互助码类变量外，其他所有变量请在本区域自行补充
@@ -213,20 +210,10 @@ ForOtherCity2=""
 ##  esac
 TempBlockCookie=""
 
-## 是否自动删除 jd_scripts 项目中失效的脚本与定时任务（选填）
-## 有的时候，某些JS脚本只在特定的时间有效，过了时间就失效了，需要自动删除失效的本地定时任务，则设置为 "true" ，否则请设置为 "false"
-## 检测文件：lxk0301/jd_scripts 仓库中的 docker/crontab_list.sh
-## 当设置为 "true" 时，会自动从检测文件中读取比对删除的任务（识别以“jd_”、“jr_”、“jx_”开头的任务）
-## 当设置为 "true" 时，脚本只会删除一整行失效的定时任务，不会修改其他现有任务，所以任何时候，你都可以自己调整你的crontab.list
-## 当设置为 "true" 时，如果你有添加额外脚本是以“jd_”“jr_”“jx_”开头的，如检测文件中，会被删除，不是以“jd_”“jr_”“jx_”开头的任务则不受影响
+## 是否自动删除 jd_scripts 项目中失效的定时任务（选填）
 AutoDelCron="true"
 
 ## 是否自动增加 jd_scripts 项目中新的本地定时任务（选填）
-## lxk0301 大佬会在有需要的时候，增加定时任务，如需要本地自动增加新的定时任务，则设置为 "true" ，否则请设置为 "false"
-## 检测文件：lxk0301/jd_scripts 仓库中的 docker/crontab_list.sh
-## 当设置为 "true" 时，如果检测到检测文件中有增加新的定时任务，那么在本地也增加（识别以“jd_”、“jr_”、“jx_”开头的任务）
-## 当设置为 "true" 时，会自动从检测文件新增加的任务中读取时间，该时间为北京时间
-## 当设置为 "true" 时，脚本只会增加新的定时任务，不会修改其他现有任务，所以任何时候，你都可以自己调整你的crontab.list
 AutoAddCron="true"
 
 ## 删除日志的时间（选填） 
@@ -240,8 +227,7 @@ RmLogDaysAgo="7"
 RandomDelay="300"
 
 ## 自动按顺序进行账号间互助（选填）
-## 设置为 true 时，以下所有互助活动，账号间将按照config.sh中Cookie顺序进行互助，此时，不会助力不在config.sh中的账号，无法和别人交换助力
-## MyXxxx系列变量仍然需要填写，但ForOtherXxxx系列变量不再需要填写（填写了也无效）
+## 设置为 true 时，将直接导入 jcode 最新日志来进行互助，jcode 日志中含有的互助信息（包括MyXxx和ForOtherXxx）均不用在 config.sh 中填写（填写了也无效）
 ## 如果启用了TempBlockCookie，那么只是被屏蔽的账号不助力其他账号，其他账号还是会助力被屏蔽的账号
 AutoHelpOther=""
 
@@ -309,6 +295,7 @@ AutoDelOwnCron="true"
 
 
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第五区域：额外的环境变量填写区域 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
 ## 请在以下补充你需要用到的额外的环境变量，形式：export 变量名="变量值"，或：export 变量名='变量值'
 
 

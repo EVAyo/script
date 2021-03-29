@@ -7,6 +7,7 @@ dir_raw=$dir_own/raw
 dir_sample=$dir_root/sample
 dir_log=$dir_root/log
 dir_list_tmp=$dir_log/.tmp
+dir_code=$dir_log/jcode
 dir_scripts_node_modules=$dir_scripts/node_modules
 
 ## 文件
@@ -72,8 +73,8 @@ name_js=(
     jd_plantBean
     jd_dreamFactory
     jd_jdfactory
-    jd_crazy_joy
     jd_jdzz
+    jd_crazy_joy
     jd_jxnc
     jd_bookshop
     jd_cash
@@ -87,8 +88,8 @@ name_config=(
     Bean
     DreamFactory
     JdFactory
-    Joy
     Jdzz
+    Joy
     Jxnc
     BookShop
     Cash
@@ -102,8 +103,8 @@ name_chinese=(
     京东种豆得豆
     京喜工厂
     东东工厂
-    crazyJoy任务
     京东赚赚
+    crazyJoy任务
     京喜农场
     口袋书店
     签到领现金

@@ -18,34 +18,19 @@ update_crontab () {
 combine_sub () {
     local what_combine=$1
     local combined_all=""
-    if [[ ${AutoHelpOther} == true ]] && [[ $1 == ForOther* ]]; then
-        for_other_all=""
-        local my_name=$(echo $what_combine | perl -pe "s|ForOther|My|")
-
-        for ((m=1; m<=$user_sum; m++)); do
-            local tmp1=$my_name$m
-            local tmp2=${!tmp1}
-            for_other_all="$for_other_all@$tmp2"
-        done
-
-        for ((n=1; n<=$user_sum; n++)); do
-            for num in ${TempBlockCookie}; do
-                [[ $n -eq $num ]] && continue 2
-            done
-            combined_all="$combined_all&$for_other_all"
-        done
-
-    else
-        for ((i=1; i<=$user_sum; i++)); do
-            for num in ${TempBlockCookie}; do
-                [[ $i -eq $num ]] && continue 2
-            done
-            local tmp3=$what_combine$i
-            local tmp4=${!tmp3}
-            combined_all="$combined_all&$tmp4"
-        done
+    local tmp1 tmp2 latest_log
+    if [[ $AutoHelpOther == true ]] && [[ $(ls $dir_code) ]]; then
+        latest_log=$(ls -r $dir_code | head -1)
+        . $dir_code/$latest_log
     fi
-
+    for ((i=1; i<=$user_sum; i++)); do
+        for num in $TempBlockCookie; do
+            [[ $i -eq $num ]] && continue 2
+        done
+        local tmp1=$what_combine$i
+        local tmp2=${!tmp1}
+        combined_all="$combined_all&$tmp2"
+    done
     echo $combined_all | perl -pe "{s|^&||; s|^@+||; s|&@|&|g; s|@+&|&|g; s|@+|@|g; s|@+$||}"
 }
 
