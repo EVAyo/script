@@ -21,7 +21,7 @@ gen_pt_pin_array () {
         tmp2=${!tmp1}
         i=$(($user_num - 1))
         pt_pin_temp=$(echo $tmp2 | perl -pe "{s|.*pt_pin=([^; ]+)(?=;?).*|\1|; s|%|\\\x|g}")
-        pt_pin[i]=$(printf $pt_pin_temp)
+        [[ $pt_pin_temp == *\\x* ]] && pt_pin[i]=$(printf $pt_pin_temp) || pt_pin[i]=$pt_pin_temp
     done
 }
 
