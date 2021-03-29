@@ -176,15 +176,6 @@ MyGlobalB=''
 ForOtherGlobal1=""
 ForOtherGlobal2=""
 
-## jd_city活动互助（选填）
-MyCity1=''
-MyCity2=''
-MyCityA=''
-MyCityB=''
-
-ForOtherCity1=""
-ForOtherCity2=""
-
 ## ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 第三区域：互助码填写区域 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
 
