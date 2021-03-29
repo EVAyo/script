@@ -428,7 +428,7 @@ if [[ $exit_status -eq 0 ]]; then
     if [ -s $list_task_add ]; then
         output_list_add_drop $list_task_add "新"
         add_cron_jd_scripts $list_task_add
-        add_cron_notify $exit_status $list_task_add "jd_scripts脚本"
+        [[ ${AutoAddCron} == true ]] && add_cron_notify $exit_status $list_task_add "jd_scripts脚本"
     fi
 else
     echo -e "\n更新$dir_scripts失败，请检查原因...\n"
@@ -451,7 +451,7 @@ if [[ ${#array_own_scripts_path[*]} -gt 0 ]]; then
     if [ -s $list_own_add ]; then
         output_list_add_drop $list_own_add "新"
         add_cron_own $list_own_add
-        add_cron_notify $exit_status $list_own_add "own脚本"
+        [[ ${AutoAddOwnCron} == true ]] && add_cron_notify $exit_status $list_own_add "own脚本"
     fi
 else
     perl -i -ne "{print unless / $cmd_otask /}" $list_crontab_user
