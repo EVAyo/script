@@ -1,0 +1,9 @@
+scripts*
+log*
+config/*
+own*
+panel/package-lock.json
+panel/yarn.lock
+panel/node_modules*
+docker-compose.yml
+send_mark
