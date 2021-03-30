@@ -56,8 +56,6 @@ fi
 
 echo -e "容器启动成功...\n"
 
-if [ "${1#-}" != "${1}" ] || [ -z "$(command -v "${1}")" ]; then
-  set -- crond "-f"
-fi
+crond -f
 
 exec "$@"
