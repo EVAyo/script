@@ -403,7 +403,11 @@ else
 fi
 
 ## 更新scripts
+## 更新前先存储package.json和githubAction.md的内容
 [ -f $dir_scripts/package.json ] && scripts_depend_old=$(cat $dir_scripts/package.json)
+[ -f $dir_scripts/githubAction.md ] && cp -f $dir_scripts/githubAction.md $dir_list_tmp/githubAction.md
+
+## 更新或克隆scripts
 if [ -d $dir_scripts/.git ]; then
     git_pull_scripts $dir_scripts
 else
@@ -412,19 +416,38 @@ fi
 
 if [[ $exit_status -eq 0 ]]; then
     echo -e "\n更新$dir_scripts成功...\n"
+
+    ## npm install
     [ ! -d $dir_scripts/node_modules ] && npm_install_1 $dir_scripts
     [ -f $dir_scripts/package.json ] && scripts_depend_new=$(cat $dir_scripts/package.json)
     [[ "$scripts_depend_old" != "$scripts_depend_new" ]] && npm_install_2 $dir_scripts
+    
+    ## diff cron
     gen_list_task
     diff_cron $list_task_jd_scripts $list_task_user $list_task_add $list_task_drop
+
+    ## 失效任务通知
     if [ -s $list_task_drop ]; then
         output_list_add_drop $list_task_drop "失效"
         [[ ${AutoDelCron} == true ]] && del_cron $list_task_drop jtask
     fi
+
+    ## 新增任务通知
     if [ -s $list_task_add ]; then
         output_list_add_drop $list_task_add "新"
         add_cron_jd_scripts $list_task_add
         [[ ${AutoAddCron} == true ]] && add_cron_notify $exit_status $list_task_add "jd_scripts脚本"
+    fi
+
+    ## 环境变量变化通知
+    echo -e "检测环境变量清单文件 $dir_scripts/githubAction.md 是否有变化...\n"
+    diff $dir_list_tmp/githubAction.md $dir_scripts/githubAction.md | tee $dir_list_tmp/env.diff
+    if [[ $? -eq 0 ]]; then
+        echo -e "$dir_scripts/githubAction.md 没有变化...\n"
+    elif [[ $? -ne 0 ]] && [[ EnvChangeNotify == true ]]; then
+        notify_title="检测到环境变量清单文件有变化"
+        notify_content="减少的内容：\n$(grep -E '^-' $dir_list_tmp/env.diff)\n\n增加的内容：\n$(grep -E '^\+' $dir_list_tmp/env.diff)"
+        notify "$notify_title" "$notify_content"
     fi
 else
     echo -e "\n更新$dir_scripts失败，请检查原因...\n"

@@ -1,6 +1,6 @@
-## Version: v4.1.0
-## Date: 2021-03-29
-## Update Content: 重新修改AutoHelpOther的功能，启动AutoHelpOther后，将直接导入jcode最新日志来进行互助，jcode日志中含有的互助信息（包括MyXxx和ForOtherXxx）均不用在 config.sh 中填写（填写了也无效）。
+## Version: v4.2.0
+## Date: 2021-03-31
+## Update Content: 增加参数EnvChangeNotify，作用：当检测到scripts/githubAction.md文件（这是jd_scripts所有环境变量的清单）发生变化时是否发送通知。
 
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第一区域：jd_scripts特有变量填写区域（需要shell转换的） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
@@ -228,6 +228,9 @@ AutoHelpOther=""
 ## 填 1 使用“均等机会助力模板”，所有账户获得助力次数一致
 ## 填 2 使用“随机顺序助力模板”，本套脚本内账号间随机顺序助力，每次生成的顺序都不一致。
 HelpType=""
+
+## 当检测到scripts/githubAction.md文件发生变化时是否发送通知，该文件是jd_scripts所有环境变量的清单，填 true 则发送
+EnvChangeNotify=""
 
 ## 是否添加DIY脚本（选填）
 ## 如果你自己会写shell脚本，并且希望在每次git_pull.sh这个脚本运行时，额外运行你的DIY脚本，请赋值为 "true"
