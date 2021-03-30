@@ -391,7 +391,6 @@ if [[ $JD_DIR ]] && [[ $ENABLE_RESET_REPO_URL == true ]]; then
 fi
 
 ## 更新shell
-[ -f $dir_panel/package.json ] && panel_depend_old=$(cat $dir_panel/package.json)
 git_pull_scripts $dir_shell
 if [[ $exit_status -eq 0 ]]; then
     echo -e "\n更新$dir_shell成功...\n"

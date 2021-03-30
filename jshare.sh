@@ -1,5 +1,4 @@
 ## 目录
-dir_panel=$dir_root/panel
 dir_config=$dir_root/config
 dir_scripts=$dir_root/scripts
 dir_own=$dir_root/own
@@ -121,7 +120,6 @@ link_name=(
     jcode
     jcsv
     jlog
-    jpanel
     jup
 )
 original_name=(
@@ -131,7 +129,6 @@ original_name=(
     jcode.sh
     jcsv.sh
     jlog.sh
-    jpanel.sh
     jup.sh
 )
 
