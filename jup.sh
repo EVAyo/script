@@ -21,7 +21,7 @@ import_config_no_check jup
 ## 更新crontab，gitee服务器同一时间限制5个链接，因此每个人更新代码必须错开时间，每次执行git_pull随机生成。
 ## 每天次数随机，更新时间随机，更新秒数随机，至少4次，至多6次，大部分为5次，符合正态分布。
 random_update_jup_cron () {
-    if [[ $(date "+%-H") -le 4 || $(date "+%-H") -ge 19 ]] && [ -f $list_crontab_user ]; then
+    if [[ $(date "+%-H") -le 4 ]] && [ -f $list_crontab_user ]; then
         local random_min=$(gen_random_num 60)
         local random_sleep=$(gen_random_num 56)
         local random_hour_array[0]=$(gen_random_num 5)
