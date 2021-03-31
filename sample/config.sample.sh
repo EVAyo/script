@@ -239,8 +239,8 @@ EnableExtraShell=""
 
 ## 启用其他开发者的仓库方式一（选填）：完整更新整个仓库，针对同一个仓库，方式一和方式二只能选择一种
 ## OwnRepoUrl：仓库地址清单，必须从1开始依次编号
-## OwnRepoBranch：你想使用的分支清单，不指定分支（即使用默认分支）时可以用一对不包含内容的空引号""，编号必须和 OwnRepoUrl 对应，同一个仓库下不同文件夹之间使用空格分开。
-## OwnRepoPath：要使用的脚本在仓库哪个路径下，请输入仓库下的相对路径，默认空值""代表仓库根目录，编号必须和 OwnRepoUrl 对应。如果既包括根目录又包括子目录，填写请见示例中OwnRepoPath3。
+## OwnRepoBranch：你想使用的分支清单，不指定分支（即使用默认分支）时可以用一对不包含内容的空引号""，编号必须和 OwnRepoUrl 对应。
+## OwnRepoPath：要使用的脚本在仓库哪个路径下，请输入仓库下的相对路径，默认空值""代表仓库根目录，编号必须和 OwnRepoUrl 对应，同一个仓库下不同文件夹之间使用空格分开。如果既包括根目录又包括子目录，填写请见示例中OwnRepoPath3。
 ## 所有脚本存放在 own 目录下，三个清单必须一一对应，示例如下：
 ## OwnRepoUrl1="https://gitee.com/abc/jdtsa.git"
 ## OwnRepoUrl2="https://github.com/nedcd/jxddfsa.git"
