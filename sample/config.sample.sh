@@ -1,6 +1,6 @@
-## Version: v4.2.0
+## Version: v4.2.1
 ## Date: 2021-03-31
-## Update Content: 增加参数EnvChangeNotify，作用：当检测到scripts/githubAction.md文件（这是jd_scripts所有环境变量的清单）发生变化时是否发送通知。
+## Update Content: OwnRepoPath已支持使用同一个OwnRepoUrl下不同的子文件夹，只要在填入OwnRepoPath时使用空格分开即可，详见OwnRepo注释。
 
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第一区域：jd_scripts特有变量填写区域（需要shell转换的） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
@@ -239,8 +239,8 @@ EnableExtraShell=""
 
 ## 启用其他开发者的仓库方式一（选填）：完整更新整个仓库，针对同一个仓库，方式一和方式二只能选择一种
 ## OwnRepoUrl：仓库地址清单，必须从1开始依次编号
-## OwnRepoBranch：你想使用的分支清单，不指定分支（即使用默认分支）时可以用一对不包含内容的空引号""，编号必须和 OwnRepoUrl 对应。
-## OwnRepoPath：要使用的脚本在仓库哪个路径下，请输入仓库下的相对路径，默认空值""代表仓库根目录，编号必须和 OwnRepoUrl 对应。
+## OwnRepoBranch：你想使用的分支清单，不指定分支（即使用默认分支）时可以用一对不包含内容的空引号""，编号必须和 OwnRepoUrl 对应，同一个仓库下不同文件夹之间使用空格分开。
+## OwnRepoPath：要使用的脚本在仓库哪个路径下，请输入仓库下的相对路径，默认空值""代表仓库根目录，编号必须和 OwnRepoUrl 对应。如果既包括根目录又包括子目录，填写请见示例中OwnRepoPath3。
 ## 所有脚本存放在 own 目录下，三个清单必须一一对应，示例如下：
 ## OwnRepoUrl1="https://gitee.com/abc/jdtsa.git"
 ## OwnRepoUrl2="https://github.com/nedcd/jxddfsa.git"
@@ -250,9 +250,9 @@ EnableExtraShell=""
 ## OwnRepoBranch2="main"     # 代表第2个仓库 https://github.com/nedcd/jxddfsa.git 使用 "main" 分支
 ## OwnRepoBranch3="master"   # 代表第3个仓库 git@github.com:eject/poex.git 使用 "master" 分支
 ## 
-## OwnRepoPath1=""            # 代表第1个仓库https://gitee.com/abc/jdtsa.git，你想使用的脚本就在仓库根目录下。
-## OwnRepoPath2="scripts/jd"  # 代表第2个仓库https://github.com/nedcd/jxddfsa.git，你想使用的脚本在仓库的 scripts/jd 文件夹下，必须输入相对路径
-## OwnRepoPath3="task"        # 代表第3个仓库git@github.com:eject/poex.git，你想使用的脚本在仓库的 task 文件夹下，必须输入相对路径
+## OwnRepoPath1=""                   # 代表第1个仓库https://gitee.com/abc/jdtsa.git，你想使用的脚本就在仓库根目录下。
+## OwnRepoPath2="scripts/jd normal"  # 代表第2个仓库https://github.com/nedcd/jxddfsa.git，你想使用的脚本在仓库的 scripts/jd 和 normal文件夹下，必须输入相对路径
+## OwnRepoPath3="'' cron"            # 代表第3个仓库git@github.com:eject/poex.git，你想使用的脚本在仓库的 根目录 和 cron 文件夹下，必须输入相对路径
 
 OwnRepoUrl1=""
 OwnRepoUrl2=""

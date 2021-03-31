@@ -94,26 +94,33 @@ count_own_repo_sum () {
     fi
 }
 
-## 形成 own 仓库的文件夹名清单，依赖于import_config_and_check或import_config_no_check，
+## 形成 own 仓库的文件夹名清单，依赖于import_config_and_check或import_config_no_check
+## array_own_repo_path：repo存放的绝对路径组成的数组；array_own_scripts_path：所有要使用的脚本所在的绝对路径组成的数组
 gen_own_dir_and_path () {
     if [[ $own_repo_sum -ge 1 ]]; then
+        local scripts_path_num="-1"
+        local repo_num tmp1 tmp2 tmp3 tmp4 tmp5 dir
         for ((i=1; i<=$own_repo_sum; i++)); do
-            local j=$((i - 1))
-            local tmp1=OwnRepoUrl$i
-            array_own_repo_url[j]=${!tmp1}
-            local tmp2=OwnRepoBranch$i
-            array_own_repo_branch[j]=${!tmp2}
-            local tmp3=OwnRepoPath$i            
-            array_own_repo_dir[j]=$(echo ${array_own_repo_url[j]} | perl -pe "s|.+com(/\|:)([\w-]+)/([\w-]+)(\.git)?|\2_\3|")
-            array_own_repo_path[j]=$dir_own/${array_own_repo_dir[j]}
-            local tmp4="${array_own_repo_dir[j]}/${!tmp3}"
-            local tmp5=$(echo $tmp4 | perl -pe "{s|//|/|g; s|/$||}")  # 去掉多余的/
-            array_own_scripts_path[j]="$dir_own/$tmp5"
+            repo_num=$((i - 1))
+            tmp1=OwnRepoUrl$i
+            array_own_repo_url[$repo_num]=${!tmp1}
+            tmp2=OwnRepoBranch$i
+            array_own_repo_branch[$repo_num]=${!tmp2}
+            array_own_repo_dir[$repo_num]=$(echo ${array_own_repo_url[$repo_num]} | perl -pe "s|.+com(/\|:)([\w-]+)/([\w-]+)(\.git)?|\2_\3|")
+            array_own_repo_path[$repo_num]=$dir_own/${array_own_repo_dir[$repo_num]}
+            tmp3=OwnRepoPath$i
+            for dir in ${!tmp3}; do
+                let scripts_path_num++
+                tmp4="${array_own_repo_dir[repo_num]}/$dir"
+                tmp5=$(echo $tmp4 | perl -pe "{s|//|/|g; s|/$||}")  # 去掉多余的/
+                array_own_scripts_path[$scripts_path_num]="$dir_own/$tmp5"
+            done
         done
     fi
 
     if [[ ${#OwnRawFile[*]} -ge 1 ]]; then
-        array_own_scripts_path[$own_repo_sum]=$dir_raw  # 只有own脚本所在绝对路径附加了raw文件夹，其他数组均不附加
+        let scripts_path_num++
+        array_own_scripts_path[$scripts_path_num]=$dir_raw  # 只有own脚本所在绝对路径附加了raw文件夹，其他数组均不附加
     fi
 }
 
@@ -349,18 +356,27 @@ update_own_repo () {
 
 ## 更新 own 所有 raw 文件
 update_own_raw () {
+    local rm_mark
     [[ ${#OwnRawFile[*]} -gt 0 ]] && echo -e "--------------------------------------------------------------\n"
     for ((i=0; i<${#OwnRawFile[*]}; i++)); do
-        raw_file_name=$(echo ${OwnRawFile[i]} | awk -F "/" '{print $NF}')
-        echo -e "开始下载：${OwnRawFile[i]} \n\n保存路径：$dir_raw/$raw_file_name\n"
-        wget -q --no-check-certificate -O "$dir_raw/$raw_file_name.new" ${OwnRawFile[i]}
+        raw_file_name[$i]=$(echo ${OwnRawFile[i]} | awk -F "/" '{print $NF}')
+        echo -e "开始下载：${OwnRawFile[i]} \n\n保存路径：$dir_raw/${raw_file_name[$i]}\n"
+        wget -q --no-check-certificate -O "$dir_raw/${raw_file_name[$i]}.new" ${OwnRawFile[i]}
         if [[ $? -eq 0 ]]; then
-            mv "$dir_raw/$raw_file_name.new" "$dir_raw/$raw_file_name"
-            echo -e "下载 $raw_file_name 成功...\n"
+            mv "$dir_raw/${raw_file_name[$i]}.new" "$dir_raw/${raw_file_name[$i]}"
+            echo -e "下载 ${raw_file_name[$i]} 成功...\n"
         else
-            echo -e "下载 $raw_file_name 失败，保留之前正常下载的版本...\n"
-            [ -f "$dir_raw/$raw_file_name.new" ] && rm -f "$dir_raw/$raw_file_name.new"
+            echo -e "下载 ${raw_file_name[$i]} 失败，保留之前正常下载的版本...\n"
+            [ -f "$dir_raw/${raw_file_name[$i]}.new" ] && rm -f "$dir_raw/${raw_file_name[$i]}.new"
         fi
+    done
+
+    for file in $(ls $dir_raw); do
+        rm_mark="yes"
+        for ((i=0; i<${#raw_file_name[*]}; i++)); do
+            [[ $file == ${raw_file_name[$i]} ]] && rm_mark="no"
+        done
+        [[ $rm_mark == yes ]] && rm -f $dir_raw/$file 2>/dev/null
     done
 }
 
