@@ -18,11 +18,7 @@ update_crontab () {
 combine_sub () {
     local what_combine=$1
     local combined_all=""
-    local tmp1 tmp2 latest_log
-    if [[ $AutoHelpOther == true ]] && [[ $(ls $dir_code) ]]; then
-        latest_log=$(ls -r $dir_code | head -1)
-        . $dir_code/$latest_log
-    fi
+    local tmp1 tmp2
     for ((i=1; i<=$user_sum; i++)); do
         for num in $TempBlockCookie; do
             [[ $i -eq $num ]] && continue 2
@@ -73,6 +69,11 @@ trans_UN_SUBSCRIBES () {
 ## 申明全部变量，$1：all/Cookie编号
 export_all_env () {
     local type=$1
+    local latest_log
+    if [[ $AutoHelpOther == true ]] && [[ $(ls $dir_code) ]]; then
+        latest_log=$(ls -r $dir_code | head -1)
+        . $dir_code/$latest_log
+    fi
     [[ $type == all ]] && combine_all || combine_one $type
     trans_JD_BEAN_SIGN_NOTIFY
     trans_UN_SUBSCRIBES
