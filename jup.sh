@@ -458,9 +458,9 @@ if [[ $exit_status -eq 0 ]]; then
     ## 环境变量变化通知
     echo -e "检测环境变量清单文件 $dir_scripts/githubAction.md 是否有变化...\n"
     diff $dir_list_tmp/githubAction.md $dir_scripts/githubAction.md | tee $dir_list_tmp/env.diff
-    if [[ $? -eq 0 ]]; then
+    if [ ! -s $dir_list_tmp/env.diff ]; then
         echo -e "$dir_scripts/githubAction.md 没有变化...\n"
-    elif [[ $? -ne 0 ]] && [[ EnvChangeNotify == true ]]; then
+    elif [ -s $dir_list_tmp/env.diff ] && [[ EnvChangeNotify == true ]]; then
         notify_title="检测到环境变量清单文件有变化"
         notify_content="减少的内容：\n$(grep -E '^-' $dir_list_tmp/env.diff)\n\n增加的内容：\n$(grep -E '^\+' $dir_list_tmp/env.diff)"
         notify "$notify_title" "$notify_content"
