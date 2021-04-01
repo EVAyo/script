@@ -1,6 +1,6 @@
-## Version: v4.2.1
-## Date: 2021-03-31
-## Update Content: OwnRepoPath已支持使用同一个OwnRepoUrl下不同的子文件夹，只要在填入OwnRepoPath时使用空格分开即可，详见OwnRepo注释。
+## Version: v4.2.2
+## Date: 2021-04-01
+## Update Content: 1.将config.sample.sh中AutoHelpOther预设为true；2.今后不再维护config.sample.sh中的互助码区域，如需要知道如何填写，直接运行jcode脚本后，全部复制过来粘贴在config.sh中第三区域即可。
 
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第一区域：jd_scripts特有变量填写区域（需要shell转换的） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
@@ -58,123 +58,9 @@ jdUnsubscribeStopShop=""   ## 遇到此店铺不再取关此店铺以及它后�
 # ForOtherFruit5="${MyFruit1}@${MyFruit2}@${MyFruit3}@${MyFruitB}@${MyFruit4}@${MyFruit6}@${MyFruitC}@${MyFruitA}"
 # ForOtherFruit6="${MyFruit1}@${MyFruit2}@${MyFruit3}@${MyFruitA}@${MyFruit4}@${MyFruit5}@${MyFruitC}"
 
+## 所有互助码活动，请在运行过一次需要互助的活动脚本以后，再运行一次jcode即可获取，将jcode的输出内容粘贴在本区域中即可
+## 如若不想在此处粘贴，而想在运行互助活动脚本时直接从jcode中获取互助码，请将第四区域中 AutoHelpOther 设置为true
 
-## jd_fruit互助（选填）
-MyFruit1=''
-MyFruit2=''
-MyFruitA=''
-MyFruitB=''
-
-ForOtherFruit1=""
-ForOtherFruit2=""
-
-## jd_pet互助（选填）
-MyPet1=''
-MyPet2=''
-MyPetA=''
-MyPetB=''
-
-ForOtherPet1=""
-ForOtherPet2=""
-
-## jd_plantBean互助（选填）
-MyBean1=''
-MyBean2=''
-MyBeanA=''
-MyBeanB=''
-
-ForOtherBean1=""
-ForOtherBean2=""
-
-## jd_dreamFactory互助
-MyDreamFactory1=''
-MyDreamFactory2=''
-MyDreamFactoryA=''
-MyDreamFactoryB=''
-
-ForOtherDreamFactory1=""
-ForOtherDreamFactory2=""
-
-## jd_jdfactory互助（选填）
-MyJdFactory1=''
-MyJdFactory2=''
-MyJdFactoryA=''
-MyJdFactoryB=''
-
-ForOtherJdFactory1=""
-ForOtherJdFactory2=""
-
-## jd_jdzz互助（选填）
-MyJdzz1=''
-MyJdzz2=''
-MyJdzzA=''
-MyJdzzB=''
-
-ForOtherJdzz1=""
-ForOtherJdzz2=""
-
-## jd_crazy_joy互助（选填）
-MyJoy1=''
-MyJoy2=''
-MyJoyA=''
-MyJoyB=''
-
-ForOtherJoy1=""
-ForOtherJoy2=""
-
-## jd_jxnc互助（选填）
-MyJxnc1=''
-MyJxnc2=''
-MyJxncA=''
-MyJxncB=''
-
-ForOtherJxnc1=""
-ForOtherJxnc2=""
-
-## jd_bookshop互助（选填）
-MyBookShop1=''
-MyBookShop2=''
-MyBookShopA=''
-MyBookShopB=''
-
-ForOtherBookShop1=""
-ForOtherBookShop2=""
-
-## jd_cash互助（选填）
-MyCash1=''
-MyCash2=''
-MyCashA=''
-MyCashB=''
-
-ForOtherCash1=""
-ForOtherCash2=""
-
-## jd_sgmh互助（选填） 
-MySgmh1=''
-MySgmh2=''
-MySgmhA=''
-MySgmhB=''
-
-ForOtherSgmh1=""
-ForOtherSgmh2=""
-
-### jd_cfd活动互助（选填）
-MyCfd1=''
-MyCfd2=''
-MyCfdA=''
-MyCfdB=''
-
-ForOtherCfd1=""
-ForOtherCfd2=""
-
-## jd_global活动互助（选填）
-MyGlobal1=''
-MyGlobal2=''
-MyGlobalA=''
-MyGlobalB=''
-
-ForOtherGlobal1=""
-ForOtherGlobal2=""
 
 ## ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 第三区域：互助码填写区域 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 
@@ -220,7 +106,8 @@ RandomDelay="300"
 ## 自动按顺序进行账号间互助（选填）
 ## 设置为 true 时，将直接导入 jcode 最新日志来进行互助，jcode 日志中含有的互助信息（包括MyXxx和ForOtherXxx）均不用在 config.sh 中填写（填写了也无效）
 ## 如果启用了TempBlockCookie，那么只是被屏蔽的账号不助力其他账号，其他账号还是会助力被屏蔽的账号
-AutoHelpOther=""
+## 如不需要自动互助，请设置为false，并将jcode脚本输出日志粘贴在第三区域，并自行根据需要进行修改
+AutoHelpOther="true"
 
 ## 导出互助码模板样式（选填），定义 jcode 脚本导出的互助码模板样式。
 ## 不填 使用“按编号顺序助力模板”，Cookie编号在前的优先助力
