@@ -374,7 +374,10 @@ update_own_raw () {
     for file in $(ls $dir_raw); do
         rm_mark="yes"
         for ((i=0; i<${#raw_file_name[*]}; i++)); do
-            [[ $file == ${raw_file_name[$i]} ]] && rm_mark="no"
+            if [[ $file == ${raw_file_name[$i]} ]]; then
+                rm_mark="no"
+                break
+            fi
         done
         [[ $rm_mark == yes ]] && rm -f $dir_raw/$file 2>/dev/null
     done
