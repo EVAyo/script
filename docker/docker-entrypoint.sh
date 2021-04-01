@@ -43,6 +43,9 @@ fi
 
 echo -e "======================== 4. 启动挂机程序 ========================\n"
 if [[ $ENABLE_HANGUP == true ]]; then
+    if [ -f $JD_DIR/config/cookie.sh ]; then
+        . $JD_DIR/config/cookie.sh
+    fi
     . $JD_DIR/config/config.sh
     if [[ $Cookie1 ]]; then
         jtask hangup 2>/dev/null
