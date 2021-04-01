@@ -150,7 +150,7 @@ gen_list_own () {
             fi
         done
     done
-    grep -E "$cmd_otask " $list_crontab_user | perl -pe "s|.*$cmd_otask ([^\s]+)( \|$)|\1|" | sort -u > $list_own_user
+    grep -E "$cmd_otask " $list_crontab_user | perl -pe "s|.*$cmd_otask ([^\s]+)( .+\|$)|\1|" | sort -u > $list_own_user
     cd $dir_current
 }
 

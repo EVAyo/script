@@ -144,7 +144,6 @@ find_file_and_path () {
     file_name=""
     which_path=""
 
-
     for path in $seek_path; do
         if [ -f $path/$file_name_tmp1.js ]; then
             file_name=$file_name_tmp1
@@ -160,9 +159,9 @@ find_file_and_path () {
     if [ -f $para ]; then
         local file_name_tmp3=$(echo $para | awk -F "/" '{print $NF}' | perl -pe "s|\.js||")
         if [[ $(grep -E "^$file_name_tmp3$" $list_task_jd_scripts) ]]; then
-            echo -e "jd_scripts项目存在同名文件$file_name_tmp3.js，不复制$para，直接执行$dir_scripts/$file_name_tmp3.js ...\n"
+            echo -e "\njd_scripts项目存在同名文件$file_name_tmp3.js，不复制$para，直接执行$dir_scripts/$file_name_tmp3.js ...\n"
         else
-            echo -e "复制 $para 到 $dir_scripts 下，并执行...\n"
+            echo -e "\n复制 $para 到 $dir_scripts 下，并执行...\n"
             cp -f $para $dir_scripts
         fi
         file_name=$file_name_tmp3
