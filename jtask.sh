@@ -74,6 +74,7 @@ export_all_env () {
         latest_log=$(ls -r $dir_code | head -1)
         . $dir_code/$latest_log
     fi
+    [ -f $file_sharecode ] && . $file_sharecode
     [[ $type == all ]] && combine_all || combine_one $type
     trans_JD_BEAN_SIGN_NOTIFY
     trans_UN_SUBSCRIBES

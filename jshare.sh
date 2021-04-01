@@ -12,6 +12,7 @@ dir_scripts_node_modules=$dir_scripts/node_modules
 ## 文件
 file_config_sample=$dir_sample/config.sample.sh
 file_cookie=$dir_config/cookie.sh
+file_sharecode=$dir_config/sharecode.sh
 file_config_user=$dir_config/config.sh
 file_auth_sample=$dir_sample/auth.sample.json
 file_auth_user=$dir_config/auth.json
@@ -137,27 +138,21 @@ original_name=(
     jup.sh
 )
 
-## 导入配置文件并校验，$1：任务名称
-import_config_and_check () {
-    if [ -f $file_cookie ]; then
-        . $file_cookie
-    fi
-    if [ -f $file_config_user ]; then
-        . $file_config_user
-        if [[ -z ${Cookie1} ]]; then
-            echo -e "请先在 $file_config_user 中配置好Cookie...\n"
-            exit 1
-        fi
-    else
-        echo -e "配置文件 $file_config_user 不存在，请先按教程配置好该文件...\n"
-        exit 1
-    fi
-}
-
 ## 导入配置文件不校验
 import_config_no_check () {
     [ -f $file_cookie ] && . $file_cookie
+    [ -f $file_sharecode ] && . $file_sharecode
     [ -f $file_config_user ] && . $file_config_user
+}
+
+## 导入配置文件并校验，$1：任务名称
+import_config_and_check () {
+    import_config_no_check
+    if [[ -z ${Cookie1} ]]; then
+        echo -e "请先在 $file_config_user 或 $file_cookie 中配置好Cookie...\n"
+        echo -e "可以将config.sample.sh分解为config.sh sharecode.sh cookie.sh三个自己的文件放在config目录下...\n"
+        exit 1
+    fi
 }
 
 ## 发送通知，依赖于import_config_and_check或import_config_no_check，$1：标题，$2：内容

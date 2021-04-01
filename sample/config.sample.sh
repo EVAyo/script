@@ -58,8 +58,9 @@ jdUnsubscribeStopShop=""   ## 遇到此店铺不再取关此店铺以及它后�
 # ForOtherFruit5="${MyFruit1}@${MyFruit2}@${MyFruit3}@${MyFruitB}@${MyFruit4}@${MyFruit6}@${MyFruitC}@${MyFruitA}"
 # ForOtherFruit6="${MyFruit1}@${MyFruit2}@${MyFruit3}@${MyFruitA}@${MyFruit4}@${MyFruit5}@${MyFruitC}"
 
-## 所有互助码活动，请在运行过一次需要互助的活动脚本以后，再运行一次jcode即可获取，将jcode的输出内容粘贴在本区域中即可
-## 如若不想在此处粘贴，而想在运行互助活动脚本时直接从jcode中获取互助码，请将第四区域中 AutoHelpOther 设置为true
+## 所有互助码活动，请在运行过一次需要互助的活动脚本以后，再运行一次jcode即可获取，将jcode的输出内容粘贴在本区域中即可，或粘贴在config/sharecode.sh中
+## 如想在运行互助活动脚本时直接从jcode中自动获取互助码并进行互助，请将第四区域中 AutoHelpOther 设置为true
+## 当 AutoHelpOther 设置为 true 时，jtask会先导入jcode最新日志，再导入config/sharecode.sh，如果你希望不完全按照jcode日志内容进行互助，你可以按需要修改config/sharecode.sh，config/sharecode.sh赋值内容会覆盖jcode日志中同名变量
 
 
 ## ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 第三区域：互助码填写区域 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
@@ -106,7 +107,7 @@ RandomDelay="300"
 ## 自动按顺序进行账号间互助（选填）
 ## 设置为 true 时，将直接导入 jcode 最新日志来进行互助，jcode 日志中含有的互助信息（包括MyXxx和ForOtherXxx）均不用在 config.sh 中填写（填写了也无效）
 ## 如果启用了TempBlockCookie，那么只是被屏蔽的账号不助力其他账号，其他账号还是会助力被屏蔽的账号
-## 如不需要自动互助，请设置为false，并将jcode脚本输出日志粘贴在第三区域，并自行根据需要进行修改
+## 如不需要自动互助，请设置为false，并将jcode脚本输出日志粘贴在第三区域或粘贴在config/sharecode.sh中，并自行根据需要进行修改
 AutoHelpOther="true"
 
 ## 导出互助码模板样式（选填），定义 jcode 脚本导出的互助码模板样式。
