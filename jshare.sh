@@ -147,7 +147,7 @@ import_config_no_check () {
 
 ## 导入配置文件并校验，$1：任务名称
 import_config_and_check () {
-    import_config_no_check
+    import_config_no_check $1
     if [[ -z ${Cookie1} ]]; then
         echo -e "请先在 $file_config_user 或 $file_cookie 中配置好Cookie，注意不要在两个文件中重复配置...\n"
         echo -e "可以将config.sample.sh分解为config.sh sharecode.sh cookie.sh三个自己的文件放在config目录下...\n"
