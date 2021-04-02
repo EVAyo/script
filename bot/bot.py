@@ -356,7 +356,7 @@ async def myfile(event):
                 if res == 'node':
                     await backfile(_OwnDir+'/'+filename)
                     await client.download_media(event.message, _OwnDir)
-                    os.popen('nohup /jd/jtask.sh {}/{} now >/jd/log/bot.log &'.format(_OwnDir,filename))
+                    os.popen('nohup jtask {}/{} now >/jd/log/bot.log &'.format(_OwnDir,filename))
                     await client.edit_message(msg,'脚本已保存到own文件夹，并成功在后台运行，请稍后自行查看日志')
                     conv.cancel()
                 else:
@@ -371,22 +371,6 @@ async def myfile(event):
         await client.send_message(chat_id, 'something wrong,I\'m sorry\n'+str(e))
         logger.error('something wrong,I\'m sorry\n'+str(e))
 
-
-@client.on(events.NewMessage(from_users=chat_id, pattern='/bash'))
-async def mybash(event):
-    '''接收/bash命令后执行程序'''
-    bashreg = re.compile(r'^/bash [\S]+')
-    text = re.findall(bashreg, event.raw_text)
-    if len(text) == 0:
-        res = '''请正确使用/bash命令,务必使用绝对路径，例如
-        /bash /jd/config/diy 更新DIY文件
-        /bash /abc/cde.sh 运行abc目录下的cde.sh文件
-        '''
-        await client.send_message(chat_id, res)
-    else:
-        await cmd('cd /jd && bash '+text[0].replace('/bash ', ''))
-
-
 @client.on(events.NewMessage(from_users=chat_id, pattern='/node'))
 async def mynode(event):
     '''接收/node命令后执行程序'''
@@ -399,7 +383,7 @@ async def mynode(event):
         '''
         await client.send_message(chat_id, res)
     else:
-        await cmd('/jd/jtask.sh '+text[0].replace('/node ', '')+' now')
+        await cmd('jtask '+text[0].replace('/node ', '')+' now')
 
 
 @client.on(events.NewMessage(from_users=chat_id, pattern='/cmd'))
@@ -431,7 +415,7 @@ async def cmd(cmdtext):
         res = os.popen(cmdtext).read()
         if len(res) == 0:
             await client.send_message(chat_id, '已执行，但返回值为空')
-        if len(res) <= 4000:
+        elif len(res) <= 4000:
             await client.send_message(chat_id, res)
         else:
             with open(_LogDir+'/botres.log','w+') as f:
@@ -458,7 +442,6 @@ async def mystart(event):
     '''接收/help /start命令后执行程序'''
     msg = '''使用方法如下：
     /start 开始使用本程序
-    /bash 执行bash程序，请输入shell脚本的绝对路径，例如/bash /jd/config/abcd.sh
     /node 执行js脚本文件，目前仅支持/scirpts、/config目录下js，直接输入/node jd_bean_change 即可进行执行。该命令会等待脚本执行完，期间不能使用机器人，建议使用snode命令。
     /cmd 执行cmd命令,例如/cmd python3 /python/bot.py 则将执行python目录下的bot.py
     /snode 命令可以选择脚本执行，只能选择/jd/scripts目录下的脚本，选择完后直接后台运行，不影响机器人响应其他命令
