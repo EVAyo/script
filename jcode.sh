@@ -40,7 +40,7 @@ export_codes_sub () {
         i=0
         pt_pin_in_log=()
         code=()
-        tmp_grep=$(cat $(ls -r *.log) | grep -$opt "的$chinese_name好友互助码" | perl -pe "s| ||g" | awk -F "（|）|】" '{print $2 "&" $4}' | sort -u)
+        tmp_grep=$(cat $(ls -r *.log) | grep -$opt "的$chinese_name好友互助码" | perl -pe "s| ||g" | awk -F "（|）|】" '{print $2 "&" $4}')
         for line in $tmp_grep; do
             pt_pin_in_log[i]=$(echo $line | awk -F "&" '{print $1}')
             code[i]=$(echo $line | awk -F "&" '{print $2}')
