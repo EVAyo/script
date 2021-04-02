@@ -280,7 +280,7 @@ async def nodebtn(conv, SENDER, path: str, msg):
         elif os.path.isfile(res):
             msg = await client.edit_message(msg, '脚本即将在后台运行')
             logger.info(res+'脚本即将在后台运行')
-            os.popen('nohup /jd/jtask.sh {} now >/jd/log/bot.log &'.format(res))
+            os.popen('/jd/jtask.sh {} now >/jd/log/bot.log &'.format(res))
             msg = await client.edit_message(msg, res + '在后台运行成功\n，请自行在程序结束后查看日志')
             conv.cancel()
             return None, None
@@ -356,7 +356,7 @@ async def myfile(event):
                 if res == 'node':
                     await backfile(_OwnDir+'/'+filename)
                     await client.download_media(event.message, _OwnDir)
-                    os.popen('nohup jtask {}/{} now >/jd/log/bot.log &'.format(_OwnDir,filename))
+                    os.popen('jtask {}/{} now >/jd/log/bot.log &'.format(_OwnDir,filename))
                     await client.edit_message(msg,'脚本已保存到own文件夹，并成功在后台运行，请稍后自行查看日志')
                     conv.cancel()
                 else:
