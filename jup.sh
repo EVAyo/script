@@ -183,7 +183,7 @@ update_docker_entrypoint () {
 
 ## 更新bot.py，docker专用
 update_bot_py () {
-    if [[ $JD_DIR ]] && [[ $(diff $dir_root/bot/bot.py $dir_config/bot.py) ]]; then
+    if [[ $JD_DIR ]] && [[ $ENABLE_TG_BOT == true ]] && [ -f $dir_config/bot.py ] && [[ $(diff $dir_root/bot/bot.py $dir_config/bot.py) ]]; then
         cp -f $dir_root/bot/bot.py $dir_config/bot.py
     fi
 }
