@@ -175,9 +175,16 @@ diff_cron () {
 
 ## 更新docker-entrypoint，docker专用
 update_docker_entrypoint () {
-    if [[ $JD_DIR ]] && [[ $(cat $dir_root/docker/docker-entrypoint.sh) != $(cat /usr/local/bin/docker-entrypoint.sh) ]]; then
+    if [[ $JD_DIR ]] && [[ $(diff $dir_root/docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh) ]]; then
         cp -f $dir_root/docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
         chmod 777 /usr/local/bin/docker-entrypoint.sh
+    fi
+}
+
+## 更新bot.py，docker专用
+update_bot_py () {
+    if [[ $JD_DIR ]] && [[ $(diff $dir_root/bot/bot.py $dir_config/bot.py) ]]; then
+        cp -f $dir_root/bot/bot.py $dir_config/bot.py
     fi
 }
 
@@ -416,6 +423,7 @@ if [[ $exit_status -eq 0 ]]; then
     make_dir $dir_config
     cp -f $file_config_sample $dir_config/config.sample.sh
     update_docker_entrypoint
+    update_bot_py
     detect_config_version
 else
     echo -e "\n更新$dir_shell失败，请检查原因...\n"
