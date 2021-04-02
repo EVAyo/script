@@ -41,7 +41,14 @@ if [ ! -s $JD_DIR/config/config.sh ]; then
     echo
 fi
 
+if [[ $ENABLE_TG_BOT == true ]] && [ ! -s $JD_DIR/config/bot.json ] && type python3 &>/dev/null; then
+    echo -e "检测到config配置目录下不存在bot.json，从示例文件复制一份用于初始化...\n"
+    cp -fv $JD_DIR/sample/bot.sample.json $JD_DIR/config/bot.json
+    echo
+fi
+
 echo -e "======================== 4. 启动挂机程序 ========================\n"
+rm -rf /root/.pm2/logs/* >/dev/null 2>&1
 if [[ $ENABLE_HANGUP == true ]]; then
     if [ -f $JD_DIR/config/cookie.sh ]; then
         . $JD_DIR/config/cookie.sh
@@ -55,6 +62,21 @@ if [[ $ENABLE_HANGUP == true ]]; then
     fi
 elif [[ ${ENABLE_HANGUP} == false ]]; then
     echo -e "已设置为不自动启动挂机程序，跳过...\n"
+fi
+
+if type python3 &>/dev/null; then
+    echo -e "======================== 5. 启动Telegram Bot ========================\n"
+    if [[ $ENABLE_TG_BOT == true ]]; then
+        cp -f $JD_DIR/bot/bot.py $JD_DIR/config/bot.py
+        if [[ -z $(grep -E "你的USERID" $JD_DIR/config/bot.json) ]]; then
+            cd $JD_DIR/config
+            pm2 start bot.py --watch "$JD_DIR/config/bot.py" --name=bot
+        else
+            echo -e "似乎 $JD_DIR/config/bot.json 还未修改为你自己的信息，可能是首次部署容器，因此不启动Telegram Bot...\n"
+        fi
+    else
+        echo -e "已设置为不自动启动Telegram Bot，跳过...\n"
+    fi
 fi
 
 echo -e "容器启动成功...\n"
