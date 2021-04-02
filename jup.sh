@@ -97,9 +97,10 @@ count_own_repo_sum () {
 ## 形成 own 仓库的文件夹名清单，依赖于import_config_and_check或import_config_no_check
 ## array_own_repo_path：repo存放的绝对路径组成的数组；array_own_scripts_path：所有要使用的脚本所在的绝对路径组成的数组
 gen_own_dir_and_path () {
+    local scripts_path_num="-1"
+    local repo_num tmp1 tmp2 tmp3 tmp4 tmp5 dir
+    
     if [[ $own_repo_sum -ge 1 ]]; then
-        local scripts_path_num="-1"
-        local repo_num tmp1 tmp2 tmp3 tmp4 tmp5 dir
         for ((i=1; i<=$own_repo_sum; i++)); do
             repo_num=$((i - 1))
             tmp1=OwnRepoUrl$i
