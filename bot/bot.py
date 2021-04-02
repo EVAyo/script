@@ -254,7 +254,7 @@ async def logbtn(conv, SENDER, path: str, content: str, msg):
         return None, None
     except Exception as e:
         msg = await client.edit_message(msg, 'something wrong,I\'m sorry\n'+str(e))
-        logger.error('something wrong,I\'m sorry\n'+e)
+        logger.error('something wrong,I\'m sorry\n'+str(e))
         return None, None
 
 
@@ -369,7 +369,7 @@ async def myfile(event):
                 conv.cancel()
     except Exception as e:
         await client.send_message(chat_id, 'something wrong,I\'m sorry\n'+str(e))
-        logger.error('something wrong,I\'m sorry\n'+e)
+        logger.error('something wrong,I\'m sorry\n'+str(e))
 
 
 @client.on(events.NewMessage(from_users=chat_id, pattern='/bash'))
@@ -378,14 +378,13 @@ async def mybash(event):
     bashreg = re.compile(r'^/bash [\S]+')
     text = re.findall(bashreg, event.raw_text)
     if len(text) == 0:
-        res = '''请正确使用/bash命令，例如
-        /bash jup 更新脚本文件
+        res = '''请正确使用/bash命令,务必使用绝对路径，例如
         /bash /jd/config/diy 更新DIY文件
         /bash /abc/cde.sh 运行abc目录下的cde.sh文件
         '''
         await client.send_message(chat_id, res)
     else:
-        await cmd('bash '+text[0].replace('/bash ', ''))
+        await cmd('cd /jd && bash '+text[0].replace('/bash ', ''))
 
 
 @client.on(events.NewMessage(from_users=chat_id, pattern='/node'))
@@ -411,13 +410,11 @@ async def mycmd(event):
         text = re.findall(cmdreg, event.raw_text)
         if len(text) == 0:
             msg = '''请正确使用/cmd命令，如
-            /cmd jtask   # 运行scripts脚本
-            /cmd otask   # 运行own脚本 绝对路径
-            /cmd mtask   # 运行你自己的脚本，如果某些own脚本识别不出来cron，你也可以自行添加mtask任务
             /cmd jlog    # 删除旧日志
             /cmd jup     # 更新所有脚本
             /cmd jcode   # 导出所有互助码
             /cmd jcsv    # 记录豆豆变化情况
+            不建议直接使用cmd命令执行脚本，请使用/node或/snode
             '''
             await client.send_message(chat_id, msg)
         else:
@@ -432,6 +429,8 @@ async def cmd(cmdtext):
     try:
         await client.send_message(chat_id, '开始执行程序，如程序复杂，建议稍等')
         res = os.popen(cmdtext).read()
+        if len(res) == 0:
+            await client.send_message(chat_id, '已执行，但返回值为空')
         if len(res) <= 4000:
             await client.send_message(chat_id, res)
         else:
@@ -440,7 +439,7 @@ async def cmd(cmdtext):
             await client.send_message(chat_id, '执行结果较长，请查看日志',file=_LogDir+'/botres.log')
     except Exception as e:
         await client.send_message(chat_id, 'something wrong,I\'m sorry\n'+str(e))
-        logger.error('something wrong,I\'m sorry\n'+e)
+        logger.error('something wrong,I\'m sorry'+str(e))
 
 
 @client.on(events.NewMessage(from_users=chat_id, pattern=r'^/getcookie'))
@@ -450,7 +449,7 @@ async def mycookie(event):
         await get_jd_cookie()
     except Exception as e:
         await client.send_message(chat_id, 'something wrong,I\'m sorry\n'+str(e))
-        logger.error('something wrong,I\'m sorry\n'+e)
+        logger.error('something wrong,I\'m sorry\n'+str(e))
 
 
 @client.on(events.NewMessage(from_users=chat_id, pattern='/help'))
@@ -459,7 +458,7 @@ async def mystart(event):
     '''接收/help /start命令后执行程序'''
     msg = '''使用方法如下：
     /start 开始使用本程序
-    /bash 执行bash程序，如jup、jcode、diy及可执行自定义.sh，例如/bash /jd/config/abcd.sh
+    /bash 执行bash程序，请输入shell脚本的绝对路径，例如/bash /jd/config/abcd.sh
     /node 执行js脚本文件，目前仅支持/scirpts、/config目录下js，直接输入/node jd_bean_change 即可进行执行。该命令会等待脚本执行完，期间不能使用机器人，建议使用snode命令。
     /cmd 执行cmd命令,例如/cmd python3 /python/bot.py 则将执行python目录下的bot.py
     /snode 命令可以选择脚本执行，只能选择/jd/scripts目录下的脚本，选择完后直接后台运行，不影响机器人响应其他命令
