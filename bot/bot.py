@@ -459,7 +459,7 @@ async def mystart(event):
     '''接收/help /start命令后执行程序'''
     msg = '''使用方法如下：
     /start 开始使用本程序
-    /bash 执行bash程序，如git_pull、diy及可执行自定义.sh，例如/bash /jd/config/abcd.sh
+    /bash 执行bash程序，如jup、jcode、diy及可执行自定义.sh，例如/bash /jd/config/abcd.sh
     /node 执行js脚本文件，目前仅支持/scirpts、/config目录下js，直接输入/node jd_bean_change 即可进行执行。该命令会等待脚本执行完，期间不能使用机器人，建议使用snode命令。
     /cmd 执行cmd命令,例如/cmd python3 /python/bot.py 则将执行python目录下的bot.py
     /snode 命令可以选择脚本执行，只能选择/jd/scripts目录下的脚本，选择完后直接后台运行，不影响机器人响应其他命令
