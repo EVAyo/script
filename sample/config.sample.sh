@@ -1,6 +1,6 @@
 ## Version: v4.2.3
 ## Date: 2021-04-01
-## Update Content: 1.将config.sample.sh中AutoHelpOther预设为true；2.今后不再维护config.sample.sh中的互助码区域，如需要知道如何填写，直接运行jcode脚本后，全部复制过来粘贴在config.sh中第三区域或粘贴在config目录下sharecode.sh中即可，并按需修改，运行jtask命令时，sharecode.sh会覆盖jcode日志同名变量，不同名的不覆盖。
+## Update Content: 今后不再维护config.sample.sh中的互助码区域，如需要知道如何填写，直接运行jcode脚本后，全部复制过来粘贴在config.sh中第三区域或粘贴在config目录下sharecode.sh中即可，并按需修改，运行jtask命令时，sharecode.sh会覆盖jcode日志同名变量，不同名的不覆盖。
 
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第一区域：jd_scripts特有变量填写区域（需要shell转换的） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
@@ -108,7 +108,7 @@ RandomDelay="300"
 ## 设置为 true 时，将直接导入 jcode 最新日志来进行互助，如希望不完全按照jcode 最新日志来互助，可以在config目录下新建sharecode.sh，内容参考jcode日志并按需修改，sharecode.sh赋值内容会覆盖jcode日志中同名变量
 ## 如果启用了TempBlockCookie，那么只是被屏蔽的账号不助力其他账号，其他账号还是会助力被屏蔽的账号
 ## 如不需要自动互助，请设置为false，并将jcode脚本输出日志粘贴在第三区域或粘贴在config/sharecode.sh中，并自行根据需要进行修改
-AutoHelpOther="true"
+AutoHelpOther=""
 
 ## 导出互助码模板样式（选填），定义 jcode 脚本导出的互助码模板样式。
 ## 不填 使用“按编号顺序助力模板”，Cookie编号在前的优先助力
