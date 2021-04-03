@@ -110,12 +110,17 @@ gen_own_dir_and_path () {
             array_own_repo_dir[$repo_num]=$(echo ${array_own_repo_url[$repo_num]} | perl -pe "s|.+com(/\|:)([\w-]+)/([\w-]+)(\.git)?|\2_\3|")
             array_own_repo_path[$repo_num]=$dir_own/${array_own_repo_dir[$repo_num]}
             tmp3=OwnRepoPath$i
-            for dir in ${!tmp3}; do
+            if [[ ${!tmp3} ]]; then
+                for dir in ${!tmp3}; do
+                    let scripts_path_num++
+                    tmp4="${array_own_repo_dir[repo_num]}/$dir"
+                    tmp5=$(echo $tmp4 | perl -pe "{s|//|/|g; s|/$||}")  # 去掉多余的/
+                    array_own_scripts_path[$scripts_path_num]="$dir_own/$tmp5"
+                done
+            else
                 let scripts_path_num++
-                tmp4="${array_own_repo_dir[repo_num]}/$dir"
-                tmp5=$(echo $tmp4 | perl -pe "{s|//|/|g; s|/$||}")  # 去掉多余的/
-                array_own_scripts_path[$scripts_path_num]="$dir_own/$tmp5"
-            done
+                array_own_scripts_path[$scripts_path_num]="${array_own_repo_path[$repo_num]}"
+            fi
         done
     fi
 
@@ -138,18 +143,20 @@ gen_list_own () {
     rm -f $dir_list_tmp/own*.list >/dev/null 2>&1
     for ((i=0; i<${#array_own_scripts_path[*]}; i++)); do
         cd ${array_own_scripts_path[i]}
-        for file in $(ls *.js); do
-            if [ -f $file ]; then
-                perl -ne "{
-                    print if /.*([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( |,).*\/?$file/
-                }" $file | \
-                perl -pe "{
-                    s|.*(([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( \|,)).*/?$file.*|$file|g;
-                    s|^(.+)|${array_own_scripts_path[i]}/\1|
-                }" | \
-                head -1 >> $list_own_scripts
-            fi
-        done
+        if [[ $(ls *.js 2>/dev/null) ]]; then
+            for file in $(ls *.js); do
+                if [ -f $file ]; then
+                    perl -ne "{
+                        print if /.*([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( |,).*\/?$file/
+                    }" $file | \
+                    perl -pe "{
+                        s|.*(([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( \|,)).*/?$file.*|$file|g;
+                        s|^(.+)|${array_own_scripts_path[i]}/\1|
+                    }" | \
+                    head -1 >> $list_own_scripts
+                fi
+            done
+        fi
     done
     grep -E "$cmd_otask " $list_crontab_user | perl -pe "s|.*$cmd_otask ([^\s]+)( .+\|$)|\1|" | sort -u > $list_own_user
     cd $dir_current
@@ -164,7 +171,7 @@ diff_cron () {
     local list_drop="$4"
     if [ -s $list_task ]; then
         grep -vwf $list_task $list_scripts > $list_add
-    else
+    elif [ ! -s $list_task ] && [ -s $list_scripts ]; then
         cp -f $list_scripts $list_add
     fi
     if [ -s $list_scripts ]; then
