@@ -118,7 +118,6 @@ usage () {
     echo -e "3.$cmd_jtask <js_name> conc   # 并发执行，无论是否设置了随机延迟，均立即运行，前台不产生日志，直接记录在日志文件中"
     echo -e "4.$cmd_jtask runall           # 依次运行所有jd_scripts中的非挂机脚本，非常耗时"
     echo -e "5.$cmd_jtask hangup           # 重启挂机程序"
-    echo -e "6.$cmd_jtask resetpwd         # 重置控制面板用户名和密码"
     echo -e "\notask命令运行 own 脚本，需要输入脚本的绝对路径或相对路径（定时任务中必须是绝对路径），otask会将该脚本复制到 scripts 目录下再运行，用法为："
     echo -e "1.$cmd_otask <js_path>        # 依次执行，如果设置了随机延迟并且当时时间不在0-2、30-31、59分内，将随机延迟一定秒数"
     echo -e "2.$cmd_otask <js_path> now    # 依次执行，无论是否设置了随机延迟，均立即运行，前台会输出日志，同时记录在日志文件中"
@@ -192,12 +191,6 @@ run_hungup () {
             run_nohup $file.js >/dev/null 2>&1
         fi
     done
-}
-
-## 重置密码
-reset_user_password () {
-    cp -f $file_auth_sample $file_auth_user
-    echo -e "控制面板重置成功，用户名：admin，密码：adminadmin\n"
 }
 
 ## 一次性运行所有jd_scripts脚本
