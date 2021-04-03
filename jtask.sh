@@ -273,9 +273,6 @@ case $# in
             hangup)
                 run_hungup
                 ;;
-            resetpwd)
-                reset_user_password
-                ;;
             runall)
                 run_all_jd_scripts
                 ;;
