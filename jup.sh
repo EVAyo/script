@@ -147,13 +147,11 @@ gen_list_own () {
             for file in $(ls *.js); do
                 if [ -f $file ]; then
                     perl -ne "{
-                        print if /.*([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( |,).*\/?$file/
+                        print if /.*([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( |,|\").*\/?$file/
                     }" $file | \
                     perl -pe "{
-                        s|.*(([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( \|,)).*/?$file.*|$file|g;
-                        s|^(.+)|${array_own_scripts_path[i]}/\1|
-                    }" | \
-                    head -1 >> $list_own_scripts
+                        s|.*(([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*])( \|,\|\").*/?$file.*|${array_own_scripts_path[i]}/$file|g
+                    }" | head -1 >> $list_own_scripts
                 fi
             done
         fi
@@ -322,13 +320,12 @@ add_cron_own () {
             local file_name=$(echo $file_full_path | awk -F "/" '{print $NF}')
             if [ -f $file_full_path ]; then
                 perl -ne "{
-                    print if /.*([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( |,).*$file_name/
+                    print if /.*([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( |,|\").*$file_name/
                 }" $file_full_path | \
                 perl -pe "{
-                    s|[^\d\*]*(([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( \|,)).*/?$file_name.*|\1 $cmd_otask $file_full_path|g;
+                    s|[^\d\*]*(([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*])( \|,\|\").*/?$file_name.*|\1 $cmd_otask $file_full_path|g;
                     s|  | |g
-                }" | \
-                head -1 >> $list_crontab_own_tmp
+                }" | sort -u | head -1 >> $list_crontab_own_tmp
             fi
         done
         crontab_tmp="$(cat $list_crontab_own_tmp)"
