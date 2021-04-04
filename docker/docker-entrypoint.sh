@@ -70,7 +70,7 @@ if type python3 &>/dev/null; then
         cp -f $JD_DIR/bot/bot.py $JD_DIR/config/bot.py
         if [[ -z $(grep -E "你的USERID" $JD_DIR/config/bot.json) ]]; then
             cd $JD_DIR/config
-            pm2 start bot.py --watch "$JD_DIR/config/bot.py" --name=bot
+            pm2 start bot.py --watch "$JD_DIR/config/bot.py" --watch-delay 10 --name=bot
         else
             echo -e "似乎 $JD_DIR/config/bot.json 还未修改为你自己的信息，可能是首次部署容器，因此不启动Telegram Bot...\n"
         fi
