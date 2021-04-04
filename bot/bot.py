@@ -37,10 +37,9 @@ if proxystart:
     client = TelegramClient('bot', api_id, api_hash,proxy=proxy).start(bot_token=TOKEN)
 else:
     client = TelegramClient('bot', api_id, api_hash).start(bot_token=TOKEN)
-
+cookiemsg =''
 img_file = '/jd/config/qr.jpg'
 StartCMD = bot['StartCMD']
-
 def press_event(user_id):
     return events.CallbackQuery(func=lambda e: e.sender_id == user_id)
 
@@ -134,37 +133,10 @@ def parsePostRespCookie(headers, data):
 
 
 def chekLogin():
-    expired_time = time.time() + 60 * 3
-    while True:
-        check_time_stamp = int(time.time() * 1000)
-        check_url = 'https://plogin.m.jd.com/cgi-bin/m/tmauthchecktoken?&token=%s&ou_state=0&okl_token=%s' % (
-            token, okl_token)
-        check_data = {
-            'lang': 'chs',
-            'appid': 300,
-            'returnurl': 'https://wqlogin2.jd.com/passport/LoginRedirect?state=%s&returnurl=//home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action' % check_time_stamp,
-            'source': 'wq_passport'
-
-        }
-        check_header = {
-            'Referer': f'https://plogin.m.jd.com/login/login?appid=300&returnurl=https://wqlogin2.jd.com/passport/LoginRedirect?state=%s&returnurl=//home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport' % check_time_stamp,
-            'Cookie': cookies,
-            'Connection': 'Keep-Alive',
-            'Content-Type': 'application/x-www-form-urlencoded; Charset=UTF-8',
-            'Accept': 'application/json, text/plain, */*',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
-
-        }
-        resp = requests.post(
-            url=check_url, headers=check_header, data=check_data, timeout=30)
-        data = resp.json()
-        if data.get("errcode") == 0:
-            parseJDCookies(resp.headers)
-            return data.get("errcode")
-        if data.get("errcode") == 21:
-            return data.get("errcode")
-        if time.time() > expired_time:
-            return "超过3分钟未扫码，二维码已过期。"
+    
+    global login
+    
+        
 
 
 def parseJDCookies(headers):
@@ -195,22 +167,6 @@ def creatqr(text):
     # 保存二维码
     img.save(img_file)
 
-
-async def get_jd_cookie():
-    getSToken()
-    getOKLToken()
-    url = 'https://plogin.m.jd.com/cgi-bin/m/tmauth?appid=300&client_type=m&token='+token
-    creatqr(url)
-    msg = await client.send_message(chat_id, '请扫码', file=img_file)
-    return_msg = chekLogin()
-    if return_msg == 0:
-        await client.edit_message(msg, 'cookie获取成功:\n'+jd_cookie)
-    elif return_msg == 21:
-        await client.edit_message(msg, '二维码已失效，请重新获取')
-    else:
-        await client.edit_message(msg, 'something wrong')
-
-
 def split_list(datas, n, row: bool = True):
     """一维列表转二维列表，根据N不同，生成不同级别的列表"""
     length = len(datas)
@@ -235,8 +191,8 @@ async def logbtn(conv, SENDER, path: str, content: str, msg):
         markup.append(Button.inline('取消', data='cancle'))
         markup = split_list(markup, 3)
         msg = await client.edit_message(msg, '请做出你的选择：', buttons=markup)
-        date = await conv.wait_event(press_event(SENDER))
-        res = bytes.decode(date.data)
+        convdata = await conv.wait_event(press_event(SENDER))
+        res = bytes.decode(convdata.data)
         if res == 'cancle':
             msg = await client.edit_message(msg, '对话已取消')
             conv.cancel()
@@ -244,7 +200,7 @@ async def logbtn(conv, SENDER, path: str, content: str, msg):
         elif os.path.isfile(res):
             msg = await client.edit_message(msg, content + '中，请注意查收')
             await conv.send_file(res)
-            msg = await client.edit_message(msg, content + res + '成功，请查收')
+            msg = await client.edit_message(msg, res+ content + '成功，请查收')
             conv.cancel()
             return None, None
         else:
@@ -271,8 +227,8 @@ async def nodebtn(conv, SENDER, path: str, msg):
         markup.append(Button.inline('取消', data='cancel'))
         markup = split_list(markup, 3)
         msg = await client.edit_message(msg, '请做出你的选择：', buttons=markup)
-        date = await conv.wait_event(press_event(SENDER))
-        res = bytes.decode(date.data)
+        convdata = await conv.wait_event(press_event(SENDER))
+        res = bytes.decode(convdata.data)
         if res == 'cancel':
             msg = await client.edit_message(msg, '对话已取消')
             conv.cancel()
@@ -281,7 +237,7 @@ async def nodebtn(conv, SENDER, path: str, msg):
             msg = await client.edit_message(msg, '脚本即将在后台运行')
             logger.info(res+'脚本即将在后台运行')
             os.popen('/jd/jtask.sh {} now >/jd/log/bot.log &'.format(res))
-            msg = await client.edit_message(msg, res + '在后台运行成功\n，请自行在程序结束后查看日志')
+            msg = await client.edit_message(msg, res + '在后台运行成功，请自行在程序结束后查看日志')
             conv.cancel()
             return None, None
         else:
@@ -351,8 +307,8 @@ async def myfile(event):
                 markup.append(Button.inline('放入own', data=_OwnDir))
                 markup.append(Button.inline('放入own并运行', data='node'))
                 msg = await client.edit_message(msg, '请做出你的选择：', buttons=markup)
-                date = await conv.wait_event(press_event(SENDER))
-                res = bytes.decode(date.data)
+                convdata = await conv.wait_event(press_event(SENDER))
+                res = bytes.decode(convdata.data)
                 if res == 'node':
                     await backfile(_OwnDir+'/'+filename)
                     await client.download_media(event.message, _OwnDir)
@@ -429,8 +385,67 @@ async def cmd(cmdtext):
 @client.on(events.NewMessage(from_users=chat_id, pattern=r'^/getcookie'))
 async def mycookie(event):
     '''接收/getcookie后执行程序'''
+    login = True
+    msg = await client.send_message(chat_id,'正在获取二维码，请稍后')
+    global cookiemsg
     try:
-        await get_jd_cookie()
+        SENDER = event.sender_id
+        async with client.conversation(SENDER, timeout=30) as conv:
+            getSToken()
+            getOKLToken()
+            url = 'https://plogin.m.jd.com/cgi-bin/m/tmauth?appid=300&client_type=m&token='+token
+            creatqr(url)
+            markup = [Button.inline("已扫码", data='confirm'),Button.inline("取消", data='cancel')]
+            await client.delete_messages(chat_id,msg)
+            cookiemsg = await client.send_message(chat_id, '30s内点击取消将取消本次操作\n如不取消，扫码结果将于30s后显示\n扫码后不想等待点击已扫码', file=img_file,buttons=markup)
+            convdata = await conv.wait_event(press_event(SENDER))
+            res = bytes.decode(convdata.data)
+            if res == 'cancel':
+                login = False
+                await client.delete_messages(chat_id,cookiemsg)
+                msg = await conv.send_message('对话已取消')
+                conv.cancel()
+            else:
+                raise exceptions.TimeoutError() 
+    except exceptions.TimeoutError:
+        expired_time = time.time() + 60 * 2
+        while login:
+            check_time_stamp = int(time.time() * 1000)
+            check_url = 'https://plogin.m.jd.com/cgi-bin/m/tmauthchecktoken?&token=%s&ou_state=0&okl_token=%s' % (
+                token, okl_token)
+            check_data = {
+                'lang': 'chs',
+                'appid': 300,
+                'returnurl': 'https://wqlogin2.jd.com/passport/LoginRedirect?state=%s&returnurl=//home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action' % check_time_stamp,
+                'source': 'wq_passport'
+
+            }
+            check_header = {
+                'Referer': f'https://plogin.m.jd.com/login/login?appid=300&returnurl=https://wqlogin2.jd.com/passport/LoginRedirect?state=%s&returnurl=//home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport' % check_time_stamp,
+                'Cookie': cookies,
+                'Connection': 'Keep-Alive',
+                'Content-Type': 'application/x-www-form-urlencoded; Charset=UTF-8',
+                'Accept': 'application/json, text/plain, */*',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36',
+
+            }
+            resp = requests.post(
+                url=check_url, headers=check_header, data=check_data, timeout=30)
+            data = resp.json()
+            if data.get("errcode") == 0:
+                parseJDCookies(resp.headers)
+                await client.delete_messages(chat_id,cookiemsg)
+                await client.send_message(chat_id, '以下为获取到的cookie')
+                await client.send_message(chat_id, jd_cookie)
+                return
+            if data.get("errcode") == 21:
+                await client.delete_messages(chat_id,cookiemsg)
+                await client.send_message(chat_id, '发生了某些错误\n'+data.get("errcode"))
+                return
+            if time.time() > expired_time:
+                await client.delete_messages(chat_id,cookiemsg)
+                await client.send_message(chat_id, '超过3分钟未扫码，二维码已过期')
+                return       
     except Exception as e:
         await client.send_message(chat_id, 'something wrong,I\'m sorry\n'+str(e))
         logger.error('something wrong,I\'m sorry\n'+str(e))
@@ -442,14 +457,13 @@ async def mystart(event):
     '''接收/help /start命令后执行程序'''
     msg = '''使用方法如下：
     /start 开始使用本程序
-    /node 执行js脚本文件，目前仅支持/scirpts、/config目录下js，直接输入/node jd_bean_change 即可进行执行。该命令会等待脚本执行完，期间不能使用机器人，建议使用snode命令。
-    /cmd 执行cmd命令,例如/cmd python3 /python/bot.py 则将执行python目录下的bot.py
-    /snode 命令可以选择脚本执行，只能选择/jd/scripts目录下的脚本，选择完后直接后台运行，不影响机器人响应其他命令
+    /node 执行js脚本文件，直接输入/node jd_bean_change 如执行其他自己js，需输入绝对路径。即可进行执行。该命令会等待脚本执行完，期间不能使用机器人，建议使用snode命令。
+    /cmd 执行cmd命令,例如/cmd python3 /python/bot.py 则将执行python目录下的bot.py 不建议使用机器人使用并发，可能产生不明原因的崩溃
+    /snode 命令可以选择脚本执行，只能选择/scripts 和/own目录下的脚本，选择完后直接后台运行，不影响机器人响应其他命令
     /log 选择查看执行日志
     /getfile 获取jd目录下文件
-    /getcookie 扫码获取cookie 期间不能进行其他交互
-    此外直接发送文件，会让你选择保存到哪个文件夹，如果选择运行，将保存至scripts目录下，并立即运行脚本
-    crontab.list文件会自动更新时间;其他文件会被保存到/jd/scripts文件夹下'''
+    /getcookie 扫码获取cookie 增加30s内取消按钮，30s后不能进行其他交互直到2分钟或获取到cookie
+    此外直接发送文件，会让你选择保存到哪个文件夹，如果选择运行，将保存至own目录下，并立即运行脚本，crontab.list文件会自动更新时间'''
     await client.send_message(chat_id, msg)
 
 with client:
