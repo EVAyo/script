@@ -36,28 +36,6 @@ jdUnsubscribeStopShop=""   ## 遇到此店铺不再取关此店铺以及它后�
 
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第三区域：互助码填写区域 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
-## 互助码填法示例
-## **互助码是填在My系列变量中的，ForOther系统变量中只要填入My系列的变量名即可，按注释中的例子拼接，以jd_fruit为例，如下所示。**
-## **实际上jd_fruit一个账号只能给别人助力3次，我多写的话，只有前几个会被助力。但如果前面的账号获得的助力次数已经达到上限了，那么还是会尝试继续给余下的账号助力，所以多填也是有意义的。**
-## **ForOther系列变量必须从1开始编号，依次编下去。**
-
-# MyFruit1="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"  # 这是Cookie1这个账号的互助码
-# MyFruit2="bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"  # 这是Cookie2这个账号的互助码
-# MyFruit3="cccccccccccccccccccccccccccccccc"  # 这是Cookie3这个账号的互助码
-# MyFruit4="dddddddddddddddddddddddddddddddd"  # 这是Cookie4这个账号的互助码
-# MyFruit5="eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"  # 这是Cookie5这个账号的互助码
-# MyFruit6="ffffffffffffffffffffffffffffffff"  # 这是Cookie6这个账号的互助码
-# MyFruitA="gggggggggggggggggggggggggggggggg"  # 这是我和别人交换互助，另外一个用户A的互助码
-# MyFruitB="hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh"  # 这是我和别人交换互助，另外一个用户B的互助码
-# MyFruitC="iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"  # 这是我和别人交换互助，另外一个用户C的互助码
-
-# ForOtherFruit1="${MyFruit2}@${MyFruitB}@${MyFruit4}"   # Cookie1这个账号助力Cookie2的账号的账号、Cookie4的账号以及用户B
-# ForOtherFruit2="${MyFruit1}@${MyFruitA}@${MyFruit4}"   # Cookie2这个账号助力Cookie1的账号的账号、Cookie4的账号以及用户A
-# ForOtherFruit3="${MyFruit1}@${MyFruit2}@${MyFruitC}@${MyFruit4}@${MyFruitA}@${MyFruit6}"  # 解释同上，jd_fruit实际上只能助力3次
-# ForOtherFruit4="${MyFruit1}@${MyFruit2}@${MyFruit3}@${MyFruitC}@${MyFruit6}@${MyFruitA}"  # 解释同上，jd_fruit实际上只能助力3次
-# ForOtherFruit5="${MyFruit1}@${MyFruit2}@${MyFruit3}@${MyFruitB}@${MyFruit4}@${MyFruit6}@${MyFruitC}@${MyFruitA}"
-# ForOtherFruit6="${MyFruit1}@${MyFruit2}@${MyFruit3}@${MyFruitA}@${MyFruit4}@${MyFruit5}@${MyFruitC}"
-
 ## 所有互助码活动，请在运行过一次需要互助的活动脚本以后，再运行一次jcode即可获取，将jcode的输出内容粘贴在本区域中即可，或粘贴在config/sharecode.sh中
 ## 如想在运行互助活动脚本时直接从jcode中自动获取互助码并进行互助，请将第四区域中 AutoHelpOther 设置为true
 ## 当 AutoHelpOther 设置为 true 时，jtask会先导入jcode最新日志，再导入config/sharecode.sh，如果你希望不完全按照jcode日志内容进行互助，你可以按需要修改config/sharecode.sh，config/sharecode.sh赋值内容会覆盖jcode日志中同名变量
@@ -74,6 +52,8 @@ jdUnsubscribeStopShop=""   ## 遇到此店铺不再取关此店铺以及它后�
 ## 多个Cookie编号以半角的空格分隔，两侧一对半角双引号，使用此功能后，在运行js脚本时账号编号将发生变化
 ## 举例1：TempBlockCookie="2"    临时屏蔽掉Cookie2
 ## 举例2：TempBlockCookie="2 4"  临时屏蔽掉Cookie2和Cookie4
+TempBlockCookie=""
+
 ## 如果只是想要屏蔽某个账号不玩某些小游戏，可以参考下面 case 这个命令的例子来控制，脚本名称请去掉后缀 “.js”
 ## case $1 in
 ##   jd_fruit)
@@ -86,7 +66,6 @@ jdUnsubscribeStopShop=""   ## 遇到此店铺不再取关此店铺以及它后�
 ##     TempBlockCookie="3 6"    # 账号3、账号6不玩jd_jdzz和jd_joy
 ##     ;;
 ##  esac
-TempBlockCookie=""
 
 ## 是否自动删除 jd_scripts 项目中失效的定时任务（选填）
 AutoDelCron="true"
