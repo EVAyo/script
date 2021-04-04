@@ -54,7 +54,7 @@ jdUnsubscribeStopShop=""   ## 遇到此店铺不再取关此店铺以及它后�
 ## 举例2：TempBlockCookie="2 4"  临时屏蔽掉Cookie2和Cookie4
 TempBlockCookie=""
 
-## 如果只是想要屏蔽某个账号不玩某些小游戏，可以参考下面 case 这个命令的例子来控制，脚本名称请去掉后缀 “.js”
+## 如果只是想要屏蔽某个账号不玩某些小游戏，可以参考下面 case 这个命令的例子来控制，脚本名称（不含路径）请去掉后缀 “.js”，包括own脚本和其他你自己添加的脚本，均按这样处理。
 ## case $1 in
 ##   jd_fruit)
 ##     TempBlockCookie="5"      # 账号5不玩jd_fruit
