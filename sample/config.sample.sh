@@ -89,7 +89,7 @@ RandomDelay="300"
 ## 如不需要自动互助，请设置为false，并将jcode脚本输出日志粘贴在第三区域或粘贴在config/sharecode.sh中，并自行根据需要进行修改
 AutoHelpOther=""
 
-## 导出互助码模板样式（选填），定义 jcode 脚本导出的互助码模板样式。
+## 定义 jcode 脚本导出的互助码模板样式（选填）
 ## 不填 使用“按编号顺序助力模板”，Cookie编号在前的优先助力
 ## 填 0 使用“全部一致助力模板”，所有账户要助力的码全部一致
 ## 填 1 使用“均等机会助力模板”，所有账户获得助力次数一致
@@ -99,8 +99,8 @@ HelpType=""
 ## 当检测到scripts/githubAction.md文件发生变化时是否发送通知，该文件是jd_scripts所有环境变量的清单，填 true 则发送
 EnvChangeNotify=""
 
-## 是否添加DIY脚本（选填）
-## 如果你自己会写shell脚本，并且希望在每次jup.sh这个脚本运行时，额外运行你的DIY脚本，请赋值为 "true"
+## 是否添加你自己写的 shell 脚本（选填）
+## 如果你自己会写 shell 脚本，并且希望在每次 jup 这个脚本运行时，额外运行你的 shell 脚本，请赋值为 "true"
 ## 同时，请务必将你的脚本命名为 diy.sh (只能叫这个文件名)，放在 config 目录下
 EnableExtraShell=""
 
