@@ -65,7 +65,7 @@ TempBlockCookie=""
 ##   jd_jdzz | jd_joy)
 ##     TempBlockCookie="3 6"    # 账号3、账号6不玩jd_jdzz和jd_joy
 ##     ;;
-##  esac
+## esac
 
 ## 是否自动删除 jd_scripts 项目中失效的定时任务（选填）
 AutoDelCron="true"
