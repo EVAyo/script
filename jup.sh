@@ -49,10 +49,10 @@ reset_romote_url () {
     local dir_work=$1
     local url=$2
 
-    if [ -d "$dir/.git" ]; then
+    if [ -d "$dir_work/.git" ]; then
         cd $dir_work
-        git remote set-url origin $url
-        git reset --hard
+        git remote set-url origin $url >/dev/null
+        git reset --hard >/dev/null
         cd $dir_current
     fi
 }
@@ -358,6 +358,7 @@ update_own_repo () {
     [[ ${#array_own_repo_url[*]} -gt 0 ]] && echo -e "--------------------------------------------------------------\n"
     for ((i=0; i<${#array_own_repo_url[*]}; i++)); do
         if [ -d ${array_own_repo_path[i]}/.git ]; then
+            reset_romote_url ${array_own_repo_path[i]} ${array_own_repo_url[i]}
             git_pull_scripts ${array_own_repo_path[i]}
         else
             git_clone_scripts ${array_own_repo_url[i]} ${array_own_repo_path[i]} ${array_own_repo_branch[i]}
@@ -417,8 +418,8 @@ random_update_jup_cron
 
 ## 重置仓库romote url
 if [[ $JD_DIR ]] && [[ $ENABLE_RESET_REPO_URL == true ]]; then
-    reset_romote_url $dir_shell $url_shell >/dev/null
-    reset_romote_url $dir_scripts $url_scripts >/dev/null
+    reset_romote_url $dir_shell $url_shell
+    reset_romote_url $dir_scripts $url_scripts
 fi
 
 ## 更新shell
