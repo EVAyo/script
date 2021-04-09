@@ -274,10 +274,10 @@ fix_config () {
 
 ## 判断如何更新crontab
 detect_and_update_crontabs () {
-    if [[ $JD_DIR ]] && [[ $(readlink -f /etc/crontabs/root) != $file_crontab_user ]]; then
-        rm -f /etc/crontabs/root
-        ln -sf $file_crontab_user /etc/crontabs/root
-    elif [[ -z $JD_DIR ]]; then
+    #if [[ $JD_DIR ]] && [[ $(readlink -f /etc/crontabs/root) != $file_crontab_user ]]; then
+        #rm -f /etc/crontabs/root
+        #ln -sf $file_crontab_user /etc/crontabs/root
+    #elif [[ -z $JD_DIR ]]; then
         crontab $list_crontab_user
-    fi
+    #fi
 }
