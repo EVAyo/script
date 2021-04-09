@@ -36,7 +36,7 @@ echo
 
 echo -e "======================== 3. 检测配置文件 ========================\n"
 if [ -s $file_crontab_user ]; then
-    echo -e "检测到 $file_crontab_user 存在，将自动导入定时任务...\n"
+    echo -e "检测到 $file_crontab_user 存在，自动导入定时任务...\n"
     perl -i -pe "{s|CMD_UPDATE|jup|g; s|ROOT_DIR|/jd|g; s|CMD_RMLOG|jlog|g; s|CMD_CODE|jcode|g; s|CMD_MTASK|mtask|g; s|CMD_JTASK|jtask|g}" $file_crontab_user
 else
     echo -e "检测到 $file_crontab_user 不存在，从示例文件复制一份用于初始化...\n"
@@ -44,11 +44,7 @@ else
     perl -i -pe "{s|CMD_UPDATE|jup|g; s|ROOT_DIR|/jd|g; s|CMD_RMLOG|jlog|g; s|CMD_CODE|jcode|g; s|CMD_MTASK|mtask|g; s|CMD_JTASK|jtask|g}" $file_crontab_user
     echo
 fi
-
-if [[ $(readlink -f /etc/crontabs/root) != $file_crontab_user ]]; then
-    rm -f /etc/crontabs/root
-    ln -sf $file_crontab_user /etc/crontabs/root
-fi
+crontab $file_crontab_user
 
 if [ ! -s $file_config_user ]; then
     echo -e "检测到 $file_config_user 不存在，从示例文件复制一份用于初始化...\n"
