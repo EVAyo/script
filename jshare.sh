@@ -271,3 +271,13 @@ fix_config () {
         s|CMD_MTASK|$cmd_mtask|g
     }" $list_crontab_user
 }
+
+## 判断如何更新crontab
+detect_and_update_crontabs () {
+    if [[ $JD_DIR ]] && [[ $(readlink -f /etc/crontabs/root) != $file_crontab_user ]]; then
+        rm -f /etc/crontabs/root
+        ln -sf $file_crontab_user /etc/crontabs/root
+    else
+        crontab $list_crontab_user
+    fi
+}
