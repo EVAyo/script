@@ -77,7 +77,7 @@ git_pull_scripts () {
     git fetch --all
     exit_status=$?
     git reset --hard
-    git pull
+    git pull --rebase=true
     cd $dir_current
 }
 
