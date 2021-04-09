@@ -39,7 +39,7 @@ random_update_jup_cron () {
             random_hour="$random_hour,${random_hour_array[i]}"
         done
 
-        perl -i -pe "s|.+(jup(\.sh)? .+jup\.log.*)|$random_min $random_hour \* \* \* sleep $random_sleep && \1|" $list_crontab_user
+        perl -i -pe "s|.+ ($cmd_jup .+jup\.log.*)|$random_min $random_hour \* \* \* sleep $random_sleep && \1|" $list_crontab_user
         crontab $list_crontab_user
     fi
 }
