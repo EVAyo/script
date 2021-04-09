@@ -7,6 +7,13 @@ dir_root=$dir_shell
 ## 导入通用变量与函数
 . $dir_shell/jshare.sh
 
+## 更新crontab
+update_crontab () {
+    if [[ $(cat $list_crontab_user) != $(crontab -l) ]]; then
+        crontab $list_crontab_user
+    fi
+}
+
 ## 组合Cookie和互助码子程序，$1：要组合的内容
 combine_sub () {
     local what_combine=$1
@@ -103,7 +110,7 @@ gen_array_scripts () {
 
 ## 使用说明
 usage () {
-    detect_and_update_crontabs
+    update_crontab
     define_cmd
     gen_array_scripts
     echo -e "jtask命令运行 jd_scripts 脚本，如果已经将非 jd_scripts 脚本复制到 scripts 目录下，也可以使用此命令，用法为："
@@ -212,7 +219,7 @@ run_normal () {
     find_file_and_path $p
     if [[ $file_name ]] && [[ $which_path ]]; then
         import_config_and_check "$file_name"
-        detect_and_update_crontabs
+        update_crontab
         count_user_sum
         export_all_env all
         [[ $# -eq 1 ]] && random_delay
@@ -235,7 +242,7 @@ run_concurrent () {
     find_file_and_path $p
     if [[ $file_name ]] && [[ $which_path ]]; then
         import_config_and_check "$file_name"
-        detect_and_update_crontabs
+        update_crontab
         count_user_sum
         [[ $user_sum -ge 60 ]] && rm -rf $dir_config/* &>/dev/null
         make_dir $dir_log/$file_name

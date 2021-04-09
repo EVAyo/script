@@ -17,7 +17,6 @@ link_shell
 define_cmd
 fix_config
 import_config_no_check jup
-detect_and_update_crontabs
 
 ## 更新crontab，gitee服务器同一时间限制5个链接，因此每个人更新代码必须错开时间，每次执行git_pull随机生成。
 ## 每天次数随机，更新时间随机，更新秒数随机，至少4次，至多6次，大部分为5次，符合正态分布。
@@ -40,7 +39,7 @@ random_update_jup_cron () {
         done
 
         perl -i -pe "s|.+(jup(\.sh)? .+jup\.log.*)|$random_min $random_hour \* \* \* sleep $random_sleep && \1|" $list_crontab_user
-        detect_and_update_crontabs
+        crontab $list_crontab_user
     fi
 }
 
@@ -281,7 +280,7 @@ del_cron () {
             local tmp=$(echo $cron | perl -pe "s|/|\.|g")
             perl -i -ne "{print unless / $type $tmp( |$)/}" $list_crontab_user
         done
-        detect_and_update_crontabs
+        crontab $list_crontab_user
         detail2=$(echo $detail | perl -pe "s| |\\\n|g")
         echo -e "成功删除失效的$type2的定时任务...\n"
         notify "删除失效任务通知" "成功删除以下失效的定时任务（$type2）：\n$detail2"
@@ -345,7 +344,7 @@ add_cron_notify () {
     local detail=$(echo $tmp | perl -pe "s| |\\\n|g")
     local type=$3
     if [[ $status_code -eq 0 ]]; then
-        detect_and_update_crontabs
+        crontab $list_crontab_user
         echo -e "成功添加新的定时任务...\n"
         notify "新增任务通知" "成功添加新的定时任务（$type）：\n$detail"
     else
