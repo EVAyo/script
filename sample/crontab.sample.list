@@ -37,7 +37,7 @@
 29 7,12,18 * * * CMD_JTASK jd_fruit
 49 6 * * 6 CMD_JTASK jd_get_share_code
 36 * * * * CMD_JTASK jd_jdfactory
-14 11 * * * CMD_JTASK jd_jdzz
+14 0-2,11 * * * CMD_JTASK jd_jdzz
 6 0,8,9,13,18,22 * * * CMD_JTASK jd_joy
 */20 0-22 * * * CMD_JTASK jd_joy_feedPets
 0 */8 * * * CMD_JTASK jd_joy_reward
