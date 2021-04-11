@@ -58,7 +58,7 @@
 16 0 * * * CMD_JTASK jd_small_home
 35 */3 * * * CMD_JTASK jd_speed
 9 1-23/5 * * * CMD_JTASK jd_superMarket
-25 9 * * * CMD_JTASK jd_syj
+25 9,18 * * * CMD_JTASK jd_syj
 44 5 * * 5 CMD_JTASK jd_unbind
 45 23 * * * CMD_JTASK jd_unsubscribe
 19 11 * * * CMD_JTASK jx_sign
