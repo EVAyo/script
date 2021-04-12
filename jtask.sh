@@ -250,6 +250,9 @@ run_concurrent () {
             cd $which_path
             node $file_name.js &>$log_path &
         done
+        echo -e "账号并发任务正在执行中，等待ing...\n"
+        wait
+        echo -e "所有并发任务已全部完成，如需查看执行结果，请直接查看相关日志...\n"
     else
         echo -e "\n $p 脚本不存在，请确认...\n"
         usage
