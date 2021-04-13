@@ -135,7 +135,7 @@ gen_own_dir_and_path () {
 gen_list_task () {
     make_dir $dir_list_tmp
     grep -E "node.+j[drx]_\w+\.js" $list_crontab_jd_scripts | perl -pe "s|.+(j[drx]_\w+)\.js.+|\1|" | sort -u > $list_task_jd_scripts
-    grep -E "$cmd_jtask j[drx]_\w+" $list_crontab_user | perl -pe "s|.*$cmd_jtask (j[drx]_\w+).*|\1|" | sort -u > $list_task_user
+    grep -E " $cmd_jtask j[drx]_\w+" $list_crontab_user | perl -pe "s|.*$cmd_jtask (j[drx]_\w+).*|\1|" | sort -u > $list_task_user
 }
 
 ## 生成 own 脚本的绝对路径清单
@@ -157,7 +157,7 @@ gen_list_own () {
             done
         fi
     done
-    grep -E "$cmd_otask " $list_crontab_user | perl -pe "s|.*$cmd_otask ([^\s]+)( .+\|$)|\1|" | sort -u > $list_own_user
+    grep -E " $cmd_otask " $list_crontab_user | perl -pe "s|.*$cmd_otask ([^\s]+)( .+\|$)|\1|" | sort -u > $list_own_user
     cd $dir_current
 }
 
