@@ -46,7 +46,6 @@ env_name=(
     JD_CASH_SHARECODES
     JDSGMH_SHARECODES
     JDCFD_SHARECODES
-    JDGLOBAL_SHARECODES
     JD818_SHARECODES
 )
 var_name=(
@@ -63,7 +62,6 @@ var_name=(
     ForOtherCash
     ForOtherSgmh
     ForOtherCfd
-    ForOtherGlobal
     ForOtherCarni
 )
 
@@ -82,7 +80,6 @@ name_js=(
     jd_cash
     jd_sgmh
     jd_cfd
-    jd_global
     jd_carnivalcity
 )
 name_config=(
@@ -98,7 +95,6 @@ name_config=(
     Cash
     Sgmh
     Cfd
-    Global
     Carni
 )
 name_chinese=(
@@ -114,7 +110,6 @@ name_chinese=(
     签到领现金
     闪购盲盒
     京喜财富岛
-    环球挑战赛
     京东手机狂欢城
 )
 
