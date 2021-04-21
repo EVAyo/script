@@ -56,7 +56,6 @@
 1 1 * * * CMD_JTASK jd_redPacket
 0 0 * * * CMD_JTASK jd_shop
 16 0 * * * CMD_JTASK jd_small_home
-35 */3 * * * CMD_JTASK jd_speed
 9 1-23/5 * * * CMD_JTASK jd_superMarket
 25 0,9,18,23 * * * CMD_JTASK jd_syj
 45 23 * * * CMD_JTASK jd_unsubscribe
