@@ -11,7 +11,6 @@ dir_root=$dir_shell
 import_config_and_check
 count_user_sum
 detect_termux
-[[ $is_termux -eq 1 ]] && opt=P || opt=E
 
 ## 生成pt_pin清单
 gen_pt_pin_array () {
@@ -38,8 +37,8 @@ export_codes_sub () {
         i=0
         pt_pin_in_log=()
         code=()
-        tmp_grep=$(cat $(ls -r *.log) | grep -$opt "的$chinese_name好友互助码" | perl -pe "s| ||g" | awk -F "（|）|】" '{print $2 "&" $4}')
-        for line in $tmp_grep; do
+        pt_pin_and_code=$(ls -r *.log | xargs awk -v var="的$chinese_name好友互助码" 'BEGIN{FS="[（ ）】]+"; OFS="&"} $3~var {print $2,$4}')
+        for line in $pt_pin_and_code; do
             pt_pin_in_log[i]=$(echo $line | awk -F "&" '{print $1}')
             code[i]=$(echo $line | awk -F "&" '{print $2}')
             let i++
