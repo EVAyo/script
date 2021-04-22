@@ -46,7 +46,7 @@ env_name=(
     JD_CASH_SHARECODES
     JDSGMH_SHARECODES
     JDCFD_SHARECODES
-    JD818_SHARECODES
+    JDHEALTH_SHARECODES
 )
 var_name=(
     Cookie
@@ -62,7 +62,7 @@ var_name=(
     ForOtherCash
     ForOtherSgmh
     ForOtherCfd
-    ForOtherCarni
+    ForOtherHealth
 )
 
 ## 所有有互助码的活动，把脚本名称列在 name_js 中，对应 config.sh 中互助码后缀列在 name_config 中，中文名称列在 name_chinese 中。
@@ -80,7 +80,7 @@ name_js=(
     jd_cash
     jd_sgmh
     jd_cfd
-    jd_carnivalcity
+    jd_healthy
 )
 name_config=(
     Fruit
@@ -95,7 +95,7 @@ name_config=(
     Cash
     Sgmh
     Cfd
-    Carni
+    Health
 )
 name_chinese=(
     东东农场
@@ -110,7 +110,7 @@ name_chinese=(
     签到领现金
     闪购盲盒
     京喜财富岛
-    京东手机狂欢城
+    京东健康社区
 )
 
 ## 软连接及其原始文件对应关系
