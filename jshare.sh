@@ -80,7 +80,7 @@ name_js=(
     jd_cash
     jd_sgmh
     jd_cfd
-    jd_healthy
+    jd_health
 )
 name_config=(
     Fruit
