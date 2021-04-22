@@ -397,10 +397,9 @@ update_own_raw () {
     done
 }
 
-#################################################################################################################################
-
 ## 在日志中记录时间与路径
-echo "
+record_time () {
+    echo "
 --------------------------------------------------------------
 
 系统时间：$(date "+%Y-%m-%d %H:%M:%S")
@@ -413,112 +412,144 @@ own脚本目录：$dir_own
 
 --------------------------------------------------------------
 "
-
-## 更新jup任务的cron
-random_update_jup_cron
-
-## 重置仓库romote url
-if [[ $JD_DIR ]] && [[ $ENABLE_RESET_REPO_URL == true ]]; then
-    reset_romote_url $dir_shell $url_shell
-    reset_romote_url $dir_scripts $url_scripts
-fi
+}
 
 ## 更新shell
-git_pull_scripts $dir_shell
-if [[ $exit_status -eq 0 ]]; then
-    echo -e "\n更新$dir_shell成功...\n"
-    make_dir $dir_config
-    cp -f $file_config_sample $dir_config/config.sample.sh
-    update_docker_entrypoint
-    update_bot_py
-    detect_config_version
-else
-    echo -e "\n更新$dir_shell失败，请检查原因...\n"
-fi
+update_shell () {
+    ## 更新jup任务的cron
+    random_update_jup_cron
+
+    ## 重置仓库romote url
+    if [[ $JD_DIR ]] && [[ $ENABLE_RESET_REPO_URL == true ]]; then
+        reset_romote_url $dir_shell $url_shell
+        reset_romote_url $dir_scripts $url_scripts
+    fi
+
+    ## 更新shell
+    git_pull_scripts $dir_shell
+    if [[ $exit_status -eq 0 ]]; then
+        echo -e "\n更新$dir_shell成功...\n"
+        make_dir $dir_config
+        cp -f $file_config_sample $dir_config/config.sample.sh
+        update_docker_entrypoint
+        update_bot_py
+        detect_config_version
+    else
+        echo -e "\n更新$dir_shell失败，请检查原因...\n"
+    fi
+}
+
 
 ## 更新scripts
-## 更新前先存储package.json和githubAction.md的内容
-[ -f $dir_scripts/package.json ] && scripts_depend_old=$(cat $dir_scripts/package.json)
-[ -f $dir_scripts/githubAction.md ] && cp -f $dir_scripts/githubAction.md $dir_list_tmp/githubAction.md
+update_scripts () {
+    ## 更新前先存储package.json和githubAction.md的内容
+    [ -f $dir_scripts/package.json ] && scripts_depend_old=$(cat $dir_scripts/package.json)
+    [ -f $dir_scripts/githubAction.md ] && cp -f $dir_scripts/githubAction.md $dir_list_tmp/githubAction.md
 
-## 更新或克隆scripts
-if [ -d $dir_scripts/.git ]; then
-    git_pull_scripts $dir_scripts
-else
-    git_clone_scripts $url_scripts $dir_scripts "master"
-fi
-
-if [[ $exit_status -eq 0 ]]; then
-    echo -e "\n更新$dir_scripts成功...\n"
-
-    ## npm install
-    [ ! -d $dir_scripts/node_modules ] && npm_install_1 $dir_scripts
-    [ -f $dir_scripts/package.json ] && scripts_depend_new=$(cat $dir_scripts/package.json)
-    [[ "$scripts_depend_old" != "$scripts_depend_new" ]] && npm_install_2 $dir_scripts
-    
-    ## diff cron
-    gen_list_task
-    diff_cron $list_task_jd_scripts $list_task_user $list_task_add $list_task_drop
-
-    ## 失效任务通知
-    if [ -s $list_task_drop ]; then
-        output_list_add_drop $list_task_drop "失效"
-        [[ ${AutoDelCron} == true ]] && del_cron $list_task_drop jtask
+    ## 更新或克隆scripts
+    if [ -d $dir_scripts/.git ]; then
+        git_pull_scripts $dir_scripts
+    else
+        git_clone_scripts $url_scripts $dir_scripts "master"
     fi
 
-    ## 新增任务通知
-    if [ -s $list_task_add ]; then
-        output_list_add_drop $list_task_add "新"
-        add_cron_jd_scripts $list_task_add
-        [[ ${AutoAddCron} == true ]] && add_cron_notify $exit_status $list_task_add "jd_scripts脚本"
-    fi
+    if [[ $exit_status -eq 0 ]]; then
+        echo -e "\n更新$dir_scripts成功...\n"
 
-    ## 环境变量变化通知
-    echo -e "检测环境变量清单文件 $dir_scripts/githubAction.md 是否有变化...\n"
-    diff $dir_list_tmp/githubAction.md $dir_scripts/githubAction.md | tee $dir_list_tmp/env.diff
-    if [ ! -s $dir_list_tmp/env.diff ]; then
-        echo -e "$dir_scripts/githubAction.md 没有变化...\n"
-    elif [ -s $dir_list_tmp/env.diff ] && [[ ${EnvChangeNotify} == true ]]; then
-        notify_title="检测到环境变量清单文件有变化"
-        notify_content="减少的内容：\n$(grep -E '^-[^-]' $dir_list_tmp/env.diff)\n\n增加的内容：\n$(grep -E '^\+[^\+]' $dir_list_tmp/env.diff)"
-        notify "$notify_title" "$notify_content"
+        ## npm install
+        [ ! -d $dir_scripts/node_modules ] && npm_install_1 $dir_scripts
+        [ -f $dir_scripts/package.json ] && scripts_depend_new=$(cat $dir_scripts/package.json)
+        [[ "$scripts_depend_old" != "$scripts_depend_new" ]] && npm_install_2 $dir_scripts
+        
+        ## diff cron
+        gen_list_task
+        diff_cron $list_task_jd_scripts $list_task_user $list_task_add $list_task_drop
+
+        ## 失效任务通知
+        if [ -s $list_task_drop ]; then
+            output_list_add_drop $list_task_drop "失效"
+            [[ ${AutoDelCron} == true ]] && del_cron $list_task_drop jtask
+        fi
+
+        ## 新增任务通知
+        if [ -s $list_task_add ]; then
+            output_list_add_drop $list_task_add "新"
+            add_cron_jd_scripts $list_task_add
+            [[ ${AutoAddCron} == true ]] && add_cron_notify $exit_status $list_task_add "jd_scripts脚本"
+        fi
+
+        ## 环境变量变化通知
+        echo -e "检测环境变量清单文件 $dir_scripts/githubAction.md 是否有变化...\n"
+        diff $dir_list_tmp/githubAction.md $dir_scripts/githubAction.md | tee $dir_list_tmp/env.diff
+        if [ ! -s $dir_list_tmp/env.diff ]; then
+            echo -e "$dir_scripts/githubAction.md 没有变化...\n"
+        elif [ -s $dir_list_tmp/env.diff ] && [[ ${EnvChangeNotify} == true ]]; then
+            notify_title="检测到环境变量清单文件有变化"
+            notify_content="减少的内容：\n$(grep -E '^-[^-]' $dir_list_tmp/env.diff)\n\n增加的内容：\n$(grep -E '^\+[^\+]' $dir_list_tmp/env.diff)"
+            notify "$notify_title" "$notify_content"
+        fi
+    else
+        echo -e "\n更新$dir_scripts失败，请检查原因...\n"
     fi
-else
-    echo -e "\n更新$dir_scripts失败，请检查原因...\n"
-fi
+}
+
 
 ## 更新own脚本
-count_own_repo_sum
-gen_own_dir_and_path
-if [[ ${#array_own_scripts_path[*]} -gt 0 ]]; then
-    make_dir $dir_raw
-    update_own_repo
-    update_own_raw
-    gen_list_own
-    diff_cron $list_own_scripts $list_own_user $list_own_add $list_own_drop
+update_own () {
+    count_own_repo_sum
+    gen_own_dir_and_path
+    if [[ ${#array_own_scripts_path[*]} -gt 0 ]]; then
+        make_dir $dir_raw
+        update_own_repo
+        update_own_raw
+        gen_list_own
+        diff_cron $list_own_scripts $list_own_user $list_own_add $list_own_drop
 
-    if [ -s $list_own_drop ]; then
-        output_list_add_drop $list_own_drop "失效"
-        [[ ${AutoDelOwnCron} == true ]] && del_cron $list_own_drop otask
+        if [ -s $list_own_drop ]; then
+            output_list_add_drop $list_own_drop "失效"
+            [[ ${AutoDelOwnCron} == true ]] && del_cron $list_own_drop otask
+        fi
+        if [ -s $list_own_add ]; then
+            output_list_add_drop $list_own_add "新"
+            add_cron_own $list_own_add
+            [[ ${AutoAddOwnCron} == true ]] && add_cron_notify $exit_status $list_own_add "own脚本"
+        fi
+    else
+        perl -i -ne "{print unless / $cmd_otask /}" $list_crontab_user
     fi
-    if [ -s $list_own_add ]; then
-        output_list_add_drop $list_own_add "新"
-        add_cron_own $list_own_add
-        [[ ${AutoAddOwnCron} == true ]] && add_cron_notify $exit_status $list_own_add "own脚本"
-    fi
-else
-    perl -i -ne "{print unless / $cmd_otask /}" $list_crontab_user
-fi
+}
+
 
 ## 调用用户自定义的diy.sh
-if [[ ${EnableExtraShell} == true ]]; then
-    if [ -f $file_diy_shell ]
-    then
-        echo -e "--------------------------------------------------------------\n"
-        . $file_diy_shell
-    else
-        echo -e "$file_diy_shell文件不存在，跳过执行DIY脚本...\n"
+source_diy () {
+    if [[ ${EnableExtraShell} == true ]]; then
+        if [ -f $file_diy_shell ]
+        then
+            echo -e "--------------------------------------------------------------\n"
+            . $file_diy_shell
+        else
+            echo -e "$file_diy_shell文件不存在，跳过执行DIY脚本...\n"
+        fi
     fi
-fi
+}
 
-exit 0
+## 修复crontab
+fix_crontab () {
+    if [[ $JD_DIR ]]; then
+        perl -i -pe "{s|( &>/dev/null)+||g; s|(.* ($cmd_jtask\|$cmd_otask\|$cmd_mtask\|$cmd_jcode\|$cmd_jcsv\|$cmd_jlog)( .*\|$))|\1 &>/dev/null|g}" $list_crontab_user
+        update_crontab
+    fi
+}
+
+## 主函数
+main () {
+    record_time
+    update_shell
+    update_scripts
+    update_own
+    source_diy
+    fix_crontab
+    exit 0
+}
+
+main "$@"
