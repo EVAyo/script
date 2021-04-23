@@ -397,6 +397,18 @@ update_own_raw () {
     done
 }
 
+## 使用帮助
+usage () {
+    define_cmd
+    echo "使用帮助："
+    echo "$cmd_jup         # 更新所有脚本，如启用了EnbaleExtraShell将在最后运行你自己的diy.sh"
+    echo "$cmd_jup all     # 更新所有脚本，效果同不带参数直接运行\"$cmd_jup\""
+    echo "$cmd_jup shell   # 只更新jd_shell脚本，不会运行diy.sh"
+    echo "$cmd_jup scripts # 只更新jd_scripts脚本，不会运行diy.sh"
+    echo "$cmd_jup own     # 只更新own脚本，不会运行diy.sh"
+}
+
+
 ## 在日志中记录时间与路径
 record_time () {
     echo "
@@ -543,11 +555,44 @@ fix_crontab () {
 
 ## 主函数
 main () {
-    record_time
-    update_shell
-    update_scripts
-    update_own
-    source_diy
+    case $# in
+        1)
+            case $1 in
+                all)
+                    record_time
+                    update_shell
+                    update_scripts
+                    update_own
+                    source_diy
+                    ;;
+                shell)
+                    record_time
+                    update_shell
+                    ;;
+                scripts)
+                    record_time
+                    update_scripts
+                    ;;
+                own)
+                    record_time
+                    update_own
+                    ;;
+                *)
+                    usage
+                    ;;
+            esac
+            ;;
+        0)
+            record_time
+            update_shell
+            update_scripts
+            update_own
+            source_diy
+            ;;
+        *)
+            usage
+            ;;
+    esac
     fix_crontab
     exit 0
 }
