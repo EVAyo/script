@@ -17,7 +17,6 @@ link_shell
 define_cmd
 fix_config
 import_config_no_check jup
-update_crontab
 
 ## 更新crontab，gitee服务器同一时间限制5个链接，因此每个人更新代码必须错开时间，每次执行git_pull随机生成。
 ## 每天次数随机，更新时间随机，更新秒数随机，至少4次，至多6次，大部分为5次，符合正态分布。
