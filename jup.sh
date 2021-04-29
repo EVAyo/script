@@ -530,6 +530,7 @@ source_diy () {
         echo -e "--------------------------------------------------------------\n"
         if [ -f $file_diy_shell ]
         then
+            echo -e "开始执行$file_diy_shell...\n"
             . $file_diy_shell
         else
             echo -e "$file_diy_shell文件不存在，跳过执行DIY脚本...\n"
