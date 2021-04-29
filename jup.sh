@@ -413,13 +413,12 @@ record_time () {
 jd_scripts目录：$dir_scripts
 
 own脚本目录：$dir_own
-
---------------------------------------------------------------
 "
 }
 
 ## 更新shell
 update_shell () {
+    echo -e "--------------------------------------------------------------\n"
     ## 更新jup任务的cron
     random_update_jup_cron
 
@@ -446,6 +445,7 @@ update_shell () {
 
 ## 更新scripts
 update_scripts () {
+    echo -e "--------------------------------------------------------------\n"
     ## 更新前先存储package.json和githubAction.md的内容
     [ -f $dir_scripts/package.json ] && scripts_depend_old=$(cat $dir_scripts/package.json)
     [ -f $dir_scripts/githubAction.md ] && cp -f $dir_scripts/githubAction.md $dir_list_tmp/githubAction.md
@@ -527,9 +527,9 @@ update_own () {
 ## 调用用户自定义的diy.sh
 source_diy () {
     if [[ ${EnableExtraShell} == true ]]; then
+        echo -e "--------------------------------------------------------------\n"
         if [ -f $file_diy_shell ]
         then
-            echo -e "--------------------------------------------------------------\n"
             . $file_diy_shell
         else
             echo -e "$file_diy_shell文件不存在，跳过执行DIY脚本...\n"
