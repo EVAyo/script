@@ -28,7 +28,7 @@ _OwnDir = _JdDir + '/own'
 _LogDir = _JdDir + '/log'
 _shortcut = _ConfigDir + '/shortcut.list'
 _bot = _ConfigDir + '/bot.json'
-_qr = _ConfigDir + 'qr.jpg'
+_qr = _ConfigDir + '/qr.jpg'
 # 频道id/用户id
 with open(_bot, 'r', encoding='utf-8') as f:
     bot = json.load(f)
@@ -62,7 +62,12 @@ StartCMD = bot['StartCMD']
 
 
 async def hello():
-    await client.send_message(chat_id, 'duang duang duang \n您的机器人已成功激活\n发个 /start 试试吧')
+    if os.path.exists(_shortcut):
+        return
+    else:
+        with open(_shortcut,'w+',encoding='utf-8') as f:
+            f.write('京豆通知-->jtask jd_bean_change now')
+        await client.send_message(chat_id, 'duang duang duang \n您的机器人已成功激活\n发个 /start 试试吧')
 
 
 def press_event(user_id):
@@ -780,5 +785,5 @@ async def mystart(event):
     await client.send_message(chat_id, msg)
 
 with client:
-    # task = client.loop.create_task(hello())
+    task = client.loop.create_task(hello())
     client.loop.run_forever()
