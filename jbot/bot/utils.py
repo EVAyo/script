@@ -243,7 +243,7 @@ def send_file(chatid,file):
     requests.post(url,files=files)
 
 async def backcmd(cmdtext):
-    _log = _LogDir + '/'+cmdtext.split('/')[-1].split('.js')[0]+datetime.datetime.now().strftime('%H-%M-%S')+'.log'
+    _log = _LogDir + '/bot/'+cmdtext.split('/')[-1].split('.js')[0]+datetime.datetime.now().strftime('%H-%M-%S')+'.log'
     res_bytes = subprocess.check_output(
         cmdtext, shell=True, stderr=subprocess.STDOUT)
     res = res_bytes.decode('utf-8')

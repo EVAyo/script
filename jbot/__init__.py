@@ -4,23 +4,25 @@ import os
 import logging
 import asyncio
 
-_JdDir = os.path.dirname(os.path.dirname(
-    os.path.dirname(os.path.realpath(__file__))))
+_JdDir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
 _ConfigDir = _JdDir + '/config'
 _ScriptsDir = _JdDir + '/scripts'
 _OwnDir = _JdDir + '/own'
-_jdbot = _ConfigDir + '/jdbot'
+_JdbotDir = _JdDir + '/jbot'
 _DiyScripts = _JdDir + '/diyscripts'
 _LogDir = _JdDir + '/log'
 _shortcut = _ConfigDir + '/shortcut.list'
-_botlog = _jdbot + '/botrun.log'
+_botlog = _LogDir + '/bot/run.log'
+_botjson = _ConfigDir + '/bot.json'
 img_file = _ConfigDir + 'qr.jpg'
+if not os.path.exists(_LogDir + '/bot'):
+    os.mkdir(_LogDir + '/bot')
 logging.basicConfig(
-    format='%(asctime)s-%(name)s-%(levelname)s=> [%(funcName)s] %(message)s ', level=logging.INFO,filename=_botlog,
-                    filemode='w')
+    format='%(asctime)s-%(name)s-%(levelname)s=> [%(funcName)s] %(message)s ', level=logging.INFO, filename=_botlog,
+    filemode='w+')
 logger = logging.getLogger(__name__)
-_bot = _ConfigDir + '/bot.json'
-with open(_bot, 'r', encoding='utf-8') as f:
+
+with open(_botjson, 'r', encoding='utf-8') as f:
     bot = json.load(f)
 chat_id = int(bot['user_id'])
 # 机器人 TOKEN
@@ -48,4 +50,4 @@ if proxystart:
 else:
     jdbot = TelegramClient('bot', api_id, api_hash,
                            connection_retries=None).start(bot_token=TOKEN)
-newloop=asyncio.new_event_loop()
+newloop = asyncio.new_event_loop()

@@ -1,4 +1,4 @@
-from telethon import client, events, Button
+from telethon import events, Button
 import os
 import shutil
 from asyncio import exceptions
@@ -12,7 +12,10 @@ async def myfileup(event):
     SENDER = event.sender_id
     path = _JdDir
     page = 0
-    text = event.raw_text.replace('/edit ','')
+    if len(event.raw_text.split(' ')) > 1:
+        text = event.raw_text.replace('/edit ','')
+    else:
+        text =None
     if text and os.path.isfile(text):
         try:
             with open(text,'r',encoding='utf-8') as f:

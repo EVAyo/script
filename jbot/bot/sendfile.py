@@ -22,7 +22,10 @@ async def mygetfile(event):
     SENDER = event.sender_id
     path = _JdDir
     page = 0
-    text = event.raw_text.replace('/getfile ','')
+    if len(event.raw_text.split(' ')) > 1:
+        text = event.raw_text.replace('/getfile ','')
+    else:
+        text =None
     if text and os.path.isfile(text):
         await jdbot.send_message(chat_id, '请查收文件',file=text)
         return
