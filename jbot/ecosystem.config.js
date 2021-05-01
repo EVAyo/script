@@ -1,6 +1,7 @@
 module.exports = {
     apps: [{
         name: "jbot",
+        version: "0.3.0",
         cwd: "..",
         script: "python",
         args: "-m jbot",
