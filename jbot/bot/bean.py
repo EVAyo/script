@@ -1,6 +1,6 @@
 from PIL import Image, ImageFont, ImageDraw
 from telethon import events
-from .. import jdbot, chat_id, _LogDir, _JdbotDir
+from .. import jdbot, chat_id, _LogDir, _JdbotDir,logger
 from prettytable import PrettyTable
 import subprocess
 
@@ -13,26 +13,29 @@ _font = _JdbotDir + '/font/jet.ttf'
 
 @jdbot.on(events.NewMessage(chats=chat_id, pattern=r'^/bean'))
 async def mybean(event):
-    msg = await jdbot.send_message(chat_id, '正在查询，请稍后')
-    subprocess.check_output(
-        'jcsv', shell=True, stderr=subprocess.STDOUT)
-    if len(event.raw_text.split(' ')) > 1:
-        text = event.raw_text.replace('/bean ', '')
-    else:
-        text = None
-    if text and text == 'in':
-        creat_bean_counts(IN)
-        await jdbot.send_message(chat_id, '您的近日收入情况', file=_botimg)
-    elif text and text == 'out':
-        creat_bean_counts(OUT)
-        await jdbot.send_message(chat_id, '您的近日支出情况', file=_botimg)
-    elif text and int(text):
-        creat_bean_count(text)
-        await jdbot.send_message(chat_id, f'您的账号{text}收支情况', file=_botimg)
-    else:
-        creat_bean_counts(TOTAL)
-        await jdbot.send_message(chat_id, '您的总京豆情况', file=_botimg)
-
+    try:
+        await jdbot.send_message(chat_id, '正在查询，请稍后')
+        subprocess.check_output(
+            'jcsv', shell=True, stderr=subprocess.STDOUT)
+        if len(event.raw_text.split(' ')) > 1:
+            text = event.raw_text.replace('/bean ', '')
+        else:
+            text = None
+        if text and text == 'in':
+            creat_bean_counts(IN)
+            await jdbot.send_message(chat_id, '您的近日收入情况', file=_botimg)
+        elif text and text == 'out':
+            creat_bean_counts(OUT)
+            await jdbot.send_message(chat_id, '您的近日支出情况', file=_botimg)
+        elif text and int(text):
+            creat_bean_count(text)
+            await jdbot.send_message(chat_id, f'您的账号{text}收支情况', file=_botimg)
+        else:
+            creat_bean_counts(TOTAL)
+            await jdbot.send_message(chat_id, '您的总京豆情况', file=_botimg)
+    except Exception as e:
+        await jdbot.send_message(chat_id, 'something wrong,I\'m sorry\n'+str(e))
+        logger.error('something wrong,I\'m sorry'+str(e))
 
 def creat_bean_count(count):
     files = {"BEANIN": IN, "BEANOUT": OUT, "TOTAL": TOTAL}
