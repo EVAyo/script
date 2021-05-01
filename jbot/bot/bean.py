@@ -73,9 +73,9 @@ def creat_bean_counts(csv_file):
     data = data[-7:]
     for line in data:
         tb.add_row(line.split(','))
+    font = ImageFont.truetype(_font, 18)
     width, height = font.getsize(str(tb))
     im = Image.new("RGB", (width, height), (244, 244, 244))
     dr = ImageDraw.Draw(im)
-    font = ImageFont.truetype(_font, 18)
     dr.text((0, 0), str(tb), font=font, fill="#000000")
     im.save(_botimg)
