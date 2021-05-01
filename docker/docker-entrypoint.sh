@@ -79,7 +79,7 @@ if type python3 &>/dev/null; then
     if [[ $ENABLE_TG_BOT == true ]]; then
         if [[ -z $(grep -E "123456789" $file_bot_setting_user) ]]; then
             cd $JD_DIR
-            pm2 start jbot.sh --watch "$JD_DIR/jbot" --watch-delay 15 --name=jbot
+            pm2 start jbot.sh --watch "$JD_DIR/jbot" --watch-delay 15 --ignore-watch "$JD_DIR/jbot/__pycache__ $JD_DIR/jbot/bot/__pycache__" --name jbot
         else
             echo -e "似乎 $file_bot_setting_user 还未修改为你自己的信息，可能是首次部署容器，因此不启动Telegram Bot...\n"
         fi
