@@ -52,11 +52,11 @@ def creat_bean_count(count):
         for line in lines:
             columns.append(line.split(',')[int(count)])
         tb.add_column(key, columns)
-    length = 172 + 100 * 3
-    im = Image.new("RGB", (length, 280), (244, 244, 244))
+    width, height = font.getsize(str(tb))
+    im = Image.new("RGB", (width, height), (244, 244, 244))
     dr = ImageDraw.Draw(im)
     font = ImageFont.truetype(_font, 18)
-    dr.text((10, 5), str(tb), font=font, fill="#000000")
+    dr.text((0, 0), str(tb), font=font, fill="#000000")
     im.save(_botimg)
 
 
@@ -68,13 +68,14 @@ def creat_bean_counts(csv_file):
     title = ['DATE']
     for i in range(0, num):
         title.append('COUNT'+str(i+1))
-    length = 172 + 100 * num
+    #length = 172 + 100 * num
     tb.field_names = title
     data = data[-7:]
     for line in data:
         tb.add_row(line.split(','))
-    im = Image.new("RGB", (length, 280), (244, 244, 244))
+    width, height = font.getsize(str(tb))
+    im = Image.new("RGB", (width, height), (244, 244, 244))
     dr = ImageDraw.Draw(im)
     font = ImageFont.truetype(_font, 18)
-    dr.text((10, 5), str(tb), font=font, fill="#000000")
+    dr.text((0, 0), str(tb), font=font, fill="#000000")
     im.save(_botimg)
