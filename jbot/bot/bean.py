@@ -64,7 +64,7 @@ def creat_bean_counts(csv_file):
     with open(csv_file, 'r', encoding='utf-8') as f:
         data = f.readlines()
     tb = PrettyTable()
-    num = len(data[0].split(',')) - 1
+    num = len(data[-1].split(',')) - 1
     title = ['DATE']
     for i in range(0, num):
         title.append('COUNT'+str(i+1))
