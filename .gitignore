@@ -5,3 +5,6 @@
 /docker-compose.yml
 /send_mark
 /jbot/test
+/jbot/diy
+!/jbot/diy/example.py
+/*session*

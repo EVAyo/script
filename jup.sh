@@ -184,10 +184,10 @@ update_docker_entrypoint () {
     fi
 }
 
-## 更新bot.py，docker专用
-update_bot_py () {
-    if [[ $JD_DIR ]] && [[ $ENABLE_TG_BOT == true ]] && [ -f $dir_config/bot.py ] && [[ $(diff $dir_root/bot/bot.py $dir_config/bot.py) ]]; then
-        cp -f $dir_root/bot/bot.py $dir_config/bot.py
+## 更新bot通知，仅针对Docker
+update_bot () {
+    if [[ $JD_DIR ]] && [[ $ENABLE_TG_BOT == true ]] && [ ! -f $dir_root/bot.session ]; then
+        notify "BOT程序更新通知" "BOT程序已经升级，请更新镜像或重启容器以启用新版BOT，如需添加自己编写的BOT命令，请在创建容器时增加映射 /jd/jdbot/diy 文件夹。\n\n本消息仅发送给使用v4-bot的Docker用户。"
     fi
 }
 
@@ -435,7 +435,7 @@ update_shell () {
         make_dir $dir_config
         cp -f $file_config_sample $dir_config/config.sample.sh
         update_docker_entrypoint
-        update_bot_py
+        update_bot
         detect_config_version
     else
         echo -e "\n更新$dir_shell失败，请检查原因...\n"

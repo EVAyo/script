@@ -11,8 +11,6 @@ file_crontab_user="$dir_config/crontab.list"
 file_config_sample="$dir_sample/config.sample.sh"
 file_config_user="$dir_config/config.sh"
 file_cookie="$dir_config/cookie.sh"
-file_bot_sample="$JD_DIR/bot/bot.py"
-file_bot_user="$dir_config/bot.py"
 file_bot_setting_sample="$dir_sample/bot.sample.json"
 file_bot_setting_user="$dir_config/bot.json"
 
@@ -79,10 +77,9 @@ fi
 if type python3 &>/dev/null; then
     echo -e "======================== 5. 启动Telegram Bot ========================\n"
     if [[ $ENABLE_TG_BOT == true ]]; then
-        cp -f $file_bot_sample $file_bot_user
-        if [[ -z $(grep -E "你的USERID" $file_bot_setting_user) ]]; then
-            cd $dir_config
-            pm2 start bot.py --watch "$file_bot_user" --watch-delay 10 --name=bot
+        if [[ -z $(grep -E "123456789" $file_bot_setting_user) ]]; then
+            cd $JD_DIR
+            pm2 start jbot.sh --watch "$JD_DIR/jbot" --watch-delay 15 --name=jbot
         else
             echo -e "似乎 $file_bot_setting_user 还未修改为你自己的信息，可能是首次部署容器，因此不启动Telegram Bot...\n"
         fi
