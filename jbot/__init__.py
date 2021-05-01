@@ -19,7 +19,7 @@ if not os.path.exists(_LogDir + '/bot'):
     os.mkdir(_LogDir + '/bot')
 logging.basicConfig(
     format='%(asctime)s-%(name)s-%(levelname)s=> [%(funcName)s] %(message)s ', level=logging.INFO, filename=_botlog,
-    filemode='w+')
+    filemode='w')
 logger = logging.getLogger(__name__)
 
 with open(_botjson, 'r', encoding='utf-8') as f:
