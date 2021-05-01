@@ -187,7 +187,7 @@ update_docker_entrypoint () {
 ## 更新bot通知，仅针对Docker
 update_bot () {
     if [[ $JD_DIR ]] && [[ $ENABLE_TG_BOT == true ]] && [ ! -f $dir_root/bot.session ]; then
-        notify "BOT程序更新通知" "BOT程序已经升级，请更新镜像启用新版BOT（旧版的BOT将不可用），如需添加自己编写的BOT命令，请在创建容器时增加映射 /jd/jdbot/diy 文件夹。\n\n本消息仅发送给使用v4-bot的Docker用户。"
+        notify "BOT程序更新通知" "BOT程序已经升级，请更新镜像启用新版BOT（旧版的BOT将不可用），如需添加自己编写的BOT命令，请在创建容器时增加映射 /jd/jbot/diy 文件夹。\n\n本消息仅发送给使用v4-bot的Docker用户。"
     fi
 }
 
