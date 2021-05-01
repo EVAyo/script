@@ -22,16 +22,16 @@ async def mybean(event):
         text = None
     if text and text == 'in':
         creat_bean_counts(IN)
-        await jdbot.edit_message(msg, '您的近日收入情况', file=_botimg)
+        await jdbot.send_message(chat_id, '您的近日收入情况', file=_botimg)
     elif text and text == 'out':
         creat_bean_counts(OUT)
-        await jdbot.edit_message(msg, '您的近日支出情况', file=_botimg)
+        await jdbot.send_message(chat_id, '您的近日支出情况', file=_botimg)
     elif text and int(text):
         creat_bean_count(text)
-        await jdbot.edit_message(msg, f'您的账号{text}收支情况', file=_botimg)
+        await jdbot.send_message(chat_id, f'您的账号{text}收支情况', file=_botimg)
     else:
         creat_bean_counts(TOTAL)
-        await jdbot.edit_message(msg, '您的总京豆情况', file=_botimg)
+        await jdbot.send_message(chat_id, '您的总京豆情况', file=_botimg)
 
 
 def creat_bean_count(count):
@@ -52,11 +52,11 @@ def creat_bean_count(count):
         for line in lines:
             columns.append(line.split(',')[int(count)])
         tb.add_column(key, columns)
-    width, height = font.getsize(str(tb))
-    im = Image.new("RGB", (width, height), (244, 244, 244))
+    length = 172 + 100 * 3
+    im = Image.new("RGB", (length, 280), (244, 244, 244))
     dr = ImageDraw.Draw(im)
     font = ImageFont.truetype(_font, 18)
-    dr.text((0, 0), str(tb), font=font, fill="#000000")
+    dr.text((10, 5), str(tb), font=font, fill="#000000")
     im.save(_botimg)
 
 
@@ -68,14 +68,13 @@ def creat_bean_counts(csv_file):
     title = ['DATE']
     for i in range(0, num):
         title.append('COUNT'+str(i+1))
-    #length = 172 + 100 * num
     tb.field_names = title
     data = data[-7:]
     for line in data:
         tb.add_row(line.split(','))
-    font = ImageFont.truetype(_font, 18)
-    width, height = font.getsize(str(tb))
-    im = Image.new("RGB", (width, height), (244, 244, 244))
+    length = 172 + 100 * num
+    im = Image.new("RGB", (length, 280), (244, 244, 244))
     dr = ImageDraw.Draw(im)
-    dr.text((0, 0), str(tb), font=font, fill="#000000")
+    font = ImageFont.truetype(_font, 18)
+    dr.text((10, 5), str(tb), font=font, fill="#000000")
     im.save(_botimg)
