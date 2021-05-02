@@ -74,8 +74,12 @@ elif [[ ${ENABLE_HANGUP} == false ]]; then
     echo -e "已设置为不自动启动挂机程序，跳过...\n"
 fi
 
+echo -e "======================== 5. 启动自动刷新cron程序 ========================\n"
+cd $JD_DIR/docker
+pm2 start refresh_cron.sh
+
 if type python3 &>/dev/null; then
-    echo -e "======================== 5. 启动Telegram Bot ========================\n"
+    echo -e "======================== 6. 启动Telegram Bot ========================\n"
     if [[ $ENABLE_TG_BOT == true ]]; then
         if [[ -z $(grep -E "123456789" $file_bot_setting_user) ]]; then
             cd $JD_DIR/jbot

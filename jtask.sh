@@ -176,7 +176,7 @@ run_hungup () {
         if type pm2 >/dev/null 2>&1; then
             pm2 stop $file.js 2>/dev/null
             pm2 flush
-            pm2 start -a $file.js --watch "$dir_scripts/$file.js" --name=$file
+            pm2 start -a $file.js --watch "$file.js" --name=$file
         else
             if [[ $(ps -ef | grep "$file" | grep -v "grep") != "" ]]; then
                 ps -ef | grep "$file" | grep -v "grep" | awk '{print $2}' | xargs kill -9
