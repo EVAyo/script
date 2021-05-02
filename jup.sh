@@ -187,10 +187,13 @@ update_docker_entrypoint () {
 ## 更新bot通知，仅针对Docker
 update_bot () {
     if [[ $JD_DIR ]] && [[ $ENABLE_TG_BOT == true ]] && [ -f $dir_root/bot.session ]; then
+        if ! type jq &>/dev/null; then
+            apk update
+            apk add jq
+        fi
         jbot_md5sum_new=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
         if [[ "$jbot_md5sum_new" != "$jbot_md5sum_old" ]]; then
-            #notify tbd
-            echo >/dev/null
+            notify_telegram "检测到BOT程序有更新，将在15秒内完成重启。\n\n友情提醒：如果当前有从BOT端发起的正在运行的任务，将被中断。\n\n本条消息由jup程序通过BOT发出。"
         fi
     fi
 }

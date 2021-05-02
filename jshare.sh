@@ -15,8 +15,8 @@ file_config_sample=$dir_sample/config.sample.sh
 file_cookie=$dir_config/cookie.sh
 file_sharecode=$dir_config/sharecode.sh
 file_config_user=$dir_config/config.sh
-file_auth_sample=$dir_sample/auth.sample.json
-file_auth_user=$dir_config/auth.json
+file_bot_setting_sample=$dir_sample/bot.sample.json
+file_bot_setting_user=$dir_config/bot.json
 file_diy_shell=$dir_config/diy.sh
 
 ## 清单文件
@@ -158,6 +158,35 @@ notify () {
     if [ -d $dir_scripts_node_modules ]; then
         node $dir_root/notify.js "$title" "$msg"
     fi
+}
+
+## 发送Telegram通知，$1：消息内容
+notify_telegram () {
+    local message="$(echo -e $1)"
+    local bot_token=$(cat $file_bot_setting_user | jq -r .bot_token)
+    local user_id=$(cat $file_bot_setting_user | jq .user_id)
+    local proxy=$(cat $file_bot_setting_user | jq .proxy)
+    local proxy_type=$(cat $file_bot_setting_user | jq -r .proxy_type)
+    local proxy_add=$(cat $file_bot_setting_user | jq -r .proxy_add)
+    local proxy_port=$(cat $file_bot_setting_user | jq .proxy_port)
+    local proxy_user=$(cat $file_bot_setting_user | jq -r .proxy_user)
+    local proxy_password=$(cat $file_bot_setting_user | jq -r .proxy_password)
+    local api_url="https://api.telegram.org/bot${bot_token}/sendMessage"
+    local cmd_proxy_user cmd_proxy
+
+    if [[ $proxy_user != *无则不用* ]] && [[ $proxy_password != *无则不用* ]]; then
+        cmd_proxy_user="--proxy-user $proxy_user:$proxy_password"
+    else
+        cmd_proxy_user=""
+    fi
+
+    if [[ $proxy == true ]]; then
+        cmd_proxy="--proxy $proxy_type://$proxy_add:$proxy_port $cmd_proxy_user"
+    else
+        cmd_proxy=""
+    fi
+
+    curl -Ss $cmd_proxy -H "Content-Type:application/x-www-form-urlencoded" -X POST -d "chat_id=${user_id}&text=${message}&disable_web_page_preview=true" "$api_url" &>/dev/null
 }
 
 ## 统计用户数量
