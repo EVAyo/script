@@ -186,8 +186,12 @@ update_docker_entrypoint () {
 
 ## 更新bot通知，仅针对Docker
 update_bot () {
-    if [[ $JD_DIR ]] && [[ $ENABLE_TG_BOT == true ]] && [ ! -f $dir_root/bot.session ]; then
-        notify "BOT程序更新通知" "BOT程序已经升级，请更新镜像启用新版BOT（旧版的BOT将不可用），如需添加自己编写的BOT命令，请在创建容器时增加映射 /jd/jbot/diy 文件夹。\n\n本消息仅发送给使用v4-bot的Docker用户。"
+    if [[ $JD_DIR ]] && [[ $ENABLE_TG_BOT == true ]] && [ -f $dir_root/bot.session ]; then
+        jbot_md5sum_new=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
+        if [[ "$jbot_md5sum_new" != "$jbot_md5sum_old" ]]; then
+            #notify tbd
+            echo >/dev/null
+        fi
     fi
 }
 
@@ -427,6 +431,9 @@ update_shell () {
         reset_romote_url $dir_shell $url_shell
         reset_romote_url $dir_scripts $url_scripts
     fi
+
+    ## 记录bot程序md5
+    jbot_md5sum_old=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
 
     ## 更新shell
     git_pull_scripts $dir_shell
