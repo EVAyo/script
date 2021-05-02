@@ -83,7 +83,7 @@ def creat_bean_counts(csv_file):
                 row.append(0)
         tb.add_row(row)
     length = 172 + 100 * num
-    im = Image.new("RGB", (length, 4000), (244, 244, 244))
+    im = Image.new("RGB", (length, 400), (244, 244, 244))
     dr = ImageDraw.Draw(im)
     font = ImageFont.truetype(_font, 18)
     dr.text((10, 5), str(tb), font=font, fill="#000000")
