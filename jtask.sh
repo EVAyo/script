@@ -7,13 +7,6 @@ dir_root=$dir_shell
 ## 导入通用变量与函数
 . $dir_shell/jshare.sh
 
-## 更新crontab
-update_crontab () {
-    if [[ $(cat $list_crontab_user) != $(crontab -l) ]]; then
-        crontab $list_crontab_user
-    fi
-}
-
 ## 组合Cookie和互助码子程序，$1：要组合的内容
 combine_sub () {
     local what_combine=$1
@@ -110,19 +103,22 @@ gen_array_scripts () {
 
 ## 使用说明
 usage () {
+    update_crontab
     define_cmd
     gen_array_scripts
-    echo -e "jtask命令运行 jd_scripts 脚本，如果已经将非 jd_scripts 脚本复制到 scripts 目录下，也可以使用此命令，用法为："
+    echo -e "一：jtask命令运行 jd_scripts 脚本，用法："
     echo -e "1.$cmd_jtask <js_name>        # 依次执行，如果设置了随机延迟并且当时时间不在0-2、30-31、59分内，将随机延迟一定秒数"
     echo -e "2.$cmd_jtask <js_name> now    # 依次执行，无论是否设置了随机延迟，均立即运行，前台会输出日志，同时记录在日志文件中"
     echo -e "3.$cmd_jtask <js_name> conc   # 并发执行，无论是否设置了随机延迟，均立即运行，前台不产生日志，直接记录在日志文件中"
-    echo -e "4.$cmd_jtask runall           # 依次运行所有jd_scripts中的非挂机脚本，非常耗时"
-    echo -e "5.$cmd_jtask hangup           # 重启挂机程序"
-    echo -e "\notask命令运行 own 脚本，需要输入脚本的绝对路径或相对路径（定时任务中必须是绝对路径），otask会将该脚本复制到 scripts 目录下再运行，用法为："
+    echo -e "4.$cmd_jtask <js_name> <num>  # num为某Cookie的编号，指定只以该Cookie运行脚本"
+    echo -e "5.$cmd_jtask runall           # 依次运行所有jd_scripts中的非挂机脚本，非常耗时"
+    echo -e "6.$cmd_jtask hangup           # 重启挂机程序"
+    echo -e "\n二：otask命令运行 own 脚本，需要输入脚本的绝对路径或相对路径（定时任务中必须是绝对路径），otask会将该脚本复制到 scripts 目录下再运行，用法："
     echo -e "1.$cmd_otask <js_path>        # 依次执行，如果设置了随机延迟并且当时时间不在0-2、30-31、59分内，将随机延迟一定秒数"
     echo -e "2.$cmd_otask <js_path> now    # 依次执行，无论是否设置了随机延迟，均立即运行，前台会输出日志，同时记录在日志文件中"
     echo -e "3.$cmd_otask <js_path> conc   # 并发执行，无论是否设置了随机延迟，均立即运行，前台不产生日志，直接记录在日志文件中"
-    echo -e "\nmtask命令运行你自己添加的脚本，用法同jtask，如果脚本不在scripts目录下，则需要输入完整路径（同otask）。jtask otask mtask均为同一脚本的不同名字，三者仅用来在crontab.list中区分不同类型的任务，以方便自动增删任务，手动运行直接运行jtask即可。"
+    echo -e "\n三：mtask命令运行无法被程序自动添加cron的脚本。如果脚本在 scripts 目录下，用法同jtask；如果脚本不在scripts目录下，则需要输入完整路径，用法同otask。"
+    echo -e "\n注意：jtask, otask, mtask均为同一脚本的不同名字（j=jd, o=own, m=my），三者仅用来在crontab.list中区分不同类型的cron，以方便自动增删任务，手动运行直接运行jtask即可。"
     echo -e "\n当前scripts目录下有以下脚本可以运行："
     for ((i=0; i<${#array_scripts[*]}; i++)); do
         echo -e "$(($i + 1)).${array_scripts_name[i]}：${array_scripts[i]}"
@@ -180,7 +176,7 @@ run_hungup () {
         if type pm2 >/dev/null 2>&1; then
             pm2 stop $file.js 2>/dev/null
             pm2 flush
-            pm2 start -a $file.js --watch "$dir_scripts/$file.js" --name=$file
+            pm2 start -a $file.js --watch "$file.js" --name=$file
         else
             if [[ $(ps -ef | grep "$file" | grep -v "grep") != "" ]]; then
                 ps -ef | grep "$file" | grep -v "grep" | awk '{print $2}' | xargs kill -9
@@ -256,6 +252,31 @@ run_concurrent () {
             cd $which_path
             node $file_name.js &>$log_path &
         done
+        echo -e "账号并发任务正在执行中，等待ing...\n"
+        wait
+        echo -e "所有并发任务已全部完成，如需查看执行结果，请直接查看相关日志...\n"
+    else
+        echo -e "\n $p 脚本不存在，请确认...\n"
+        usage
+    fi
+}
+
+## 指定只运行某一个Cookie
+run_specify () {
+    local p=$1
+    local ck_num=$2
+    find_file_and_path $p
+    if [[ $file_name ]] && [[ $which_path ]]; then
+        import_config_and_check "$file_name"
+        update_crontab
+        count_user_sum
+        export_all_env $ck_num
+        [[ $user_sum -ge 60 ]] && rm -rf $dir_config/* &>/dev/null
+        make_dir $dir_log/$file_name
+        log_time=$(date "+%Y-%m-%d-%H-%M-%S")
+        log_path="$dir_log/$file_name/${log_time}_${ck_num}.log"
+        cd $which_path
+        node $file_name.js 2>&1 | tee $log_path
     else
         echo -e "\n $p 脚本不存在，请确认...\n"
         usage
@@ -263,40 +284,47 @@ run_concurrent () {
 }
 
 ## 命令检测
-case $# in
-    0)
-        echo
-        usage
-        ;;
-    1)
-        case $1 in
-            hangup)
-                run_hungup
-                ;;
-            runall)
-                run_all_jd_scripts
-                ;;
-            *)
-                run_normal $1
-                ;;
-        esac
-        ;;
-    2)
-        case $2 in
-            now)
-                run_normal $1 $2
-                ;;
-            conc)
-                run_concurrent $1 $2
-                ;;
-            *)
-                echo -e "\n命令输入错误...\n"
-                usage
-                ;;
-        esac
-        ;;
-    *)
-        echo -e "\n命令过多...\n"
-        usage
-        ;;
-esac
+main () {
+    case $# in
+        0)
+            echo
+            usage
+            ;;
+        1)
+            case $1 in
+                hangup)
+                    run_hungup
+                    ;;
+                runall)
+                    run_all_jd_scripts
+                    ;;
+                *)
+                    run_normal $1
+                    ;;
+            esac
+            ;;
+        2)
+            case $2 in
+                now)
+                    run_normal $1 $2
+                    ;;
+                conc)
+                    run_concurrent $1 $2
+                    ;;
+                [1-9] | [1-2][0-9])
+                    run_specify $1 $2
+                    ;;
+                *)
+                    echo -e "\n命令输入错误...\n"
+                    usage
+                    ;;
+            esac
+            ;;
+        *)
+            echo -e "\n命令过多...\n"
+            usage
+            ;;
+    esac
+}
+
+main "$@"

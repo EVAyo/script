@@ -11,7 +11,6 @@ dir_root=$dir_shell
 import_config_and_check
 count_user_sum
 detect_termux
-[[ $is_termux -eq 1 ]] && opt=P || opt=E
 
 ## 生成pt_pin清单
 gen_pt_pin_array () {
@@ -33,15 +32,13 @@ export_codes_sub () {
     local config_name_my=My$config_name
     local config_name_for_other=ForOther$config_name
     local i j k m n pt_pin_in_log code tmp_grep tmp_my_code tmp_for_other user_num random_num_list
-    if [ -d $dir_log/$task_name ] && [[ $(ls $dir_log/$task_name) ]]; then
-        cd $dir_log/$task_name
-
+    if cd $dir_log/$task_name &>/dev/null && [[ $(ls) ]]; then
         ## 寻找所有互助码以及对应的pt_pin
         i=0
         pt_pin_in_log=()
         code=()
-        tmp_grep=$(cat $(ls -r *.log) | grep -$opt "的$chinese_name好友互助码" | perl -pe "s| ||g" | awk -F "（|）|】" '{print $2 "&" $4}')
-        for line in $tmp_grep; do
+        pt_pin_and_code=$(ls -r *.log | xargs awk -v var="的$chinese_name好友互助码" 'BEGIN{FS="[（ ）】]+"; OFS="&"} $3~var {print $2,$4}')
+        for line in $pt_pin_and_code; do
             pt_pin_in_log[i]=$(echo $line | awk -F "&" '{print $1}')
             code[i]=$(echo $line | awk -F "&" '{print $2}')
             let i++

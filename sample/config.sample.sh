@@ -1,6 +1,6 @@
-## Version: v4.2.3
-## Date: 2021-04-01
-## Update Content: 今后不再维护config.sample.sh中的互助码区域，如需要知道如何填写，直接运行jcode脚本后，全部复制过来粘贴在config.sh中第三区域或粘贴在config目录下sharecode.sh中即可，并按需修改，运行jtask命令时，sharecode.sh会覆盖jcode日志同名变量，不同名的不覆盖。
+## Version: v4.2.4
+## Date: 2021-04-27
+## Update Content: 调整环境变量清单的获取来源。
 
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第一区域：jd_scripts特有变量填写区域（需要shell转换的） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
@@ -26,7 +26,7 @@ jdUnsubscribeStopShop=""   ## 遇到此店铺不再取关此店铺以及它后�
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第二区域：jd_scripts特有变量填写区域（不需要shell转换的） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 ## 请在本区域补充其他你需要用到变量，export 变量名="变量值"，或：export 变量名='变量值'
-## 其他变量详见：https://gitee.com/lxk0301/jd_docker/blob/master/githubAction.md
+## 创建容器后在容器内运行 `cat /jd/scripts/githubAction.md` 可查看环境变量清单
 ## 该链接中除JD_COOKIE、JD_BEAN_SIGN_STOP_NOTIFY、JD_BEAN_SIGN_NOTIFY_SIMPLE、UN_SUBSCRIBES这四个变量以及所有互助码类变量外，其他所有变量请在本区域自行补充
 
 

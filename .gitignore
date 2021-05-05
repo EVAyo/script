@@ -4,3 +4,9 @@
 /own/
 /docker-compose.yml
 /send_mark
+/jbot/test
+/jbot/diy
+!/jbot/diy/example.py
+/jbot/__pycache__/
+/jbot/bot/__pycache__/
+/*session*
