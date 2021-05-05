@@ -551,7 +551,7 @@ fix_crontab () {
 update_notify () {
     if [[ $JD_DIR ]]; then
         if [ -f /usr/local/bin/docker-entrypoint.sh ]; then
-            notify "镜像更新通知" "Docker镜像的启动方式已从docker-entrypoint调整为s6-overlay，请更新镜像，旧的镜像即将无法使用。"
+            notify "镜像更新通知" "Docker镜像的启动方式已从docker-entrypoint调整为s6-overlay，请更新镜像，旧的镜像即将无法使用。" &>/dev/null
         fi
     fi
 }
