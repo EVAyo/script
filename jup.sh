@@ -176,14 +176,6 @@ diff_cron () {
     fi
 }
 
-## 更新docker-entrypoint，docker专用
-update_docker_entrypoint () {
-    if [[ $JD_DIR ]] && [[ $(diff $dir_root/docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh) ]]; then
-        cp -f $dir_root/docker/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-        chmod 777 /usr/local/bin/docker-entrypoint.sh
-    fi
-}
-
 ## 更新bot通知，仅针对Docker
 update_bot () {
     if [[ $JD_DIR ]] && [[ $ENABLE_TG_BOT == true ]] && [ -f $dir_root/bot.session ]; then
@@ -444,7 +436,6 @@ update_shell () {
         echo -e "\n更新$dir_shell成功...\n"
         make_dir $dir_config
         cp -f $file_config_sample $dir_config/config.sample.sh
-        update_docker_entrypoint
         update_bot
         detect_config_version
     else
