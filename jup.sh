@@ -533,6 +533,7 @@ source_diy () {
         then
             echo -e "开始执行$file_diy_shell...\n"
             . $file_diy_shell
+            echo -e "$file_diy_shell执行完毕...\n"
         else
             echo -e "$file_diy_shell文件不存在，跳过执行DIY脚本...\n"
         fi
