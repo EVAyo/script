@@ -16,4 +16,4 @@ run_mkdir () {
     fi
 }
 
-run_mkdir | perl -pe "s|^(.+)|[cont-init.d] $(basename $0): \1|g"
+run_mkdir 2>&1 | perl -pe "s|^(.+)|[cont-init.d] $(basename $0): \1|g"

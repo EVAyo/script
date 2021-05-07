@@ -6,4 +6,4 @@ run_jup () {
     jup scripts
 }
 
-run_jup | perl -pe "s|^(.+)|[cont-init.d] $(basename $0): \1|g"
+run_jup 2>&1 | perl -pe "s|^(.+)|[cont-init.d] $(basename $0): \1|g"

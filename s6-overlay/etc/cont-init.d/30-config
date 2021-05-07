@@ -27,4 +27,4 @@ run_config () {
     fi
 }
 
-run_config | perl -pe "s|^(.+)|[cont-init.d] $(basename $0): \1|g"
+run_config 2>&1 | perl -pe "s|^(.+)|[cont-init.d] $(basename $0): \1|g"

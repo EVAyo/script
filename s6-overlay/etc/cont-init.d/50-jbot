@@ -16,4 +16,4 @@ run_jbot () {
     fi
 }
 
-run_jbot | perl -pe "s|^(.+)|[cont-init.d] $(basename $0): \1|g"
+run_jbot 2>&1 | perl -pe "s|^(.+)|[cont-init.d] $(basename $0): \1|g"

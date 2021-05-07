@@ -14,4 +14,4 @@ run_parallel () {
 }
 
 export -f refresh_cron
-run_parallel | perl -pe "s|^(.+)|[services.d] \1|g"
+run_parallel 2>&1 | perl -pe "s|^(.+)|[services.d] \1|g"

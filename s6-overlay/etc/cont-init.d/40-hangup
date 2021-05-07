@@ -20,4 +20,4 @@ run_hangup () {
 }
 
 
-run_hangup | perl -pe "s|^(.+)|[cont-init.d] $(basename $0): \1|g"
+run_hangup 2>&1 | perl -pe "s|^(.+)|[cont-init.d] $(basename $0): \1|g"

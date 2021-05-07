@@ -5,4 +5,4 @@ run_crond () {
     crond
 }
 
-run_crond | perl -pe "s|^(.+)|[cont-init.d] $(basename $0): \1|g"
+run_crond 2>&1 | perl -pe "s|^(.+)|[cont-init.d] $(basename $0): \1|g"
