@@ -1,5 +1,9 @@
 #!/usr/bin/with-contenv bash
 
-echo -e "\n======================== 更新源代码 ========================\n"
-jup shell
-jup scripts
+run_jup () {
+    echo -e "\n======================== 更新源代码 ========================\n"
+    jup shell
+    jup scripts
+}
+
+run_jup | perl -pe "s|^(.+)|[cont-init.d] $(basename $0): \1|g"
