@@ -1,6 +1,6 @@
-## Version: v4.2.4
-## Date: 2021-04-27
-## Update Content: 调整环境变量清单的获取来源。
+## Version: v4.3.0
+## Date: 2021-05-08
+## Update Content: jd_scritps项目去掉UN_SUBSCRIBES变量，删除goodPageSize, shopPageSize, jdUnsubscribeStopGoods, jdUnsubscribeStopShop。
 
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第一区域：jd_scripts特有变量填写区域（需要shell转换的） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
@@ -12,12 +12,6 @@ Cookie2=""
 ## 每日签到的通知形式（选填，JD_BEAN_SIGN_STOP_NOTIFY和JD_BEAN_SIGN_NOTIFY_SIMPLE，由脚本去export，无需在config.sh中export）
 ## js脚本每日签到提供3种通知方式，分别为：关闭通知，请填入0；简洁通知，请填入1；长通知，请填入2
 NotifyBeanSign=""
-
-## UN_SUBSCRIBES（选填，由脚本去export，无需在config.sh中export）
-goodPageSize=""   ## 商品取关数量
-shopPageSize=""   ## 店铺取关数量
-jdUnsubscribeStopGoods=""  ## 遇到此商品不再取关此商品以及它后面的商品，需去商品详情页长按拷贝商品信息
-jdUnsubscribeStopShop=""   ## 遇到此店铺不再取关此店铺以及它后面的店铺，请从头开始输入店铺名称
 
 ## ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑ 第一区域：jd_scripts脚本特有变量填写区域（需要shell转换的） ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
 

@@ -54,11 +54,6 @@ trans_JD_BEAN_SIGN_NOTIFY () {
     esac
 }
 
-## 转换UN_SUBSCRIBES
-trans_UN_SUBSCRIBES () {
-    export UN_SUBSCRIBES="${goodPageSize}\n${shopPageSize}\n${jdUnsubscribeStopGoods}\n${jdUnsubscribeStopShop}"
-}
-
 ## 申明全部变量，$1：all/Cookie编号
 export_all_env () {
     local type=$1
@@ -70,7 +65,6 @@ export_all_env () {
     [ -f $file_sharecode ] && . $file_sharecode
     [[ $type == all ]] && combine_all || combine_one $type
     trans_JD_BEAN_SIGN_NOTIFY
-    trans_UN_SUBSCRIBES
 }
 
 random_delay () {
