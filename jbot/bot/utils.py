@@ -262,7 +262,7 @@ def get_beans_data(num):
         redtotals.insert(0, redtotal.findall(lines)[num])
         if len(dates) == 7:
             break
-    return dates, counts, astm(beanins), astm(beanouts), astm(beantotals), astm(redtotals)
+    return dates, counts, astm(beanins), astm(beanouts), astm(beantotals), redtotals
 
 def astm(arr):
     _arr = []
