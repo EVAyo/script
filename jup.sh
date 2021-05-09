@@ -319,7 +319,6 @@ add_cron_own () {
                 perl -pe "{
                     s|[^\d\*]*(([\d\*]*[\*-\/,\d]*[\d\*] ){4,5}[\d\*]*[\*-\/,\d]*[\d\*])( \|,\|\").*/?$file_name.*|\1 $cmd_otask $file_full_path|g;
                     s|  | |g;
-                    s|^[^ ]+ (([^ ]+ ?){5})|\1|;
                 }" |
                 sort -u | head -1 >> $list_crontab_own_tmp
             fi
