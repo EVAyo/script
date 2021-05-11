@@ -11,7 +11,12 @@ if 'JD_DIR' in os.environ.keys():
     jdcmd = 'jtask'
 elif 'QL_DIR' in os.environ.keys():
     _DiyDir = _DiyScripts
-    jdcmd = 'js'
+    jdcmd = 'task'
+    dirs = os.listdir(_LogDir)
+    for mydir in dirs:
+        if 'jd_bean_change' in mydir:
+            bean_log = _LogDir + '/jd_bean_change/'
+            break
 else:
     _DiyDir = None
     jdcmd = 'node'
