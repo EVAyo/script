@@ -15,7 +15,6 @@ detect_termux
 detect_macos
 link_shell
 define_cmd
-fix_config
 import_config_no_check jup
 
 ## 更新crontab，gitee服务器同一时间限制5个链接，因此每个人更新代码必须错开时间，每次执行git_pull随机生成。
@@ -110,8 +109,8 @@ gen_own_dir_and_path () {
             array_own_repo_dir[$repo_num]=$(echo ${array_own_repo_url[$repo_num]} | perl -pe "s|\.git||" | awk -F "/|:" '{print $((NF - 1)) "_" $NF}')
             array_own_repo_path[$repo_num]=$dir_own/${array_own_repo_dir[$repo_num]}
             tmp3=OwnRepoPath$i
-            if [[ ${!tmp3} ]]; then
-                for dir in ${!tmp3}; do
+            if [[ $(echo ${!tmp3} | perl -pe "s| |\n|g" | sort -u) ]]; then
+                for dir in $(echo ${!tmp3} | perl -pe "s| |\n|g" | sort -u); do
                     let scripts_path_num++
                     tmp4="${array_own_repo_dir[repo_num]}/$dir"
                     tmp5=$(echo $tmp4 | perl -pe "{s|//|/|g; s|/$||}")  # 去掉多余的/
@@ -148,7 +147,7 @@ gen_list_own () {
                 if [ -f $file ]; then
                     perl -ne "print if /.*([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*]( |,|\").*\/?$file/" $file |
                     perl -pe "s|.*(([\d\*]*[\*-\/,\d]*[\d\*] ){4}[\d\*]*[\*-\/,\d]*[\d\*])( \|,\|\").*/?$file.*|${array_own_scripts_path[i]}/$file|g" |
-                    head -1 >> $list_own_scripts
+                    sort -u | head -1 >> $list_own_scripts
                 fi
             done
         fi
@@ -164,24 +163,25 @@ diff_cron () {
     local list_task="$2"
     local list_add="$3"
     local list_drop="$4"
-    if [ -s $list_task ]; then
-        grep -vwf $list_task $list_scripts > $list_add
+    if [ -s $list_task ] && [ -s $list_scripts ]; then
+        diff $list_scripts $list_task | grep "<" | awk '{print $2}' > $list_add
+        diff $list_scripts $list_task | grep ">" | awk '{print $2}' > $list_drop
     elif [ ! -s $list_task ] && [ -s $list_scripts ]; then
-        cp -f $list_scripts $list_add
-    fi
-    if [ -s $list_scripts ]; then
-        grep -vwf $list_scripts $list_task > $list_drop
-    else
+        cp -f $list_scripts $list_add      
+    elif [ -s $list_task ] && [ ! -s $list_scripts ]; then
         cp -f $list_task $list_drop
     fi
 }
 
 ## 更新bot通知，仅针对Docker
 update_bot () {
-    if [[ $JD_DIR ]] && [[ $ENABLE_TG_BOT == true ]] && [ -f $dir_root/bot.session ]; then
-        if ! type jq &>/dev/null; then
-            apk update
-            apk add jq
+    if [[ $JD_DIR ]]; then
+        apk update -f &>/dev/null
+        if [[ $(readlink -f /usr/bin/diff) != /usr/bin/diff ]]; then
+            apk --no-cache add -f diffutils
+        fi
+        if [[ $ENABLE_TG_BOT == true ]] && [ -f $dir_root/bot.session ] && ! type jq &>/dev/null; then
+            apk --no-cache add -f jq
         fi
         jbot_md5sum_new=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
         if [[ "$jbot_md5sum_new" != "$jbot_md5sum_old" ]]; then
@@ -552,7 +552,7 @@ fix_crontab () {
     fi
 }
 
-update_notify () {
+end_notify () {
     if [[ $JD_DIR ]]; then
         if [ -f /usr/local/bin/docker-entrypoint.sh ] && [ ! -d /etc/cont-init.d ] && [ ! -d /etc/services.d ]; then
             notify "镜像更新通知" "Docker镜像的启动方式已从docker-entrypoint调整为s6-overlay，请更新镜像（无需更新配置文件），旧的镜像即将无法使用。" &>/dev/null
@@ -600,8 +600,9 @@ main () {
             usage
             ;;
     esac
+    fix_config
     fix_crontab
-    update_notify
+    end_notify
     exit 0
 }
 
