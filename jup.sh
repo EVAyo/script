@@ -173,19 +173,21 @@ diff_cron () {
     fi
 }
 
-## 更新bot通知，仅针对Docker
-update_bot () {
+## 更新docker通知
+update_docker () {
     if [[ $JD_DIR ]]; then
         apk update -f &>/dev/null
         if [[ $(readlink -f /usr/bin/diff) != /usr/bin/diff ]]; then
             apk --no-cache add -f diffutils
         fi
-        if [[ $ENABLE_TG_BOT == true ]] && [ -f $dir_root/bot.session ] && ! type jq &>/dev/null; then
-            apk --no-cache add -f jq
-        fi
-        jbot_md5sum_new=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
-        if [[ "$jbot_md5sum_new" != "$jbot_md5sum_old" ]]; then
-            notify_telegram "检测到BOT程序有更新，将在15秒内完成重启。\n\n友情提醒：如果当前有从BOT端发起的正在运行的任务，将被中断。\n\n本条消息由jup程序通过BOT发出。"
+        if [[ $ENABLE_TG_BOT == true ]] && [ -f $dir_root/bot.session ]; then
+            if ! type jq &>/dev/null; then
+                apk --no-cache add -f jq
+            fi
+            jbot_md5sum_new=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
+            if [[ "$jbot_md5sum_new" != "$jbot_md5sum_old" ]]; then
+                notify_telegram "检测到BOT程序有更新，将在15秒内完成重启。\n\n友情提醒：如果当前有从BOT端发起的正在运行的任务，将被中断。\n\n本条消息由jup程序通过BOT发出。"
+            fi
         fi
     fi
 }
@@ -440,7 +442,7 @@ update_shell () {
         echo -e "\n更新$dir_shell成功...\n"
         make_dir $dir_config
         cp -f $file_config_sample $dir_config/config.sample.sh
-        update_bot
+        update_docker
         detect_config_version
     else
         echo -e "\n更新$dir_shell失败，请检查原因...\n"
