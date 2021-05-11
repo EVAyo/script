@@ -109,8 +109,8 @@ gen_own_dir_and_path () {
             array_own_repo_dir[$repo_num]=$(echo ${array_own_repo_url[$repo_num]} | perl -pe "s|\.git||" | awk -F "/|:" '{print $((NF - 1)) "_" $NF}')
             array_own_repo_path[$repo_num]=$dir_own/${array_own_repo_dir[$repo_num]}
             tmp3=OwnRepoPath$i
-            if [[ $(echo ${!tmp3} | perl -pe "s| |\n|g" | sort -u) ]]; then
-                for dir in $(echo ${!tmp3} | perl -pe "s| |\n|g" | sort -u); do
+            if [[ ${!tmp3} ]]; then
+                for dir in ${!tmp3}; do
                     let scripts_path_num++
                     tmp4="${array_own_repo_dir[repo_num]}/$dir"
                     tmp5=$(echo $tmp4 | perl -pe "{s|//|/|g; s|/$||}")  # 去掉多余的/
@@ -139,6 +139,7 @@ gen_list_task () {
 ## 生成 own 脚本的绝对路径清单
 gen_list_own () {
     local dir_current=$(pwd)
+    local own_scripts_tmp
     rm -f $dir_list_tmp/own*.list >/dev/null 2>&1
     for ((i=0; i<${#array_own_scripts_path[*]}; i++)); do
         cd ${array_own_scripts_path[i]}
@@ -152,6 +153,8 @@ gen_list_own () {
             done
         fi
     done
+    own_scripts_tmp=$(sort -u $list_own_scripts)
+    echo "$own_scripts_tmp" > $list_own_scripts
     grep -E " $cmd_otask " $list_crontab_user | perl -pe "s|.*$cmd_otask ([^\s]+)( .+\|$)|\1|" | sort -u > $list_own_user
     cd $dir_current
 }
