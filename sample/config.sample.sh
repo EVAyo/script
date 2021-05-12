@@ -1,6 +1,6 @@
-## Version: v4.3.0
-## Date: 2021-05-08
-## Update Content: jd_scritps项目去掉UN_SUBSCRIBES变量，删除goodPageSize, shopPageSize, jdUnsubscribeStopGoods, jdUnsubscribeStopShop。
+## Version: v4.4.0
+## Date: 2021-05-12
+## Update Content: 将原来的EnableExtraShell变量名称修改为EnableJupDiyShell，同时新增EnableTaskFinishShell，作用详见注释。
 
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第一区域：jd_scripts特有变量填写区域（需要shell转换的） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
@@ -93,10 +93,16 @@ HelpType=""
 ## 当检测到scripts/githubAction.md文件发生变化时是否发送通知，该文件是jd_scripts所有环境变量的清单，填 true 则发送
 EnvChangeNotify=""
 
-## 是否添加你自己写的 shell 脚本（选填）
+## 是否在运行jup后再额外运行你自己写的 shell 脚本（选填）
 ## 如果你自己会写 shell 脚本，并且希望在每次 jup 这个脚本运行时，额外运行你的 shell 脚本，请赋值为 "true"
 ## 同时，请务必将你的脚本命名为 diy.sh (只能叫这个文件名)，放在 config 目录下
-EnableExtraShell=""
+EnableJupDiyShell=""
+
+## 是否在运行jtask/otask/mtask后再额外运行你自己写的 shell 脚本（选填）
+## 如果你自己会写 shell 脚本，并且希望在每次 jtask/otask/mtask 脚本后，额外运行你的 shell 脚本，请赋值为 "true"
+## 同时，请务必将你的脚本命名为 task_finish.sh (只能叫这个文件名)，放在 config 目录下
+## 注意：只在正常依次运行单个任务时才会额外运行 task_finish.sh，账号并发运行，或运行所有脚本时不会额外运行
+EnableTaskFinishShell=""
 
 ## 启用其他开发者的仓库方式一（选填）：完整更新整个仓库，针对同一个仓库，方式一和方式二只能选择一种
 ## OwnRepoUrl：仓库地址清单，必须从1开始依次编号

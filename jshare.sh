@@ -18,6 +18,7 @@ file_config_user=$dir_config/config.sh
 file_bot_setting_sample=$dir_sample/bot.sample.json
 file_bot_setting_user=$dir_config/bot.json
 file_diy_shell=$dir_config/diy.sh
+file_task_finish_shell=$dir_config/task_finish.sh
 
 ## 清单文件
 list_crontab_user=$dir_config/crontab.list
