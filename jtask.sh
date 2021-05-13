@@ -146,7 +146,7 @@ find_file_and_path () {
         fi
     done
 
-    if [ -f $para ]; then
+    if [[ -z $file_name ]] && [ -f $para ]; then
         local file_name_tmp3=$(echo $para | awk -F "/" '{print $NF}' | perl -pe "s|\.js||")
         if [[ $(grep -E "^$file_name_tmp3$" $list_task_jd_scripts) ]]; then
             echo -e "\njd_scripts项目存在同名文件$file_name_tmp3.js，不复制$para，直接执行$dir_scripts/$file_name_tmp3.js ...\n"
