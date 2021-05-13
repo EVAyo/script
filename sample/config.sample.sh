@@ -1,6 +1,6 @@
-## Version: v4.4.0
-## Date: 2021-05-12
-## Update Content: 将原来的EnableExtraShell变量名称修改为EnableJupDiyShell，同时新增EnableTaskFinishShell，作用详见注释。
+## Version: v4.4.1
+## Date: 2021-05-13
+## Update Content: EnableTaskFinishShell=true时，给task_finish.sh增加一个参考文件的链接。
 
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第一区域：jd_scripts特有变量填写区域（需要shell转换的） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
@@ -102,6 +102,7 @@ EnableJupDiyShell=""
 ## 如果你自己会写 shell 脚本，并且希望在每次 jtask/otask/mtask 脚本后，额外运行你的 shell 脚本，请赋值为 "true"
 ## 同时，请务必将你的脚本命名为 task_finish.sh (只能叫这个文件名)，放在 config 目录下
 ## 注意：只在正常依次运行单个任务时才会额外运行 task_finish.sh，账号并发运行，或运行所有脚本时不会额外运行
+## 参考文件：https://gitee.com/evine/my_scripts/blob/master/task_finish.sh ，千万千万不要照搬
 EnableTaskFinishShell=""
 
 ## 启用其他开发者的仓库方式一（选填）：完整更新整个仓库，针对同一个仓库，方式一和方式二只能选择一种
