@@ -37,12 +37,12 @@ for log in $(ls); do
     fi
 done
 
-## 将被屏蔽的Cookie填0，只针对最近一天（一般是前一天）的京豆变化情况，历史的不管
+## 将被屏蔽的Cookie留空，只针对最近一天（一般是前一天）的京豆变化情况，历史的不管
 for num in $(echo $TempBlockCookie | perl -pe "s| |\n|g" | sort -nu); do
     if [[ $num -gt 1 ]]; then
-        perl -i -pe "s|^($bean_date(,\d*){$(($num - 1))})(.*)|\1,0\2|" $bean_income $bean_outlay $bean_total
+        perl -i -pe "s|^($bean_date(,\d*){$(($num - 1))})(.*)|\1,\2|" $bean_income $bean_outlay $bean_total
     elif [[ $num -ge 1 ]]; then
-        perl -i -pe "s|^($bean_date)(,.*)|\1,0\2|" $bean_income $bean_outlay $bean_total
+        perl -i -pe "s|^($bean_date)(,.*)|\1,\2|" $bean_income $bean_outlay $bean_total
     fi
 done
 
