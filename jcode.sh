@@ -7,10 +7,10 @@ dir_root=$dir_shell
 ## 导入通用变量与函数
 . $dir_shell/jshare.sh
 
-## 导入配置文件，检测平台，确定命令
+## 导入配置文件等
 import_config_and_check
 count_user_sum
-detect_termux
+gen_pt_pin_array
 
 ## 导出互助码的通用程序，$1：去掉后缀的脚本名称，$2：config.sh中的后缀，$3：活动中文名称
 export_codes_sub () {
@@ -117,7 +117,6 @@ export_codes_sub () {
 
 ## 汇总输出
 export_all_codes () {
-    gen_pt_pin_array
     echo -e "\n# 从日志提取互助码，编号和配置文件中Cookie编号完全对应，如果为空就是所有日志中都没有。\n\n# 即使某个MyXxx变量未赋值，也可以将其变量名填在ForOtherXxx中，jtask脚本会自动过滤空值。\n"
     echo -n "# 你选择的互助码模板为："
     case $HelpType in
