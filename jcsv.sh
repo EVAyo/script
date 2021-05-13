@@ -9,7 +9,6 @@ dir_root=$dir_shell
 ## 导入通用变量与函数
 . $dir_shell/jshare.sh
 import_config_no_check "jd_bean_change"
-echo "TempBlockCookie=$TempBlockCookie"
 
 ## 豆子变化记录文件
 bean_income=$dir_log/bean_income.csv
@@ -39,7 +38,6 @@ for log in $(ls); do
 done
 
 ## 将被屏蔽的Cookie填0，只针对最近一天（一般是前一天）的京豆变化情况，历史的不管
-echo "bean_date=$bean_date"
 for num in $(echo $TempBlockCookie | perl -pe "s| |\n|g" | sort -nu); do
     if [[ $num -gt 1 ]]; then
         perl -i -pe "s|^($bean_date(,\d*){$(($num - 1))})(.*)|\1,0\2|" $bean_income $bean_outlay $bean_total
