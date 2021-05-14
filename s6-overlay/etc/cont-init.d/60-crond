@@ -1,8 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-run_crond () {
-    echo -e "\n======================== 开始运行定时任务 ========================\n"
-    crond
-}
-
-run_crond 2>&1 | perl -pe "s|^(.+)|[cont-init.d] $(basename $0): \1|g"
