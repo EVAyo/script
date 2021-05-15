@@ -20,7 +20,7 @@ NotifyBeanSign=""
 ## ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓ 第二区域：jd_scripts特有变量填写区域（不需要shell转换的） ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 ## 请在本区域补充其他你需要用到变量，export 变量名="变量值"，或：export 变量名='变量值'
-## 创建容器后在容器内运行 `cat /jd/scripts/githubAction.md` 可查看环境变量清单
+## 创建容器后在容器内运行 `cat /jd/scripts/githubAction.md` ，或访问 https://github.com/wisz2021/jd_docker/blob/main/githubAction.md 可查看环境变量清单
 ## 该链接中除JD_COOKIE、JD_BEAN_SIGN_STOP_NOTIFY、JD_BEAN_SIGN_NOTIFY_SIMPLE这三个变量以及所有互助码类变量外，其他所有变量请在本区域自行补充
 
 
