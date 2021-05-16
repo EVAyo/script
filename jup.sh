@@ -557,6 +557,16 @@ fix_crontab () {
     fi
 }
 
+## 在最开始的提醒
+start_notify () {
+    if [[ $JD_DIR ]] && [[ $(uname -m) == armv7* ]] && ! curl api.jd.com &>/dev/null; then
+        echo -e "检测到主机构架为armv7，并且无法访问网络，可能是未设置security-opt的原因...\n\n请按照 https://hub.docker.com/repository/docker/nevinee/jd 创建容器..."
+        echo -e "等待15秒后继续执行$cmd_jup..."
+        sleep 15
+    fi
+}
+
+## 在最后的提醒
 end_notify () {
     if [[ $JD_DIR ]]; then
         if [ -f /usr/local/bin/docker-entrypoint.sh ] && [ ! -d /etc/cont-init.d ] && [ ! -d /etc/services.d ]; then
@@ -567,6 +577,7 @@ end_notify () {
 
 ## 主函数
 main () {
+    start_notify
     case $# in
         1)
             case $1 in
