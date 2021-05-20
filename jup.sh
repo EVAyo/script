@@ -403,7 +403,6 @@ usage () {
     echo "使用帮助："
     echo "$cmd_jup         # 更新所有脚本，如启用了EnbaleExtraShell将在最后运行你自己的diy.sh"
     echo "$cmd_jup all     # 更新所有脚本，效果同不带参数直接运行\"$cmd_jup\""
-    echo "$cmd_jup shell   # 只更新jd_shell脚本，不会运行diy.sh"
     echo "$cmd_jup scripts # 只更新jd_scripts脚本，不会运行diy.sh"
     echo "$cmd_jup own     # 只更新own脚本，不会运行diy.sh"
 }
@@ -432,24 +431,13 @@ update_shell () {
 
     ## 重置仓库romote url
     if [[ $JD_DIR ]] && [[ $ENABLE_RESET_REPO_URL == true ]]; then
-        reset_romote_url $dir_shell $url_shell
         reset_romote_url $dir_scripts $url_scripts
     fi
 
     ## 记录bot程序md5
     jbot_md5sum_old=$(cd $dir_bot; find . -type f \( -name "*.py" -o -name "*.ttf" \) | xargs md5sum)
 
-    ## 更新shell
-    git_pull_scripts $dir_shell
-    if [[ $exit_status -eq 0 ]]; then
-        echo -e "\n更新$dir_shell成功...\n"
-        make_dir $dir_config
-        cp -f $file_config_sample $dir_config/config.sample.sh
-        update_docker
-        detect_config_version
-    else
-        echo -e "\n更新$dir_shell失败，请检查原因...\n"
-    fi
+    rm -rf $dir_shell/.git &>/dev/null
 }
 
 
