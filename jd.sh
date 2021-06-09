@@ -14,43 +14,6 @@ ListCron=${ConfigDir}/crontab.list
 ListCronLxk=${ScriptsDir}/docker/crontab_list.sh
 ListJs=${LogDir}/js.list
 
-## 所有环境变量对应关系，必须一一对应
-EnvName=(
-  JD_COOKIE
-  FRUITSHARECODES
-  PETSHARECODES
-  PLANT_BEAN_SHARECODES
-  DREAM_FACTORY_SHARE_CODES
-  DDFACTORY_SHARECODES
-  JDZZ_SHARECODES
-  JDJOY_SHARECODES
-  JXNC_SHARECODES
-  BOOKSHOP_SHARECODES
-  JD_CASH_SHARECODES
-  JDSGMH_SHARECODES
-  JDCFD_SHARECODES
-  JDGLOBAL_SHARECODES
-  CITY_SHARECODES
-)
-
-VarName=(
-  Cookie
-  ForOtherFruit
-  ForOtherPet
-  ForOtherBean
-  ForOtherDreamFactory
-  ForOtherJdFactory
-  ForOtherJdzz
-  ForOtherJoy
-  ForOtherJxnc
-  ForOtherBookShop
-  ForOtherCash
-  ForOtherSgmh
-  ForOtherCfd
-  ForOtherGlobal
-  ForOtherCity
-)
-
 ## 导入config.sh
 function Import_Conf {
   if [ -f ${FileConf} ]
@@ -85,43 +48,77 @@ function Count_UserSum {
 ## 组合Cookie和互助码子程序
 function Combin_Sub {
   CombinAll=""
-  if [[ ${AutoHelpOther} == true ]] && [[ $1 == ForOther* ]]; then
-
-    ForOtherAll=""
-    MyName=$(echo $1 | perl -pe "s|ForOther|My|")
-
-    for ((m=1; m<=${UserSum}; m++)); do
-      TmpA=${MyName}$m
-      TmpB=${!TmpA}
-      ForOtherAll="${ForOtherAll}@${TmpB}"
+  for ((i=1; i<=${UserSum}; i++)); do
+    for num in ${TempBlockCookie}; do
+      if [[ $i -eq $num ]]; then
+        continue 2
+      fi
     done
-    
-    for ((n=1; n<=${UserSum}; n++)); do
-      for num in ${TempBlockCookie}; do
-        [[ $n -eq $num ]] && continue 2
-      done
-      CombinAll="${CombinAll}&${ForOtherAll}"
-    done
-
-  else
-    for ((i=1; i<=${UserSum}; i++)); do
-      for num in ${TempBlockCookie}; do
-        [[ $i -eq $num ]] && continue 2
-      done
-      Tmp1=$1$i
-      Tmp2=${!Tmp1}
-      CombinAll="${CombinAll}&${Tmp2}"
-    done
-  fi
-
-  echo ${CombinAll} | perl -pe "{s|^&||; s|^@+||; s|&@|&|g; s|@+&|&|g; s|@+|@|g; s|@+$||}"
+    Tmp1=$1$i
+    Tmp2=${!Tmp1}
+    case $# in
+      1)
+        CombinAll="${CombinAll}&${Tmp2}"
+        ;;
+      2)
+        CombinAll="${CombinAll}&${Tmp2}@$2"
+        ;;
+      3)
+        if [ $(($i % 2)) -eq 1 ]; then
+          CombinAll="${CombinAll}&${Tmp2}@$2"
+        else
+          CombinAll="${CombinAll}&${Tmp2}@$3"
+        fi
+        ;;
+      4)
+        case $(($i % 3)) in
+          1)
+            CombinAll="${CombinAll}&${Tmp2}@$2"
+            ;;
+          2)
+            CombinAll="${CombinAll}&${Tmp2}@$3"
+            ;;
+          0)
+            CombinAll="${CombinAll}&${Tmp2}@$4"
+            ;;
+        esac
+        ;;
+    esac
+  done
+  echo ${CombinAll} | perl -pe "{s|^&||; s|^@+||; s|&@|&|g; s|@+|@|g}"
 }
 
 ## 正常依次运行时，组合所有账号的Cookie与互助码
 function Combin_All {
-  for ((i=0; i<${#EnvName[*]}; i++)); do
-    export ${EnvName[i]}=$(Combin_Sub ${VarName[i]})
-  done
+  export JD_COOKIE=$(Combin_Sub Cookie)
+  #东东农场(jd_fruit.js)
+  export FRUITSHARECODES=$(Combin_Sub ForOtherFruit "96fccb20b0e24deeab6b13457c593e3c@9353ac4c60e84596b9cfc5e3fe515f30@f8128854bccb47c092e35444aa921fa9@4fc147a47a2b45f2ac7e31c3e1315976")
+  #东东萌宠(jd_pet.js)
+  export PETSHARECODES=$(Combin_Sub ForOtherPet "MTAxODcxOTI2NTAwMDAwMDAzMTExODEyMw==@MTE1NDAxNzgwMDAwMDAwMzYxNjUwOTk=@MTEzMzI0OTE0NTAwMDAwMDA0Mzc2ODgwMQ==@MTAxODc2NTEzNTAwMDAwMDAwMDAwMzA3Nw==")
+  #种豆得豆(jd_plantBean.js)
+  export PLANT_BEAN_SHARECODES=$(Combin_Sub ForOtherBean "lc7eqgnugkdtwp2qlnvggt2bj7xxnwaayh5essa@uwgpfl3hsfqp3img4qkteo5oicqmyqcumye2jhy@cbagzqdyjhmq32xxyd2qn475eu@w5twvmn6thlgvgffr5mmzvaojsqttperzjydn2q")
+  #京喜工厂(jd_dreamFactory.js)
+  export DREAM_FACTORY_SHARE_CODES=$(Combin_Sub ForOtherDreamFactory "XOR3A1bQDLLlTvR5WzR3bg==@SmMbqc8FwQ0Zqml8FIJQ7w==@0f51WgzYHydCEESfms3PTg==@RsjljNAAYotorAKjJjTGHg==")
+  #东东工厂(jd_jdfactory.js)
+  export DDFACTORY_SHARECODES=$(Combin_Sub ForOtherJdFactory "T022u_x3QRke_EnVIR_wnPEIcQCjVWnYaS5kRrbA@T012a1zrlZeWI-dHCjVWnYaS5kRrbA")
+  #京东赚赚(jd_jdzz.js)
+  export JDZZ_SHARECODES=$(Combin_Sub ForOtherJdzz "Su_x3QRke_EnVIR_wnPEIcQ@S5KkcHkJujwKkXXy9wK9N@Sa1zrlZeWI-dH@ATlpQnf6SyD0PWjH_i3Uc")
+  #crazyJoy(jd_crazy_joy.js)
+  export JDJOY_SHARECODES=$(Combin_Sub ForOtherJoy "JaCqOT9JcivS6ROt9tZf5at9zd5YaBeE@gLa0u-JLETe_b7Y0-JE-oA==")
+  #惊喜农场(jd_jxnc.js)
+  export JXNC_SHARECODES=$(Combin_Sub ForOtherJxnc)
+  #口袋书店(jd_bookshop.js)
+  export BOOKSHOP_SHARECODES=$(Combin_Sub ForOtherBookShop "6b7d17c29d4e4f49a6335ee80157c455@c858f02a64094665ad7552721794ba2b@234f539da0824491befb23529dcdaa59")
+  #签到领现金(jd_cash.js)
+  export JD_CASH_SHARECODES=$(Combin_Sub ForOtherCash "Jhozbeu1b-Ek8GvRw3UR0w@eU9YMrDFHKpVjAicnytU@9rqvuWU9sE-2@eBozZO-zYP4j8WY@ZnQxbr-wY_Qhoz_SnXpF")
+  #闪购盲盒(jd_sgmh.js)
+  export JDSGMH_SHARECODES=$(Combin_Sub ForOtherSgmh "T022u_x3QRke_EnVIR_wnPEIcQCjVQmoaT5kRrbA@T0205KkcHkJujwKkXXy9wK9NCjVQmoaT5kRrbA@T012a1zrlZeWI-dHCjVQmoaT5kRrbA")
+  #惊喜财富岛(jd_cfd.js)
+  export JDCFD_SHARECODES=$(Combin_Sub ForOtherJdcfd "401DA52935EB84F3BDAC92C458E6B53043E59FCFB64E82CF43BDB57227EB24CE@F9C04F9AD0B414C6DC29EE25E71E86B0E0536B91BC393BA420F9E2358CFC1087@A6F67E22586A210AE6887B3DD522736630C9DBF062A66168B2C5315F99D1ABD7@D0B8B8ECA098E7B19850BB90DFA24CD426FA7D28C89B0F506745BA17099ED5E4")
+  #东东健康社区(jd_health.js)
+  export JDHEALTH_SHARECODES=$(Combin_Sub ForOtherHealth "T022u_x3QRke_EnVIR_wnPEIcQCjVfnoaW5kRrbA@T012a1zrlZeWI-dHCjVfnoaW5kRrbA@T0205KkcHkJujwKkXXy9wK9NCjVfnoaW5kRrbA")
+  #手机狂欢城(jd_carnivalcity.js)
+  export JD818_SHARECODES=$(Combin_Sub ForOtherCarni)
 }
 
 ## 并发运行时，直接申明每个账号的Cookie与互助码
