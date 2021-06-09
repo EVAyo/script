@@ -35,7 +35,7 @@ EnvName=(
 
 VarName=(
   Cookie
-  ForOtherFruit "96fccb20b0e24deeab6b13457c593e3c"
+  ForOtherFruit
   ForOtherPet
   ForOtherBean
   ForOtherDreamFactory
