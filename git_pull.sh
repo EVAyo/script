@@ -23,8 +23,8 @@ ContentNewTask=${ShellDir}/new_task
 ContentDropTask=${ShellDir}/drop_task
 SendCount=${ShellDir}/send_count
 isTermux=${ANDROID_RUNTIME_ROOT}${ANDROID_ROOT}
-ShellURL=${JD_SHELL_URL:-git@jd_shell_gitee:evine/jd_shell.git}
-ScriptsURL=${JD_SCRIPTS_URL:-git@jd_scripts_gitee:lxk0301/jd_scripts.git}
+ShellURL=${JD_SHELL_URL:-git@jd_shell_gitee:dockere/jd_tools.git}
+ScriptsURL=${JD_SCRIPTS_URL:-git@jd_scripts_gitee:dockere/jd_scripts.git}
 
 ## 导入配置文件
 function Import_Conf {
