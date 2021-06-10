@@ -70,7 +70,7 @@ function Reset_RepoUrl {
 
 ## 更新shell
 function Git_PullShell {
-  echo -e "更新shell...\n"
+  echo -e "更新shell...,URL:https://gitee.com/dockere/jd-base\n"
   cd ${ShellDir}
   git fetch --all
   ExitStatusShell=$?
@@ -126,24 +126,6 @@ function Count_UserSum {
     [[ ${CookieTmp} ]] && UserSum=$i || break
     let i++
   done
-}
-function Change {
-  sed -i "s/cdn.jsdelivr.net\/gh\/gitupdate\/updateTeam@master\/shareCodes/action-1251995682.file.myqcloud.com\/shareCodes/g" '/jd/scripts/jd_superMarket.js'
-  sed -i "s/raw.githubusercontent.com\/gitupdate\/updateTeam\/master\/shareCodes\/jd_zoo.json/action-1251995682.file.myqcloud.com\/shareCodes\/jd_zoo.json/g" '/jd/scripts/jd_zoo.js'
-  sed -i "s/cdn.jsdelivr.net\/gh\/gitupdate\/updateTeam@master\/shareCodes\/jd_zoo.json/action-1251995682.file.myqcloud.com\/shareCodes\/jd_zoo.json/g" '/jd/scripts/jd_zoo.js'
-  sed -i "s/cdn.jsdelivr.net\/gh\/gitupdate\/updateTeam@master\/shareCodes\/jxhb.json/action-1251995682.file.myqcloud.com\/shareCodes\/jxhb.json/g" '/jd/scripts/jd_jxlhb.js'
-  sed -i "s/cdn.annnibb.me\/cf79ae6addba60ad018347359bd144d2.json/action-1251995682.file.myqcloud.com\/shareCodes\/jxhb.json/g" '/jd/scripts/jd_jxlhb.js'
-  sed -i "s/raw.githubusercontent.com\/gitupdate\/updateTeam\/master\/shareCodes\/jd_red.json/action-1251995682.file.myqcloud.com\/shareCodes\/jd_updatered.json/g" '/jd/scripts/jd_redPacket.js'
-}
-## 修改lxk0301大佬js文件的函数汇总
-function Change_ALL {
-  if [ -f ${FileConf} ]; then
-    . ${FileConf}
-    if [ -n "${Cookie1}" ]; then
-      Count_UserSum
-      Change
-    fi
-  fi
 }
 ## 检测文件：LXK9301/jd_scripts 仓库中的 docker/crontab_list.sh
 ## 检测定时任务是否有变化，此函数会在Log文件夹下生成四个文件，分别为：
