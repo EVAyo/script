@@ -70,7 +70,7 @@ function Reset_RepoUrl {
 
 ## 更新shell
 function Git_PullShell {
-  echo -e "更新shell...,URL:https://gitee.com/dockere/jd-base\n"
+  echo -e "更新shell...   https://gitee.com/dockere/jd-base   \n"
   cd ${ShellDir}
   git fetch --all
   ExitStatusShell=$?
