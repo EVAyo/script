@@ -86,11 +86,11 @@ if ($.isNode()) {
     }
   }
   let res = [], res2 = [], res3 = [];
-  res3 = await getAuthorShareCode('https://raw.githubusercontent.com/gitupdate/updateTeam/master/shareCodes/jd_zoo.json');
-  if (!res3) await getAuthorShareCode('https://cdn.jsdelivr.net/gh/gitupdate/updateTeam@master/shareCodes/jd_zoo.json')
+  res3 = await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_zoo.json');
+  if (!res3) await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_zoo.json')
   if (new Date().getHours()>= 9) {
     res = await getAuthorShareCode() || [];
-    res2 = await getAuthorShareCode('http://cdn.trueorfalse.top/e528ffae31d5407aac83b8c37a4c86bc/') || [];
+    res2 = await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_zoo.json') || [];
   }
   // if (new Date().getHours() === 9 ||  (new Date().getHours() === 10 && new Date().getMinutes() < 20)) {
   // }
