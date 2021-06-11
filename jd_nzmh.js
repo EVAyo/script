@@ -47,6 +47,10 @@ if ($.isNode()) {
       '活动时间：2021-5-24至2021-6-22\n' +
       '活动地址：https://anmp.jd.com/babelDiy/Zeus/sVeWYpCvtfH754mtAT13s8V1Yjt/index.html\n' +
       '活动入口：京东app-女装馆-赢京豆');
+  console.log('欧气盲盒\n' +
+      '活动时间：2021-5-31至2021-6-18\n' +
+      '活动地址：https://h5.m.jd.com/babelDiy/Zeus/2uLowGtHJQrFBRjawAfaEnntNWMK/index.html\n' +
+      '活动入口：京东app-京东图书-开盲盒');
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -68,7 +72,7 @@ if ($.isNode()) {
         continue
       }
       try {
-        //await jdMh('https://h5.m.jd.com/babelDiy/Zeus/3eeruLXVbXge6CexVq8XkBbBvAfy/index.html')
+        await jdMh('https://h5.m.jd.com/babelDiy/Zeus/2uLowGtHJQrFBRjawAfaEnntNWMK/index.html')
         await jdMh('https://anmp.jd.com/babelDiy/Zeus/sVeWYpCvtfH754mtAT13s8V1Yjt/index.html')
         // await jdMh('https://anmp.jd.com/babelDiy/Zeus/yiNQjMxQvs3R3SdS4nwa2MFk1FE/index.html?wxAppName=jd')
       } catch (e) {
