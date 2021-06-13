@@ -1,6 +1,6 @@
-## Version: v3.33.1
-## Date: 2021-06-10
-## Update Content: 增加jd_city互助填写。
+## Version: v3.34.0
+## Date: 2021-06-14
+## Update Content: 增加自定义惊喜牧场的UA,去掉一些无用变量,修改一些注释
 
 ## 上面版本号中，如果第2位数字有变化，那么代表增加了新的参数，如果只有第3位数字有变化，仅代表更新了注释，没有增加新的参数，可更新可不更新
 
@@ -87,27 +87,33 @@ RandomDelay="300"
 # export JD_USER_AGENT=""
 
 
+################################## 定义惊喜APP的UA（选填） ##################################
+## 惊喜APP的UA。领取助力任务奖励需要惊喜APP的UA,环境变量：JX_USER_AGENT，有能力的可以填上自己的UA
+## 如需使用，请自行解除下一行注释
+# export JX_USER_AGENT=""
+
+
 ################################## 定义通知TOKEN（选填） ##################################
 ## 想通过什么渠道收取通知，就填入对应渠道的值
 ## 1. ServerChan，教程：http://sc.ftqq.com/3.version
 export PUSH_KEY=""
 
-## 2. BARK，教程（看BARK_PUSH和BARK_SOUND的说明）：https://gitee.com/lxk0301/jd_docker/blob/master/githubAction.md#%E4%B8%8B%E6%96%B9%E6%8F%90%E4%BE%9B%E4%BD%BF%E7%94%A8%E5%88%B0%E7%9A%84-secrets%E5%85%A8%E9%9B%86%E5%90%88
+## 2. BARK，教程（看BARK_PUSH和BARK_SOUND的说明）：https://github.com/RikudouPatrickstar/jd_scripts/blob/master/githubAction.md
 export BARK_PUSH=""
 export BARK_SOUND=""
 
-## 3. Telegram，如需使用，TG_BOT_TOKEN和TG_USER_ID必须同时赋值，教程：https://gitee.com/lxk0301/jd_docker/blob/master/backUp/TG_PUSH.md
+## 3. Telegram，如需使用，TG_BOT_TOKEN和TG_USER_ID必须同时赋值，教程：https://github.com/RikudouPatrickstar/jd_scripts/blob/master/backUp/TG_PUSH.md
 export TG_BOT_TOKEN=""
 export TG_USER_ID=""
 
-## 4. 钉钉，教程（看DD_BOT_TOKEN和DD_BOT_SECRET部分）：https://gitee.com/lxk0301/jd_docker/blob/master/githubAction.md#%E4%B8%8B%E6%96%B9%E6%8F%90%E4%BE%9B%E4%BD%BF%E7%94%A8%E5%88%B0%E7%9A%84-secrets%E5%85%A8%E9%9B%86%E5%90%88
+## 4. 钉钉，教程（看DD_BOT_TOKEN和DD_BOT_SECRET部分）：https://github.com/RikudouPatrickstar/jd_scripts/blob/master/githubAction.md
 export DD_BOT_TOKEN=""
 export DD_BOT_SECRET=""
 
 ## 5. iGot聚合推送，支持多方式推送，填写iGot的推送key。教程：https://wahao.github.io/Bark-MP-helper/#/
 export IGOT_PUSH_KEY=""
 
-## 6. Push Plus，微信扫码登录后一对一推送或一对多推送，参考文档：http://pushplus.hxtrip.com/
+## 6. Push Plus，微信扫码登录后一对一推送或一对多推送，参考文档：https://www.pushplus.plus/
 ## 其中PUSH_PLUS_USER是一对多推送的“群组编码”（一对多推送下面->您的群组(如无则新建)->群组编码）注:(1、需订阅者扫描二维码 2、如果您是创建群组所属人，也需点击“查看二维码”扫描绑定，否则不能接受群组消息推送)，只填PUSH_PLUS_TOKEN默认为一对一推送
 export PUSH_PLUS_TOKEN=""
 export PUSH_PLUS_USER=""
@@ -591,36 +597,19 @@ export JD_JXD_EXCHANGE=""
 export DDQ_NOTIFY_CONTROL=""
 
 
-################################## 定义jd_cash是否是否静默运行 ##################################
+################################## 定义jd_cash京东领现金是否是否静默运行 ##################################
 ## 控制签到领现金是否静默运行，false 为否(默认值false，发送推送通知消息)，true 为是(即：不发送推送通知消息)
 export CASH_NOTIFY_CONTROL=""
+
+
+################################## 定义jd_cash京东领现金红包兑换京豆开关（选填） ##################################
+## 控制京东领现金是否把红包兑换成京豆,false为否,true为是(即：花费2元红包兑换200京豆，一周可换四次)，默认为false
+export CASH_EXCHANGE=""
 
 
 ################################## 定义jd_jdzz是否是否静默运行 ##################################
 ## 控制jd_jdzz是否静默运行，false 为否(默认值false，发送推送通知消息)，默认每月1日推送一次通知，true 为是(即：不发送推送通知消息)，
 export JDZZ_NOTIFY_CONTROL=""
-
-
-################################## 定义取关参数（选填） ##################################
-## jd_unsubscribe这个任务是用来取关每天做任务关注的商品和店铺，默认在每次运行时取关20个商品和20个店铺
-## 如果取关数量不够，可以根据情况增加，还可以设置 jdUnsubscribeStopGoods 和 jdUnsubscribeStopShop 
-## 商品取关数量
-goodPageSize=""
-## 店铺取关数量
-shopPageSize=""
-## 遇到此商品不再取关此商品以及它后面的商品，需去商品详情页长按拷贝商品信息
-jdUnsubscribeStopGoods=""
-## 遇到此店铺不再取关此店铺以及它后面的店铺，请从头开始输入店铺名称
-jdUnsubscribeStopShop=""
-
-
-################################## 定义注销店铺会员参数（选填） ##################################
-## jd_unbind脚本需要的，注销JD已开的店铺会员，不是注销JDplus会员，个别店铺无法注销
-## 此参数控制每次运行脚本时注销多少个店铺会员，默认200
-export UN_BIND_CARD_NUM=""
-
-## 遇到此参数设定的会员卡则跳过不进行注销，多个会员卡之间以 & 分隔，默认值"JDPLUS会员"
-export UN_BIND_STOP_CARD=""
 
 
 ################################## jd_crazy_joy（选填） ##################################
@@ -637,6 +626,11 @@ export JDJOY_APPLYJDBEAN=""
 ################################## 定义是否自动加购物车（选填） ##################################
 ## jd_bookshop和jd_small_home有些任务需要将商品加进购物车才能完成，默认 "false" 不做这些任务，如想做，请设置为 "true"
 export PURCHASE_SHOPS=""
+
+
+################################## 定义京喜工厂拼团瓜分电力活动的activeId（选填） ##################################
+## 如出现脚本开团提示失败：活动已结束，请稍后再试~，可自行抓包替换(开启抓包，进入拼团瓜分电力页面，寻找带有tuan的链接里面的activeId=)
+export TUAN_ACTIVEID=""
 
 
 ################################## 是否添加DIY脚本（选填） ##################################

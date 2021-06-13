@@ -150,15 +150,15 @@ function Trans_JD_BEAN_SIGN_NOTIFY {
 }
 
 ## 转换UN_SUBSCRIBES
-function Trans_UN_SUBSCRIBES {
-  export UN_SUBSCRIBES="${goodPageSize}\n${shopPageSize}\n${jdUnsubscribeStopGoods}\n${jdUnsubscribeStopShop}"
-}
+## function Trans_UN_SUBSCRIBES {
+##  export UN_SUBSCRIBES="${goodPageSize}\n${shopPageSize}\n${jdUnsubscribeStopGoods}\n${jdUnsubscribeStopShop}"
+##}
 
 ## 申明全部变量
 function Set_Env {
   [[ $1 == all ]] && Combin_All || Combin_One $1
   Trans_JD_BEAN_SIGN_NOTIFY
-  Trans_UN_SUBSCRIBES
+  #Trans_UN_SUBSCRIBES
 }
 
 ## 随机延迟
