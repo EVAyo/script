@@ -2,6 +2,7 @@ const https = require('https');
 const fs = require('fs/promises');
 const { R_OK } = require('fs').constants;
 const vm = require('vm');
+const UA = require('./USER_AGENTS.js').USER_AGENT;
 
 const URL = 'https://wbbny.m.jd.com/babelDiy/Zeus/2s7hhSTbhMgxpGoa9JDnbDzJTaBB/index.html';
 // const REG_MODULE = /(\d+)\:function\(.*(?=smashUtils\.get_risk_result)/gm;
@@ -15,7 +16,6 @@ class ZooFaker {
     constructor(secretp, cookie) {
         this.secretp = secretp;
         this.cookie = cookie;
-        this.ua = require('./USER_AGENTS.js').USER_AGENT;
     }
 
     async run() {
@@ -60,8 +60,11 @@ class ZooFaker {
                     removeEventListener: fnMock,
                     cookie: this.cookie,
                 },
-                navigator: { userAgent: this.ua },
+                navigator: { userAgent: UA },
             };
+            Object.defineProperty(ctx.document, 'cookie', {
+                get: () => this.cookie,
+            });
 
             vm.createContext(ctx);
             vm.runInContext(jsContent, ctx);
@@ -93,6 +96,8 @@ class ZooFaker {
             }
             const needModuleId = jsContent.substring(moduleIndex-20, moduleIndex).match(/(\d+):function/)[1]
             jsContent = jsContent.replace(REG_ENTRY, `$1${needModuleId}`);
+            // Fix device info (actually insecure, make less sense)
+            jsContent = jsContent.replace(/\w+\.getDefaultArr\(7\)/, '["a","a","a","a","a","a","1"]');
             fs.writeFile(cacheKey, jsContent);
             return jsContent;
 
