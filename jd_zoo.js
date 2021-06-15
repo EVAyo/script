@@ -25,7 +25,7 @@ cron "36 0,6-23/2 * * *" script-path=https://raw.githubusercontent.com/star261/j
 });
 const $ = new Env('618动物联萌');
 const notify = $.isNode() ? require('./sendNotify') : '';
-const jdCookieNode = $.isNode() ? require('./jdCookie1.js') : '';
+const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const pKHelpFlag = true;//是否PK助力  true 助力，false 不助力
 const pKHelpAuthorFlag = true;//是否助力作者PK  true 助力，false 不助力
 //IOS等用户直接用NobyDa的jd cookie
@@ -864,7 +864,7 @@ function getRandomArrayElements(arr, count) {
   }
   return shuffled.slice(min);
 }
-function getAuthorShareCode(url = "http://cdn.annnibb.me/eb6fdc36b281b7d5eabf33396c2683a2.json") {
+function getAuthorShareCode(url = "https://action-1251995682.file.myqcloud.com/shareCodes/jd_zoo.json") {
   return new Promise(async resolve => {
     const options = {
       "url": `${url}?${new Date()}`,
