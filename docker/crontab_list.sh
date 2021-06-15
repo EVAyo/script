@@ -18,6 +18,8 @@
 
 #手机狂欢城
 0 0,12,18,21 * * * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
+#618动物联萌hook
+50 0,6-23/2 * * * node /scripts/jd_zoohook.js >> /scripts/logs/jd_zoohook.log 2>&1
 #618动物联萌
 33 0,6-23/2 * * * node /scripts/jd_zoo.js >> /scripts/logs/jd_zoo.log 2>&1
 #618动物联萌专门收集金币(每小时的第30分运行一次)
@@ -142,4 +144,6 @@
 #京喜牧场
 15 0,12,22 * * * node /scripts/jd_jxmc.js >> /scripts/logs/jd_jxmc.log 2>&1
 #京东到家
-15 9 * * * node /scripts/jd_daojia.js >> /scripts/logs/jd_daojia.log 2>&1
+0 8,12,17,22 * * * node /scripts/jd_daojia.js >> /scripts/logs/jd_daojia.log 2>&1
+#京东到家鲜豆庄园
+12 9,11,14,20 * * * node /scripts/jd_daojia_bean.js >> /scripts/logs/jd_daojia_bean.log 2>&1
