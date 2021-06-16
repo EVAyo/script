@@ -147,3 +147,5 @@
 0 8,12,17,22 * * * node /scripts/jd_daojia.js >> /scripts/logs/jd_daojia.log 2>&1
 #京东到家鲜豆庄园
 12 9,11,14,20 * * * node /scripts/jd_daojia_bean.js >> /scripts/logs/jd_daojia_bean.log 2>&1
+#点点券
+36 0,20 * * * node /scripts/jd_necklace.js >> /scripts/logs/jd_necklace.log 2>&1
