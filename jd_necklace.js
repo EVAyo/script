@@ -185,7 +185,7 @@ async function getBody($ = {}) {
     const zf = new ZooFakerNecklace($.cookie, $.action);
     const log = await zf.run(riskData);
 
-    return `body=${encodeURIComponent(JSON.stringify(log))}`;
+    return log
 }
 
 if ($.isNode()) {
@@ -203,11 +203,10 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  console.log(`\n通知：京东已在领取任务、签到、领取点点券三个添加了log做了校验，暂时无可解决\n`);
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
-      $.cookie = cookie
+      $.cookie = cookie;
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
       $.isLogin = true;
@@ -259,6 +258,7 @@ function showMsg() {
     // if ($.isNode() && $.totalScore >= 20000 && nowTimes.getHours() >= 20) await notify.sendNotify(`${$.name} - 京东账号${$.index} - ${$.nickName}`, `京东账号${$.index} ${$.nickName}\n当前${$.name}：${$.totalScore}个\n可兑换无门槛红包：${$.totalScore / 1000}元\n点击链接即可去兑换(注：此红包具有时效性)\n↓↓↓ \n\n ${openUrl} \n\n ↑↑↑`, { url: openUrl })
     if ($.isNode() && nowTimes.getHours() >= 20 && (process.env.DDQ_NOTIFY_CONTROL ? process.env.DDQ_NOTIFY_CONTROL === 'false' : !!1)) {
       allMessage += `京东账号${$.index} ${$.nickName}\n当前${$.name}：${$.totalScore}个\n可兑换无门槛红包：${$.totalScore / 1000}元\n(京东APP->领券->左上角点点券.注：此红包具有时效性)${$.index !== cookiesArr.length ? '\n\n' : `\n↓↓↓ \n\n "https://h5.m.jd.com/babelDiy/Zeus/41Lkp7DumXYCFmPYtU3LTcnTTXTX/index.html" \n\n ↑↑↑`}`
+      allMessage += `红包将在6.21日清空，请及时兑换`
     }
     resolve()
   })
@@ -295,17 +295,15 @@ async function sign() {
   if ($.signInfo.todayCurrentSceneSignStatus === 1) {
     console.log(`\n开始每日签到`)
     $.action = 'sign'
-    let ss = await getBody($) 
+    let ss = await getBody($)
     await necklace_sign(ss);
   } else {
     console.log(`当前${new Date(new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000).toLocaleString()}已签到`)
   }
 }
 async function reportTask(item = {}) {
-  $.action = 'startTask', $.id = item.id
-  let ss = await getBody($)
   //普通任务
-  if (item['taskType'] === 2) await necklace_startTask(ss, 'necklace_reportTask');
+  if (item['taskType'] === 2) await necklace_startTask(item.id, 'necklace_reportTask');
   //逛很多商品店铺等等任务
   if (item['taskType'] === 6 || item['taskType'] === 8 || item['taskType'] === 5 || item['taskType'] === 9) {
     //浏览精选活动任务
@@ -313,9 +311,7 @@ async function reportTask(item = {}) {
     $.taskItems = $.taskItems.filter(value => !!value && value['status'] === 0);
     for (let vo of $.taskItems) {
       console.log(`浏览精选活动 【${vo['title']}】`);
-      $.action = 'startTask', $.id = vo['id']
-      let ss = await getBody($)
-      await necklace_startTask(ss, 'necklace_reportTask', vo['id']);
+      await necklace_startTask(item.id, 'necklace_reportTask', vo['id']);
     }
   }
   //首页浏览XX秒的任务
@@ -325,7 +321,10 @@ async function reportTask(item = {}) {
 //每日签到福利
 function necklace_sign(body) {
   return new Promise(resolve => {
-    $.post(taskPostBodyUrl("necklace_sign", body), async (err, resp, data) => {
+    // const body = {
+    //   currentDate: $.lastRequestTime.replace(/:/g, "%3A"),
+    // }
+    $.post(taskPostUrl("necklace_sign", body), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -387,9 +386,14 @@ function necklace_exchangeGift(scoreNums) {
   })
 }
 //领取奖励
-function necklace_chargeScores(body) {
+function necklace_chargeScores(bubleId) {
   return new Promise(resolve => {
-    $.post(taskPostBodyUrl("necklace_chargeScores", body), async (err, resp, data) => {
+    // const body = {
+    //   bubleId,
+    //   currentDate: $.lastRequestTime.replace(/:/g, "%3A"),
+    // }
+    let body = bubleId
+    $.post(taskPostUrl("necklace_chargeScores", body), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -415,10 +419,19 @@ function necklace_chargeScores(body) {
     })
   })
 }
-function necklace_startTask(body, functionId = 'necklace_startTask', itemId = "") {
+function necklace_startTask(taskId, functionId = 'necklace_startTask', itemId = "") {
   return new Promise(resolve => {
+    let body
+    if (functionId === 'necklace_startTask') {
+      body = taskId
+    } else {
+      body = {
+        taskId,
+        currentDate: $.lastRequestTime.replace(/:/g, "%3A"),
+      }
+    }
     if (itemId) body['itemId'] = itemId;
-    $.post(taskPostBodyUrl(functionId, body), async (err, resp, data) => {
+    $.post(taskPostUrl(functionId, body), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -591,26 +604,6 @@ function taskPostUrl(function_id, body = {}) {
   const time = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000;
   return {
     url: `${JD_API_HOST}?functionId=${function_id}&appid=coupon-necklace&loginType=2&client=coupon-necklace&t=${time}&body=${escape(JSON.stringify(body))}&uuid=88732f840b77821b345bf07fd71f609e6ff12f43`,
-    // url: `${JD_API_HOST}?functionId=${function_id}&appid=jd_mp_h5&loginType=2&client=jd_mp_h5&t=${time}&body=${escape(JSON.stringify(body))}`,
-    headers: {
-      "accept": "*/*",
-      "accept-encoding": "gzip, deflate, br",
-      "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
-      "content-length": "0",
-      "cookie": cookie,
-      "origin": "https://h5.m.jd.com",
-      "referer": "https://h5.m.jd.com/",
-      "sec-fetch-dest": "empty",
-      "sec-fetch-mode": "cors",
-      "sec-fetch-site": "same-site",
-      "user-agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
-    }
-  }
-}
-function taskPostBodyUrl(function_id, body = {}) {
-  const time = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000;
-  return {
-    url: `${JD_API_HOST}?functionId=${function_id}&appid=coupon-necklace&loginType=2&client=coupon-necklace&t=${time}&${body}&uuid=88732f840b77821b345bf07fd71f609e6ff12f43`,
     // url: `${JD_API_HOST}?functionId=${function_id}&appid=jd_mp_h5&loginType=2&client=jd_mp_h5&t=${time}&body=${escape(JSON.stringify(body))}`,
     headers: {
       "accept": "*/*",
