@@ -6,17 +6,17 @@ Last Modified time: 2021-05-28 17:27:14
 ===============Quantumultx===============
 [task_local]
 #点点券
-10 0,20 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_necklace.js, tag=点点券, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+10 0,20 * * * jd_necklace.js, tag=点点券, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "10 0,20 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_necklace.js,tag=点点券
+cron "10 0,20 * * *" script-path=jd_necklace.js,tag=点点券
 
 ===============Surge=================
-点点券 = type=cron,cronexp="10 0,20 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_necklace.js
+点点券 = type=cron,cronexp="10 0,20 * * *",wake-system=1,timeout=3600,script-path=jd_necklace.js
 
 ============小火箭=========
-点点券 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_necklace.js, cronexpr="10 0,20 * * *", timeout=3600, enable=true
+点点券 = type=cron,script-path=jd_necklace.js, cronexpr="10 0,20 * * *", timeout=3600, enable=true
  */
 const $ = new Env('点点券');
 let allMessage = ``;
@@ -28,6 +28,166 @@ let message = '';
 let nowTimes = new Date(new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000);
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
+
+const https = require('https');
+const fs = require('fs/promises');
+const { R_OK } = require('fs').constants;
+const vm = require('vm');
+const UA = require('./USER_AGENTS.js').USER_AGENT;
+
+const URL = 'https://h5.m.jd.com/babelDiy/Zeus/41Lkp7DumXYCFmPYtU3LTcnTTXTX/index.html';
+const REG_SCRIPT = /<script src="([^><]+\/(main\.\w+\.js))\?t=\d+">/gm;
+const REG_ENTRY = /^(.*?\.push\(\[)(\d+,\d+)/;
+const REG_PIN = /pt_pin=(\w+?);/m;
+const KEYWORD_MODULE = 'get_risk_result:';
+const DATA = {appid:'50082',sceneid:'DDhomePageh5'};
+let smashUtils;
+
+class ZooFakerNecklace {
+    constructor(cookie, action) {
+        this.cookie = cookie;
+        this.action = action;
+    }
+
+    async run(data) {
+        if (!smashUtils) {
+            await this.init();
+        }
+
+        const t = Math.floor(1e+6 * Math.random()).toString().padEnd(6, '8');
+        const pin = this.cookie.match(REG_PIN)[1];
+        const { log } = smashUtils.get_risk_result({
+            id: this.action,
+            data: {
+                ...data,
+                pin,
+                random: t,
+            }
+        });
+        const body = {
+            ...data,
+            random: t,
+            extraData: { log, sceneid: DATA.sceneid },
+        };
+
+        // console.log(body);
+        return body;
+    }
+
+    async init() {
+        console.time('ZooFakerNecklace');
+        process.chdir(__dirname);
+        const html = await ZooFakerNecklace.httpGet(URL);
+        const script = REG_SCRIPT.exec(html);
+
+        if (script) {
+            const [, scriptUrl, filename] = script;
+            const jsContent = await this.getJSContent(filename, scriptUrl);
+            const fnMock = new Function;
+            const ctx = {
+                window: { addEventListener: fnMock },
+                document: {
+                    addEventListener: fnMock,
+                    removeEventListener: fnMock,
+                    cookie: this.cookie,
+                },
+                navigator: { userAgent: UA },
+            };
+            const _this = this;
+            Object.defineProperty(ctx.document,'cookie',{
+                get() {
+                    return _this.cookie;
+                },
+            });
+
+            vm.createContext(ctx);
+            vm.runInContext(jsContent, ctx);
+
+            smashUtils = ctx.window.smashUtils;
+            smashUtils.init(DATA);
+
+            // console.log(ctx);
+        }
+
+        // console.log(html);
+        // console.log(script[1],script[2]);
+        console.timeEnd('ZooFakerNecklace');
+    }
+
+    async getJSContent(cacheKey, url) {
+        try {
+            await fs.access(cacheKey, R_OK);
+            const rawFile = await fs.readFile(cacheKey, { encoding: 'utf8' });
+
+            return rawFile;
+        } catch (e) {
+            let jsContent = await ZooFakerNecklace.httpGet(url);
+            const findEntry = REG_ENTRY.test(jsContent);
+            const ctx = {
+                moduleIndex: 0,
+            };
+            const injectCode = `moduleIndex=arguments[0].findIndex(s=>s&&s.toString().indexOf('${KEYWORD_MODULE}')>0);return;`;
+            const injectedContent = jsContent.replace(/^(!function\(\w\){)/, `$1${injectCode}`);
+
+            vm.createContext(ctx);
+            vm.runInContext(injectedContent, ctx);
+
+            if (!(ctx.moduleIndex && findEntry)) {
+                throw new Error('Module not found.');
+            }
+            jsContent = jsContent.replace(REG_ENTRY, `$1${ctx.moduleIndex},1`);
+            // Fix device info (actually insecure, make less sense)
+            jsContent = jsContent.replace(/\w+\.getDefaultArr\(7\)/, '["a","a","a","a","a","a","1"]');
+            fs.writeFile(cacheKey, jsContent);
+            return jsContent;
+
+            REG_ENTRY.lastIndex = 0;
+            const entry = REG_ENTRY.exec(jsContent);
+
+            console.log(ctx.moduleIndex);
+            console.log(entry[2]);
+        }
+    }
+
+    static httpGet(url) {
+        return new Promise((resolve, reject) => {
+            const protocol = url.indexOf('http') !== 0 ? 'https:' : '';
+            const req = https.get(protocol + url, (res) => {
+                res.setEncoding('utf-8');
+
+                let rawData = '';
+
+                res.on('error', reject);
+                res.on('data', chunk => rawData += chunk);
+                res.on('end', () => resolve(rawData));
+            });
+
+            req.on('error', reject);
+            req.end();
+        });
+    }
+}
+
+async function getBody($ = {}) {
+    let riskData;
+    switch ($.action) {
+        case 'startTask':
+            riskData = { taskId: $.id };
+            break;
+        case 'chargeScores':
+            riskData = { bubleId: $.id };
+            break;
+        case 'sign':
+            riskData = {};
+        default:
+            break;
+    }
+    const zf = new ZooFakerNecklace($.cookie, $.action);
+    const log = await zf.run(riskData);
+
+    return `body=${encodeURIComponent(JSON.stringify(log))}`;
+}
+
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -47,6 +207,7 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
+      $.cookie = cookie
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
       $.isLogin = true;
@@ -106,7 +267,9 @@ async function doTask() {
   for (let item of $.taskConfigVos) {
     if (item.taskStage === 0) {
       console.log(`【${item.taskName}】 任务未领取,开始领取此任务`);
-      await necklace_startTask(item.id);
+      $.action = 'startTask', $.id = item.id
+      let ss = await getBody($)
+      await necklace_startTask(ss);
       console.log(`【${item.taskName}】 任务领取成功,开始完成此任务`);
       await $.wait(1000);
       await reportTask(item);
@@ -123,20 +286,26 @@ async function doTask() {
 async function receiveBubbles() {
   for (let item of $.bubbles) {
     console.log(`\n开始领取点点券`);
-    await necklace_chargeScores(item.id)
+    $.action = 'chargeScores', $.id = item.id
+    let ss = await getBody($)
+    await necklace_chargeScores(ss)
   }
 }
 async function sign() {
   if ($.signInfo.todayCurrentSceneSignStatus === 1) {
     console.log(`\n开始每日签到`)
-    await necklace_sign();
+    $.action = 'sign'
+    let ss = await getBody($) 
+    await necklace_sign(ss);
   } else {
     console.log(`当前${new Date(new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000).toLocaleString()}已签到`)
   }
 }
 async function reportTask(item = {}) {
+  $.action = 'startTask', $.id = item.id
+  let ss = await getBody($)
   //普通任务
-  if (item['taskType'] === 2) await necklace_startTask(item.id, 'necklace_reportTask');
+  if (item['taskType'] === 2) await necklace_startTask(ss, 'necklace_reportTask');
   //逛很多商品店铺等等任务
   if (item['taskType'] === 6 || item['taskType'] === 8 || item['taskType'] === 5 || item['taskType'] === 9) {
     //浏览精选活动任务
@@ -144,7 +313,9 @@ async function reportTask(item = {}) {
     $.taskItems = $.taskItems.filter(value => !!value && value['status'] === 0);
     for (let vo of $.taskItems) {
       console.log(`浏览精选活动 【${vo['title']}】`);
-      await necklace_startTask(item.id, 'necklace_reportTask', vo['id']);
+      $.action = 'startTask', $.id = vo['id']
+      let ss = await getBody($)
+      await necklace_startTask(ss, 'necklace_reportTask', vo['id']);
     }
   }
   //首页浏览XX秒的任务
@@ -152,12 +323,9 @@ async function reportTask(item = {}) {
   if (item['taskType'] === 4) await doAppTask('4', item.id);
 }
 //每日签到福利
-function necklace_sign() {
+function necklace_sign(body) {
   return new Promise(resolve => {
-    const body = {
-      currentDate: $.lastRequestTime.replace(/:/g, "%3A"),
-    }
-    $.post(taskPostUrl("necklace_sign", body), async (err, resp, data) => {
+    $.post(taskPostBodyUrl("necklace_sign", body), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -219,13 +387,9 @@ function necklace_exchangeGift(scoreNums) {
   })
 }
 //领取奖励
-function necklace_chargeScores(bubleId) {
+function necklace_chargeScores(body) {
   return new Promise(resolve => {
-    const body = {
-      bubleId,
-      currentDate: $.lastRequestTime.replace(/:/g, "%3A"),
-    }
-    $.post(taskPostUrl("necklace_chargeScores", body), async (err, resp, data) => {
+    $.post(taskPostBodyUrl("necklace_chargeScores", body), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -251,14 +415,10 @@ function necklace_chargeScores(bubleId) {
     })
   })
 }
-function necklace_startTask(taskId, functionId = 'necklace_startTask', itemId = "") {
+function necklace_startTask(body, functionId = 'necklace_startTask', itemId = "") {
   return new Promise(resolve => {
-    let body = {
-      taskId,
-      currentDate: $.lastRequestTime.replace(/:/g, "%3A"),
-    }
     if (itemId) body['itemId'] = itemId;
-    $.post(taskPostUrl(functionId, body), async (err, resp, data) => {
+    $.post(taskPostBodyUrl(functionId, body), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -431,6 +591,26 @@ function taskPostUrl(function_id, body = {}) {
   const time = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000;
   return {
     url: `${JD_API_HOST}?functionId=${function_id}&appid=coupon-necklace&loginType=2&client=coupon-necklace&t=${time}&body=${escape(JSON.stringify(body))}&uuid=88732f840b77821b345bf07fd71f609e6ff12f43`,
+    // url: `${JD_API_HOST}?functionId=${function_id}&appid=jd_mp_h5&loginType=2&client=jd_mp_h5&t=${time}&body=${escape(JSON.stringify(body))}`,
+    headers: {
+      "accept": "*/*",
+      "accept-encoding": "gzip, deflate, br",
+      "accept-language": "zh-CN,zh;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6",
+      "content-length": "0",
+      "cookie": cookie,
+      "origin": "https://h5.m.jd.com",
+      "referer": "https://h5.m.jd.com/",
+      "sec-fetch-dest": "empty",
+      "sec-fetch-mode": "cors",
+      "sec-fetch-site": "same-site",
+      "user-agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+    }
+  }
+}
+function taskPostBodyUrl(function_id, body = {}) {
+  const time = new Date().getTime() + new Date().getTimezoneOffset()*60*1000 + 8*60*60*1000;
+  return {
+    url: `${JD_API_HOST}?functionId=${function_id}&appid=coupon-necklace&loginType=2&client=coupon-necklace&t=${time}&${body}&uuid=88732f840b77821b345bf07fd71f609e6ff12f43`,
     // url: `${JD_API_HOST}?functionId=${function_id}&appid=jd_mp_h5&loginType=2&client=jd_mp_h5&t=${time}&body=${escape(JSON.stringify(body))}`,
     headers: {
       "accept": "*/*",
