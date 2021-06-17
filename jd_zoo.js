@@ -84,12 +84,13 @@ if ($.isNode()) {
     }
   }
   if (pKHelpAuthorFlag && new Date().getHours() >= 9) {
-    let res = [], res2 = [], res3 = [];
+    let res = [], res2 = [];
     try {
       res = await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_zoo.json');
     }catch (e) {
       res = []
     }
+    if(!res){res = [];}
     res2 = await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_zoo.json');
     if(res2.length > 3){
       res2 = getRandomArrayElements(res2,3);
