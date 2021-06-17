@@ -28,7 +28,6 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const pKHelpFlag = true;//是否PK助力  true 助力，false 不助力
 const pKHelpAuthorFlag = true;//是否助力作者PK  true 助力，false 不助力
-let joyToken = "MDFMYlpVdDAxMQ==.fVRoZkx1UGNsTHxXaStHBFRqHEd8DTIYCn1ObHlAYFMkZwp9HCQ=.a0228a38";
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [];
 $.cookie = '';
@@ -47,7 +46,14 @@ if ($.isNode()) {
     $.getdata("CookieJD2"),
     ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
+let joyToken = ''
 !(async () => {
+  $.ckToken = "joyytoken=50084MDFMYlpVdDAxMQ==.fVRoZkx1UGNsTHxXaStHBFRqHEd8DTIYCn1ObHlAYFMkZwp9HCQ=.a0228a38";
+
+  joyToken = "MDFMYlpVdDAxMQ==.fVRoZkx1UGNsTHxXaStHBFRqHEd8DTIYCn1ObHlAYFMkZwp9HCQ=.a0228a38";
+  await injectCKToken();
+  console.log($.ckToken);
+  cookiesArr = cookiesArr.map(ck => $.ckToken + ck);
   if (!cookiesArr[0]) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
@@ -61,7 +67,7 @@ if ($.isNode()) {
   $.CryptoJS = $.isNode() ? require('crypto-js') : CryptoJS
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
-      $.cookie = cookiesArr[i] + `joyytoken=50084${joyToken};`;
+      $.cookie = cookiesArr[i];
       initial();
       $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
       $.index = i + 1;
@@ -83,27 +89,28 @@ if ($.isNode()) {
       if($.hotFlag)$.secretpInfo[$.UserName] = false;//火爆账号不执行助力
     }
   }
-  if (pKHelpAuthorFlag && new Date().getHours() >= 9) {
-    let res = [], res2 = [];
-    try {
-      res = await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_zoo.json');
-    }catch (e) {
-      res = []
-    }
-    if(!res){res = [];}
-    res2 = await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_zoo.json');
-    if(res2.length > 3){
-      res2 = getRandomArrayElements(res2,3);
-    }
-    if([...$.innerPkInviteList, ...res, ...res2].length > 6){
-      $.innerPkInviteList = getRandomArrayElements([...$.innerPkInviteList, ...res, ...res2],6);
-    }else{
-      $.innerPkInviteList = getRandomArrayElements([...$.innerPkInviteList, ...res, ...res2], [...$.innerPkInviteList, ...res, ...res2].length);
-    }
-    $.pkInviteList.push(...$.innerPkInviteList);
-  }
+  // if (pKHelpAuthorFlag && new Date().getHours() >= 9) {
+  //   let res = [], res2 = [], res3 = [];
+  //   try {
+  //     res = await getAuthorShareCode('https://raw.githubusercontent.com/star261/jd/main/code/zoo.json');
+  //   }catch (e) {
+  //     res = []
+  //   }
+  //   if(!res){res = [];}
+  //   res2 = await getAuthorShareCode('https://cdn.jsdelivr.net/gh/gitupdate/updateTeam@master/shareCodes/jd_zoo.json');
+  //   res3 = await getAuthorShareCode('http://cdn.trueorfalse.top/e528ffae31d5407aac83b8c37a4c86bc/');
+  //   if(res2.length > 3){
+  //     res2 = getRandomArrayElements(res2,3);
+  //   }
+  //   if([...$.innerPkInviteList, ...res, ...res2, ...res3].length > 6){
+  //     $.innerPkInviteList = getRandomArrayElements([...$.innerPkInviteList, ...res, ...res2, ...res3],6);
+  //   }else{
+  //     $.innerPkInviteList = getRandomArrayElements([...$.innerPkInviteList, ...res, ...res2, ...res3], [...$.innerPkInviteList, ...res, ...res2, ...res3].length);
+  //   }
+  //   $.pkInviteList.push(...$.innerPkInviteList);
+  // }
   for (let i = 0; i < cookiesArr.length; i++) {
-    $.cookie = cookiesArr[i] + `joyytoken=50084${joyToken};`;
+    $.cookie = cookiesArr[i];
     $.canHelp = true;
     $.UserName = decodeURIComponent($.cookie.match(/pt_pin=([^; ]+)(?=;?)/) && $.cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
     if (!$.secretpInfo[$.UserName]) {
@@ -113,16 +120,16 @@ if ($.isNode()) {
     $.index = i + 1;
     //console.log($.inviteList);
     //pk助力
-    if (new Date().getHours() >= 9) {
-      console.log(`\n******开始内部京东账号【怪兽大作战pk】助力*********\n`);
-      for (let i = 0; i < $.pkInviteList.length && pKHelpFlag && $.canHelp; i++) {
-        console.log(`${$.UserName} 去助力PK码 ${$.pkInviteList[i]}`);
-        $.pkInviteId = $.pkInviteList[i];
-        await takePostRequest('pkHelp');
-        await $.wait(2000);
-      }
-      $.canHelp = true;
-    }
+    // if (new Date().getHours() >= 9) {
+    //   console.log(`\n******开始内部京东账号【怪兽大作战pk】助力*********\n`);
+    //   for (let i = 0; i < $.pkInviteList.length && pKHelpFlag && $.canHelp; i++) {
+    //     console.log(`${$.UserName} 去助力PK码 ${$.pkInviteList[i]}`);
+    //     $.pkInviteId = $.pkInviteList[i];
+    //     await takePostRequest('pkHelp');
+    //     await $.wait(2000);
+    //   }
+    //   $.canHelp = true;
+    // }
     if ($.inviteList && $.inviteList.length) console.log(`\n******开始内部京东账号【邀请好友助力】*********\n`);
     for (let j = 0; j < $.inviteList.length && $.canHelp; j++) {
       $.oneInviteInfo = $.inviteList[j];
@@ -144,6 +151,23 @@ if ($.isNode()) {
   .finally(() => {
     $.done();
   })
+
+async function injectCKToken() {
+  let myRequest = {url: 'https://bh.m.jd.com/gettoken', method: 'POST', headers: {'Content-Type': 'text/plain;charset=UTF-8'}, body: `content={"appname":"50084","whwswswws":"","jdkey":"","body":{"platform":"1"}}`};
+  return new Promise(async resolve => {
+    $.post(myRequest, (err, resp, data) => {
+      try {
+        const {joyytoken} = JSON.parse(data);
+        joyToken = joyytoken;
+        $.ckToken = `joyytoken=50084${joyytoken}; `;
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
 
 async function zoo() {
   try {
@@ -378,37 +402,37 @@ async function zoo() {
       }
     }
     //======================================================怪兽大作战=================================================================================
-    $.pkHomeData = {};
-    await takePostRequest('zoo_pk_getHomeData');
-    if (JSON.stringify($.pkHomeData) === '{}') {
-      console.log(`获取PK信息异常`);
-      return;
-    }
-    await $.wait(1000);
-    $.pkTaskList = [];
-    if(!$.hotFlag) await takePostRequest('zoo_pk_getTaskDetail');
-    await $.wait(1000);
-    for (let i = 0; i < $.pkTaskList.length; i++) {
-      $.oneTask = $.pkTaskList[i];
-      if ($.oneTask.status === 1) {
-        $.activityInfoList = $.oneTask.shoppingActivityVos || $.oneTask.brandMemberVos || $.oneTask.followShopVo || $.oneTask.browseShopVo
-        for (let j = 0; j < $.activityInfoList.length; j++) {
-          $.oneActivityInfo = $.activityInfoList[j];
-          if ($.oneActivityInfo.status !== 1) {
-            continue;
-          }
-          console.log(`做任务：${$.oneActivityInfo.title || $.oneActivityInfo.taskName || $.oneActivityInfo.shopName};等待完成`);
-          await takePostRequest('zoo_pk_collectScore');
-          await $.wait(2000);
-          console.log(`任务完成`);
-        }
-      }
-    }
-    await $.wait(1000);
+    // $.pkHomeData = {};
+    // await takePostRequest('zoo_pk_getHomeData');
+    // if (JSON.stringify($.pkHomeData) === '{}') {
+    //   console.log(`获取PK信息异常`);
+    //   return;
+    // }
+    // await $.wait(1000);
+    // $.pkTaskList = [];
+    // if(!$.hotFlag) await takePostRequest('zoo_pk_getTaskDetail');
+    // await $.wait(1000);
+    // for (let i = 0; i < $.pkTaskList.length; i++) {
+    //   $.oneTask = $.pkTaskList[i];
+    //   if ($.oneTask.status === 1) {
+    //     $.activityInfoList = $.oneTask.shoppingActivityVos || $.oneTask.brandMemberVos || $.oneTask.followShopVo || $.oneTask.browseShopVo
+    //     for (let j = 0; j < $.activityInfoList.length; j++) {
+    //       $.oneActivityInfo = $.activityInfoList[j];
+    //       if ($.oneActivityInfo.status !== 1) {
+    //         continue;
+    //       }
+    //       console.log(`做任务：${$.oneActivityInfo.title || $.oneActivityInfo.taskName || $.oneActivityInfo.shopName};等待完成`);
+    //       await takePostRequest('zoo_pk_collectScore');
+    //       await $.wait(2000);
+    //       console.log(`任务完成`);
+    //     }
+    //   }
+    // }
+    //await $.wait(1000);
     //await takePostRequest('zoo_pk_getTaskDetail');
-    let skillList = $.pkHomeData.result.groupInfo.skillList || [];
+    //let skillList = $.pkHomeData.result.groupInfo.skillList || [];
     //activityStatus === 1未开始，2 已开始
-    $.doSkillFlag = true;
+    //$.doSkillFlag = true;
     // for (let i = 0; i < skillList.length && $.pkHomeData.result.activityStatus === 2 && $.doSkillFlag; i++) {
     //   if (Number(skillList[i].num) > 0) {
     //     $.skillCode = skillList[i].code;
@@ -631,14 +655,20 @@ async function dealReturn(type, data) {
         case -8:
           console.log(`已经助力过该队伍`);
           break;
+        case -4:
+          console.log(`怪兽大作战助力失败：${JSON.stringify(data)}`);
+          break;
         case -6:
         case 108:
           console.log(`助力次数已用光`);
           $.canHelp = false;
           break;
-        default:
+        case -1002:
           console.log(`怪兽大作战助力失败：${JSON.stringify(data)}`);
           $.canHelp = false;
+          break;
+        default:
+          console.log(`怪兽大作战助力失败：${JSON.stringify(data)}`);
       }
       break;
     case 'zoo_pk_getHomeData':
@@ -894,7 +924,7 @@ function getRandomArrayElements(arr, count) {
   }
   return shuffled.slice(min);
 }
-function getAuthorShareCode(url = "https://action-1251995682.file.myqcloud.com/shareCodes/jd_zoo.json") {
+function getAuthorShareCode(url = "http://cdn.annnibb.me/eb6fdc36b281b7d5eabf33396c2683a2.json") {
   return new Promise(async resolve => {
     const options = {
       "url": `${url}?${new Date()}`,
