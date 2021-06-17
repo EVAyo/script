@@ -33,7 +33,7 @@ function Import_Conf {
 
 ## 用户数量 UserSum
 function Count_UserSum {
-  for ((i=1; i<=${SUM:-$((3 * 4))}; i++)); do
+  for ((i=1; i<=${SUM:-$((3000 * 1))}; i++)); do
     Tmp=Cookie$i
     CookieTmp=${!Tmp}
     [[ ${CookieTmp} ]] && UserSum=$i || break
