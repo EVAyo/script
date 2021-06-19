@@ -156,8 +156,8 @@ function getUserInfo() {
           data = JSON.parse(data)
           if (data.iRet === 0) {
             console.log(`获取助力码成功：${data.Data.strUserPin}\n`);
-            if (data.Data['dwCurrentGrade'] >= 6) {
-              console.log(`6个阶梯红包已全部拆完\n`)
+            if (data.Data['dwCurrentGrade'] >= 7) {
+              console.log(`7个阶梯红包已全部拆完\n`)
             } else {
               if (data.Data.strUserPin) {
                 $.packetIdArr.push({
