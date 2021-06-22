@@ -1,9 +1,9 @@
 # File: .github/workflows/repo-sync.yml
-name: wenmou_jd #action名字，随便起
+name: JDHelloworld #action名字，随便起
 env:
-  ID: wenmou_jd
-  URL: https://github.com/Wenmoux/scripts.git
-  REPO: wen
+  ID: JDHelloworld
+  URL: https://github.com/JDHelloWorld/jd_scripts.git
+  REPO: main
 on:
   schedule:
     - cron: '1 0,15 * * *'
