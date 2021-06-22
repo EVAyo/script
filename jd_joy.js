@@ -2,7 +2,7 @@
 jd宠汪汪 搬的https://github.com/uniqueque/QuantumultX/blob/4c1572d93d4d4f883f483f907120a75d925a693e/Script/jd_joy.js
 脚本兼容: QuantumultX, Surge, Loon, JSBox, Node.js
 IOS用户支持京东双账号,NodeJs用户支持N个京东账号
-更新时间：2021-6-6
+更新时间：2021-6-22
 活动入口：京东APP我的-更多工具-宠汪汪
 建议先凌晨0点运行jd_joy.js脚本获取狗粮后，再运行此脚本(jd_joy_steal.js)可偷好友积分，6点运行可偷好友狗粮
 feedCount:自定义 每次喂养数量; 等级只和喂养次数有关，与数量无关
@@ -10,6 +10,7 @@ feedCount:自定义 每次喂养数量; 等级只和喂养次数有关，与数�
 Combine from Zero-S1/JD_tools(https://github.com/Zero-S1/JD_tools)
 ==========Quantumult X==========
 [task_local]
+
 #京东宠汪汪
 15 0-23/2 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_joy.js, tag=京东宠汪汪, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdcww.png, enabled=true
 
@@ -32,6 +33,12 @@ cron "15 0-23/2 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/mast
   }(), function () { function r() { for (var t = this._S, r = this._i, e = this._j, i = 0, n = 0; n < 4; n++) { r = (r + 1) % 256, e = (e + t[r]) % 256; var o = t[r]; t[r] = t[e], t[e] = o, i |= t[(t[r] + t[e]) % 256] << 24 - 8 * n } return this._i = r, this._j = e, i } var e = t, i = e.lib, n = i.StreamCipher, o = e.algo, s = o.RC4 = n.extend({ _doReset: function () { for (var t = this._key, r = t.words, e = t.sigBytes, i = this._S = [], n = 0; n < 256; n++)i[n] = n; for (var n = 0, o = 0; n < 256; n++) { var s = n % e, a = r[s >>> 2] >>> 24 - s % 4 * 8 & 255; o = (o + i[n] + a) % 256; var c = i[n]; i[n] = i[o], i[o] = c } this._i = this._j = 0 }, _doProcessBlock: function (t, e) { t[e] ^= r.call(this) }, keySize: 8, ivSize: 0 }); e.RC4 = n._createHelper(s); var a = o.RC4Drop = s.extend({ cfg: s.cfg.extend({ drop: 192 }), _doReset: function () { s._doReset.call(this); for (var t = this.cfg.drop; t > 0; t--)r.call(this) } }); e.RC4Drop = n._createHelper(a) }(), t.mode.CTRGladman = function () { function r(t) { if (255 === (t >> 24 & 255)) { var r = t >> 16 & 255, e = t >> 8 & 255, i = 255 & t; 255 === r ? (r = 0, 255 === e ? (e = 0, 255 === i ? i = 0 : ++i) : ++e) : ++r, t = 0, t += r << 16, t += e << 8, t += i } else t += 1 << 24; return t } function e(t) { return 0 === (t[0] = r(t[0])) && (t[1] = r(t[1])), t } var i = t.lib.BlockCipherMode.extend(), n = i.Encryptor = i.extend({ processBlock: function (t, r) { var i = this._cipher, n = i.blockSize, o = this._iv, s = this._counter; o && (s = this._counter = o.slice(0), this._iv = void 0), e(s); var a = s.slice(0); i.encryptBlock(a, 0); for (var c = 0; c < n; c++)t[r + c] ^= a[c] } }); return i.Decryptor = n, i }(), function () { function r() { for (var t = this._X, r = this._C, e = 0; e < 8; e++)a[e] = r[e]; r[0] = r[0] + 1295307597 + this._b | 0, r[1] = r[1] + 3545052371 + (r[0] >>> 0 < a[0] >>> 0 ? 1 : 0) | 0, r[2] = r[2] + 886263092 + (r[1] >>> 0 < a[1] >>> 0 ? 1 : 0) | 0, r[3] = r[3] + 1295307597 + (r[2] >>> 0 < a[2] >>> 0 ? 1 : 0) | 0, r[4] = r[4] + 3545052371 + (r[3] >>> 0 < a[3] >>> 0 ? 1 : 0) | 0, r[5] = r[5] + 886263092 + (r[4] >>> 0 < a[4] >>> 0 ? 1 : 0) | 0, r[6] = r[6] + 1295307597 + (r[5] >>> 0 < a[5] >>> 0 ? 1 : 0) | 0, r[7] = r[7] + 3545052371 + (r[6] >>> 0 < a[6] >>> 0 ? 1 : 0) | 0, this._b = r[7] >>> 0 < a[7] >>> 0 ? 1 : 0; for (var e = 0; e < 8; e++) { var i = t[e] + r[e], n = 65535 & i, o = i >>> 16, s = ((n * n >>> 17) + n * o >>> 15) + o * o, h = ((4294901760 & i) * i | 0) + ((65535 & i) * i | 0); c[e] = s ^ h } t[0] = c[0] + (c[7] << 16 | c[7] >>> 16) + (c[6] << 16 | c[6] >>> 16) | 0, t[1] = c[1] + (c[0] << 8 | c[0] >>> 24) + c[7] | 0, t[2] = c[2] + (c[1] << 16 | c[1] >>> 16) + (c[0] << 16 | c[0] >>> 16) | 0, t[3] = c[3] + (c[2] << 8 | c[2] >>> 24) + c[1] | 0, t[4] = c[4] + (c[3] << 16 | c[3] >>> 16) + (c[2] << 16 | c[2] >>> 16) | 0, t[5] = c[5] + (c[4] << 8 | c[4] >>> 24) + c[3] | 0, t[6] = c[6] + (c[5] << 16 | c[5] >>> 16) + (c[4] << 16 | c[4] >>> 16) | 0, t[7] = c[7] + (c[6] << 8 | c[6] >>> 24) + c[5] | 0 } var e = t, i = e.lib, n = i.StreamCipher, o = e.algo, s = [], a = [], c = [], h = o.Rabbit = n.extend({ _doReset: function () { for (var t = this._key.words, e = this.cfg.iv, i = 0; i < 4; i++)t[i] = 16711935 & (t[i] << 8 | t[i] >>> 24) | 4278255360 & (t[i] << 24 | t[i] >>> 8); var n = this._X = [t[0], t[3] << 16 | t[2] >>> 16, t[1], t[0] << 16 | t[3] >>> 16, t[2], t[1] << 16 | t[0] >>> 16, t[3], t[2] << 16 | t[1] >>> 16], o = this._C = [t[2] << 16 | t[2] >>> 16, 4294901760 & t[0] | 65535 & t[1], t[3] << 16 | t[3] >>> 16, 4294901760 & t[1] | 65535 & t[2], t[0] << 16 | t[0] >>> 16, 4294901760 & t[2] | 65535 & t[3], t[1] << 16 | t[1] >>> 16, 4294901760 & t[3] | 65535 & t[0]]; this._b = 0; for (var i = 0; i < 4; i++)r.call(this); for (var i = 0; i < 8; i++)o[i] ^= n[i + 4 & 7]; if (e) { var s = e.words, a = s[0], c = s[1], h = 16711935 & (a << 8 | a >>> 24) | 4278255360 & (a << 24 | a >>> 8), l = 16711935 & (c << 8 | c >>> 24) | 4278255360 & (c << 24 | c >>> 8), f = h >>> 16 | 4294901760 & l, u = l << 16 | 65535 & h; o[0] ^= h, o[1] ^= f, o[2] ^= l, o[3] ^= u, o[4] ^= h, o[5] ^= f, o[6] ^= l, o[7] ^= u; for (var i = 0; i < 4; i++)r.call(this) } }, _doProcessBlock: function (t, e) { var i = this._X; r.call(this), s[0] = i[0] ^ i[5] >>> 16 ^ i[3] << 16, s[1] = i[2] ^ i[7] >>> 16 ^ i[5] << 16, s[2] = i[4] ^ i[1] >>> 16 ^ i[7] << 16, s[3] = i[6] ^ i[3] >>> 16 ^ i[1] << 16; for (var n = 0; n < 4; n++)s[n] = 16711935 & (s[n] << 8 | s[n] >>> 24) | 4278255360 & (s[n] << 24 | s[n] >>> 8), t[e + n] ^= s[n] }, blockSize: 4, ivSize: 2 }); e.Rabbit = n._createHelper(h) }(), t.mode.CTR = function () { var r = t.lib.BlockCipherMode.extend(), e = r.Encryptor = r.extend({ processBlock: function (t, r) { var e = this._cipher, i = e.blockSize, n = this._iv, o = this._counter; n && (o = this._counter = n.slice(0), this._iv = void 0); var s = o.slice(0); e.encryptBlock(s, 0), o[i - 1] = o[i - 1] + 1 | 0; for (var a = 0; a < i; a++)t[r + a] ^= s[a] } }); return r.Decryptor = e, r }(), function () { function r() { for (var t = this._X, r = this._C, e = 0; e < 8; e++)a[e] = r[e]; r[0] = r[0] + 1295307597 + this._b | 0, r[1] = r[1] + 3545052371 + (r[0] >>> 0 < a[0] >>> 0 ? 1 : 0) | 0, r[2] = r[2] + 886263092 + (r[1] >>> 0 < a[1] >>> 0 ? 1 : 0) | 0, r[3] = r[3] + 1295307597 + (r[2] >>> 0 < a[2] >>> 0 ? 1 : 0) | 0, r[4] = r[4] + 3545052371 + (r[3] >>> 0 < a[3] >>> 0 ? 1 : 0) | 0, r[5] = r[5] + 886263092 + (r[4] >>> 0 < a[4] >>> 0 ? 1 : 0) | 0, r[6] = r[6] + 1295307597 + (r[5] >>> 0 < a[5] >>> 0 ? 1 : 0) | 0, r[7] = r[7] + 3545052371 + (r[6] >>> 0 < a[6] >>> 0 ? 1 : 0) | 0, this._b = r[7] >>> 0 < a[7] >>> 0 ? 1 : 0; for (var e = 0; e < 8; e++) { var i = t[e] + r[e], n = 65535 & i, o = i >>> 16, s = ((n * n >>> 17) + n * o >>> 15) + o * o, h = ((4294901760 & i) * i | 0) + ((65535 & i) * i | 0); c[e] = s ^ h } t[0] = c[0] + (c[7] << 16 | c[7] >>> 16) + (c[6] << 16 | c[6] >>> 16) | 0, t[1] = c[1] + (c[0] << 8 | c[0] >>> 24) + c[7] | 0, t[2] = c[2] + (c[1] << 16 | c[1] >>> 16) + (c[0] << 16 | c[0] >>> 16) | 0, t[3] = c[3] + (c[2] << 8 | c[2] >>> 24) + c[1] | 0, t[4] = c[4] + (c[3] << 16 | c[3] >>> 16) + (c[2] << 16 | c[2] >>> 16) | 0, t[5] = c[5] + (c[4] << 8 | c[4] >>> 24) + c[3] | 0, t[6] = c[6] + (c[5] << 16 | c[5] >>> 16) + (c[4] << 16 | c[4] >>> 16) | 0, t[7] = c[7] + (c[6] << 8 | c[6] >>> 24) + c[5] | 0 } var e = t, i = e.lib, n = i.StreamCipher, o = e.algo, s = [], a = [], c = [], h = o.RabbitLegacy = n.extend({ _doReset: function () { var t = this._key.words, e = this.cfg.iv, i = this._X = [t[0], t[3] << 16 | t[2] >>> 16, t[1], t[0] << 16 | t[3] >>> 16, t[2], t[1] << 16 | t[0] >>> 16, t[3], t[2] << 16 | t[1] >>> 16], n = this._C = [t[2] << 16 | t[2] >>> 16, 4294901760 & t[0] | 65535 & t[1], t[3] << 16 | t[3] >>> 16, 4294901760 & t[1] | 65535 & t[2], t[0] << 16 | t[0] >>> 16, 4294901760 & t[2] | 65535 & t[3], t[1] << 16 | t[1] >>> 16, 4294901760 & t[3] | 65535 & t[0]]; this._b = 0; for (var o = 0; o < 4; o++)r.call(this); for (var o = 0; o < 8; o++)n[o] ^= i[o + 4 & 7]; if (e) { var s = e.words, a = s[0], c = s[1], h = 16711935 & (a << 8 | a >>> 24) | 4278255360 & (a << 24 | a >>> 8), l = 16711935 & (c << 8 | c >>> 24) | 4278255360 & (c << 24 | c >>> 8), f = h >>> 16 | 4294901760 & l, u = l << 16 | 65535 & h; n[0] ^= h, n[1] ^= f, n[2] ^= l, n[3] ^= u, n[4] ^= h, n[5] ^= f, n[6] ^= l, n[7] ^= u; for (var o = 0; o < 4; o++)r.call(this) } }, _doProcessBlock: function (t, e) { var i = this._X; r.call(this), s[0] = i[0] ^ i[5] >>> 16 ^ i[3] << 16, s[1] = i[2] ^ i[7] >>> 16 ^ i[5] << 16, s[2] = i[4] ^ i[1] >>> 16 ^ i[7] << 16, s[3] = i[6] ^ i[3] >>> 16 ^ i[1] << 16; for (var n = 0; n < 4; n++)s[n] = 16711935 & (s[n] << 8 | s[n] >>> 24) | 4278255360 & (s[n] << 24 | s[n] >>> 8), t[e + n] ^= s[n] }, blockSize: 4, ivSize: 2 }); e.RabbitLegacy = n._createHelper(h) }(), t.pad.ZeroPadding = { pad: function (t, r) { var e = 4 * r; t.clamp(), t.sigBytes += e - (t.sigBytes % e || e) }, unpad: function (t) { for (var r = t.words, e = t.sigBytes - 1; !(r[e >>> 2] >>> 24 - e % 4 * 8 & 255);)e--; t.sigBytes = e + 1 } }, t
 });
 const $ = new Env('宠汪汪');
+const https = require('https');
+const http = require('http');
+const stream = require('stream');
+const zlib = require('zlib');
+const vm = require('vm');
+const PNG = require('png-js');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
@@ -80,6 +87,9 @@ const weAppUrl = 'https://draw.jdfcloud.com//pet';
       }
       message = '';
       subTitle = '';
+      $.log("获取Validate...    \n")
+      await new JDJRValidator().run();
+      await validate();
       await jdJoy();
       await showMsg();
       // await joinTwoPeopleRun();
@@ -93,6 +103,482 @@ const weAppUrl = 'https://draw.jdfcloud.com//pet';
     .finally(() => {
       $.done();
     })
+Math.avg = function average() {
+      var sum= 0;
+      var len = this.length;
+      for (var i = 0; i < len; i++) {
+          sum += this[i];
+      }
+      return sum / len;
+  };
+  function sleep(timeout) {
+      return new Promise((resolve) => setTimeout(resolve, timeout));
+  }
+  
+  class PNGDecoder extends PNG {
+      constructor(args) {
+          super(args);
+          this.pixels = [];
+      }
+  
+      decodeToPixels() {
+          return new Promise((resolve) => {
+              this.decode((pixels) => {
+                  this.pixels = pixels;
+                  resolve();
+              });
+          });
+      }
+  
+      getImageData(x, y, w, h) {
+          const { pixels } = this;
+          const len = w * h * 4;
+          const startIndex = x * 4 + y * (w * 4);
+      
+          return { data: pixels.slice(startIndex, startIndex + len) };
+      }
+  }
+  
+  const PUZZLE_GAP = 8;
+  const PUZZLE_PAD = 10;
+  class PuzzleRecognizer {
+      constructor(bg, patch, y) {
+          // console.log(bg);
+          const imgBg = new PNGDecoder(Buffer.from(bg, 'base64'));
+          const imgPatch = new PNGDecoder(Buffer.from(patch, 'base64'));
+  
+          // console.log(imgBg);
+  
+          this.bg = imgBg;
+          this.patch = imgPatch;
+          this.rawBg = bg;
+          this.rawPatch = patch;
+          this.y = y;
+          this.w = imgBg.width;
+          this.h = imgBg.height;
+      }
+  
+      async run() {
+          await this.bg.decodeToPixels();
+          await this.patch.decodeToPixels();
+  
+          return this.recognize();
+      }
+  
+      recognize() {
+          const { ctx, w: width, bg } = this;
+          const { width: patchWidth, height: patchHeight } = this.patch;
+          const posY = this.y + PUZZLE_PAD + ((patchHeight - PUZZLE_PAD) / 2) - (PUZZLE_GAP / 2);
+          // const cData = ctx.getImageData(0, a.y + 10 + 20 - 4, 360, 8).data;
+          const cData = bg.getImageData(0, posY, width, PUZZLE_GAP).data;
+          const lumas = [];
+  
+          for (let x = 0; x < width; x++) {
+              var sum = 0;
+  
+              // y xais
+              for (let y = 0; y < PUZZLE_GAP; y++) {
+                  var idx = x * 4 + y * (width * 4);
+                  var r = cData[idx];
+                  var g = cData[idx + 1];
+                  var b = cData[idx + 2];
+                  var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  
+                  sum += luma;
+              }
+  
+              lumas.push(sum / PUZZLE_GAP);
+          }
+  
+          const n = 2; // minium macroscopic image width (px)
+          const margin = patchWidth - PUZZLE_PAD;
+          const diff = 20; // macroscopic brightness difference
+          const radius = PUZZLE_PAD;
+          for (let i = 0, len = lumas.length - 2*4; i < len; i++) {
+              const left = (lumas[i] + lumas[i+1]) / n;
+              const right = (lumas[i+2] + lumas[i+3]) / n;
+              const mi = margin + i;
+              const mLeft = (lumas[mi] + lumas[mi+1]) / n;
+              const mRigth = (lumas[mi+2] + lumas[mi+3]) / n;
+  
+              if (left - right > diff && mLeft - mRigth < -diff) {
+                  const pieces = lumas.slice(i+2,margin+i+2);
+                  const median = pieces.sort((x1,x2)=>x1-x2)[20];
+                  const avg = Math.avg(pieces);
+                  
+                  // noise reducation
+                  if (median > left || median > mRigth) return;
+                  if (avg > 100) return;
+                  // console.table({left,right,mLeft,mRigth,median});
+                  // ctx.fillRect(i+n-radius, 0, 1, 360);
+                  // console.log(i+n-radius);
+                  return i+n-radius;
+              }
+          }
+  
+          // not found
+          return -1;
+      }
+  
+      runWithCanvas() {
+          const { createCanvas, Image } = require('canvas');
+          const canvas = createCanvas();
+          const ctx = canvas.getContext('2d');
+          const imgBg = new Image();
+          const imgPatch = new Image();
+          const prefix = 'data:image/png;base64,';
+  
+          imgBg.src = prefix + this.rawBg;
+          imgPatch.src = prefix + this.rawPatch;
+          const { naturalWidth: w, naturalHeight: h } = imgBg;
+          canvas.width = w;
+          canvas.height= h;
+          ctx.clearRect(0, 0, w, h);
+          ctx.drawImage(imgBg, 0, 0, w, h);
+  
+          const width = w;
+          const { naturalWidth, naturalHeight } = imgPatch;
+          const posY = this.y + PUZZLE_PAD + ((naturalHeight - PUZZLE_PAD) / 2) - (PUZZLE_GAP / 2);
+          // const cData = ctx.getImageData(0, a.y + 10 + 20 - 4, 360, 8).data;
+          const cData = ctx.getImageData(0, posY, width, PUZZLE_GAP).data;
+          const lumas = [];
+  
+          for (let x = 0; x < width; x++) {
+              var sum = 0;
+  
+              // y xais
+              for (let y = 0; y < PUZZLE_GAP; y++) {
+                  var idx = x * 4 + y * (width * 4);
+                  var r = cData[idx];
+                  var g = cData[idx + 1];
+                  var b = cData[idx + 2];
+                  var luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  
+                  sum += luma;
+              }
+  
+              lumas.push(sum / PUZZLE_GAP);
+          }
+  
+          const n = 2; // minium macroscopic image width (px)
+          const margin = naturalWidth - PUZZLE_PAD;
+          const diff = 20; // macroscopic brightness difference
+          const radius = PUZZLE_PAD;
+          for (let i = 0, len = lumas.length - 2*4; i < len; i++) {
+              const left = (lumas[i] + lumas[i+1]) / n;
+              const right = (lumas[i+2] + lumas[i+3]) / n;
+              const mi = margin + i;
+              const mLeft = (lumas[mi] + lumas[mi+1]) / n;
+              const mRigth = (lumas[mi+2] + lumas[mi+3]) / n;
+  
+              if (left - right > diff && mLeft - mRigth < -diff) {
+                  const pieces = lumas.slice(i+2,margin+i+2);
+                  const median = pieces.sort((x1,x2)=>x1-x2)[20];
+                  const avg = Math.avg(pieces);
+                  
+                  // noise reducation
+                  if (median > left || median > mRigth) return;
+                  if (avg > 100) return;
+                  // console.table({left,right,mLeft,mRigth,median});
+                  // ctx.fillRect(i+n-radius, 0, 1, 360);
+                  // console.log(i+n-radius);
+                  return i+n-radius;
+              }
+          }
+  
+          // not found
+          return -1;
+      }
+  }
+  
+  const DATA = {
+      "appId": "17839d5db83",
+      "scene": "cww",
+      "product": "embed",
+      "lang": "zh_CN",
+  };
+  const SERVER = 'iv.jd.com';
+  class JDJRValidator {
+      constructor() {
+          this.data = {};
+          this.x = 0;
+          this.t = Date.now();
+      }
+  
+      async run() {
+          const tryRecognize = async () => {
+              const x = await this.recognize();
+  
+              if (x > 0) {
+                  return x;
+              }
+              // retry
+              return await tryRecognize();
+          };
+          const puzzleX = await tryRecognize();
+          console.log(puzzleX);
+          const pos = new MousePosFaker(puzzleX).run();
+          const d = getCoordinate(pos);
+  
+          // console.log(pos[pos.length-1][2] -Date.now());
+          // await sleep(4500);
+          await sleep(pos[pos.length-1][2] - Date.now());
+          const result = await JDJRValidator.jsonp('/slide/s.html', { d, ...this.data });
+  
+          if (result.message === 'success') {
+              $.validate = result.validate
+              console.log(`获取成功.. \n${result.validate}`);
+              //console.log('JDJRValidator: %fs', (Date.now() - this.t) / 1000);
+              return result;
+          } else {
+              //console.count(JSON.stringify(result));
+              await sleep(300);
+              return await this.run();
+          }
+      }
+  
+      async recognize() {
+          const data = await JDJRValidator.jsonp('/slide/g.html', { e: '' });
+          const { bg, patch, y } = data;
+          // const uri = 'data:image/png;base64,';
+          // const re = new PuzzleRecognizer(uri+bg, uri+patch, y);
+          const re = new PuzzleRecognizer(bg, patch, y);
+          const puzzleX = await re.run();
+  
+          if (puzzleX > 0) {
+              this.data = {
+                  c: data.challenge,
+                  w: re.w,
+                  e: '',
+                  s: '',
+                  o: '',
+              };
+              this.x = puzzleX;
+          }
+          return puzzleX;
+      }
+  
+      async report(n) {
+          console.time('PuzzleRecognizer');
+          let count = 0;
+  
+          for (let i = 0; i < n; i++) {
+              const x = await this.recognize();
+  
+              if (x > 0) count ++;
+              if (i % 50 === 0) {
+                  //console.log('%f\%', (i/n)*100);
+              }
+          }
+  
+          console.log('successful: %f\%', (count/n)*100);
+          console.timeEnd('PuzzleRecognizer');
+      }
+  
+      static jsonp(api, data = {}) {
+          return new Promise((resolve, reject) => {
+              const fnId = `jsonp_${String(Math.random()).replace('.', '')}`;
+              const extraData = { callback: fnId };
+              const query = new URLSearchParams({ ...DATA, ...extraData, ...data }).toString();
+              const url = `http://${SERVER}${api}?${query}`;
+              const headers = {
+                  'Accept': '*/*',
+                  'Accept-Encoding': 'gzip,deflate,br',
+                  'Accept-Language': 'zh-CN,en-US',
+                  'Connection': 'keep-alive',
+                  'Host': SERVER,
+                  'Proxy-Connection': 'keep-alive',
+                  'Referer': 'https://h5.m.jd.com/babelDiy/Zeus/2wuqXrZrhygTQzYA7VufBEpj4amH/index.html',
+                  "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1")
+                };
+              const req = http.get(url, { headers }, (response) => {
+                  let res = response;
+                  if (res.headers['content-encoding'] === 'gzip') {
+                      const unzipStream = new stream.PassThrough();
+                      stream.pipeline(
+                          response,
+                          zlib.createGunzip(),
+                          unzipStream,
+                          reject,
+                      );
+                      res = unzipStream;
+                  }
+                  res.setEncoding('utf8');
+  
+                  let rawData = '';
+  
+                  res.on('data', (chunk) => rawData += chunk);
+                  res.on('end', () => {
+                      try {
+                          const ctx = {
+                              [fnId]: (data) => ctx.data = data,
+                              data: {},
+                          };
+  
+                          vm.createContext(ctx);
+                          vm.runInContext(rawData, ctx);
+  
+                          // console.log(ctx.data);
+                          res.resume();
+                          resolve(ctx.data);
+                      } catch (e) {
+                          reject(e);
+                      }
+                  });
+              });
+  
+              req.on('error', reject);
+              req.end();
+          });
+      }
+  }
+  function getCoordinate(c) {
+      function string10to64(d) {
+          var c = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-~".split("")
+            , b = c.length
+            , e = +d
+            , a = [];
+          do {
+              mod = e % b;
+              e = (e - mod) / b;
+              a.unshift(c[mod])
+          } while (e);
+          return a.join("")
+      }
+      function prefixInteger (a, b) {
+          return (Array(b).join(0) + a).slice(-b)
+      }
+      function pretreatment(d, c, b) {
+          var e = string10to64(Math.abs(d));
+          var a = "";
+          if (!b) {
+              a += (d > 0 ? "1" : "0")
+          }
+          a += prefixInteger(e, c);
+          return a
+      }
+  
+      var b = new Array();
+      for (var e = 0; e < c.length; e++) {
+          if (e == 0) {
+              b.push(pretreatment(c[e][0] < 262143 ? c[e][0] : 262143, 3, true));
+              b.push(pretreatment(c[e][1] < 16777215 ? c[e][1] : 16777215, 4, true));
+              b.push(pretreatment(c[e][2] < 4398046511103 ? c[e][2] : 4398046511103, 7, true))
+          } else {
+              var a = c[e][0] - c[e - 1][0];
+              var f = c[e][1] - c[e - 1][1];
+              var d = c[e][2] - c[e - 1][2];
+              b.push(pretreatment(a < 4095 ? a : 4095, 2, false));
+              b.push(pretreatment(f < 4095 ? f : 4095, 2, false));
+              b.push(pretreatment(d < 16777215 ? d : 16777215, 4, true))
+          }
+      }
+      return b.join("")
+  }
+  
+  const HZ = 60;
+  class MousePosFaker {
+      constructor(puzzleX) {
+          this.x = parseInt(Math.random()*20+20, 10);
+          this.y = parseInt(Math.random()*80+80, 10);
+          this.t = Date.now();
+          this.pos = [[this.x, this.y, this.t]];
+          this.minDuration = parseInt(1000 / HZ, 10);
+          // this.puzzleX = puzzleX;
+          this.puzzleX = puzzleX + parseInt(Math.random()*2-1, 10);
+  
+          this.STEP = parseInt(Math.random()*6+5, 10);
+          this.DURATION = parseInt(Math.random()*7+14, 10)*100;
+          // [9,1600] [10,1400]
+          this.STEP = 9;
+          // this.DURATION = 2000;
+          console.log(this.STEP, this.DURATION);
+      }
+  
+      run() {
+          const perX = this.puzzleX / this.STEP;
+          const perDuration = this.DURATION / this.STEP;
+          const firstPos = [this.x-parseInt(Math.random()*6, 10), this.y+parseInt(Math.random()*11, 10), this.t];
+          
+          this.pos.unshift(firstPos);
+          this.stepPos(perX, perDuration);
+          this.fixPos();
+          
+          const reactTime = parseInt(60+Math.random()*100, 10);
+          const lastIdx = this.pos.length - 1;
+          const lastPos = [this.pos[lastIdx][0], this.pos[lastIdx][1], this.pos[lastIdx][2]+reactTime];
+  
+          this.pos.push(lastPos);
+          return this.pos;
+      }
+  
+      stepPos(x, duration) {
+          let n = 0;
+          const sqrt2 = Math.sqrt(2);
+          for (let i = 1; i <= this.STEP; i++) {
+              n += 1/i;
+          }
+          for (let i = 0; i < this.STEP; i++) {
+              x = this.puzzleX / (n*(i+1));
+              const currX = parseInt((Math.random()*30-15)+x, 10);
+              const currY = parseInt(Math.random()*7-3, 10);
+              const currDuration = parseInt((Math.random()*0.4+0.8)*duration, 10);
+      
+              this.moveToAndCollect({
+                  x: currX,
+                  y: currY,
+                  duration: currDuration,
+              });
+          }
+      }
+  
+      fixPos() {
+          const actualX = this.pos[this.pos.length - 1][0] - this.pos[1][0];
+          const deviation = this.puzzleX - actualX;
+  
+          if (Math.abs(deviation) > 4) {
+              this.moveToAndCollect({
+                  x: deviation,
+                  y: parseInt(Math.random()*8-3, 10),
+                  duration: 250,
+              });
+          }
+      }
+  
+      moveToAndCollect({ x, y, duration }) {
+          let movedX = 0;
+          let movedY = 0;
+          let movedT = 0;
+          const times = duration / this.minDuration;
+          let perX = x / times;
+          let perY = y / times;
+          let padDuration = 0;
+  
+          if (Math.abs(perX) < 1) {
+              padDuration = duration / Math.abs(x) - this.minDuration;
+              perX = 1;
+              perY = y / Math.abs(x);
+          }
+  
+          while (Math.abs(movedX) < Math.abs(x)) {
+              const rDuration = parseInt(padDuration + Math.random()*16-4, 10);
+  
+              movedX += perX + Math.random()*2-1;
+              movedY += perY;
+              movedT += this.minDuration + rDuration;
+  
+              const currX = parseInt(this.x + movedX, 10);
+              const currY = parseInt(this.y + movedY, 10);
+              const currT = this.t + movedT;
+  
+              this.pos.push([currX, currY, currT]);
+          }
+  
+          this.x += x;
+          this.y += y;
+          this.t += Math.max(duration, movedT);
+      }
+  }
 async function jdJoy() {
   try {
     await getPetTaskConfig();
@@ -397,7 +883,7 @@ function getDeskGoodDetails() {
     const host = `jdjoy.jd.com`;
     const reqSource = 'h5';
     let opt = {
-      url: "//jdjoy.jd.com/common/pet/getDeskGoodDetails?reqSource=h5&invokeKey=Oex5GmEuqGep1WLC",
+      url: "//jdjoy.jd.com/common/pet/getDeskGoodDetails?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE",
       // url: "//draw.jdfcloud.com/common/pet/getPetTaskConfig?reqSource=h5",
       method: "GET",
       data: {},
@@ -431,7 +917,7 @@ function followScan(sku) {
       sku
     }
     let opt = {
-      url: "//jdjoy.jd.com/common/pet/scan?reqSource=h5&invokeKey=Oex5GmEuqGep1WLC",
+      url: "//jdjoy.jd.com/common/pet/scan?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE",
       // url: "//draw.jdfcloud.com/common/pet/getPetTaskConfig?reqSource=h5",
       method: "POST",
       data: body,
@@ -462,7 +948,7 @@ function scanMarket(type, body, cType = 'application/json') {
     const reqSource = 'weapp';
     let opt = {
       // url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5",
-      url: `//draw.jdfcloud.com/common/pet/${type}?reqSource=weapp&invokeKey=Oex5GmEuqGep1WLC`,
+      url: `//draw.jdfcloud.com/common/pet/${type}?reqSource=weapp&invokeKey=NRp8OPxZMFXmGkaE`,
       method: "POST",
       data: body,
       credentials: "include",
@@ -494,7 +980,7 @@ function appScanMarket(type, body) {
     const host = `jdjoy.jd.com`;
     const reqSource = 'h5';
     let opt = {
-      url: `//jdjoy.jd.com/common/pet/${type}?reqSource=h5&invokeKey=Oex5GmEuqGep1WLC`,
+      url: `//jdjoy.jd.com/common/pet/${type}?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
       // url: "//draw.jdfcloud.com/common/pet/getPetTaskConfig?reqSource=h5",
       method: "POST",
       data: body,
@@ -527,7 +1013,7 @@ function getFood(type) {
     const reqSource = 'weapp';
     let opt = {
       // url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5",
-      url: `//draw.jdfcloud.com/common/pet/getFood?reqSource=weapp&taskType=${type}&reqSource=h5&invokeKey=Oex5GmEuqGep1WLC`,
+      url: `//draw.jdfcloud.com/common/pet/getFood?reqSource=weapp&taskType=${type}&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
       method: "GET",
       data: {},
       credentials: "include",
@@ -558,7 +1044,7 @@ function followShop(shopId) {
     const host = 'draw.jdfcloud.com';
     let opt = {
       // url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5",
-      url: "//draw.jdfcloud.com/common/pet/followShop?reqSource=h5&invokeKey=Oex5GmEuqGep1WLC",
+      url: "//draw.jdfcloud.com/common/pet/followShop?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE",
       method: "POST",
       data: body,
       credentials: "include",
@@ -587,7 +1073,7 @@ function enterRoom() {
     const reqSource = 'weapp';
     let opt = {
       // url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5",
-      url: `//draw.jdfcloud.com/common/pet/enterRoom/h5?reqSource=h5&invitePin=&openId=&invokeKey=Oex5GmEuqGep1WLC`,
+      url: `//draw.jdfcloud.com/common/pet/enterRoom/h5?reqSource=h5&invitePin=&openId=&invokeKey=NRp8OPxZMFXmGkaE`,
       method: "GET",
       data: {},
       credentials: "include",
@@ -622,7 +1108,7 @@ function appGetPetTaskConfig() {
     const host = `jdjoy.jd.com`;
     const reqSource = 'h5';
     let opt = {
-      url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5&invokeKey=Oex5GmEuqGep1WLC",
+      url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE",
       // url: `//draw.jdfcloud.com/common/pet/feed?feedCount=${feedNum}&reqSource=h5`,
       method: "GET",
       data: {},
@@ -657,7 +1143,7 @@ function feedPets(feedNum) {
     const reqSource = 'weapp';
     let opt = {
       // url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5",
-      url: `//draw.jdfcloud.com/common/pet/feed?feedCount=${feedNum}&reqSource=h5&invokeKey=Oex5GmEuqGep1WLC`,
+      url: `//draw.jdfcloud.com/common/pet/feed?feedCount=${feedNum}&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
       method: "GET",
       data: {},
       credentials: "include",
@@ -717,7 +1203,7 @@ function getPetTaskConfig() {
     const reqSource = 'weapp';
     let opt = {
       // url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5",
-      url: "//draw.jdfcloud.com//common/pet/getPetTaskConfig?reqSource=h5&invokeKey=Oex5GmEuqGep1WLC",
+      url: "//draw.jdfcloud.com//common/pet/getPetTaskConfig?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE",
       method: "GET",
       data: {},
       credentials: "include",
@@ -747,7 +1233,7 @@ function getPetRace() {
     const host = `jdjoy.jd.com`;
     const reqSource = 'h5';
     let opt = {
-      url: "//jdjoy.jd.com/common/pet/combat/detail/v2?help=false&reqSource=h5&invokeKey=Oex5GmEuqGep1WLC",
+      url: "//jdjoy.jd.com/common/pet/combat/detail/v2?help=false&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE",
       // url: "//draw.jdfcloud.com/common/pet/getPetTaskConfig?reqSource=h5",
       method: "GET",
       data: {},
@@ -778,7 +1264,7 @@ function getRankList() {
     // const url = `${JD_API_HOST}/combat/getRankList`;
     $.raceUsers = [];
     let opt = {
-      url: "//jdjoy.jd.com/common/pet/combat/getRankList?reqSource=h5&invokeKey=Oex5GmEuqGep1WLC",
+      url: "//jdjoy.jd.com/common/pet/combat/getRankList?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE",
       // url: "//draw.jdfcloud.com/common/pet/getPetTaskConfig?reqSource=h5",
       method: "GET",
       data: {},
@@ -815,7 +1301,7 @@ function runMatch(teamLevel, timeout = 5000) {
     const host = `jdjoy.jd.com`;
     const reqSource = 'h5';
     let opt = {
-      url: `//jdjoy.jd.com/common/pet/combat/match?teamLevel=${teamLevel}&reqSource=h5&invokeKey=Oex5GmEuqGep1WLC`,
+      url: `//jdjoy.jd.com/common/pet/combat/match?teamLevel=${teamLevel}&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
       // url: `//draw.jdfcloud.com/common/pet/combat/match?teamLevel=${teamLevel}&reqSource=h5`,
       method: "GET",
       data: {},
@@ -847,7 +1333,7 @@ function getBackupInfo() {
     const host = `jdjoy.jd.com`;
     const reqSource = 'h5';
     let opt = {
-      url: "//jdjoy.jd.com/common/pet/combat/getBackupInfo?reqSource=h5&invokeKey=Oex5GmEuqGep1WLC",
+      url: "//jdjoy.jd.com/common/pet/combat/getBackupInfo?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE",
       // url: "//draw.jdfcloud.com/common/pet/getPetTaskConfig?reqSource=h5",
       method: "GET",
       data: {},
@@ -878,7 +1364,7 @@ function getWinCoin() {
     // const url = `${weAppUrl}/combat/detail/v2?help=false&reqSource=weapp`;
     let opt = {
       // url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5",
-      url: "//draw.jdfcloud.com/common/pet/combat/detail/v2?help=false&reqSource=h5&invokeKey=Oex5GmEuqGep1WLC",
+      url: "//draw.jdfcloud.com/common/pet/combat/detail/v2?help=false&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE",
       method: "GET",
       data: {},
       credentials: "include",
@@ -911,7 +1397,7 @@ function receiveJoyRunAward() {
     const host = `jdjoy.jd.com`;
     const reqSource = 'h5';
     let opt = {
-      url: "//jdjoy.jd.com/common/pet/combat/receive?reqSource=h5&invokeKey=Oex5GmEuqGep1WLC",
+      url: "//jdjoy.jd.com/common/pet/combat/receive?reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE",
       // url: "//draw.jdfcloud.com/common/pet/getPetTaskConfig?reqSource=h5",
       method: "GET",
       data: {},
@@ -963,7 +1449,7 @@ function getSupplyInfo(showOrder) {
     // const url = `${weAppUrl}/combat/getSupplyInfo?showOrder=${showOrder}`;
     let opt = {
       // url: "//jdjoy.jd.com/common/pet/getPetTaskConfig?reqSource=h5",
-      url: `//draw.jdfcloud.com/common/pet/combat/getSupplyInfo?showOrder=${showOrder}&reqSource=h5&invokeKey=Oex5GmEuqGep1WLC`,
+      url: `//draw.jdfcloud.com/common/pet/combat/getSupplyInfo?showOrder=${showOrder}&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
       method: "GET",
       data: {},
       credentials: "include",
@@ -1040,6 +1526,53 @@ function TotalBean() {
       }
     })
   })
+}
+//验证
+function validate() {
+  return new Promise(resolve => {
+    let opt = {
+      url: `//jdjoy.jd.com/common/pet/getPetTaskConfig?validate=${$.validate}&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
+      method: "GET",
+      data: {},
+      credentials: "include",
+      header: {"content-type": "application/json"}
+    }
+    const url = "https:"+ taroRequest(opt)['url']
+    const options = {
+      url,
+      headers: {
+        'Cookie': cookie,
+        'reqSource': 'h5',
+        'Host': 'jdjoy.jd.com',
+        'Connection': 'keep-alive',
+        'Content-Type': 'application/json',
+        'Referer': 'https://jdjoy.jd.com/pet/index',
+        'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+        'Accept-Language': 'zh-cn',
+        'Accept-Encoding': 'gzip, deflate, br',
+      }
+    }
+    $.get(options, async (err, resp, data) => {
+      try {
+        data = JSON.parse(data);
+      } catch (e) {
+        $.logErr(resp, e);
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+function jsonParse(str) {
+  if (typeof str == "string") {
+    try {
+      return JSON.parse(str);
+    } catch (e) {
+      console.log(e);
+      $.msg($.name, '', '请勿随意在BoxJs输入框修改内容\n建议通过脚本去获取cookie')
+      return [];
+    }
+  }
 }
 function taskUrl(url, Host, reqSource) {
   return {
