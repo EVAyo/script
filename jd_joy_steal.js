@@ -1,5 +1,5 @@
 /*
-Last Modified time: 2021-6-22 22:00:37
+Last Modified time: 2021-6-24 10:22:37
 活动入口：京东APP我的-更多工具-宠汪汪
 最近经常出现给偷好友积分与狗粮失败的情况，故建议cron设置为多次
 jd宠汪汪偷好友积分与狗粮,及给好友喂食
@@ -771,9 +771,8 @@ async function helpFriendsFeed() {
 function getFriends(currentPage = '1') {
   return new Promise(resolve => {
     let opt = {
-      //url: `//draw.jdfcloud.com//common/pet/api/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&reqSource=weapp`,
-      url: `//jdjoy.jd.com/common/pet/h5/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
-      // url: `//draw.jdfcloud.com/common/pet/getPetTaskConfig?reqSource=h5&invokeKey=Oex5GmEuqGep1WLC`,
+      url: `//draw.jdfcloud.com//common/pet/api/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&reqSource=weapp&invokeKey=NRp8OPxZMFXmGkaE`,
+            //url: `//jdjoy.jd.com/common/pet/h5/getFriends?itemsPerPage=20&currentPage=${currentPage * 1}&reqSource=h5&invokeKey=NRp8OPxZMFXmGkaE`,
       method: "GET",
       data: {},
       credentials: "include",
@@ -784,15 +783,14 @@ function getFriends(currentPage = '1') {
       url,
       headers: {
         'Cookie': cookie,
-        "Host": "jdjoy.jd.com",
-        "Content-Type": "application/json",
-        "Origin": "https://h5.m.jd.com",
-        "Connection": "keep-alive",
+        "Host": "draw.jdfcloud.com",
         "Accept": "*/*",
-        "Referer": "https://h5.m.jd.com/babelDiy/Zeus/2wuqXrZrhygTQzYA7VufBEpj4amH/index.html?babelChannel=ttt12&lng=000.000000&lat=00.000000&sid=495a2a66611aa0921bcecd31ff8c49ew&un_area=19_1601_3633_63252",
+        "Content-Type": "application/json",
+        "Connection": "keep-alive",
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.2(0x18000239) NetType/WIFI Language/zh_CN",
+        "Referer": "https://servicewechat.com/wxccb5c536b0ecd1bf/727/page-frame.html",
         "Accept-Language": "zh-cn",
         "Accept-Encoding": "gzip, deflate, br",
-        'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
       },
       timeout: 10000
     }
