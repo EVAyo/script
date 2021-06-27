@@ -10,6 +10,7 @@ steps:
   # 从github拉取代码 加上代理
   - name: clone
     image: alpine/git
+    pull: if-not-exists
 #    environment:
 #      https_proxy:
 #        from_secret: http_proxy
@@ -23,6 +24,7 @@ steps:
   # go build
   - name: build
     image: golang:1.16
+    pull: if-not-exists
     environment:
       GOPROXY: "http://goproxy.cn,direct"
       CGO_ENABLED: 0
@@ -45,6 +47,7 @@ steps:
   # 发布github的resease
   - name: publish
     image: plugins/github-release
+    pull: if-not-exists
     settings:
       api_key:
         from_secret: github_token
