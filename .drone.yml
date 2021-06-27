@@ -43,6 +43,7 @@ trigger:
   branch:
     - master
   event:
+    - custom
     - push
     - cron
     - tag
