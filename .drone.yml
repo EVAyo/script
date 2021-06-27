@@ -7,15 +7,17 @@ clone:
   disable: true
 
 steps:
-  # 从github拉取代码 加上代理  
+  # 从github拉取代码 加上代理
   - name: clone
     image: alpine/git
     environment:
-      proxy_secret:
+      https_proxy:
         from_secret: http_proxy
+      http_proxy:
+        from_secret: http_proxy
+      all_proxy:
+        from_secret: socket_proxy
     commands:
-      - git config http.proxy proxy_secret
-      - git config https.proxy proxy_secret
       - git clone --depth 1 https://github.com/scjtqs/jd_cookie.git .
 
   # go build
