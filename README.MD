@@ -1,4 +1,4 @@
-[![Build Status](https://drone2.scjtqs.com:8443/api/badges/scjtqs/jd_cookie/status.svg)](https://drone2.scjtqs.com:8443/scjtqs/jd_cookie)
+[![Build Status](https://drone.pi.scjtqs.com:8443/api/badges/scjtqs/jd_cookie/status.svg)](https://drone.pi.scjtqs.com:8443/scjtqs/jd_cookie)
 # 说明
 京东的cookie 本地提取工具(小白专用) 
 
