@@ -295,6 +295,7 @@ func (s *httpServer) upsave(c *gin.Context) {
 	//log.Warnf("更新到挂机服务器 res=%v", res)
 	// 清空缓存参数
 	jar, _ = cookiejar.New(nil)
+	var ck=userCookie
 	s_token, cookies, guid, lsid, lstoken, okl_token, token, userCookie = "", "", "", "", "", "", "", ""
 	//if err != nil {
 	//	c.JSON(200, MSG{
@@ -306,6 +307,6 @@ func (s *httpServer) upsave(c *gin.Context) {
 	c.JSON(200, MSG{
 		"err":0,
 		"title":"提取cookie成功",
-		"msg": "cookie= "+userCookie,
+		"msg": "cookie= "+ck,
 	})
 }
