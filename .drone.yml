@@ -1,8 +1,10 @@
 kind: pipeline
 type: docker
-name: release
+name: default
+
 clone:
   depth: 1
+  disable: true
 
 steps:
   # 从github拉取代码 加上代理
