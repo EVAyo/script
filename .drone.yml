@@ -16,7 +16,7 @@ steps:
       - go mod tidy
       - GOOS=windows GOARCH=386   packr2 build -ldflags '-extldflags "-static"' -o dist/jdcookie_windows_i386.exe
       - GOOS=windows GOARCH=amd64 packr2 build -ldflags '-extldflags "-static"' -o dist/jdcookie_windows_adm64.exe
-      - GOOS=windows GOARCH=arm64 packr2 build -ldflags '-extldflags "-static"' -o dist/jdcookie_windows_arm64.exe
+      - GOOS=windows GOARCH=arm packr2 build -ldflags '-extldflags "-static"' -o dist/jdcookie_windows_arm64.exe
       - GOOS=darwin GOARCH=arm64  packr2 build -ldflags -w -s '-extldflags "-static"' -o dist/jdcookie_darwin_arm64
       - GOOS=darwin GOARCH=amd64  packr2 build -ldflags -w -s '-extldflags "-static"' -o dist/jdcookie_darwin_amd64
       - GOOS=linux GOARCH=386     packr2 build  -ldflags -w -s '-extldflags "-static"' -o dist/jdcookie_linux_i386
