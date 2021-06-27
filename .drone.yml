@@ -5,6 +5,18 @@ clone:
   depth: 1
 
 steps:
+  # 从github拉取代码 加上代理
+  - name: clone
+    image: alpine/git
+    environment:
+      proxy_secret:
+        from_secret: http_proxy
+    commands:
+      - git config http.proxy proxy_secret
+      - git config https.proxy proxy_secret
+      - git clone https://github.com/scjtqs/jd_cookie.git .
+
+  # go build
   - name: build
     image: golang:1.16
     environment:
@@ -23,7 +35,10 @@ steps:
       - GOOS=linux GOARCH=amd64   packr2 build -ldflags  '-w -s' -o dist/jdcookie_linux_amd64
       - GOOS=linux GOARCH=arm GOARM=7  packr2 build  -ldflags  '-w -s'  -o dist/jdcookie_linux_armv7
       - GOOS=linux GOARCH=arm64   packr2 build -ldflags  '-w -s' -o dist/jdcookie_linux_arm64
-
+    depends_on:
+      - clone
+        
+  # 发布github的resease
   - name: publish
     image: plugins/github-release
     settings:
