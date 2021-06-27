@@ -7,7 +7,7 @@ clone:
   disable: true
 
 steps:
-  # 从github拉取代码 加上代理 
+  # 从github拉取代码 加上代理
   - name: clone
     image: alpine/git
     pull: if-not-exists
