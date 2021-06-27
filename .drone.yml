@@ -1,6 +1,8 @@
 kind: pipeline
 type: docker
 name: release
+clone:
+  depth: 1
 
 steps:
   - name: build
@@ -27,7 +29,18 @@ steps:
       api_key:
         from_secret: github_token
       files: dist/*
+      title: v1.0.0
+      note:  "第一个公开版本，只提取cookie，不带推送更新cookie到服务器"
+      draft: true
+      overwrite: true
 #    when:
 #      event: tag
     depends_on:
       - build
+
+trigger:
+  branch:
+    - master
+  event:
+    - push
+    - cron
