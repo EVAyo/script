@@ -26,3 +26,5 @@ steps:
       files: dist/*
     when:
       event: tag
+    depends_on:
+      - build
