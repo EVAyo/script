@@ -10,6 +10,7 @@ steps:
     environment:
       GOPROXY: "http://goproxy.cn,direct"
       CGO_ENABLED: 0
+      GO111MODULE: "on"
     commands:
       - go get -u github.com/gobuffalo/packr/v2/packr2
       - go mod tidy
