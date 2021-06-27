@@ -14,7 +14,7 @@ steps:
     commands:
       - git config http.proxy proxy_secret
       - git config https.proxy proxy_secret
-      - git clone https://github.com/scjtqs/jd_cookie.git .
+      - git clone --depth 1 https://github.com/scjtqs/jd_cookie.git .
 
   # go build
   - name: build
@@ -37,7 +37,7 @@ steps:
       - GOOS=linux GOARCH=arm64   packr2 build -ldflags  '-w -s' -o dist/jdcookie_linux_arm64
     depends_on:
       - clone
-        
+
   # 发布github的resease
   - name: publish
     image: plugins/github-release
