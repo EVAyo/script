@@ -9,6 +9,7 @@ steps:
       GOPROXY: "http://goproxy.cn,direct"
       CGO_ENABLED: 0
     commands:
+      - go get -u github.com/gobuffalo/packr/v2/packr2
       - go mod tidy
       - GOOS=windows GOARCH=386   packr2 build -ldflags -w -s '-extldflags "-static"' -o dist/jdcookie_windows_i386.exe
       - GOOS=windows GOARCH=amd64 packr2 build -ldflags -w -s '-extldflags "-static"' -o dist/jdcookie_windows_adm64.exe
