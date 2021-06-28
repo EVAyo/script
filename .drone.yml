@@ -19,8 +19,8 @@ steps:
 #      all_proxy:
 #        from_secret: socket_proxy
     commands:
-      - git clone --depth 1 https://hub.fastgit.org/scjtqs/jd_cookie.git .
-      - "[ ''$DRONE_BRANCH'' != 'master' ] &&  [ ''$DRONE_BANCH'' != 'main' ] && git switch -c ''$DRONE_BRANCH''"
+      - git clone --depth 1 https://hub.fastgit.org/scjtqs/jd_cookie.git -b $DRONE_BRANCH .
+#      - "[ ''$DRONE_BRANCH'' != 'master' ] &&  [ ''$DRONE_BANCH'' != 'main' ] && git switch -c ''$DRONE_BRANCH''"
 #      - git checkout $DRONE_COMMIT
         
   - name: buildtest
