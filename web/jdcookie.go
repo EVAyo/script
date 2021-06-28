@@ -305,7 +305,7 @@ func (s *httpServer) upsave(c *gin.Context) {
 			//Debug(true).
 			SetWWWForm(
 				gout.H{
-					"userCookie": userCookie,
+					"userCookie": ck,
 				},
 			).
 			BindJSON(&res).
