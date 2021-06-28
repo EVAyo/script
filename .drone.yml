@@ -62,8 +62,8 @@ steps:
       - build
 
 trigger:
-  branch:
-    - master
+#  branch:
+#    - master
   event:
     - custom
     - push
