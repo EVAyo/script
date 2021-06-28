@@ -19,12 +19,14 @@ import (
 var timeout = time.Second * 5
 var jar, _ = cookiejar.New(nil)
 var s_token, cookies, guid, lsid, lstoken, okl_token, token, userCookie = "", "", "", "", "", "", "", ""
+var ua = "jdapp;android;10.0.5;11;0393465333165363-5333430323261366;network/wifi;model/M2102K1C;osVer/30;appBuild/88681;partner/lc001;eufv/1;jdSupportDarkMode/0;Mozilla/5.0 (Linux; Android 11; M2102K1C Build/RKQ1.201112.002; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/77.0.3865.120 MQQBrowser/6.2 TBS/045534 Mobile Safari/537.36"
 
 // 获取二维码
 func (s *httpServer) getQrcode(c *gin.Context) {
+	s.GetclientIP(c)
 	session := sessions.Default(c)
 	log.Warn("start get qrcode")
-	_, err := s.step1()
+	_, err := s.step1(c)
 	if err != nil {
 		c.JSON(200, MSG{
 			"err": 1,
@@ -32,7 +34,7 @@ func (s *httpServer) getQrcode(c *gin.Context) {
 		})
 		return
 	}
-	qrurl, err := s.setp2()
+	qrurl, err := s.setp2(c)
 	if err != nil {
 		c.JSON(200, MSG{
 			"err": 1,
@@ -70,7 +72,8 @@ func (s *httpServer) praseSetCookies(rsp string, cookie *cookiejar.Jar) {
 }
 
 // 获取二维码第一步
-func (s *httpServer) step1() (*cookiejar.Jar, error) {
+func (s *httpServer) step1(c *gin.Context) (*cookiejar.Jar, error) {
+	ip := s.GetclientIP(c)
 	timeStamp := strconv.FormatInt(time.Now().Unix(), 10)
 	getUrl := "https://plogin.m.jd.com/cgi-bin/mm/new_login_entrance?lang=chs&appid=300&returnurl=https://wq.jd.com/passport/LoginRedirect?state=" + timeStamp + "&returnurl=https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport"
 	client := &http.Client{
@@ -90,8 +93,13 @@ func (s *httpServer) step1() (*cookiejar.Jar, error) {
 	req.Header.Add("Accept", "application/json, text/plain, */*")
 	req.Header.Add("Accept-Language", "zh-cn")
 	req.Header.Add("Referer", "https://plogin.m.jd.com/cgi-bin/mm/new_login_entrance?lang=chs&appid=300&returnurl=https://wq.jd.com/passport/LoginRedirect?state="+timeStamp+"&returnurl=https://home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport")
-	req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36")
+	//req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36")
+	req.Header.Add("User-Agent", ua)
 	req.Header.Add("Host", "plogin.m.jd.com")
+	req.Header.Set("X-Forwarded-For", ip)
+	req.Header.Set("Proxy-Client-IP", ip)
+	req.Header.Set("WL-Proxy-Client-IP", ip)
+	req.Header.Set("CLIENT-IP", ip)
 	res, err := client.Do(req)
 	if err != nil {
 		log.Errorf("get qrcode step1 faild err=%s", err.Error())
@@ -110,7 +118,8 @@ func (s *httpServer) step1() (*cookiejar.Jar, error) {
 }
 
 // 获取 二维码第二步
-func (s *httpServer) setp2() (string, error) {
+func (s *httpServer) setp2(c *gin.Context) (string, error) {
+	ip := s.GetclientIP(c)
 	if cookies == "" {
 		return "", errors.New("empty cookies")
 	}
@@ -139,8 +148,12 @@ func (s *httpServer) setp2() (string, error) {
 			"Accept":       "application/json, text/plain, */*",
 			"Cookie":       cookies,
 			"Referer":      "https://plogin.m.jd.com/login/login?appid=300&returnurl=https://wqlogin2.jd.com/passport/LoginRedirect?state=" + timeStamp + "&returnurl=//home.m.jd.com/myJd/newhome.action?sceneval=2&ufc=&/myJd/home.action&source=wq_passport",
-			"User-Agent":   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36",
-			"Host":         "plogin.m.jd.com",
+			//"User-Agent":         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36",
+			"User-Agent":         ua,
+			"X-Forwarded-For":    ip,
+			"Proxy-Client-IP":    ip,
+			"WL-Proxy-Client-IP": ip,
+			"CLIENT-IP":          ip,
 		}).
 		SetTimeout(timeout).
 		F().Retry().Attempt(5).
@@ -166,7 +179,7 @@ func (s *httpServer) setp2() (string, error) {
 func (s *httpServer) getCookie(c *gin.Context) {
 	//session := sessions.Default(c)
 	//cookies=session.Get("cookies").(string)
-	check, err := s.checkLogin()
+	check, err := s.checkLogin(c)
 	if err != nil {
 		c.JSON(200, MSG{
 			"err": 1,
@@ -193,7 +206,8 @@ func (s *httpServer) getCookie(c *gin.Context) {
 }
 
 // 校验登录状态
-func (s *httpServer) checkLogin() (string, error) {
+func (s *httpServer) checkLogin(c *gin.Context) (string, error) {
+	ip := s.GetclientIP(c)
 	if cookies == "" {
 		return "", errors.New("empty cookies")
 	}
@@ -222,7 +236,12 @@ func (s *httpServer) checkLogin() (string, error) {
 			"Connection":   "Keep-Alive",
 			"Content-Type": "application/x-www-form-urlencoded; Charset=UTF-8",
 			"Accept":       "application/json, text/plain, */*",
-			"User-Agent":   "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36",
+			//"User-Agent":         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36",
+			"User-Agent":         ua,
+			"X-Forwarded-For":    ip,
+			"Proxy-Client-IP":    ip,
+			"WL-Proxy-Client-IP": ip,
+			"CLIENT-IP":          ip,
 		}).
 		SetTimeout(timeout).
 		F().Retry().Attempt(5).
@@ -295,7 +314,7 @@ func (s *httpServer) upsave(c *gin.Context) {
 	//log.Warnf("更新到挂机服务器 res=%v", res)
 	// 清空缓存参数
 	jar, _ = cookiejar.New(nil)
-	var ck=userCookie
+	var ck = userCookie
 	s_token, cookies, guid, lsid, lstoken, okl_token, token, userCookie = "", "", "", "", "", "", "", ""
 	//if err != nil {
 	//	c.JSON(200, MSG{
@@ -305,8 +324,8 @@ func (s *httpServer) upsave(c *gin.Context) {
 	//	})
 	//}
 	c.JSON(200, MSG{
-		"err":0,
-		"title":"提取cookie成功",
-		"msg": "cookie= "+ck,
+		"err":   0,
+		"title": "提取cookie成功",
+		"msg":   "cookie= " + ck,
 	})
 }

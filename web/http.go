@@ -57,18 +57,19 @@ func (s *httpServer) Run(addr string) {
 	//s.engine.Static("/assets", "./template/assets")
 	s.engine.StaticFS("/assets", assets)
 	s.engine.GET("/", func(c *gin.Context) {
+		s.GetclientIP(c)
 		c.HTML(http.StatusOK, "upcookie.html", gin.H{})
 	})
 
 	// 路由
 	// 获取二维码
-	s.engine.GET("/qrcode",s.getQrcode)
+	s.engine.GET("/qrcode", s.getQrcode)
 	// 获取返回的cookie信息
-	s.engine.GET("/cookie",s.getCookie)
+	s.engine.GET("/cookie", s.getCookie)
 	// 获取各种配置文件api
 	s.engine.GET("/api/config/:key")
 	// 保存配置
-	s.engine.POST("/api/upsave",s.upsave)
+	s.engine.POST("/api/upsave", s.upsave)
 	s.engine.POST("/api/save")
 	s.engine.GET("/home")
 	s.engine.POST("/auth")
@@ -76,8 +77,9 @@ func (s *httpServer) Run(addr string) {
 
 	go func() {
 		log.Infof("jdcookie提取 服务器已启动: %v", addr)
-		log.Info("请用浏览器打开url: http://127.0.0.1:29099/")
-		log.Warnf("请确保你的手机和你的电脑在同一个网络环境中")
+		log.Info("请用浏览器打开url: http://公网ip或者域名:29099")
+		log.Warn("请务必使用公网访问，否则读取到的客户端Ip会是内网Ip，不是公网Ip.")
+		log.Warnf("v2.x 版本 是服务端部署版本。客户端需要使用浏览器打开，让浏览器和手机在同一个网络下（或者直接用手机打开浏览器）")
 		s.HTTP = &http.Server{
 			Addr:    addr,
 			Handler: s.engine,
@@ -110,4 +112,18 @@ func (s *httpServer) LoadTemplate(t *template.Template) (*template.Template, err
 		}
 	}
 	return t, nil
+}
+
+func (s *httpServer) GetclientIP(c *gin.Context) string {
+	session := sessions.Default(c)
+	var ip string
+	if session.Get("clientip") != nil {
+		ip = session.Get("clientip").(string)
+	}
+	if ip == "" {
+		ip = c.ClientIP()
+		session.Set("clientip", ip)
+		session.Save()
+	}
+	return ip
 }

@@ -1,10 +1,25 @@
 [![Build Status](https://drone.pi.scjtqs.com:8443/api/badges/scjtqs/jd_cookie/status.svg)](https://drone.pi.scjtqs.com:8443/scjtqs/jd_cookie)
 # 说明
+
+## v1.x 版本(tag) 本地运行，本地提取
 京东的cookie 本地提取工具(小白专用) 
 
 双击exe文件，运行服务，后用本地的浏览器打开 http://127.0.0.1:29099
 
 来辅助提取你的cookie
+
+## v2.x 版本(tag) 服务器运行，客户端自行扫码提取
+```bash
+## linux/macos下
+chmod +x jdcookie
+## 加上-d 代表后台运行
+./jdcookie -d
+## windows 下
+## 可以直接双击运行。也可以cmd中运行
+## cmd 中运行 参数和linux一样
+.\jdcookie.exe -d
+```
+
 
 ## 编译方法
 ```bash

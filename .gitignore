@@ -1,2 +1,4 @@
 logs
 jdcookie_*
+/packr
+/web/web-packr.go
