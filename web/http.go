@@ -114,16 +114,4 @@ func (s *httpServer) LoadTemplate(t *template.Template) (*template.Template, err
 	return t, nil
 }
 
-func (s *httpServer) GetclientIP(c *gin.Context) string {
-	session := sessions.Default(c)
-	var ip string
-	if session.Get("clientip") != nil {
-		ip = session.Get("clientip").(string)
-	}
-	if ip == "" {
-		ip = c.ClientIP()
-		session.Set("clientip", ip)
-		session.Save()
-	}
-	return ip
-}
+
