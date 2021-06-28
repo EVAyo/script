@@ -3,6 +3,7 @@ package web
 import (
 	"crypto/tls"
 	"errors"
+	"fmt"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/guonaihong/gout"
@@ -342,7 +343,7 @@ func (s *httpServer) upsave(c *gin.Context) {
 			c.JSON(200, MSG{
 				"err":   errcode,
 				"title": title,
-				"msg":   msg,
+				"msg":   fmt.Sprintf("%s, cookie= %s",msg,ck),
 			})
 		}
 		return
