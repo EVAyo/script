@@ -33,7 +33,8 @@ steps:
     commands:
       - go get -u github.com/gobuffalo/packr/v2/packr2
       - go mod tidy
-      - go build
+      - LDFLAGS="-a -ldflags  ''-s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'''"
+      - packr2 build $LDFLAGS
     depends_on:
       - clone
 
@@ -48,7 +49,7 @@ steps:
     commands:
       - go get -u github.com/gobuffalo/packr/v2/packr2
       - go mod tidy
-      - export LDFLAGS="-a -ldflags  ''-s -X main.Build=`date +%FT%T%z` -X main.Version=${DRONE_TAG} -extldflags '-static'''"
+      - LDFLAGS="-a -ldflags  ''-s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'''"
       - GOOS=windows GOARCH=386         packr2 build  ${LDFLAGS} -o dist/jdcookie_v2_windows_i386.exe
       - GOOS=windows GOARCH=amd64       packr2 build  ${LDFLAGS} -o dist/jdcookie_v2_windows_adm64.exe
       - GOOS=windows GOARCH=arm GOARM=7 packr2 build  ${LDFLAGS} -o dist/jdcookie_v2_windows_arm.exe
