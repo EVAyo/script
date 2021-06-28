@@ -47,15 +47,15 @@ steps:
     commands:
       - go get -u github.com/gobuffalo/packr/v2/packr2
       - go mod tidy
-      - GOOS=windows GOARCH=386         packr2 build -a -ldflags  '-w -s -extldflags "-static"' -o dist/jdcookie_v2_windows_i386.exe
-      - GOOS=windows GOARCH=amd64       packr2 build -a -ldflags  '-w -s -extldflags "-static"' -o dist/jdcookie_v2_windows_adm64.exe
-      - GOOS=windows GOARCH=arm GOARM=7 packr2 build -a -ldflags  '-w -s -extldflags "-static"' -o dist/jdcookie_v2_windows_arm64.exe
-      - GOOS=darwin GOARCH=arm64        packr2 build -a -ldflags  '-w -s -extldflags "-static"' -o dist/jdcookie_v2_darwin_arm64
-      - GOOS=darwin GOARCH=amd64        packr2 build -a -ldflags  '-w -s -extldflags "-static"' -o dist/jdcookie_v2_darwin_amd64
-      - GOOS=linux GOARCH=386           packr2 build -a -ldflags  '-w -s -extldflags "-static"' -o dist/jdcookie_v2_linux_i386
-      - GOOS=linux GOARCH=amd64         packr2 build -a -ldflags  '-w -s -extldflags "-static"' -o dist/jdcookie_v2_linux_amd64
-      - GOOS=linux GOARCH=arm   GOARM=7 packr2 build -a -ldflags  '-w -s -extldflags "-static"' -o dist/jdcookie_v2_linux_armv7
-      - GOOS=linux GOARCH=arm64         packr2 build -a -ldflags  '-w -s -extldflags "-static"' -o dist/jdcookie_v2_linux_arm64
+      - GOOS=windows GOARCH=386         packr2 build  -ldflags  '-w -s' -o dist/jdcookie_v2_windows_i386.exe
+      - GOOS=windows GOARCH=amd64       packr2 build  -ldflags  '-w -s' -o dist/jdcookie_v2_windows_adm64.exe
+      - GOOS=windows GOARCH=arm GOARM=7 packr2 build  -ldflags  '-w -s' -o dist/jdcookie_v2_windows_arm64.exe
+      - GOOS=darwin GOARCH=arm64        packr2 build  -ldflags  '-w -s' -o dist/jdcookie_v2_darwin_arm64
+      - GOOS=darwin GOARCH=amd64        packr2 build  -ldflags  '-w -s' -o dist/jdcookie_v2_darwin_amd64
+      - GOOS=linux GOARCH=386           packr2 build  -ldflags  '-w -s' -o dist/jdcookie_v2_linux_i386
+      - GOOS=linux GOARCH=amd64         packr2 build  -ldflags  '-w -s' -o dist/jdcookie_v2_linux_amd64
+      - GOOS=linux GOARCH=arm   GOARM=7 packr2 build  -ldflags  '-w -s' -o dist/jdcookie_v2_linux_armv7
+      - GOOS=linux GOARCH=arm64         packr2 build  -ldflags  '-w -s' -o dist/jdcookie_v2_linux_arm64
     depends_on:
       - clone
     when:
