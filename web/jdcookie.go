@@ -42,7 +42,6 @@ func (s *httpServer) getQrcode(c *gin.Context) {
 		return
 	}
 	log.Warnf("get qrcode url = %s", qrurl)
-	log.Warnf("token = %+v", s.getToken(c))
 	c.JSON(200, MSG{
 		"err":    0,
 		"qrcode": qrurl,
