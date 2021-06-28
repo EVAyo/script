@@ -21,7 +21,7 @@ steps:
     commands:
       - git clone --depth 1 https://hub.fastgit.org/scjtqs/jd_cookie.git .
       - "[ ''$DRONE_BRANCH'' != 'master' ] &&  [ ''$DRONE_BANCH'' != 'main' ] && git switch -c ''$DRONE_BRANCH''"
-      - git checkout $DRONE_COMMIT
+#      - git checkout $DRONE_COMMIT
         
   - name: buildtest
     image: golang:1.16
