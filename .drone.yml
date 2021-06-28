@@ -20,7 +20,7 @@ steps:
 #        from_secret: socket_proxy
     commands:
       - git clone --depth 1 https://hub.fastgit.org/scjtqs/jd_cookie.git .
-      - [ $DRONE_BRANCH -ne "master" -a $DRONE_BANCH -ne "main" ] && git switch -c $DRONE_BRANCH
+      - [[ $DRONE_BRANCH -ne "master" -a $DRONE_BANCH -ne "main" ]] && git switch -c $DRONE_BRANCH
       - git checkout $DRONE_COMMIT
         
   - name: buildtest
