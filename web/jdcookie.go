@@ -3,6 +3,7 @@ package web
 import (
 	"crypto/tls"
 	"errors"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/guonaihong/gout"
 	log "github.com/sirupsen/logrus"
@@ -41,7 +42,7 @@ func (s *httpServer) getQrcode(c *gin.Context) {
 		return
 	}
 	log.Warnf("get qrcode url = %s", qrurl)
-	log.Warnf("token = %+v",s.getToken(c))
+	log.Warnf("token = %+v", s.getToken(c))
 	c.JSON(200, MSG{
 		"err":    0,
 		"qrcode": qrurl,
@@ -50,7 +51,7 @@ func (s *httpServer) getQrcode(c *gin.Context) {
 
 func (s *httpServer) praseSetCookies(c *gin.Context, rsp string, cookie *cookiejar.Jar) {
 	json := gjson.Parse(rsp)
-	token:=s.getToken(c)
+	token := s.getToken(c)
 	token.Stoken = json.Get("s_token").String()
 	u, _ := url.Parse("https://plogin.m.jd.com")
 	a := cookie.Cookies(u)
@@ -184,7 +185,6 @@ func (s *httpServer) setp2(c *gin.Context) (string, error) {
 func (s *httpServer) getCookie(c *gin.Context) {
 	//session := sessions.Default(c)
 	//cookies=session.Get("cookies").(string)
-	log.Infof("token= %+v",s.getToken(c))
 	check, err := s.checkLogin(c)
 	jar := s.getCookieJar(c)
 	if err != nil {
@@ -229,7 +229,7 @@ func (s *httpServer) checkLogin(c *gin.Context) (string, error) {
 	var res string
 	err := gout.New(client).
 		POST(getUrl).
-		Debug(true).
+		//Debug(true).
 		SetWWWForm(
 			gout.H{
 				"lang":      "chs",
@@ -304,8 +304,8 @@ func (s *httpServer) getJdCookie(resp string, cookie *cookiejar.Jar, c *gin.Cont
 func (s *httpServer) upsave(c *gin.Context) {
 	//log.Warnf("更新到挂机服务器 res=%v", res)
 	// 清空缓存参数
-	s.cleanSession(c)
 	token := s.getToken(c)
+	s.cleanSession(c)
 	////发送数据给 挂机服务器
 	postUrl := os.Getenv("UPSAVE")
 	if postUrl != "" {
@@ -352,7 +352,7 @@ func (s *httpServer) upsave(c *gin.Context) {
 			c.JSON(200, MSG{
 				"err":   errcode,
 				"title": title,
-				"msg":   msg,
+				"msg":   fmt.Sprintf("%s, cookie= %s", msg, token.UserCookie),
 			})
 		}
 		return

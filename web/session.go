@@ -1,8 +1,10 @@
 package web
 
 import (
+	"encoding/json"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"github.com/vmihailenco/msgpack"
 	"net/http/cookiejar"
 )
 
@@ -28,7 +30,7 @@ func (s *httpServer) getCookieJar(c *gin.Context) *cookiejar.Jar {
 	jar, _ := cookiejar.New(nil)
 	session := sessions.Default(c)
 	if session.Get("cookieJar") != nil {
-		jar = session.Get("cookieJar").(*cookiejar.Jar)
+		msgpack.Unmarshal(session.Get("cookieJar").([]byte),jar)
 	}
 	return jar
 }
@@ -36,7 +38,8 @@ func (s *httpServer) getCookieJar(c *gin.Context) *cookiejar.Jar {
 // 写入cookieJar
 func (s *httpServer) updateCookieJar(c *gin.Context, jar *cookiejar.Jar) error {
 	session := sessions.Default(c)
-	session.Set("cookieJar", jar)
+	res,_:=msgpack.Marshal(jar)
+	session.Set("cookieJar", res)
 	return session.Save()
 }
 
@@ -55,48 +58,49 @@ func (s *httpServer) getToken(c *gin.Context) *Token {
 	session := sessions.Default(c)
 	token := &Token{}
 	if session.Get("token") != nil {
-		token = session.Get("token").(*Token)
+		json.Unmarshal([]byte(session.Get("token").(string)),token)
 	}
 	return token
 }
 
 // 更新 token那一批变量
-func (s *httpServer) updateToken(c *gin.Context,token *Token ) (*Token, error) {
+func (s *httpServer) updateToken(c *gin.Context, token *Token) (*Token, error) {
 	session := sessions.Default(c)
 	u := &Token{}
 	if session.Get("token") != nil {
-		u = session.Get("token").(*Token)
+		json.Unmarshal([]byte(session.Get("token").(string)), u)
 	}
-	if token.Token != ""{
-		u.Token=token.Token
+	if token.Token != "" {
+		u.Token = token.Token
 	}
 	if token.Cookies != "" {
-		u.Cookies=token.Cookies
+		u.Cookies = token.Cookies
 	}
 	if token.Guid != "" {
-		u.Guid=token.Guid
+		u.Guid = token.Guid
 	}
 	if token.Lsid != "" {
-		u.Lsid=token.Lsid
+		u.Lsid = token.Lsid
 	}
 	if token.Lstoken != "" {
-		u.Lstoken=token.Lstoken
+		u.Lstoken = token.Lstoken
 	}
 	if token.Okl_token != "" {
-		u.Okl_token=token.Okl_token
+		u.Okl_token = token.Okl_token
 	}
 	if token.Stoken != "" {
 		u.Stoken = token.Stoken
 	}
 	if token.UserCookie != "" {
-		u.UserCookie=token.UserCookie
+		u.UserCookie = token.UserCookie
 	}
-	session.Set("token",u)
-	err :=session.Save()
-	return u,err
+	set, _ := json.Marshal(u)
+	session.Set("token", string(set))
+	err := session.Save()
+	return u, err
 }
 
-func (s *httpServer) cleanSession(c *gin.Context)  {
+func (s *httpServer) cleanSession(c *gin.Context) {
 	session := sessions.Default(c)
 	session.Clear()
 }
