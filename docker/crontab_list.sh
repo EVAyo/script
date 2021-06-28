@@ -138,3 +138,5 @@
 12 9,11,14,20 * * * node /scripts/jd_daojia_bean.js >> /scripts/logs/jd_daojia_bean.log 2>&1
 #点点券
 10 1,8,20 * * * node /scripts/jd_necklace.js >> /scripts/logs/jd_necklace.log 2>&1
+#京东试用
+#10 1,8,20 * * * node /scripts/jd_try.js >> /scripts/logs/jd_try.log 2>&1
