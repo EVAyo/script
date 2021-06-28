@@ -33,7 +33,7 @@ steps:
     commands:
       - go get -u github.com/gobuffalo/packr/v2/packr2
       - go mod tidy
-      - LDFLAGS="-a -ldflags  ''-s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'''"
+      - LDFLAGS="-a -ldflags  ''-s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_COMMIT -extldflags '-static'''"
       - packr2 build $LDFLAGS
     depends_on:
       - clone
