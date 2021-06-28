@@ -383,7 +383,13 @@ function dealReturn(type, data) {
     case 'mowing':
     case 'jump':
     case 'cow':
-      data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
+      try{
+        data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
+      }catch (e) {
+        $.runFlag = false;
+        console.log(data);
+        console.log(`返回异常`);
+      }
       if (data.ret === 0) {
         $.mowingInfo = data.data;
         let add = ($.mowingInfo.addcoins || $.mowingInfo.addcoin) ? ($.mowingInfo.addcoins || $.mowingInfo.addcoin) : 0;
@@ -423,7 +429,13 @@ function dealReturn(type, data) {
       }
       break;
     case 'feed':
-      data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
+      try {
+        data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
+      }catch (e) {
+        console.log(`投喂失败`);
+        console.log(data);
+        $.runFeed = false;
+      }
       if (data.ret === 0) {
         console.log(`投喂成功`);
       } else if (data.ret === 2020) {
