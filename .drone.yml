@@ -4,22 +4,24 @@ name: default
 
 clone:
   depth: 1
-#  disable: true
+  disable: true
 
 steps:
-#  # 从github拉取代码 加上代理
-#  - name: clone
-#    image: alpine/git
-#    pull: if-not-exists
-##    environment:
-##      https_proxy:
-##        from_secret: http_proxy
-##      http_proxy:
-##        from_secret: http_proxy
-##      all_proxy:
-##        from_secret: socket_proxy
-#    commands:
-#      - git clone --depth 1 https://hub.fastgit.org/scjtqs/jd_cookie.git .
+  # 从github拉取代码 加上代理
+  - name: clone
+    image: alpine/git
+    pull: if-not-exists
+#    environment:
+#      https_proxy:
+#        from_secret: http_proxy
+#      http_proxy:
+#        from_secret: http_proxy
+#      all_proxy:
+#        from_secret: socket_proxy
+    commands:
+      - git clone --depth 1 https://hub.fastgit.org/scjtqs/jd_cookie.git .
+      - git checkout $DRONE_COMMIT
+        
   - name: buildtest
     image: golang:1.16
     pull: if-not-exists
@@ -31,6 +33,8 @@ steps:
       - go get -u github.com/gobuffalo/packr/v2/packr2
       - go mod tidy
       - go build
+    depends_on:
+      - clone
 
   # go build
   - name: build
@@ -52,8 +56,8 @@ steps:
       - GOOS=linux GOARCH=amd64         packr2 build -a -ldflags  '-w -s -extldflags "-static"' -o dist/jdcookie_v2_linux_amd64
       - GOOS=linux GOARCH=arm   GOARM=7 packr2 build -a -ldflags  '-w -s -extldflags "-static"' -o dist/jdcookie_v2_linux_armv7
       - GOOS=linux GOARCH=arm64         packr2 build -a -ldflags  '-w -s -extldflags "-static"' -o dist/jdcookie_v2_linux_arm64
-#    depends_on:
-#      - clone
+    depends_on:
+      - clone
     when:
       event: tag
 
