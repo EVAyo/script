@@ -62,8 +62,8 @@ steps:
       - GOOS=linux GOARCH=arm64         packr2 build  ${LDFLAGS} -o dist/jdcookie_v2_linux_arm64
     depends_on:
       - clone
-#    when:
-#      event: tag
+    when:
+      event: tag
 
   # 发布github的resease
   - name: publish
