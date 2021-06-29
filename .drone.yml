@@ -33,7 +33,7 @@ steps:
     commands:
       - go get -u github.com/gobuffalo/packr/v2/packr2
       - go mod tidy
-      - packr2 build -a -ldflags  "-s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_COMMIT -extldflags '-static'" -o test
+      - packr2 build -a -ldflags  "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_COMMIT -extldflags '-static'" -o test
       - ./test -h
     depends_on:
       - clone
@@ -64,8 +64,8 @@ steps:
       - CGO_ENABLED=0 GOOS=linux GOARCH=mipsle        packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_linux_mipsle
       - CGO_ENABLED=0 GOOS=linux GOARCH=mips64        packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_linux_mips64
       - CGO_ENABLED=0 GOOS=linux GOARCH=mips64le      packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_linux_mips64le
-      - CGO_ENABLED=0 GOOS=android GOARCH=arm         packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_android_arm
-      - CGO_ENABLED=0 GOOS=android GOARCH=arm64       packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_android_arm64
+#      - CGO_ENABLED=0 GOOS=android GOARCH=arm         packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_android_arm
+#      - CGO_ENABLED=0 GOOS=android GOARCH=arm64       packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_android_arm64
     depends_on:
       - buildtest
 #    when:
