@@ -2,3 +2,5 @@ logs
 jdcookie_*
 /packrd
 /web/web-packr.go
+/dist
+config.json
