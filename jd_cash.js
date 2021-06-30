@@ -30,9 +30,7 @@ let cookiesArr = [], cookie = '', message;
 let helpAuthor = true;
 const randomCount = $.isNode() ? 5 : 5;
 let cash_exchange = false;//是否消耗2元红包兑换200京豆，默认否
-const inviteCodes = [
-  `Jhozbeu1b-Ek8GvRw3UR0w@9rqvuWU9sE-2@eU9YMrDFHKpVjAicnytU@eU9Yab-wYP4vp26AnXIb0w@95GhEJPU@ZnQxbr-wY_Qhoz_SnXpF`
-]
+const inviteCodes =['']
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -50,7 +48,6 @@ let allMessage = '';
   }
   await requireConfig()
   await getAuthorShareCode();
-  await getAuthorShareCode2();
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -351,7 +348,7 @@ function showMsg() {
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
-    $.get({url: `https://action-1251995682.file.myqcloud.com/null.json/`, 'timeout': 10000}, (err, resp, data) => {
+    $.get({url: `https://action-1251995682.file.myqcloud.com/null.json`, 'timeout': 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -477,28 +474,7 @@ function getAuthorShareCode(url = "https://action-1251995682.file.myqcloud.com/s
     })
   })
 }
-function getAuthorShareCode2(url = "https://action-1251995682.file.myqcloud.com/shareCodes/jd_updateCash.json") {
-  return new Promise(resolve => {
-    $.get({url, headers:{
-        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-      }, timeout: 200000,}, async (err, resp, data) => {
-      $.authorCode2 = [];
-      try {
-        if (err) {
-        } else {
-          $.authorCode2 = JSON.parse(data)
-          if ($.authorCode2 && $.authorCode2.length) {
-            $.authorCode.push(...$.authorCode2);
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp)
-      } finally {
-        resolve();
-      }
-    })
-  })
-}
+
 function TotalBean() {
   return new Promise(async resolve => {
     const options = {
