@@ -49,27 +49,27 @@ steps:
     commands:
       - go get -u github.com/gobuffalo/packr/v2/packr2
       - go mod tidy
-      - CGO_ENABLED=0 GOOS=windows GOARCH=386         packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_windows_i386.exe
-      - CGO_ENABLED=0 GOOS=windows GOARCH=amd64       packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_windows_adm64.exe
-      - CGO_ENABLED=0 GOOS=windows GOARCH=arm GOARM=7 packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_windows_arm.exe
-      - CGO_ENABLED=0 GOOS=darwin GOARCH=arm64        packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_darwin_arm64
-      - CGO_ENABLED=0 GOOS=darwin GOARCH=amd64        packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_darwin_amd64
-      - CGO_ENABLED=0 GOOS=linux GOARCH=386           packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_linux_i386
-      - CGO_ENABLED=0 GOOS=linux GOARCH=amd64         packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_linux_amd64
-      - CGO_ENABLED=0 GOOS=linux GOARCH=arm   GOARM=7 packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_linux_armv7
-      - CGO_ENABLED=0 GOOS=linux GOARCH=arm64         packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_linux_arm64
-      - CGO_ENABLED=0 GOOS=linux GOARCH=ppc64         packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_linux_ppc64
-      - CGO_ENABLED=0 GOOS=linux GOARCH=ppc64le       packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_linux_ppc64le
-      - CGO_ENABLED=0 GOOS=linux GOARCH=mips          packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_linux_mips
-      - CGO_ENABLED=0 GOOS=linux GOARCH=mipsle        packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_linux_mipsle
-      - CGO_ENABLED=0 GOOS=linux GOARCH=mips64        packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_linux_mips64
-      - CGO_ENABLED=0 GOOS=linux GOARCH=mips64le      packr2 build -a -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG -extldflags '-static'" -o dist/jdcookie_v2_linux_mips64le
+      - CGO_ENABLED=0 GOOS=windows GOARCH=386         packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_windows_i386.exe
+      - CGO_ENABLED=0 GOOS=windows GOARCH=amd64       packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_windows_adm64.exe
+      - CGO_ENABLED=0 GOOS=windows GOARCH=arm GOARM=7 packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_windows_arm.exe
+      - CGO_ENABLED=0 GOOS=darwin GOARCH=arm64        packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_darwin_arm64
+      - CGO_ENABLED=0 GOOS=darwin GOARCH=amd64        packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_darwin_amd64
+      - CGO_ENABLED=0 GOOS=linux GOARCH=386           packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_linux_i386
+      - CGO_ENABLED=0 GOOS=linux GOARCH=amd64         packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_linux_amd64
+      - CGO_ENABLED=0 GOOS=linux GOARCH=arm   GOARM=7 packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_linux_armv7
+      - CGO_ENABLED=0 GOOS=linux GOARCH=arm64         packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_linux_arm64
+      - CGO_ENABLED=0 GOOS=linux GOARCH=ppc64         packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_linux_ppc64
+      - CGO_ENABLED=0 GOOS=linux GOARCH=ppc64le       packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_linux_ppc64le
+      - CGO_ENABLED=0 GOOS=linux GOARCH=mips          packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_linux_mips
+      - CGO_ENABLED=0 GOOS=linux GOARCH=mipsle        packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_linux_mipsle
+      - CGO_ENABLED=0 GOOS=linux GOARCH=mips64        packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_linux_mips64
+      - CGO_ENABLED=0 GOOS=linux GOARCH=mips64le      packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_linux_mips64le
 #      - CGO_ENABLED=0 GOOS=android GOARCH=arm         packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_android_arm
 #      - CGO_ENABLED=0 GOOS=android GOARCH=arm64       packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_android_arm64
     depends_on:
       - buildtest
-#    when:
-#      event: tag
+    when:
+      event: tag
 
   # 发布github的resease
   - name: publish
