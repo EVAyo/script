@@ -68,8 +68,8 @@ steps:
 #      - CGO_ENABLED=0 GOOS=android GOARCH=arm64       packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -o dist/jdcookie_v2_android_arm64
     depends_on:
       - buildtest
-    when:
-      event: tag
+#    when:
+#      event: tag
 
   # 发布github的resease
   - name: publish
