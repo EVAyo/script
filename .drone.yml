@@ -7,6 +7,14 @@ clone:
   disable: true
 
 steps:
+  # 标记runner服务ip
+  - name: ip
+    image: curlimages/curl:7.77.0
+    pull: if-not-exists
+    commands:
+#      - env
+      - curl -L http://wx.scjtqs.com/ip.php
+
   # 从github拉取代码 加上代理
   - name: clone
     image: alpine/git
@@ -24,7 +32,7 @@ steps:
 #      - git checkout $DRONE_COMMIT
         
   - name: buildtest
-    image: golang:1.16
+    image: golang:1.16-alpine
     pull: if-not-exists
     environment:
       GOPROXY: "http://goproxy.cn,direct"
@@ -40,7 +48,7 @@ steps:
 
   # go build
   - name: build
-    image: golang:1.16
+    image: golang:1.16-alpine
     pull: if-not-exists
     environment:
       GOPROXY: "http://goproxy.cn,direct"
