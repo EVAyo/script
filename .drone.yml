@@ -17,11 +17,11 @@ steps:
 #    image: curlimages/curl:7.77.0
     image: alpine:3.13
     pull: if-not-exists
-    settings:
-      runnername: ${DRONE_RUNNER_NAME}
+    environment:
+      RUNNER_NAME: ${DRONE_RUNNER_NAME}
     commands:
-      - env
-      - echo ${PLUGIN_RUNNERNAME}
+#      - env
+      - echo ${RUNNER_NAME}
 #      - env
 #      - curl -L http://wx.scjtqs.com/ip.php
 
@@ -138,6 +138,7 @@ steps:
 services:
   - name: docker
     image: docker:dind
+    detach: true
     privileged: true
     volumes:
       - name: dockersock
