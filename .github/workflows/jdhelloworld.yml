@@ -1,7 +1,7 @@
 # File: .github/workflows/repo-sync.yml
-name: JDHelloworld #action名字，随便起
+name: JDHelloworld_new #action名字，随便起
 env:
-  ID: JDHelloworld
+  ID: JDHelloworld_new
   URL: https://github.com/JDHelloWorld/jd_scripts.git
   REPO: main
 on:
