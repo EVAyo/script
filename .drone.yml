@@ -120,7 +120,14 @@ steps:
       - buildtest
     when:
       branch:
-        - master
+        exclude:
+          - feature/*
+      event:
+        - push
+        - pull_request
+        - tag
+        - promote
+        - rollback
 
 services:
   - name: docker
