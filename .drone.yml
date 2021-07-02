@@ -3,9 +3,9 @@ type: docker
 name: default
 
 # 限制 amd64的runner 执行本脚本。
-platform:
-  os: linux
-  arch: amd64
+#platform:
+#  os: linux
+#  arch: amd64
 
 clone:
   depth: 1
@@ -13,12 +13,17 @@ clone:
 
 steps:
   # 标记runner服务ip
-  - name: ip
-    image: curlimages/curl:7.77.0
+  - name: name
+#    image: curlimages/curl:7.77.0
+    image: alpine:3.13
     pull: if-not-exists
+    settings:
+      runnername: ${DRONE_RUNNER_NAME}
     commands:
+      - echo ${PLUGIN_RUNNERNAME}
 #      - env
-      - curl -L http://wx.scjtqs.com/ip.php
+#      - curl -L http://wx.scjtqs.com/ip.php
+
 
   # 从github拉取代码 加上代理
   - name: clone
