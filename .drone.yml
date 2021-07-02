@@ -2,6 +2,11 @@ kind: pipeline
 type: docker
 name: default
 
+# 限制 amd64的runner 执行本脚本。
+platform:
+  os: linux
+  arch: amd64
+
 clone:
   depth: 1
   disable: true
@@ -95,6 +100,40 @@ steps:
       event: tag
     depends_on:
       - build
+
+  # docker buildx 多平台镜像编译
+  - name: docker buildx
+    image: jdrouet/docker-with-buildx:stable
+    pull: if-not-exists
+    volumes:
+      - name: dockersock
+        path: /var/run
+    environment:
+      DOCKER_DRIVER: overlay2
+      DOCKER_USERNAME:
+        from_secret: docker_username
+      DOCKER_PASSWORD:
+        from_secret: docker_password
+    commands:
+      - /bin/sh ./buildx.sh
+    depends_on:
+      - buildtest
+    when:
+      branch:
+        - master
+
+services:
+  - name: docker
+    image: docker:dind
+    privileged: true
+    volumes:
+      - name: dockersock
+        path: /var/run
+
+volumes:
+  - name: dockersock
+    temp: {}
+
 
 trigger:
 #  branch:
