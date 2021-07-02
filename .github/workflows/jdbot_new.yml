@@ -1,9 +1,9 @@
 # File: .github/workflows/repo-sync.yml
-name: jdbot #action名字，随便起 
+name: jdbot_new #action名字，随便起 
 env:
-  ID: jdbot
-  URL: https://github.com/lxrcbw/jddockerbot.git
-  REPO: master
+  ID: jdbot_new
+  URL: https://github.com/SuMaiKaDe/bot.git
+  REPO: main
 on:
   schedule:
     - cron: '1 0,15 * * *'
