@@ -20,7 +20,7 @@ steps:
     environment:
       RUNNER_NAME: ${DRONE_RUNNER_NAME}
     commands:
-      - env
+#      - env
       - echo ${RUNNER_NAME}
 #      - env
 #      - curl -L http://wx.scjtqs.com/ip.php
@@ -138,6 +138,7 @@ steps:
 services:
   - name: docker
     image: docker:dind
+    detach: true
     privileged: true
     volumes:
       - name: dockersock
