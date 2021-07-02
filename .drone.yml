@@ -20,6 +20,7 @@ steps:
     settings:
       runnername: ${DRONE_RUNNER_NAME}
     commands:
+      - env
       - echo ${PLUGIN_RUNNERNAME}
 #      - env
 #      - curl -L http://wx.scjtqs.com/ip.php
