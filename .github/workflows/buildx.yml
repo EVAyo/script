@@ -29,7 +29,7 @@ on:
     types: [rerequested, completed]
 
 env:
-  # TODO: Change variable to your image's name.
+  # TODO: Change variable to your image's name. 
   IMAGE_NAME: scjtqs/jd_cookie:latest
 
 jobs:
