@@ -1,0 +1,36 @@
+from telethon import events
+from .. import jdbot, StartCMD, chat_id, logger, mybot, chname
+from .utils import cmd
+
+
+@jdbot.on(events.NewMessage(from_users=chat_id, pattern='/cmd'))
+async def my_cmd(event):
+    '''接收/cmd命令后执行程序'''
+    msg_text = event.raw_text.split(' ')
+    try:
+        if isinstance(msg_text,list):
+            text = ' '.join(msg_text[1:])
+        else:
+            text = None
+        if StartCMD and text:
+            await cmd(text)
+            logger.info(text)
+        elif StartCMD:
+            msg = '''请正确使用/cmd命令，如
+            /cmd bash rm_log              # 删除旧日志
+            /cmd bash git_pull            # 更新所有脚本
+            /cmd bash export_sharecodes   # 导出所有互助码
+            /cmd bash csv                 # 记录豆豆变化情况
+            不建议直接使用cmd命令执行脚本，请使用/node或/snode
+            '''
+            await jdbot.send_message(chat_id, msg)
+        else:
+            await jdbot.send_message(chat_id, '未开启CMD命令，如需使用请修改配置文件')
+    except Exception as e:
+        await jdbot.send_message(chat_id, f'something wrong,I\'m sorry\n{str(e)}')
+        logger.error(f'something wrong,I\'m sorry\n{str(e)}')
+
+
+if chname:
+    jdbot.add_event_handler(my_cmd, events.NewMessage(
+        chats=chat_id, pattern=mybot['命令别名']['cmd']))

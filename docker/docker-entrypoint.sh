@@ -39,6 +39,12 @@ if [ ! -s ${JD_DIR}/config/auth.json ]; then
   echo
 fi
 
+if [ ! -s ${JD_DIR}/config/bot.json ]; then
+  echo -e "检测到config配置目录下不存在bot.json，从示例文件复制一份用于初始化...\n"
+  cp -fv ${JD_DIR}/sample/bot.json.sample ${JD_DIR}/config/bot.json
+  echo
+fi
+
 echo -e "========================3. 启动挂机程序========================\n"
 # 清空pm2日志
 rm -rf /root/.pm2/logs/*
@@ -54,7 +60,21 @@ elif [[ ${ENABLE_HANGUP} == false ]]; then
   echo -e "已设置为不自动启动挂机程序，跳过...\n"
 fi
 
-echo -e "========================4. 启动控制面板========================\n"
+if type python3 &>/dev/null; then
+    echo -e "========================4. 启动Telegram Bot ========================\n"
+    if [[ $ENABLE_TG_BOT == true ]]; then
+        if [[ -z $(grep -E "123456789" ${JD_DIR}/config/bot.json) ]]; then
+            cd $JD_DIR/jbot
+            pm2 start ecosystem.config.js
+        else
+            echo -e "似乎 ${JD_DIR}/config/bot.json 还未修改为你自己的信息，可能是首次部署容器，因此不启动Telegram Bot...\n"
+        fi
+    else
+        echo -e "已设置为不自动启动Telegram Bot，跳过...\n"
+    fi
+fi
+
+echo -e "========================5. 启动控制面板========================\n"
 if [[ ${ENABLE_WEB_PANEL} == true ]]; then
   cd ${JD_DIR}/panel
   pm2 start ecosystem.config.js
