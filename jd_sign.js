@@ -3,12 +3,11 @@
 只支持nodejs环境
 14 10 * * *
 */
-
+const $ = new Env('京东签到图形验证');
 const validator = require('./utils/JDJRValidator_Pure.js');
 const Faker=require('./utils/jd_sign_validate.js') 
 $.get = validator.injectToRequest($.get.bind($), 'channelSign')
 $.post = validator.injectToRequest($.post.bind($), 'channelSign')
-const $ = new Env('京东签到图形验证');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
