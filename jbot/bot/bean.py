@@ -24,13 +24,13 @@ async def my_bean(event):
             text = None
         if V4 and text == 'in':
             subprocess.check_output(
-                'jcsv', shell=True, stderr=subprocess.STDOUT)
+                'csv', shell=True, stderr=subprocess.STDOUT)
             creat_bean_counts(IN)
             await jdbot.delete_messages(chat_id, msg)
             await jdbot.send_message(chat_id, '您的近日收入情况', file=_botimg)
         elif V4 and text == 'out':
             subprocess.check_output(
-                'jcsv', shell=True, stderr=subprocess.STDOUT)
+                'csv', shell=True, stderr=subprocess.STDOUT)
             creat_bean_counts(OUT)
             await jdbot.delete_messages(chat_id, msg)
             await jdbot.send_message(chat_id, '您的近日支出情况', file=_botimg)
@@ -47,7 +47,7 @@ async def my_bean(event):
                 await jdbot.send_message(chat_id, f'您的账号{text}收支情况', file=_botimg)
         elif not text:
             subprocess.check_output(
-                'jcsv', shell=True, stderr=subprocess.STDOUT)
+                'csv', shell=True, stderr=subprocess.STDOUT)
             creat_bean_counts(TOTAL)
             await jdbot.delete_messages(chat_id, msg)
             await jdbot.send_message(chat_id, '您的总京豆情况', file=_botimg)
