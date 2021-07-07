@@ -1,9 +1,9 @@
 # File: .github/workflows/repo-sync.yml
-name: panghu #action名字，随便起
+name: panghu #action名字，随便起 
 env:
   ID: panghu
-  URL: https://github.com/panghu999/ningmeng.git
-  REPO: main
+  URL: https://github.com/panghu999/panghu.git
+  REPO: master
 on:
   schedule:
     - cron: '1 0,15 * * *'

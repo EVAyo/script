@@ -1,8 +1,8 @@
 # File: .github/workflows/repo-sync.yml
-name:  #action名字，随便起 
+name: he1pu #action名字，随便起 
 env:
-  ID: 
-  URL: 
+  ID: he1pu
+  URL: https://github.com/he1pu/JDHelp.git
   REPO: main
 on:
   schedule:

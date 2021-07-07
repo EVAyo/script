@@ -1,8 +1,8 @@
 # File: .github/workflows/repo-sync.yml
-name:  #action名字，随便起 
+name: ZCY01 #action名字，随便起 
 env:
-  ID: 
-  URL: 
+  ID: ZCY01
+  URL: https://github.com/ZCY01/daily_scripts.git
   REPO: main
 on:
   schedule:

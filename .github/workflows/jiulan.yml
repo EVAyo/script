@@ -1,8 +1,8 @@
 # File: .github/workflows/repo-sync.yml
-name:  #action名字，随便起 
+name: jiulan #action名字，随便起 
 env:
-  ID: 
-  URL: 
+  ID: jiulan
+  URL: https://github.com/jiulan/platypus.git
   REPO: main
 on:
   schedule:

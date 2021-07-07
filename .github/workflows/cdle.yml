@@ -1,8 +1,8 @@
 # File: .github/workflows/repo-sync.yml
-name:  #action名字，随便起 
+name: cdle #action名字，随便起 
 env:
-  ID: 
-  URL: 
+  ID: cdle
+  URL: https://github.com/cdle/jd_study.git
   REPO: main
 on:
   schedule:

@@ -1,9 +1,9 @@
 # File: .github/workflows/repo-sync.yml
-name:  #action名字，随便起 
+name: panghu_lxk #action名字，随便起 
 env:
-  ID: 
-  URL: 
-  REPO: main
+  ID: panghu_lxk
+  URL: https://github.com/panghu999/jd_scripts.git
+  REPO: master
 on:
   schedule:
     - cron: '1 0,15 * * *'
