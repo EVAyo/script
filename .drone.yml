@@ -53,6 +53,7 @@ steps:
     commands:
       - sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
       - apk add --no-cache gcc musl-dev
+      - go get github.com/mattn/go-sqlite3
       - go get -u github.com/gobuffalo/packr/v2/packr2
       - go mod tidy
       - packr2 build  -ldflags  "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_COMMIT" -installsuffix cgo  -o test
@@ -72,6 +73,7 @@ steps:
     commands:
       - sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
       - apk add --no-cache gcc musl-dev
+      - go get github.com/mattn/go-sqlite3
       - go get -u github.com/gobuffalo/packr/v2/packr2
       - go mod tidy
       - CGO_ENABLE=1 GOOS=windows GOARCH=386         packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo  -o dist/jdcookie_v2_windows_i386.exe
