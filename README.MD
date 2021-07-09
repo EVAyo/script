@@ -47,7 +47,7 @@ v 2.0.1
 > 
 > 支持  arm/arm64/i386/amd64
 
-## 编译方法
+## 编译方法 (For v2.x tag)
 ```bash
 #安装编译工具，用于打包html到二进制
 go get -u github.com/gobuffalo/packr/v2/packr2
@@ -64,6 +64,34 @@ CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 packr2 build  -o jdcookie_darwin_arm64
 # 编译mac amd64 x64版本
 CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 packr2 build  -o jdcookie_darwin_x64
 ```
+
+## v3.x版本(tag) 服务端运行，db多类型支持。
+> DB_TYPE 可以选择 mysql、postgres、sqlite3、mssql
+> 
+> 因为增加了sqlite3的支持，引入了cgo。不方便直接交叉编译了。于是 v3.x版本开始，就主要docker版了。
+> 
+
+v3.0.1
+> 除了mysql外，应hcl要求，增加了其他db类型支持: postgres、sqlite3、mssql
+> 
+
+## 编译方法 （For v3.x tag)
+```bash
+#安装golang环境
+#安装gcc等编译环境
+#安装编译工具，用于打包html到二进制
+go get -u github.com/gobuffalo/packr/v2/packr2
+go get github.com/mattn/go-sqlite3
+#linux/mac/UNIX下
+CGO_ENABLED=1 packr2 build  -o jdcookie
+#查看帮助
+./jdcookie -h 
+#windows下
+CGO_ENABLED=1 packr2 build  -o jdcookie.exe
+#查看帮助
+.\jdcookie.exe -h
+```
+
 
 ## docker 使用示例
 
@@ -86,6 +114,18 @@ docker run -d \
 -e DB_USER="root" \
 -e DB_PASS="abcde" \
 -e DB_DATABASE="cookies" \
+-e DB_TYPE="mysql" \
+--name jd_cookie scjtqs/jd_cookie:latest
+```
+### for sqlite3 usage
+```bash
+docker run -d \
+-p 29099:29099 \
+-v `pwd`/db/:/opt/app/db/ \
+-e UPSAVE="http://192.168.0.12:8080/savecookie" \
+-e DB_ENABLE="true" \
+-e DB_HOST="./db/cookies.db" \
+-e DB_TYPE="sqlite3" \
 --name jd_cookie scjtqs/jd_cookie:latest
 ```
 
