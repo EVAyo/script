@@ -57,7 +57,7 @@ steps:
       - go get -u github.com/mattn/go-sqlite3
       - go get -u github.com/gobuffalo/packr/v2/packr2
       - go mod tidy
-      - packr2 build  -ldflags  "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_COMMIT" -installsuffix cgo  -o test
+      - CGO_ENABLED=1 CGO_LDFLAGS="-static" packr2 build  -ldflags  "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_COMMIT" -installsuffix cgo  -o test
       - ./test -h
     depends_on:
       - clone

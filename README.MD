@@ -81,7 +81,7 @@ v3.0.1
 #安装gcc等编译环境
 #安装编译工具，用于打包html到二进制
 go get -u github.com/gobuffalo/packr/v2/packr2
-go get github.com/mattn/go-sqlite3
+go install github.com/mattn/go-sqlite3
 #linux/mac/UNIX下
 CGO_ENABLED=1 packr2 build  -o jdcookie
 #查看帮助
