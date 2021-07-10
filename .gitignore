@@ -4,3 +4,4 @@ jdcookie_*
 /web/web-packr.go
 /dist
 config.json
+/build
