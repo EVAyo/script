@@ -61,7 +61,7 @@ steps:
       - go mod tidy
       - go env -w CGO_ENABLED=1
       - go env -w CGO_LDFLAGS="-static"
-      - CGO_ENABLED=1 CGO_LDFLAGS="-static" packr2 build  -ldflags  "-X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_COMMIT" -installsuffix cgo  -o test
+      - CGO_ENABLED=1 CGO_LDFLAGS="-static" packr2 build  -ldflags  "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_COMMIT" -installsuffix cgo  -o test
       - ./test -h
     depends_on:
       - clone
