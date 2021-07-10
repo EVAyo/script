@@ -76,6 +76,10 @@ steps:
       CGO_ENABLED: 1
       CGO_LDFLAGS: "-static"
     commands:
+      - go env -w GOPROXY="http://goproxy.cn,direct"
+      - go env -w CGO_ENABLED=1
+      - go env -w GO111MODULE=on
+      - go env -w CGO_LDFLAGS="-static"
       - sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
       - apk add --no-cache gcc musl-dev
       - go get github.com/mattn/go-sqlite3
