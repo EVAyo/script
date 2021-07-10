@@ -45,11 +45,11 @@ steps:
   - name: buildtest
     image: golang:1.16-alpine
     pull: if-not-exists
-    environment:
-      GOPROXY: "http://goproxy.cn,direct"
-      CGO_ENABLED: 1
-      GO111MODULE: "on"
-      CGO_LDFLAGS: "-static"
+#    environment:
+#      GOPROXY: "http://goproxy.cn,direct"
+#      CGO_ENABLED: 1
+#      GO111MODULE: "on"
+#      CGO_LDFLAGS: "-static"
     commands:
       - go env -w GOPROXY="http://goproxy.cn,direct"
       - go env -w CGO_ENABLED=1
@@ -57,10 +57,9 @@ steps:
       - go env -w CGO_LDFLAGS="-static"
       - sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
       - apk add --no-cache gcc musl-dev docker
-      - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-      - go install github.com/mattn/go-sqlite3
-      - go get -u github.com/mattn/go-sqlite3
       - go get -u github.com/gobuffalo/packr/v2/packr2
+#      - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - go install github.com/mattn/go-sqlite3
       - go mod tidy
       - CGO_ENABLED=1 CGO_LDFLAGS="-static" packr2 build -a -ldflags  "-X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_COMMIT" -installsuffix cgo  -o test
       - ./test -h
