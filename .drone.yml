@@ -56,11 +56,11 @@ steps:
       - sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
       - apk add --no-cache gcc musl-dev docker
       - go get -u github.com/gobuffalo/packr/v2/packr2
+      - go install github.com/mattn/go-sqlite3
+#      - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+      - go mod tidy
       - go env -w CGO_ENABLED=1
       - go env -w CGO_LDFLAGS="-static"
-#      - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-      - go install github.com/mattn/go-sqlite3
-      - go mod tidy
       - CGO_ENABLED=1 CGO_LDFLAGS="-static" packr2 build -a -ldflags  "-X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_COMMIT" -installsuffix cgo  -o test
       - ./test -h
     depends_on:
@@ -84,10 +84,10 @@ steps:
       - sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
       - apk add --no-cache gcc musl-dev
       - go get -u github.com/gobuffalo/packr/v2/packr2
-      - go env -w CGO_ENABLED=1
-      - go env -w CGO_LDFLAGS="-static"
       - go install github.com/mattn/go-sqlite3
       - go mod tidy
+      - go env -w CGO_ENABLED=1
+      - go env -w CGO_LDFLAGS="-static"
       - CGO_ENABLE=1 GOOS=linux GOARCH=amd64         packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_amd64
       - CGO_ENABLE=1 GOOS=linux GOARCH=386           packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_i386
       - CGO_ENABLE=1 GOOS=linux GOARCH=arm   GOARM=7 packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo  -o dist/jdcookie_v3_linux_armv7
