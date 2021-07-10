@@ -57,7 +57,7 @@ steps:
       - go env -w CGO_LDFLAGS="-static"
       - sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
       - apk add --no-cache gcc musl-dev docker
-      - go get -u github.com/gobuffalo/packr/v2/packr2
+      - go get github.com/gobuffalo/packr/v2/packr2
 #      - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
       - go install github.com/mattn/go-sqlite3
       - go mod tidy
