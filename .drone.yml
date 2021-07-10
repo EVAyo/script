@@ -65,9 +65,9 @@ steps:
       - ./test -h
     depends_on:
       - clone
-    volumes:
-      - name: dockersock
-        path: /var/run
+#    volumes:
+#      - name: dockersock
+#        path: /var/run
 
   # go build
   - name: build
@@ -155,14 +155,14 @@ steps:
 #        - promote
 #        - rollback
 
-services:
-  - name: docker
-    image: docker:dind
-    detach: true
-    privileged: true
-    volumes:
-      - name: dockersock
-        path: /var/run
+#services:
+#  - name: docker
+#    image: docker:dind
+#    detach: true
+#    privileged: true
+#    volumes:
+#      - name: dockersock
+#        path: /var/run
 
 volumes:
   - name: dockersock
