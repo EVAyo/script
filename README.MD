@@ -79,6 +79,15 @@ v3.0.1
 ```bash
 #安装golang环境
 #安装gcc等编译环境
+## for alpine
+apk add --update gcc musl-dev sqlite-static sqlite-dev
+## for Fedora
+sudo yum groupinstall "Development Tools" "Development Libraries"
+## for Ubuntu
+sudo apt-get install build-essential
+## for Mac OSX
+brew install sqlite3
+brew upgrade icu4c
 #安装编译工具，用于打包html到二进制
 go get -u github.com/gobuffalo/packr/v2/packr2
 go install github.com/mattn/go-sqlite3
