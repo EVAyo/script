@@ -4,6 +4,10 @@ rules:                      # Array of rules
     upstream: scjtqs:master    # Required. Must be in the same fork network.
     mergeMethod: hardreset  # Optional, one of [none, merge, squash, rebase, hardreset], Default: none.
     mergeUnstable: false    # Optional, merge pull request even when the mergeable_state is not clean. Default: false
+  - base: feature/v3            # Required. Target branch
+    upstream: scjtqs:feature/v3     # Required. Must be in the same fork network.
+    mergeMethod: hardreset  # Optional, one of [none, merge, squash, rebase, hardreset], Default: none.
+    mergeUnstable: false
   - base: feature/v2            # Required. Target branch
     upstream: scjtqs:feature/v2     # Required. Must be in the same fork network.
     mergeMethod: hardreset  # Optional, one of [none, merge, squash, rebase, hardreset], Default: none.
