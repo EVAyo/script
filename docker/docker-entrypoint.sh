@@ -45,7 +45,7 @@ if [ ! -s ${JD_DIR}/config/bot.json ]; then
   echo
 fi
 
-echo -e "========================3. 启动挂机程序========================\n"
+echo -e "========================3. 启动JOY挂机程序========================\n"
 # 清空pm2日志
 rm -rf /root/.pm2/logs/*
 if [[ ${ENABLE_HANGUP} == true ]]; then
@@ -54,14 +54,29 @@ if [[ ${ENABLE_HANGUP} == true ]]; then
     bash jd hangup 2>/dev/null
     echo -e "挂机程序启动成功...\n"
   else
-    echo -e "config.sh中还未填入有效的Cookie，可能是首次部署容器，因此不启动挂机程序...\n"
+    echo -e "config.sh中还未填入有效的Cookie，可能是首次部署容器，因此不启动JOY挂机程序...\n"
   fi
 elif [[ ${ENABLE_HANGUP} == false ]]; then
   echo -e "已设置为不自动启动挂机程序，跳过...\n"
 fi
 
+echo -e "========================4. 启动财富岛热气球挂机========================\n"
+# 清空pm2日志
+rm -rf /root/.pm2/logs/*
+if [[ ${ENABLE_BALLOON} == true ]]; then
+  . ${JD_DIR}/config/config.sh
+  if [ -n "${Cookie1}" ]; then
+    bash jd balloon 2>/dev/null
+    echo -e "挂机程序启动成功...\n"
+  else
+    echo -e "config.sh中还未填入有效的Cookie，可能是首次部署容器，因此不启动热气球挂机...\n"
+  fi
+elif [[ ${ENABLE_BALLOON} == false ]]; then
+  echo -e "已设置为不自动启动挂机程序，跳过...\n"
+fi
+
 if type python3 &>/dev/null; then
-    echo -e "========================4. 启动Telegram Bot ========================\n"
+    echo -e "========================5. 启动Telegram Bot ========================\n"
     if [[ $ENABLE_TG_BOT == true ]]; then
         if [[ -z $(grep -E "123456789" ${JD_DIR}/config/bot.json) ]]; then
             cd $JD_DIR/jbot
@@ -74,7 +89,7 @@ if type python3 &>/dev/null; then
     fi
 fi
 
-echo -e "========================5. 启动控制面板========================\n"
+echo -e "========================6. 启动控制面板========================\n"
 if [[ ${ENABLE_WEB_PANEL} == true ]]; then
   cd ${JD_DIR}/panel
   pm2 start ecosystem.config.js
