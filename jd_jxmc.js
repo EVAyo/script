@@ -221,7 +221,7 @@ async function pasture() {
           $.pause = false;
           console.log(`开始第${k + 1}次喂白菜`);
           await takeGetRequest('feed');
-          await $.wait(2000);
+          await $.wait(4000);
           if ($.pause) {
             await takeGetRequest('GetHomePageInfo');
             await $.wait(1000);
@@ -292,7 +292,7 @@ async function takeGetRequest(type) {
   let myRequest = ``;
   switch (type) {
     case 'GetHomePageInfo':
-      url = `https://m.jingxi.com/jxmc/queryservice/GetHomePageInfo?channel=7&sceneid=1001&_stk=channel%2Csceneid&_ste=1`;
+      url = `https://m.jingxi.com/jxmc/queryservice/GetHomePageInfo?channel=7&sceneid=1001&isgift=1&_stk=channel%2Csceneid&_ste=1`;
       url += `&h5st=${decrypt(Date.now(), '', '', url)}&_=${Date.now() + 2}&sceneval=2&g_login_type=1&callback=jsonpCBK${String.fromCharCode(Math.floor(Math.random() * 26) + "A".charCodeAt(0))}&g_ty=ls`;
       myRequest = getGetRequest(`GetHomePageInfo`, url);
       break;
@@ -376,6 +376,9 @@ function dealReturn(type, data) {
       data = JSON.parse(data.match(new RegExp(/jsonpCBK.?\((.*);*/))[1]);
       if (data.ret === 0) {
         $.homeInfo = data.data;
+        if($.homeInfo.giftcabbagevalue){
+          console.log(`登陆获得白菜：${$.homeInfo.giftcabbagevalue} 颗`);
+        }
       } else {
         console.log(`获取活动信息异常：${JSON.stringify(data)}\n`);
       }
