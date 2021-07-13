@@ -144,3 +144,5 @@
 45 8 * * * node /scripts/jd_DrawEntrance.js >> /scripts/logs/jd_DrawEntrance.log 2>&1
 #天天加速
 25 9 * * * node /scripts/jd_speed.js >> /scripts/logs/jd_speed.log 2>&1
+# 京喜财富岛
+5 * * * * node /scripts/jd_cfd.js >> /scripts/logs/jd_cfd.log 2>&1
