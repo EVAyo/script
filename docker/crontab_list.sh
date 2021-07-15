@@ -4,6 +4,9 @@
 30 * * * * sh +x /scripts/docker/auto_help.sh collect >> /scripts/logs/auto_help_collect.log 2>&1
 
 ##############短期活动##############
+#极速版发财大赢家 2021-07-15到2021-08-15
+20,40 0-23/1 * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
+
 #燃动夏季 活动时间：2021-07-8到2021-08-8
 25 0,6-23/2 * * * node /scripts/jd_summer_movement.js >> /scripts/logs/jd_summer_movement.log 2>&1
 
