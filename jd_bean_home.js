@@ -121,6 +121,7 @@ async function jdBeanHome() {
   await $.wait(1000)
   await getTaskList();
   await receiveJd2();
+  await morningGetBean();
   await showMsg();
 }
 
@@ -387,6 +388,54 @@ function award(source="home") {
     })
   })
 }
+function morningGetBean() {
+  var headers = {
+    "Host": "api.m.jd.com",
+    "Content-Type": "application/x-www-form-urlencoded",
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "User-Agent": "JD4iPhone/167724 (iPhone; iOS 13.5; Scale/3.00)",
+    "Accept-Language": "zh-Hans-HK;q=1, zh-Hant-HK;q=0.9",
+    "Referer": "",
+    "Content-Length": "1027",
+    'Cookie': cookie
+  };
+  var dataString = 'body=%7B%22rnVersion%22%3A%224.7%22%2C%22fp%22%3A%22-1%22%2C%22eid%22%3A%22%22%2C%22shshshfp%22%3A%22-1%22%2C%22userAgent%22%3A%22-1%22%2C%22shshshfpa%22%3A%22-1%22%2C%22referUrl%22%3A%22-1%22%2C%22jda%22%3A%22-1%22%7D&build=167724&client=apple&clientVersion=10.0.6&d_brand=apple&d_model=iPhone11%2C6&eid=eidIc62a812243s8M4Jo2WlBTv6eJ6EqSUxBpTOCalHfkVWRuMcBFzigt6BDP/256q4g4TdQrny7r95Ru0jOjzTEMs0EIYaB5Mb5tpKy4mWldjnjOhQx&isBackground=N&joycious=78&lang=zh_CN&networkType=wifi&networklibtype=JDNetworkBaseAF&openudid=3d10d69662a4db43d4406415558bb3cc3aff09dc&osVersion=13.5&partner=apple&rfs=0000&scope=11&screen=1242%2A2688&sign=385bd0a4436ab4473ab6fc56d9b791ea&st=1626369816898&sv=101'
+  var options = {
+    url: 'https://api.m.jd.com/client.action?functionId=morningGetBean',
+    headers: headers,
+    body: dataString
+  };
+  return new Promise(resolve => {
+    $.post(options, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(err)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (safeGet(data)) {
+            data = JSON.parse(data);
+            if (data.code){
+              if(data.data.awardResultFlag === "1"){
+                console.log(`领取早起福利：${data.data.bizMsg},获得 ${data.data.beanNum} 个京豆\n `)
+              }else if (data.data.awardResultFlag === "2"){
+                console.log(`领取早起福利：${data.data.bizMsg} \n`)
+              }else{
+                console.log(data)
+              }
+            }
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+
 function receiveJd2() {
   var headers = {
     'Host': 'api.m.jd.com',
