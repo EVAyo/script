@@ -68,10 +68,7 @@ function getRedRainURL() {
           console.log(err)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
-          if (data){
-            data = JSON.parse(data);
             $.acid=data
-          }
         }
       } catch (e) {
         $.logErr(e, resp)
@@ -84,6 +81,7 @@ function getRedRainURL() {
 function getRedRain() {
   return new Promise(resolve => {
     const body = {"actId":$.acid};
+    console.log(body)
     $.get(taskUrl('noahRedRainLottery', body), (err, resp, data) => {
       try {
         if (err) {
@@ -97,7 +95,7 @@ function getRedRain() {
               message+= `领取成功，获得${JSON.stringify(data.lotteryResult)}`
 
             } else if (data.subCode === '8') {
-              console.log(`今日次数已满`)
+              console.log(data)
             } else {
               console.log(`异常：${JSON.stringify(data)}`)
             }
