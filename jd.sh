@@ -242,29 +242,6 @@ function Run_HangUp {
   done
 }
 
-## 运行财富岛热气球挂机脚本
-function Run_Balloon {
-  BalloonJs="jd_cfd_loop"
-  cd ${ScriptsDir}
-  for js in ${BalloonJs}; do
-    Import_Conf ${js}
-    Count_UserSum
-    Set_Env all
-    if type pm2 >/dev/null 2>&1; then
-      pm2 stop ${js}.js 2>/dev/null
-      pm2 flush
-      pm2 start -a ${js}.js --watch "${ScriptsDir}/${js}.js" --name="${js}"
-    else
-      if [[ $(ps -ef | grep "${js}" | grep -v "grep") != "" ]]; then
-        ps -ef | grep "${js}" | grep -v "grep" | awk '{print $2}' | xargs kill -9
-      fi
-      [ ! -d ${LogDir}/${js} ] && mkdir -p ${LogDir}/${js}
-      LogTime=$(date "+%Y-%m-%d-%H-%M-%S")
-      LogFile="${LogDir}/${js}/${LogTime}.log"
-      Run_Nohup ${js} >/dev/null 2>&1
-    fi
-  done
-}
 ## 重置密码
 function Reset_Pwd {
   cp -f ${ShellDir}/sample/auth.json ${ConfigDir}/auth.json
@@ -347,9 +324,6 @@ case $# in
     case $1 in
       hangup)
         Run_HangUp
-        ;;
-      balloon)
-        Run_Balloon
         ;;
       resetpwd)
         Reset_Pwd
