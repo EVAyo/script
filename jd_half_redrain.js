@@ -81,7 +81,7 @@ function getRedRainURL() {
 function getRedRain() {
   return new Promise(resolve => {
     const body = {"actId":$.acid};
-    console.log(body)
+    console.log($.acid)
     $.get(taskUrl('noahRedRainLottery', body), (err, resp, data) => {
       try {
         if (err) {
