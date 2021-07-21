@@ -3,7 +3,7 @@ name:  #action名字，随便起
 env:
   ID: 
   URL: 
-  REPO: main
+  BRANCH: main
 on:
   schedule:
     - cron: '1 0,15 * * *'
@@ -30,7 +30,7 @@ jobs:
         if: env.PAT
         with:
           source_repo: ${URL} #关键内容，对方github库信息
-          source_branch: ${REPO}
+          source_branch: ${BRANCH}
           destination_branch: ${ID}
           github_token: ${{ secrets.PAT }}
       # 我自己同步到gitee使用，其他人可忽略
