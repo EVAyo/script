@@ -147,3 +147,5 @@
 10 10-20/1 * * * node /scripts/jd_joy_run.js >> /scripts/logs/jd_joy_run.log 2>&1
 # 图形验证签到
 35 0,9 * * * node /scripts/jd_sign.js >> /scripts/logs/jd_sign.log 2>&1
+# 升级赚京豆
+41 1,9 * * * node /scripts/jd_mmdou.js >> /scripts/logs/jd_mmdou.log 2>&1
