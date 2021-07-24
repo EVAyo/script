@@ -2,14 +2,19 @@
  * @Author: maggot-code
  * @Date: 2021-07-24 19:00:42
  * @LastEditors: maggot-code
- * @LastEditTime: 2021-07-24 21:49:34
+ * @LastEditTime: 2021-07-24 23:28:46
  * @Description: file content
 -->
 <template>
     <li class="a-soul-fan-search-content-cell" @click="cellClick">
         <div class="cell-head">
-            <p :style="unameStyle">{{ cellParams.uname }}</p>
-            <p>{{ cellParams.officialVerify }}</p>
+            <div class="head-face">
+                <img :src="cellParams.face" :alt="cellParams.uid" />
+            </div>
+            <div class="head-main">
+                <p :style="unameStyle">{{ cellParams.uname }}</p>
+                <p>{{ cellParams.officialVerify }}</p>
+            </div>
         </div>
         <p class="cell-body">{{ cellParams.sign }}</p>
     </li>
@@ -33,11 +38,13 @@ export default {
     //监听属性 类似于data概念
     computed: {
         cellParams() {
-            const { uname, sign, official_verify } = this.cell;
+            const { uid, uname, face, sign, official_verify } = this.cell;
             const { desc } = official_verify;
 
             return {
+                uid,
                 uname,
+                face,
                 officialVerify: desc,
                 sign,
             };
@@ -49,11 +56,6 @@ export default {
             return {
                 color: nickname_color,
             };
-        },
-        face() {
-            const { face } = this.cell;
-
-            return face;
         },
     },
     //监控data中的数据变化
