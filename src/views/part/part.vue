@@ -2,7 +2,7 @@
  * @Author: maggot-code
  * @Date: 2021-07-24 16:59:06
  * @LastEditors: maggot-code
- * @LastEditTime: 2021-07-24 21:50:03
+ * @LastEditTime: 2021-07-24 23:02:47
  * @Description: file content
 -->
 <template>
@@ -116,7 +116,8 @@ export default {
             // });
         },
         handlerCell(cell) {
-            console.log(cell);
+            const { mid } = cell;
+            window.open(`https://space.bilibili.com/${mid}`);
         },
         setSearchReady(success) {
             this.searchLoad = true;
