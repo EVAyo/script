@@ -2,7 +2,7 @@
  * @Author: maggot-code
  * @Date: 2021-07-24 16:59:06
  * @LastEditors: maggot-code
- * @LastEditTime: 2021-07-24 23:27:36
+ * @LastEditTime: 2021-07-24 23:37:41
  * @Description: file content
 -->
 <template>
@@ -74,7 +74,7 @@ export default {
         return {
             loading: false,
             searchLoad: false,
-            searchValue: "15891534",
+            searchValue: "",
             searchList: [],
         };
     },
