@@ -4,9 +4,13 @@ import router from './router'
 import store from './store'
 
 Vue.config.productionTip = false
+// Vue.prototype.$DeviceType = 
 
+// 重置全局样式
+import './assets/css/reset.css'
+// import './assets/js/commin.js'
 new Vue({
   router,
-  store,
+  // store,
   render: h => h(App)
 }).$mount('#app')
