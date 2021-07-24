@@ -2,7 +2,7 @@
  * @Author: maggot-code
  * @Date: 2021-07-24 16:59:06
  * @LastEditors: maggot-code
- * @LastEditTime: 2021-07-24 19:52:36
+ * @LastEditTime: 2021-07-24 21:50:03
  * @Description: file content
 -->
 <template>
@@ -97,22 +97,40 @@ export default {
 
             this.loading = true;
 
-            testSearch({ searchValue: this.searchValue }).then((response) => {
-                const { code, data } = response;
+            fetch(`http://ilovemiku.cn:7123/cfj/uid=${this.searchValue}`)
+                .then(this.setSearchReady)
+                .then(this.setSearchResponse);
 
-                const { search, list } = data;
+            // testSearch({ searchValue: this.searchValue }).then((response) => {
+            //     const { code, data } = response;
 
-                if (code === 1002) {
-                    console.log(search);
-                    console.log(list);
-                    this.searchList = list;
-                    this.searchLoad = true;
-                    this.loading = false;
-                }
-            });
+            //     const { search, list } = data;
+
+            //     if (code === 1002) {
+            //         console.log(search);
+            //         console.log(list);
+            //         this.searchList = list;
+            //         this.searchLoad = true;
+            //         this.loading = false;
+            //     }
+            // });
         },
         handlerCell(cell) {
             console.log(cell);
+        },
+        setSearchReady(success) {
+            this.searchLoad = true;
+
+            this.loading = false;
+
+            return success.json();
+        },
+        setSearchResponse(response) {
+            const { data } = response;
+
+            const { list } = data;
+
+            this.searchList = list;
         },
     },
     //生命周期 - 创建完成（可以访问当前this实例）

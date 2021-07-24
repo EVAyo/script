@@ -2,13 +2,16 @@
  * @Author: maggot-code
  * @Date: 2021-07-24 19:00:42
  * @LastEditors: maggot-code
- * @LastEditTime: 2021-07-24 19:35:16
+ * @LastEditTime: 2021-07-24 21:49:34
  * @Description: file content
 -->
 <template>
     <li class="a-soul-fan-search-content-cell" @click="cellClick">
-        <h3>{{ name }}</h3>
-        <p>主页：{{ address }}</p>
+        <div class="cell-head">
+            <p :style="unameStyle">{{ cellParams.uname }}</p>
+            <p>{{ cellParams.officialVerify }}</p>
+        </div>
+        <p class="cell-body">{{ cellParams.sign }}</p>
     </li>
 </template>
 
@@ -29,13 +32,28 @@ export default {
     },
     //监听属性 类似于data概念
     computed: {
-        name() {
-            const { name } = this.cell;
-            return name;
+        cellParams() {
+            const { uname, sign, official_verify } = this.cell;
+            const { desc } = official_verify;
+
+            return {
+                uname,
+                officialVerify: desc,
+                sign,
+            };
         },
-        address() {
-            const { address } = this.cell;
-            return address || "无法获取！";
+        unameStyle() {
+            const { vip } = this.cell;
+            const { nickname_color } = vip;
+
+            return {
+                color: nickname_color,
+            };
+        },
+        face() {
+            const { face } = this.cell;
+
+            return face;
         },
     },
     //监控data中的数据变化
