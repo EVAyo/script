@@ -1,0 +1,31 @@
+.turn-down-enter {
+  position: absolute;
+  transform: translate3d(100%, 0, 0);
+}
+.turn-down-leave-to {
+  /* transform: translate3d(-20%, 0, 0); */
+}
+.turn-down-enter-active,
+.turn-down-leave-active {
+  position: absolute;
+  transition: transform 2s ease;
+  // z-index: 1000;
+}
+
+
+
+
+
+.turn-right-enter {
+  /* transform: translate3d(-20%, 0, 0); */
+}
+.turn-right-leave-to {
+  position: fixed;
+}
+.turn-right-enter-active,
+.turn-right-leave-active {
+  transition: transform 2s ease;
+}
+.turn-right-leave-active {
+  z-index: 2;
+}

@@ -13,3 +13,19 @@ legend { color:#000; }
 fieldset, img { border:0; }
 button, input, select, textarea { font-size:100%; } 
 table { border-collapse:collapse; border-spacing:0; } 
+html{
+  color: #000;
+  overflow-x: hidden;
+  font-size: 10px;
+  height: 100%;
+  -webkit-tap-highlight-color: transparent;
+  /*隐藏滚动条，当IE下溢出，仍然可以滚动*/
+  -ms-overflow-style: none;
+  /*火狐下隐藏滚动条*/
+  overflow: -moz-scrollbars-none;
+  scrollbar-width: none;
+}
+/*谷歌适用*/
+::-webkit-scrollbar {
+  display: none;
+}
