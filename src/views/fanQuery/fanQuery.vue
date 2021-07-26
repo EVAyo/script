@@ -3,28 +3,28 @@
       <div class="row">
         <div class="leftImg">
           <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/ava.png" style="max-width:250px;" alt="" ></div>
+            <div class="cardLayout0"><img src="../../assets/img/fansQuery/ava.png" style="max-width:400px;" alt="" ></div>
             <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorAva.png" alt=""></div>
             <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/A.png" alt=""></div>
           </div>
           <div class="displayCard fansNumDiv">
+            <br><br><br><br><br>
+            <p><img src="../../assets/img/fansQuery/bilibili.png" style="width:50%;" alt=""><span class="fontConfig">{{ avaBFans}}</span></p>
             <br><br><br><br>
-            <p><img src="../../assets/img/fansQuery/bilibili.png" style="width:40%;" alt=""><span class="fontConfig">{{ avaBFans}}</span></p>
-            <br><br><br>
             <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig">{{ avaDFans}}</span></p>
           </div>
         </div>
 
         <div class="rightImg">
           <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/bella.png" style="max-width:250px;" alt="" ></div>
+            <div class="cardLayout0"><img src="../../assets/img/fansQuery/bella.png" style="max-width:400px;" alt="" ></div>
             <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorBella.png" alt=""></div>
             <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/B.png" alt=""></div>
           </div>
           <div class="displayCard fansNumDiv">
-            <br><br><br><br>
+            <br><br><br><br><br>
             <p><img src="../../assets/img/fansQuery/bilibili.png" style="width:40%;" alt=""><span class="fontConfig">{{bellaBFans}}</span></p>
-            <br><br><br>
+            <br><br><br><br>
             <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig">{{bellaDFans}}</span></p>
           </div>
         </div>
@@ -33,14 +33,14 @@
         
         <div class="leftImg">
           <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/carol.png" style="max-width:250px;" alt="" ></div>
+            <div class="cardLayout0"><img src="../../assets/img/fansQuery/carol.png" style="max-width:400px;" alt="" ></div>
             <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorCarol.png" alt=""></div>
             <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/C.png" alt=""></div>
           </div>
           <div class="displayCard fansNumDiv">
-            <br><br><br><br>
+            <br><br><br><br><br>
             <p><img src="../../assets/img/fansQuery/bilibili.png" style="width:40%;" alt=""><span class="fontConfig">{{carolBFans}}</span></p>
-            <br><br><br>
+            <br><br><br><br>
             <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig" >{{carolDFans}}</span></p>
           </div>
           
@@ -51,14 +51,14 @@
 
         <div class="rightImg">
           <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/diana.png" style="max-width:250px;" alt="" ></div>
+            <div class="cardLayout0"><img src="../../assets/img/fansQuery/diana.png" style="max-width:400px;" alt="" ></div>
             <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorDiana.png" alt=""></div>
             <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/D.png" alt=""></div>
           </div>
           <div class="displayCard fansNumDiv">
-            <br><br><br><br>
+            <br><br><br><br><br>
             <p><img src="../../assets/img/fansQuery/bilibili.png" style="width:40%;" alt=""><span class="fontConfig">{{dianaBFans}}</span></p>
-            <br><br><br>
+            <br><br><br><br>
             <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig">{{dianaDFans}}</span></p>
           </div>
           
@@ -69,14 +69,14 @@
         
         <div class="leftImg">
           <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/eileen.png" style="max-width:250px;" alt="" ></div>
+            <div class="cardLayout0"><img src="../../assets/img/fansQuery/eileen.png" style="max-width:400px;" alt="" ></div>
             <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorEileen.png" alt=""></div>
             <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/E.png" alt=""></div>
           </div>
           <div class="displayCard fansNumDiv">
-            <br><br><br><br>
+            <br><br><br><br><br>
             <p><img src="../../assets/img/fansQuery/bilibili.png" style="width:40%;" alt=""><span class="fontConfig">{{eileenBFans}}</span></p>
-            <br><br><br>
+            <br><br><br><br>
             <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig">{{eileenDFans}}</span></p>
           </div>
           
@@ -87,14 +87,14 @@
 
         <div class="rightImg">
           <div class="displayCard">
-            <div class="cardLayout0 cardAcao0"><img src="../../assets/img/fansQuery/acao.png" style="max-width:180px;" alt="" ></div>
+            <div class="cardLayout0 cardAcao0"><img src="../../assets/img/fansQuery/acao.png" style="max-width:300px;" alt="" ></div>
             <div class="cardLayout1 cardAcao1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorOfficial.png" alt=""></div>
             <div class="cardLayout2 cardAcao2"><img class="backgroundImg" src="../../assets/img/fansQuery/official.png" alt=""></div>
           </div>
           <div class="displayCard fansNumDiv">
-            <br><br><br><br>
+            <br><br><br><br><br>
             <p><img src="../../assets/img/fansQuery/bilibili.png" style="width:40%;" alt=""><span class="fontConfig">{{officialBFans}}</span></p>
-            <br><br><br>
+            <br><br><br><br>
             <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig">{{officialDFans}}</span></p>
           </div>
           
@@ -118,7 +118,7 @@ export default {
       carolBFans:0,
       carolDFans:0,
       dianaBFans:0,
-      dianaDFans:0,
+      dianaDFans:1000000,
       eileenBFans:0,
       eileenDFans:0,
       officialBFans:0,
@@ -160,6 +160,24 @@ export default {
     },(err)=>{
       console.log(err);
     })
+    axios.get('douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAxOXMMwlShWjp4DONMwfEEfloRYiC1rXwQ64eydoZ0ORPFVGysZEd4zMt8AjsTbyt').then((dat)=>{
+      this.avaDFans=dat.data.user_info.follower_count;
+    })
+    axios.get('douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAlpnJ0bXVDV6BNgbHUYVWnnIagRqeeZyNyXB84JXTqAS5tgGjAtw0ZZkv0KSHYyhP').then((dat)=>{
+      this.bellaDFans=dat.data.user_info.follower_count;
+    })
+    axios.get('douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAuZHC7vwqRhPzdeTb24HS7So91u9ucl9c8JjpOS2CPK-9Kg2D32Sj7-mZYvUCJCya').then((dat)=>{
+      this.carolDFans=dat.data.user_info.follower_count;
+    })
+    axios.get('douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAA5ZrIrbgva_HMeHuNn64goOD2XYnk4ItSypgRHlbSh1c').then((dat)=>{
+      this.dianaDFans=dat.data.user_info.follower_count;
+    })
+    axios.get('douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAxCiIYlaaKaMz_J1QaIAmHGgc3bTerIpgTzZjm0na8w5t2KTPrCz4bm_5M5EMPy92').then((dat)=>{
+      this.eileenDFans=dat.data.user_info.follower_count;
+    })
+    axios.get('douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAflgvVQ5O1K4RfgUu3k0A2erAZSK7RsdiqPAvxcObn93x2vk4SKk1eUb6l_D4MX-n').then((dat)=>{
+      this.officialDFans=dat.data.user_info.follower_count;
+    })
   }
 }
 </script>
@@ -178,62 +196,62 @@ export default {
 }
 .leftImg{
   margin-left:7vw;
-  margin-top:40px;
+  margin-top:55px;
   width:42%;
   float:left;
-  padding-bottom: 20px;;
+  padding-bottom: 60px;
 }
 .rightImg{
-  margin-right: 5vw;
+  margin-right: 4vw;
   width:42%;
   float:right;
-  margin-top:40px;
-  padding-bottom: 20px;
+  margin-top:55px;
+  padding-bottom: 60px;
 }
 .displayCard{
   position: relative;
   width: 160px;
 }
 .backgroundImg{
-  max-width: 100px;
+  max-width: 140px;
 }
 .cardLayout0{
   position: absolute;
   z-index: 0;
   top:-3rem;
-  left:-2.5rem;
+  left:-3rem;
   overflow: hidden;
-  height:14.77rem;
+  height:23.44rem;
 }
 .cardLayout1{
   position: absolute;
   z-index: -1;
-  top:5rem;
-  left:24%;
+  top:10.99rem;
+  left:5.6rem;
 }
 .cardLayout2{
   position: absolute;
   z-index: -1;
-  top:5.5rem;
-  left:24%;
+  top:11.7rem;
+  left:5.6rem;
 }
 .fansNumDiv{
-  margin-top:0rem;
-  margin-left:10rem;
+  margin-top:3rem;
+  margin-left:16rem;
 }
 .fansNumDiv p{
-  width:12rem;
+  width:13rem;
 }
 .cardAcao0{
-  width: 100%;
-  top:2.5rem;
-  left:-1.4rem;
+  width: 15rem;
+  top:4.9rem;
+  left:-0.64rem;
 }
 .cardAcao1{
-  top:0rem;
+  top:4rem;
 }
 .cardAcao2{
-  top:0rem;
+  top:4rem;
   opacity: 0.5;
   overflow: hidden;
   height:12rem;
