@@ -15,14 +15,15 @@ export default {
 <style lang="less" scoped>
 .index{
   position: relative;
-  // width: 100%;
-  // height: 100%;
-  width: calc(100% - 20vw);
+  width: 100%;
   height: 100vh;
+  z-index: 0;
 }
 .index-bg{
     width: 100%;
     height: 100vh;
+    filter: blur(20px);
     object-fit: cover
+
 }
 </style>
