@@ -1,5 +1,7 @@
 <template>
   <div class="fanQuery">
+
+    <div class="pages">
       <div class="row">
         <div class="leftImg">
           <div class="displayCard">
@@ -97,10 +99,10 @@
             <br><br><br><br>
             <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig">{{officialDFans}}</span></p>
           </div>
-          
-          
         </div>
       </div>
+    </div>
+
   </div>
 </template>
 
@@ -191,8 +193,13 @@ export default {
 
 .fanQuery{
   background-color:#1d1d1d;
-  z-index: -9;
+  z-index: 0;
   width: 100%;
+  overflow: hidden;
+}
+.pages{
+  min-height: 100px;
+  overflow:auto;
 }
 .leftImg{
   margin-left:10%;
