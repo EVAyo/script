@@ -1,9 +1,11 @@
 <template>
   <div class="fanQuery">
+
+    <div class="pages">
       <div class="row">
         <div class="leftImg">
           <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/ava.png" style="max-width:400px;" alt="" ></div>
+            <div class="cardLayout0"><img src="../../assets/img/fansQuery/ava.png" style="max-width:300px;" alt="" ></div>
             <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorAva.png" alt=""></div>
             <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/A.png" alt=""></div>
           </div>
@@ -17,7 +19,7 @@
 
         <div class="rightImg">
           <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/bella.png" style="max-width:400px;" alt="" ></div>
+            <div class="cardLayout0"><img src="../../assets/img/fansQuery/bella.png" style="max-width:300px;" alt="" ></div>
             <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorBella.png" alt=""></div>
             <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/B.png" alt=""></div>
           </div>
@@ -33,7 +35,7 @@
         
         <div class="leftImg">
           <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/carol.png" style="max-width:400px;" alt="" ></div>
+            <div class="cardLayout0"><img src="../../assets/img/fansQuery/carol.png" style="max-width:300px;" alt="" ></div>
             <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorCarol.png" alt=""></div>
             <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/C.png" alt=""></div>
           </div>
@@ -51,7 +53,7 @@
 
         <div class="rightImg">
           <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/diana.png" style="max-width:400px;" alt="" ></div>
+            <div class="cardLayout0"><img src="../../assets/img/fansQuery/diana.png" style="max-width:300px;" alt="" ></div>
             <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorDiana.png" alt=""></div>
             <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/D.png" alt=""></div>
           </div>
@@ -69,7 +71,7 @@
         
         <div class="leftImg">
           <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/eileen.png" style="max-width:400px;" alt="" ></div>
+            <div class="cardLayout0"><img src="../../assets/img/fansQuery/eileen.png" style="max-width:300px;" alt="" ></div>
             <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorEileen.png" alt=""></div>
             <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/E.png" alt=""></div>
           </div>
@@ -87,7 +89,7 @@
 
         <div class="rightImg">
           <div class="displayCard">
-            <div class="cardLayout0 cardAcao0"><img src="../../assets/img/fansQuery/acao.png" style="max-width:300px;" alt="" ></div>
+            <div class="cardLayout0 cardAcao0"><img src="../../assets/img/fansQuery/acao.png" style="max-width:200px;" alt="" ></div>
             <div class="cardLayout1 cardAcao1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorOfficial.png" alt=""></div>
             <div class="cardLayout2 cardAcao2"><img class="backgroundImg" src="../../assets/img/fansQuery/official.png" alt=""></div>
           </div>
@@ -97,10 +99,10 @@
             <br><br><br><br>
             <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig">{{officialDFans}}</span></p>
           </div>
-          
-          
         </div>
       </div>
+    </div>
+
   </div>
 </template>
 
@@ -118,7 +120,7 @@ export default {
       carolBFans:0,
       carolDFans:0,
       dianaBFans:0,
-      dianaDFans:1000000,
+      dianaDFans:0,
       eileenBFans:0,
       eileenDFans:0,
       officialBFans:0,
@@ -191,49 +193,53 @@ export default {
 
 .fanQuery{
   background-color:#1d1d1d;
-  z-index: -9;
+  z-index: 0;
   width: 100%;
+  overflow: hidden;
+}
+.pages{
+  min-height: 100px;
+  overflow:auto;
 }
 .leftImg{
-  margin-left:7vw;
-  margin-top:55px;
+  margin-left:10%;
+  
   width:42%;
   float:left;
-  padding-bottom: 60px;
+  margin-top:10px;
 }
 .rightImg{
-  margin-right: 4vw;
+  margin-right: 5%;
   width:42%;
   float:right;
-  margin-top:55px;
-  padding-bottom: 60px;
+  margin-top:10px;
 }
 .displayCard{
   position: relative;
   width: 160px;
 }
 .backgroundImg{
-  max-width: 140px;
+  max-width: 100px;
 }
 .cardLayout0{
   position: absolute;
   z-index: 0;
-  top:-3rem;
-  left:-3rem;
+  top:-2rem;
+  left: -5.5rem;
   overflow: hidden;
-  height:23.44rem;
+  height:25.2rem;
 }
 .cardLayout1{
   position: absolute;
   z-index: -1;
-  top:10.99rem;
-  left:5.6rem;
+  top:12.4rem;
+  left:5rem;
 }
 .cardLayout2{
   position: absolute;
   z-index: -1;
-  top:11.7rem;
-  left:5.6rem;
+  top:13.2rem;
+  left:5rem;
 }
 .fansNumDiv{
   margin-top:3rem;
@@ -243,9 +249,9 @@ export default {
   width:13rem;
 }
 .cardAcao0{
-  width: 15rem;
-  top:4.9rem;
-  left:-0.64rem;
+  width: 17rem;
+  top:6.2rem;
+  left:-2.2rem;
 }
 .cardAcao1{
   top:4rem;
