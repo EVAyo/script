@@ -158,18 +158,25 @@ export default {
     flex-direction: column;
     background-color: black;
     overflow: hidden;
+    
   };
   .nav-long {
-    width: 20vw;
+    width: 37vh;
+    max-width: 370px;
+    min-width: 185px;
   }
   .nav-short {
-    width: 10vw;
+    width: 18.5vh;
+    max-width: 185px;
+    min-width: 92.5px
   }
 
 // 导航栏item 
   .nav-item-common{
       margin-bottom: 1px;
       height: 11.1vh;
+      max-height: 222px;
+      min-height: 55.5px;
       display: flex;
       width: 100%;
       position: relative;
