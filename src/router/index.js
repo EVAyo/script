@@ -41,7 +41,21 @@ const routes = [
         path: '/tools/part',
         name: "part",
         component: () =>
-          import(/*webpackChunkname: "tools/fanQuery" */ '../views/part/part.vue')
+          import(/*webpackChunkname: "tools/part" */ '../views/part/part.vue')
+      },
+      // 词云
+      {
+        path:'/tools/wordCloud',
+        name:'wordCloud',
+        component: () =>
+        import(/*webpackChunkname: "tools/part" */ '../views/wordCloud/wordCloud.vue')
+      },
+      // 随机溜冰
+      {
+        path:'/tools/randomVideo',
+        name:'randomVideo',
+        component: () =>
+        import(/*webpackChunkname: "tools/randomVideo" */ '../views/randomVideo/randomVideo.vue')
       }
     ]
   }
