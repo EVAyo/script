@@ -2,7 +2,7 @@
  * @Author: maggot-code
  * @Date: 2021-07-24 16:59:06
  * @LastEditors: maggot-code
- * @LastEditTime: 2021-07-24 23:37:41
+ * @LastEditTime: 2021-07-27 12:31:31
  * @Description: file content
 -->
 <template>
@@ -21,9 +21,7 @@
                     class="search-submit"
                     :class="submitDisable"
                     @click="handlerSearch"
-                >
-                    查成分
-                </div>
+                ></div>
             </div>
 
             <div class="body-content">
