@@ -8,10 +8,8 @@
 13 0,12,18 * * * node /scripts/jd_walmart.js >> /scripts/logs/jd_walmart.log 2>&1
 #极速版发财大赢家 2021-07-15到2021-08-15
 20,40 0-23/1 * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
-#燃动夏季互助
-14/41 7-14 * * * node /scripts/jd_summer_movement_help.js >> /scripts/logs/jd_summer_movement_help.log 2>&1
-#燃动夏季
-12 0,6-23/2 * * * node /scripts/jd_summer_movement.js >> /scripts/logs/jd_summer_movement.log 2>&1
+#惊喜88红包
+21 0,12,22 * * * node /scripts/jd_jxlhb.js >> /scripts/logs/jd_jxlhb.log 2>&1
 #燃动夏季下注 活动时间：2021-07-8到2021-08-8
 11 12,18,20 * * * node /scripts/jd_summer_movement_bet.js >> /scripts/logs/jd_summer_movement_bet.log 2>&1
 #女装盲盒 活动时间：2021-05-24到2021-06-22
