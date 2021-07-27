@@ -15,8 +15,16 @@ module.exports = {
         changeOrigin:true,
         pathRewrite:{
           '^/api':'/'
+          
         }
-      }
+      },
+
+      '/emoji':{
+        target:'https://meme-api.asoulfan.cn/?page=1&limit=5',
+        changeOrigin:true,
+        pathRewrite:{
+          '^/emoji':'/'
+
     }
   }
-}
+    }}}

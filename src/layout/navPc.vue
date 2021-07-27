@@ -91,9 +91,9 @@ export default {
         {
           imgShort: require("../assets/img/contents/meme-short.png"),
           imgLong: require("../assets/img/contents/meme-long.png"),
-          routeName: "",
+          routeName: "emoji",
           titleName:"表情包收集",
-          route: "",
+          route: "/tools/emoji",
         },
         {
           imgShort: require("../assets/img/contents/liveFile-short.png"),

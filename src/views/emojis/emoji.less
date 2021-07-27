@@ -1,0 +1,62 @@
+.a-soul-fan-part{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: calc(100% - 20vw);
+    height: 100vh;
+    background: #282828 url('~@/assets/img/part-bg.png') no-repeat center center;
+    background-size: contain;
+    overflow: hidden;
+    &::before{
+        content: '';
+        display: block;
+        width: 100%;
+        height: 140px;
+    }
+
+    & .part-body,
+    & .part-footer{
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    & .part-body{
+        align-self: center;
+        display: flex;
+        flex-direction: column;
+        width: 75%;
+
+        & .body-content{
+            height: 460px;
+            padding: 20px;
+            margin-bottom: 40px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            &>p{
+                line-height: 32px;
+                font-size: 24px;
+                color: #f2f2f2;
+            }
+        }
+
+        & .body-support{
+            text-align: center;
+            line-height: 32px;
+            font-size: 24px;
+            color: #979797;
+        }
+    }
+
+    & .part-footer{
+        align-self: center;
+        margin-right: 30px;
+        &>p{
+            text-align: right;
+            height: 24px;
+            line-height: 24px;
+            font-size: 18px;
+            color: #6a6a6a;
+        }
+    }
+}
