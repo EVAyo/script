@@ -194,10 +194,11 @@ export default {
   -moz-transition: all 0.5s linear; /* Firefox 4 */
   -webkit-transition: all 0.5s linear; /* Safari 和 Chrome */
   -o-transition: all 0.5s linear; /* Opera */
-  background-color: rgba(40, 40, 40, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .nav-mask:hover {
-  background-color: rgba(40, 40, 40, 0);
+  // background-color: rgba(0, 0, 0, 0);
+  opacity: 0;
 }
 
 .temp {
