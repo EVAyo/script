@@ -1,14 +1,6 @@
-<!--
- * @Author: maggot-code
- * @Date: 2021-07-24 16:44:50
- * @LastEditors: maggot-code
- * @LastEditTime: 2021-07-24 17:03:43
- * @Description: file content
--->
 <template>
   <div class="contain">
-    <div 
-    class="nav-common"
+    <div class="nav-common"
     :class="[isLongNav ? 'nav-long' : 'nav-short']"
     >
     <!--  -->
@@ -37,20 +29,15 @@
           <img v-show="isLongNav" class="img" :src="item.imgLong" alt="" />
           <img v-show="!isLongNav" class="img" :src="item.imgShort" alt="" />
           <!--  <div v-if="isLongNav" class="text">{{ item.Name }}</div> -->
-          <!-- <div v-if="isLongNav" class="text">
-            {{ item.Name }}
-          </div> -->
           <div class="nav-cover" title="test"></div>
       </router-link>
     </div>
     <!-- <div class="route-view-class"> -->
-    <transition :name="tempCss">
-      <!-- <div class="route-view-class" >
-
-        </div> -->
-      <router-view />
-    </transition>
-    <!-- </div> -->
+      <div class="route-view-class">
+            <transition :name="transitionName"     >
+              <router-view />
+            </transition>
+      </div>
   </div>
 </template>
 
@@ -59,7 +46,7 @@ export default {
   name: "Nav",
   data() {
     return {
-      tempCss: "slide-right",
+      transitionName: "slide-left",
       isLongNav: this.$route.name == "Index" ? true : false,
       routeList: [
           {
@@ -78,7 +65,7 @@ export default {
           imgShort:require("../assets/img/contents/WordCloud-short.png"),
           imgLong: require("../assets/img/contents/WordCloud-long.png"),
           // Name: "词云",
-          route: "",
+          route: "/tools/wordCloud",
         },
          
         {
@@ -110,7 +97,7 @@ export default {
            imgShort:require("../assets/img/contents/random-short.png"),
           imgLong:require("../assets/img/contents/random-long.png"),
           // Name: "随机溜冰",
-          route: "",
+          route: "/tools/randomVideo",
         },
       
       
@@ -145,7 +132,7 @@ export default {
 // 页面容器
 .contain {
   display: flex;
-  // overflow: scroll;
+  overflow: hidden;
   max-height: 100vh;
 }
 // 导航栏最外层
@@ -203,9 +190,14 @@ export default {
   }
 
 .route-view-class {
+  
   position: relative;
-  width: 100%;
-  // height: 100%;
+  flex: auto;
+  // width: 100%;
+  height: 100vh;
+  // overflow: scroll;
+  overflow-y: scroll;
+  scrollbar-width: thin;
 }
 
   .img {

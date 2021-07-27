@@ -52,3 +52,24 @@
 // .slide-left-leave-active {
 //     transform: translateX(-100%);
 // }
+
+.slide-left-enter, .slide-right-leave-to {
+  opacity: 0;
+  transform: translateY(100%)
+}
+
+.slide-left-leave-to, .slide-right-enter {
+  opacity: 0;
+  transform: translateY(-50%)
+}
+
+.slide-left-enter-active,  
+.slide-right-enter-active,
+.slide-left-leave-active,
+.slide-right-leave-active{
+  width: 100%;
+  transition: 1s;
+  position: absolute !important;
+  // position: relative;
+  top:0;
+}
