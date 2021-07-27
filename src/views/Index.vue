@@ -20,10 +20,10 @@ export default {
   z-index: 0;
 }
 .index-bg{
-    // width: 100%;
+    width: 100%;
     height: 100vh;
     filter: blur(20px);
-    // object-fit: cover
+    object-fit: cover
 
 }
 </style>
