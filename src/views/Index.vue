@@ -47,7 +47,7 @@ export default {
   img{
     width: 69vw;
     height: 14vw;
-    max-height: 28vh;
+    max-height: 22vh;
     // position: relative;
     // right: 0;
     // height: 20%;

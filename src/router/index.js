@@ -57,13 +57,13 @@ const routes = [
         component: () =>
         import(/*webpackChunkname: "tools/randomVideo" */ '../views/randomVideo/randomVideo.vue')
       },
-//表情包合集
-{
-  path: '/tools/emoji',
-  name: "part",
-  component: () =>
-    import(/*webpackChunkname: "tools/emoji" */ '../views/emojis/emoji.vue')
-}
+      //表情包合集
+      {
+        path: '/tools/emoji',
+        name: "emoji",
+        component: () =>
+          import(/*webpackChunkname: "tools/emoji" */ '../views/emojis/emoji.vue')
+      }
 
 
     ]

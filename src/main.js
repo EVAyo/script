@@ -3,7 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
-
+// 引入全局请求
+import '@/assets/js/request.js'
 
 Vue.config.productionTip = false
 // Vue.prototype.$DeviceType = 
@@ -19,3 +20,4 @@ new Vue({
   // store,
   render: h => h(App)
 }).$mount('#app')
+// Vue.prototype.$request = axios;

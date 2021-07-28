@@ -10,21 +10,18 @@ module.exports = {
           '^/douyin':'/'
         }
       },
-      '/api':{
+      '/bilibili':{
         target:'http://api.bilibili.com',
         changeOrigin:true,
         pathRewrite:{
-          '^/api':'/'
-          
+          '^/bilibili':'/'
         }
       },
-
       '/emoji':{
-        target:'https://meme-api.asoulfan.cn/?page=1&limit=5',
+        target:'https://meme-api.asoulfan.cn/',
         changeOrigin:true,
         pathRewrite:{
           '^/emoji':'/'
-
-    }
+    },
   }
-    }}}
+}}}
