@@ -14,6 +14,10 @@ import waterfall from "vue-waterfall2";
 // 重置全局样式
 import './assets/css/reset.css'
 // import './assets/js/commin.js'
+
+Vue.use(waterfall)
+
+
 new Vue({
   router,
   // store,
