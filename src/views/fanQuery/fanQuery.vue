@@ -225,16 +225,16 @@ export default {
     };
   },
   components: {},
-  created() {
-    this.getBibiliFans();
-
-    this.getDouyinFans();
+  async created() {
+    this.$loading();
+    await this.getBibiliFans();
+    await this.getDouyinFans();
+    this.$closeLoading();
   },
   methods: {
     // 获取哔哩哔哩粉丝数
     async getBibiliFans() {
       try {
-        this.$loading();
         const resAvA = await this.$request(
           `bilibili/x/relation/stat?vmid=672346917`
         );
@@ -264,14 +264,12 @@ export default {
         // this.bilibiliFans.Name = res.follower
       } catch (error) {
         console.log(error);
-      } finally {
-        this.$closeLoading();
       }
     },
     // 获取抖音粉丝数
     async getDouyinFans() {
         try {
-            this.$loading();
+         
           const resAvA = await axios.get(
           "douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAxOXMMwlShWjp4DONMwfEEfloRYiC1rXwQ64eydoZ0ORPFVGysZEd4zMt8AjsTbyt"
           );
@@ -301,9 +299,7 @@ export default {
 
         } catch (error) {
           console.log(error);
-        }finally {
-        this.$closeLoading();
-      }
+        }
     },
   },
 };
