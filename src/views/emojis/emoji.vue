@@ -16,9 +16,7 @@
     <!-- 页面主体区域 -->
     <el-container>
  <!-- 侧边栏 -->
-       <el-image 
-       :src="'require(../../assets/img/coca.jpg)'"
-      ></el-image>
+   
       <el-aside :width="isCollapse ? '64px' : '200px'">
       </el-aside>
 
