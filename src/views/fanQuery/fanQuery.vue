@@ -2,12 +2,10 @@
   <div class="fanQuery">
 
     <div class="pages">
-      <div class="row">
-        <div class="leftImg">
+
+        <div class="cell-33">
           <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/ava.png" style="max-width:300px;" alt="" ></div>
-            <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorAva.png" alt=""></div>
-            <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/A.png" alt=""></div>
+            <div class="cardLayout0" style="margin-left:-1.5rem;margin-top:1.8rem"><img src="../../assets/img/fansQuery/ava.png" style="max-width:180px;" alt="" ></div>
           </div>
           <div class="displayCard fansNumDiv">
             <br><br><br><br><br>
@@ -17,11 +15,34 @@
           </div>
         </div>
 
-        <div class="rightImg">
+        <div class="cell-33">
           <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/bella.png" style="max-width:300px;" alt="" ></div>
-            <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorBella.png" alt=""></div>
-            <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/B.png" alt=""></div>
+            <div class="cardLayout0" style="margin-left:1.8rem;"><img src="../../assets/img/fansQuery/carol.png" style="max-width:130px;" alt="" ></div>
+          </div>
+          <div class="displayCard fansNumDiv">
+            <br><br><br><br><br>
+            <p><img src="../../assets/img/fansQuery/bilibili.png" style="width:40%;" alt=""><span class="fontConfig">{{carolBFans}}</span></p>
+            <br><br><br><br>
+            <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig" >{{carolDFans}}</span></p>
+          </div>
+        </div>
+
+
+        <div class="cell-33">
+          <div class="displayCard">
+            <div class="cardLayout0" style="margin-left:1.8rem;margin-top:1.8rem;"><img src="../../assets/img/fansQuery/eileen.png" style="max-width:130px;" alt="" ></div>
+          </div>
+          <div class="displayCard fansNumDiv">
+            <br><br><br><br><br>
+            <p><img src="../../assets/img/fansQuery/bilibili.png" style="width:40%;" alt=""><span class="fontConfig">{{eileenBFans}}</span></p>
+            <br><br><br><br>
+            <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig">{{eileenDFans}}</span></p>
+          </div>
+        </div>
+
+        <div class="cell-33">
+          <div class="displayCard">
+            <div class="cardLayout0" style="margin-left:1.7rem;margin-top:0.5rem;"><img src="../../assets/img/fansQuery/bella.png" style="max-width:155px;" alt="" ></div>
           </div>
           <div class="displayCard fansNumDiv">
             <br><br><br><br><br>
@@ -30,32 +51,10 @@
             <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig">{{bellaDFans}}</span></p>
           </div>
         </div>
-      </div>
-      <div class="row">
         
-        <div class="leftImg">
+        <div class="cell-33">
           <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/carol.png" style="max-width:300px;" alt="" ></div>
-            <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorCarol.png" alt=""></div>
-            <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/C.png" alt=""></div>
-          </div>
-          <div class="displayCard fansNumDiv">
-            <br><br><br><br><br>
-            <p><img src="../../assets/img/fansQuery/bilibili.png" style="width:40%;" alt=""><span class="fontConfig">{{carolBFans}}</span></p>
-            <br><br><br><br>
-            <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig" >{{carolDFans}}</span></p>
-          </div>
-          
-          
-        </div>
-
-
-
-        <div class="rightImg">
-          <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/diana.png" style="max-width:300px;" alt="" ></div>
-            <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorDiana.png" alt=""></div>
-            <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/D.png" alt=""></div>
+            <div class="cardLayout0" style="margin-left:1.9rem;margin-top:1.2rem;"><img src="../../assets/img/fansQuery/diana.png" style="max-width:140px;" alt="" ></div>
           </div>
           <div class="displayCard fansNumDiv">
             <br><br><br><br><br>
@@ -63,35 +62,11 @@
             <br><br><br><br>
             <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig">{{dianaDFans}}</span></p>
           </div>
-          
-          
-        </div>
-      </div>
-      <div class="row">
-        
-        <div class="leftImg">
-          <div class="displayCard">
-            <div class="cardLayout0"><img src="../../assets/img/fansQuery/eileen.png" style="max-width:300px;" alt="" ></div>
-            <div class="cardLayout1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorEileen.png" alt=""></div>
-            <div class="cardLayout2"><img class="backgroundImg" src="../../assets/img/fansQuery/E.png" alt=""></div>
-          </div>
-          <div class="displayCard fansNumDiv">
-            <br><br><br><br><br>
-            <p><img src="../../assets/img/fansQuery/bilibili.png" style="width:40%;" alt=""><span class="fontConfig">{{eileenBFans}}</span></p>
-            <br><br><br><br>
-            <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig">{{eileenDFans}}</span></p>
-          </div>
-          
-          
         </div>
 
-
-
-        <div class="rightImg">
+        <div class="cell-33">
           <div class="displayCard">
-            <div class="cardLayout0 cardAcao0"><img src="../../assets/img/fansQuery/acao.png" style="max-width:200px;" alt="" ></div>
-            <div class="cardLayout1 cardAcao1"><img class="backgroundImg" src="../../assets/img/fansQuery/colorOfficial.png" alt=""></div>
-            <div class="cardLayout2 cardAcao2"><img class="backgroundImg" src="../../assets/img/fansQuery/official.png" alt=""></div>
+            <div class="cardLayout0" style="margin-left:-1.7rem;margin-top:1.2rem;"><img src="../../assets/img/fansQuery/official.png" style="max-width:175px;" alt="" ></div>
           </div>
           <div class="displayCard fansNumDiv">
             <br><br><br><br><br>
@@ -100,7 +75,7 @@
             <p><img src="../../assets/img/fansQuery/douyin.png" style="width:18%;" alt=""><span class="fontConfig">{{officialDFans}}</span></p>
           </div>
         </div>
-      </div>
+
     </div>
 
   </div>
@@ -193,27 +168,22 @@ export default {
 
 .fanQuery{
   background-color:#1d1d1d;
-  z-index: 0;
   width: 100%;
+  height:100vh;
   overflow: hidden;
 }
 .pages{
-  min-height: 100px;
-  overflow:auto;
+  height:100%;
+  display:flex;
+  flex-direction: column;
+  flex-wrap:wrap;
+  align-content: space-around;
+  justify-content:space-around;
 }
-.leftImg{
-  margin-left:10%;
-  
-  width:42%;
-  float:left;
-  margin-top:10px;
+.cell-33{
+  flex:0 0 33%;
 }
-.rightImg{
-  margin-right: 5%;
-  width:42%;
-  float:right;
-  margin-top:10px;
-}
+
 .displayCard{
   position: relative;
   width: 160px;
@@ -224,22 +194,14 @@ export default {
 .cardLayout0{
   position: absolute;
   z-index: 0;
-  top:-2rem;
-  left: -5.5rem;
   overflow: hidden;
-  height:25.2rem;
 }
 .cardLayout1{
   position: absolute;
   z-index: -1;
-  top:12.4rem;
-  left:5rem;
 }
 .cardLayout2{
   position: absolute;
-  z-index: -1;
-  top:13.2rem;
-  left:5rem;
 }
 .fansNumDiv{
   margin-top:3rem;
@@ -247,20 +209,6 @@ export default {
 }
 .fansNumDiv p{
   width:13rem;
-}
-.cardAcao0{
-  width: 17rem;
-  top:6.2rem;
-  left:-2.2rem;
-}
-.cardAcao1{
-  top:4rem;
-}
-.cardAcao2{
-  top:4rem;
-  opacity: 0.5;
-  overflow: hidden;
-  height:12rem;
 }
 .fontConfig{
   margin-left: 8px;
