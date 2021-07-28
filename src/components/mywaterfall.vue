@@ -5,7 +5,7 @@
           @scroll="scroll" -->
       <template>
         <div class="cell-item" v-for="(item, index) in data" :key="index">
-          <img :src="item.url" alt="加载错误" />
+          <img :src="item.imgsrc" alt="加载错误" />
           <div class="item-body">
             <div class="item-desc">{{ item.title }}</div>
             <div class="item-footer">

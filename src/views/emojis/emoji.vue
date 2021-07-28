@@ -73,6 +73,9 @@ export default {
 .home-container {
   height: 80%;
   width: 90%;
+   background: #282828 url('~@/assets/img/emoji/bgp.png')
+    repeat 250px 50px;
+      background-size: 100% 100%;/*按比例缩放*/
 }
 .header {
   background-color: #6d25a7;
@@ -98,9 +101,20 @@ export default {
   }
 }
 
-.el-main {
+.main {
   background-color: #6d2a94;
   width: 100%;
+
+
+      position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+ 
+    height: 100vh;
+   
+    overflow: hidden;
+ 
 }
 
 @import "./emoji.less";
