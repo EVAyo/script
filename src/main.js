@@ -6,6 +6,7 @@ import store from './store'
 // 引入全局请求
 import '@/assets/js/request.js'
 
+import '@/plugins/element'
 Vue.config.productionTip = false
 // Vue.prototype.$DeviceType = 
 
