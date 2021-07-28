@@ -116,8 +116,6 @@ export default {
   watch: {
     $route: {
       handler: function (val, oldVal) {
-        console.log(val,oldVal);
-        debugger
         this.currentPageName = val.name;
         if (val.name == "Index") {
           this.isLongNav = true;
