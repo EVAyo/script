@@ -1,39 +1,45 @@
 module.exports = {
   devServer: {
-    open:false,
-    proxy:{
-      '/douyin':{
-        target:'https://www.iesdouyin.com',
-        secure:true,
-        changeOrigin:true,
-        pathRewrite:{
-          '^/douyin':'/'
+    open: false,
+    proxy: {
+      '/douyin': {
+        target: 'https://www.iesdouyin.com',
+        secure: true,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/douyin': '/'
         }
       },
-      '/api':{
-        target:'http://api.bilibili.com',
-        changeOrigin:true,
-        pathRewrite:{
-          '^/api':'/'
+      '/bilibili': {
+        target: 'http://api.bilibili.com',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/bilibili': '/'
+        }
+      },
+      '/emoji': {
+        target: 'https://meme-api.asoulfan.cn/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/emoji': '/'
 
         }
       },
-
-      '/emoji':{
-        target:'https://meme-api.asoulfan.cn/?page=1&limit=5',
-        changeOrigin:true,
-        pathRewrite:{
-          '^/emoji':'/'
-
-    }
-  },
       // 时间线
-      '/aSoul': {
+      '/timeline': {
         target: 'https://support-api.asoulfan.cn',
         ws: false,
         changeOrigin: true,
         pathRewrite: {
-          '^/aSoul': '/api'
+          '^/timeline': '/api'
         }
       },
-    }}}
+    }
+  }
+}
+
+},
+}
+}
+}
+}

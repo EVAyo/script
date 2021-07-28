@@ -70,6 +70,13 @@ const routes = [
         name: 'timeline',
         component: () =>
           import(/*webpackChunkname: "tools/timeline" */'../views/Timeline/Timeline')
+      },
+      //表情包合集
+      {
+        path: '/tools/emoji',
+        name: "emoji",
+        component: () =>
+          import(/*webpackChunkname: "tools/emoji" */ '../views/emojis/emoji.vue')
       }
 
 

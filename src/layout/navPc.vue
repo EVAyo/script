@@ -117,7 +117,7 @@ export default {
     $route: {
       handler: function (val, oldVal) {
         console.log(val,oldVal);
-        // debugger
+        debugger
         this.currentPageName = val.name;
         if (val.name == "Index") {
           this.isLongNav = true;

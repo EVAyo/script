@@ -1,87 +1,72 @@
    <template>
-
- <container class="home-container">
+  <container class="home-container">
     <!-- 头部区域 -->
     <header>
       <div>
-        <img src="logo.png" alt="">
+        <img src="logo.png" alt="" />
         <span>表情包合集</span>
       </div>
       <button type="info"></button>
     </header>
 
-
     <!-- 页面主体区域 -->
     <container>
-   
       <!-- 右侧内容主体 -->
-        <!-- 路由占位符 -->
-    <router-view></router-view>
+      <!-- 路由占位符 -->
+      <router-view></router-view>
       <!--  卡片视图区域 -->
-     <card>
-      <row>
-       <button type="primary">添加图片</button>
-     </row>
-    </card>
-    
-    <div class="block">
-    <span class="demonstration">默认</span>
-    
-    </div>
+      <card>
+        <row>
+          <button type="primary">添加图片</button>
+        </row>
+      </card>
 
-    
-    <div class="container">
-      <div class="waterfall">
-        <my-waterfall :data="listone"></my-waterfall>
+      <div class="block">
+        <span class="demonstration">默认</span>
       </div>
-   </div>
-    
-    
 
-      
+      <div class="container">
+        <div class="waterfall">
+          <my-waterfall :data="listone"></my-waterfall>
+        </div>
+      </div>
     </container>
   </container>
-
-   
 </template>
 
 <script>
-
 import myWaterfall from "@/components/mywaterfall";
-
 
 export default {
   components: { myWaterfall },
-  
+
   data() {
-
     return {
+      listone: [],
+      // 当前页
+      currentPage:1,
+    };
+  },
+  created() {
+    this.GetLIstImg(this.currentPage, 10);
+  },
 
- listone:[],
-}},
-
-  
-    //方法
- methods:{
- GetLIstImg(){
-
-    this.axios.get('https://meme-api.asoulfan.cn/?page=1&limit=5')
-    .then(response=>{
-      this.listone==response.data.data.url;
-    },(err)=>{
-      console.log(this.url);
-    })
-    axios.get('emoji/').then((dat)=>{
-      this.listone=response.data.data.listone;
-    },(err)=>{
-      console.log(this.id);
-    })
-    
- 
- }
-}
-}
-
+  methods: {
+    async GetLIstImg(page, pageSize) {
+      try {
+        this.$loading();
+        const res = await this.$request({
+          url: `emoji/?page=${page}&limit=${pageSize}`,
+        });
+        console.log(res);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.$closeLoading();
+      }
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
@@ -117,8 +102,6 @@ export default {
   background-color: #6d2a94;
   width: 100%;
 }
-
-
 
 @import "./emoji.less";
 </style>
