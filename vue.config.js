@@ -22,6 +22,13 @@ module.exports = {
         changeOrigin:true,
         pathRewrite:{
           '^/emoji':'/'
-    },
+    }
+  },
+  '/api':{
+    target:'https://support-api.asoulfan.cn/api',
+    changeOrigin:true,
+    pathRewrite:{
+      '^/api':'/'
+}
   }
 }}}
