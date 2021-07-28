@@ -15,7 +15,7 @@ module.exports = {
         changeOrigin:true,
         pathRewrite:{
           '^/api':'/'
-          
+
         }
       },
 
@@ -26,5 +26,14 @@ module.exports = {
           '^/emoji':'/'
 
     }
-  }
+  },
+      // 时间线
+      '/aSoul': {
+        target: 'https://support-api.asoulfan.cn',
+        ws: false,
+        changeOrigin: true,
+        pathRewrite: {
+          '^/aSoul': '/api'
+        }
+      },
     }}}

@@ -77,9 +77,9 @@ export default {
         {
           imgShort: require("../assets/img/contents/event-short.png"),
           imgLong: require("../assets/img/contents/event-long.png"),
-          routeName: "",
+          routeName: "timeline",
           titleName:"大事件时间线",
-          route: "",
+          route: "/tools/timeline",
         },
         {
           imgShort: require("../assets/img/contents/fansQuery-short.png"),
@@ -117,7 +117,7 @@ export default {
     $route: {
       handler: function (val, oldVal) {
         console.log(val,oldVal);
-        debugger
+        // debugger
         this.currentPageName = val.name;
         if (val.name == "Index") {
           this.isLongNav = true;

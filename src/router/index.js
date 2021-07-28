@@ -63,7 +63,14 @@ const routes = [
   name: "part",
   component: () =>
     import(/*webpackChunkname: "tools/emoji" */ '../views/emojis/emoji.vue')
-}
+},
+      // 时间线
+      {
+        path: '/tools/timeline',
+        name: 'timeline',
+        component: () =>
+          import(/*webpackChunkname: "tools/timeline" */'../views/Timeline/Timeline')
+      }
 
 
     ]
