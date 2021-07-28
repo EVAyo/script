@@ -29,13 +29,6 @@ const routes = [
         component: () =>
           import(/*webpackChunkname: "tools/Index" */ '../views/Index.vue')
       },
-      // 粉丝查询
-      {
-        path: '/tools/fanQuery',
-        name: "fanQuery",
-        component: () =>
-          import(/*webpackChunkname: "tools/fanQuery" */ '../views/fanQuery/fanQuery.vue')
-      },
       // 成分姬
       {
         path: '/tools/part',
@@ -65,15 +58,27 @@ const routes = [
         component: () =>
           import(/*webpackChunkname: "tools/timeline" */'../views/Timeline/Timeline')
       },
+      // 粉丝查询
+      {
+        path: '/tools/fanQuery',
+        name: "fanQuery",
+        component: () =>
+          import(/*webpackChunkname: "tools/fanQuery" */ '../views/fanQuery/fanQuery.vue')
+      },
       //表情包合集
       {
         path: '/tools/emoji',
         name: "emoji",
         component: () =>
           import(/*webpackChunkname: "tools/emoji" */ '../views/emojis/emoji.vue')
-      }
-
-
+      },
+      // 随机溜冰
+      {
+        path:'/tools/randomVideo',
+        name:'randomVideo',
+        component: () =>
+        import(/*webpackChunkname: "tools/randomVideo" */ '../views/randomVideo/randomVideo.vue')
+      },
     ]
   }
 ]
