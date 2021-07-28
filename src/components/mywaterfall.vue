@@ -32,8 +32,8 @@ export default {
 
 <style lang="scss" scoped>
 .cell-item {
-  width: 96%;
-  margin-bottom: 7px;
+  width: 92%;
+  margin-bottom: 10px;
   background: #ffffff;
   border: 5px solid #f0f0f0;
   border-radius: 10px;
