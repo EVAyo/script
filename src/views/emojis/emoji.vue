@@ -7,6 +7,7 @@
         <span>表情包合集</span>
       </div>
       <el-button type="info" >图片</el-button>
+
     </el-header>
     <!-- 页面主体区域 -->
     <el-container>
@@ -18,19 +19,25 @@
       <!-- 右侧内容主体 -->
       <el-main>
         <!-- 路由占位符 -->
-        <!-- <router-view></router-view> -->
-      
+        <!--<router-view></router-view>-->
+       <img src="../../assets/img/emoji/bgp.png" class="l-main2"  alt="">
       <div class="waterfall">
         <!-- <div v-for="item in listone" :key="item.id">
             <img :src="item.url" alt="" style="width:20px;height:20px">
         </div> -->
           <my-waterfall :data="listone"></my-waterfall>
         </div>
-      
+     
       </el-main>
-    </el-container>
-  </el-container>
 
+</el-container>
+
+<el-container>
+ <el-footer class="el-footer">
+	<img src="..\..\assets\img\emoji\note.png" width="100%">
+</el-footer>
+  </el-container>
+</el-container>
 </template>
 
 <script>
@@ -78,11 +85,10 @@ export default {
 
 <style lang="less" scoped>
 .home-container {
-  position: relative;
-  // height: 100%;
-  // width: 100%;
-  background: #6d25a7 ;
-  background-size: 100% 100%;/*按比例缩放*/
+  height: 100%;
+  width: 100%;
+  background: #1d1d1d ;
+ background-size: 100% 100%;/*按比例缩放*/
 }
 .el-header {
  
@@ -106,6 +112,23 @@ export default {
   background-color: #333744;
 }
 .el-main {
+  background:url("");
+  background-color: #1d1d1d;
+  width: 100%;
+
+
+      position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+ 
+    height: 100vh;
+   
+    overflow: hidden;
+ 
+}
+.el-main2 {
+  background:url("");
   background-color: #6d2a94;
   background:url("../../assets/img/emoji/bgp.png");
   width: 100%;
@@ -124,5 +147,20 @@ export default {
 .waterfall{
   position: relative;
 }
+
+
+.el-footer {
+ 
+ 
+  display: flex;
+  justify-content: space-between;
+  padding-left: 10;
+  align-items: center;
+
+  font-size: 10px;
+background-size :10%
+  }
+
+
 @import "./emoji.less";
 </style>
