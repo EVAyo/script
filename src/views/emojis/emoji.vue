@@ -1,37 +1,40 @@
    <template>
-  <container class="home-container">
+
+
+
+
+
+<el-container class="home-container">
     <!-- 头部区域 -->
-    <header>
+    <el-header>
       <div>
-        <img src="logo.png" alt="" />
+        <img src="logo.png" alt="">
         <span>表情包合集</span>
       </div>
-      <button type="info"></button>
-    </header>
-
+      <el-button type="info" >图片</el-button>
+    </el-header>
     <!-- 页面主体区域 -->
-    <container>
+    <el-container>
+ <!-- 侧边栏 -->
+       <el-image 
+       :src="'require(../../assets/img/coca.jpg)'"
+      ></el-image>
+      <el-aside :width="isCollapse ? '64px' : '200px'">
+      </el-aside>
+
       <!-- 右侧内容主体 -->
-      <!-- 路由占位符 -->
-      <router-view></router-view>
-      <!--  卡片视图区域 -->
-      <card>
-        <row>
-          <button type="primary">添加图片</button>
-        </row>
-      </card>
-
-      <div class="block">
-        <span class="demonstration">默认</span>
-      </div>
-
-      <div class="container">
-        <div class="waterfall">
+      <el-main>
+        <!-- 路由占位符 -->
+        <router-view></router-view>
+      
+      <div class="waterfall">
           <my-waterfall :data="listone"></my-waterfall>
         </div>
-      </div>
-    </container>
-  </container>
+      
+      </el-main>
+    </el-container>
+  </el-container>
+
 </template>
 
 <script>
@@ -42,7 +45,19 @@ export default {
 
   data() {
     return {
-      listone: [],
+      listone: [
+    
+          {
+            
+      
+          imgSrc: "emoji/?page=${page}&limit=${pageSize}",
+          avatar: require("../../assets/img/emoji/colorOfficial.png"),
+          user: "a",
+          vote_num: 999,
+          title: "Noice cancelling is a secret",
+        }
+        
+      ],
       // 当前页
       currentPage:1,
     };
@@ -57,6 +72,7 @@ export default {
         this.$loading();
         const res = await this.$request({
           url: `emoji/?page=${page}&limit=${pageSize}`,
+           responseType: 'blob'
         });
         console.log(res);
       } catch (error) {
@@ -71,17 +87,17 @@ export default {
 
 <style lang="less" scoped>
 .home-container {
-  height: 80%;
-  width: 90%;
-   background: #282828 url('~@/assets/img/emoji/bgp.png')
-    repeat 250px 50px;
-      background-size: 100% 100%;/*按比例缩放*/
+  height: 100%;
+  width: 100%;
+  background: #6d25a7 ;
+ background-size: 100% 100%;/*按比例缩放*/
 }
-.header {
-  background-color: #6d25a7;
+.el-header {
+ 
+  background: #6d25a7 ;
   display: flex;
   justify-content: space-between;
-  padding-left: 0;
+  padding-left: 100;
   align-items: center;
   color: #fff;
   font-size: 30px;
@@ -94,14 +110,11 @@ export default {
   }
 }
 
-.aside {
-  background-color: #403f8d;
-  .menu {
-    border-right: none;
-  }
+.el-aside {
+  background-color: #333744;
 }
-
-.main {
+.el-main {
+  background:url("../assets/emoji/bgp.png");
   background-color: #6d2a94;
   width: 100%;
 
