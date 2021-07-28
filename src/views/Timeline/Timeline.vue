@@ -25,7 +25,7 @@ export default {
   props: {
     url: {
       type: String,
-      default: '/aSoul/milestone/next-group?next_key=1627227103034'
+      default: '/timeline/milestone/next-group?next_key=1627227103034'
     }
   },
   data() {
