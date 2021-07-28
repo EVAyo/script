@@ -1,14 +1,9 @@
-   <template>
-
-
-
-
-
+<template>
 <el-container class="home-container">
     <!-- 头部区域 -->
     <el-header>
       <div>
-        <img src="logo.png" alt="">
+        <!-- <img src="logo.png" alt=""> -->
         <span>表情包合集</span>
       </div>
       <el-button type="info" >图片</el-button>
@@ -17,15 +12,18 @@
     <el-container>
  <!-- 侧边栏 -->
    
-      <el-aside :width="isCollapse ? '64px' : '200px'">
-      </el-aside>
+      <!-- <el-aside :width="isCollapse ? '64px' : '200px'">
+      </el-aside> -->
 
       <!-- 右侧内容主体 -->
       <el-main>
         <!-- 路由占位符 -->
-        <router-view></router-view>
+        <!-- <router-view></router-view> -->
       
       <div class="waterfall">
+        <!-- <div v-for="item in listone" :key="item.id">
+            <img :src="item.url" alt="" style="width:20px;height:20px">
+        </div> -->
           <my-waterfall :data="listone"></my-waterfall>
         </div>
       
@@ -43,19 +41,7 @@ export default {
 
   data() {
     return {
-      listone: [
-    
-          {
-            
-      
-          imgSrc: "emoji/?page=${page}&limit=${pageSize}",
-          avatar: require("../../assets/img/emoji/colorOfficial.png"),
-          user: "a",
-          vote_num: 999,
-          title: "Noice cancelling is a secret",
-        }
-        
-      ],
+      listone: [ ],
       // 当前页
       currentPage:1,
     };
@@ -70,9 +56,16 @@ export default {
         this.$loading();
         const res = await this.$request({
           url: `emoji/?page=${page}&limit=${pageSize}`,
-           responseType: 'blob'
+          //  responseType: 'blob'
         });
-        console.log(res);
+        let tempList = [...this.listone]
+        res.forEach((ele)=>{
+            tempList.push({
+              id:ele.id,
+              url: 'https://'+ ele.url
+            })
+        })
+        this.listone = [...tempList]
       } catch (error) {
         console.log(error);
       } finally {
@@ -85,10 +78,11 @@ export default {
 
 <style lang="less" scoped>
 .home-container {
-  height: 100%;
-  width: 100%;
+  position: relative;
+  // height: 100%;
+  // width: 100%;
   background: #6d25a7 ;
- background-size: 100% 100%;/*按比例缩放*/
+  background-size: 100% 100%;/*按比例缩放*/
 }
 .el-header {
  
@@ -112,7 +106,7 @@ export default {
   background-color: #333744;
 }
 .el-main {
-  background:url("../assets/emoji/bgp.png");
+  background:url("../../assets/img/emoji/bgp.png");
   background-color: #6d2a94;
   width: 100%;
 
@@ -127,6 +121,8 @@ export default {
     overflow: hidden;
  
 }
-
+.waterfall{
+  position: relative;
+}
 @import "./emoji.less";
 </style>
