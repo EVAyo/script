@@ -77,8 +77,14 @@ const routes = [
         name: "emoji",
         component: () =>
           import(/*webpackChunkname: "tools/emoji" */ '../views/emojis/emoji.vue')
-      }
-
+      },
+      // 枝网查重
+      {
+        path: '/tools/check',
+        name: "check",
+        component: () =>
+          import(/*webpackChunkname: "tools/fanQuery" */ '../views/check/check.vue')
+      },
 
     ]
   }
