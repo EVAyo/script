@@ -106,8 +106,8 @@ export default {
   background-color: #333744;
 }
 .el-main {
-  background:url("../../assets/img/emoji/bgp.png");
   background-color: #6d2a94;
+  background:url("../../assets/img/emoji/bgp.png");
   width: 100%;
 
 
