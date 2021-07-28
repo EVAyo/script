@@ -302,7 +302,6 @@ async getDouyinFans(uid,name) {
     const res = await axios.get(
           `douyin/web/api/v2/user/info/?sec_uid=${uid}`
         );
-        console.log(res.data.user_info);
         this.douyinFans[name] = res.data.user_info.follower_count
   } catch (error) {
     

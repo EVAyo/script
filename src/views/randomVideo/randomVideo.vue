@@ -6,9 +6,10 @@
       <iframe 
       class="iframe-class"
     :src="iframeSrc" 
+     STYLE="background-color: #fff"
     scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true">
       </iframe>
-      <div class="random-button"></div>
+      <div class="random-button" @click="getRandomVideo"></div>
     </div>
     
     <!-- <img src="../assets/img/BackGround.gif" class="index-bg"> -->
@@ -26,14 +27,20 @@ export default {
     }
   },
   created(){
-    // this.getRandomVideo()
-    this.iframeSrc ="//player.bilibili.com/player.html?bvid=BV1f54y1j7X8"
+    this.getRandomVideo()
   },
   methods:{
     async getRandomVideo(){
-    const res =  await  this.$request('api/stroll/random')
-      console.log(res);
-      // debugger
+      try {
+        this.$loading()
+        const res =  await  this.$request('api/stroll/random')
+        this.iframeSrc = res.play_url
+      } catch (error) {
+        console.log(error);
+      }finally{
+        this.$closeLoading()
+      }
+    
     }
   }
 }
@@ -64,30 +71,29 @@ export default {
 .iframe-box{
   // border: 10px solid #c343dc;
   display: flex;
-  flex-direction: column;
-  width: 40vw;
-  height: 30vw;
-  min-width: 600px;
-  min-height: 450px;
-  align-items: center;
+  // flex-direction: column;
+
+  align-items: flex-end;
   justify-content: center;
 }
 .iframe-class{
   // width: 40vw;
   // height: 30vw;
-  width: 100%;
-  height: 100%;
+  width: 40vw;
+  height: 30vw;
+  min-width: 600px;
+  min-height: 450px;
   border: 5px solid #c343dc;
 }
 .random-button{
-  opacity: 1;
   background-color: #333;
-  width: 50px;
-  padding-bottom: 50px;
+  cursor: pointer;
+  width: 100px;
+  height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 20px;
+  margin-left: 20px;
   background: url("../../assets/img/random/random-button.jpg") no-repeat center /cover;
 }
 .random-button:hover{
