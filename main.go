@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"flag"
 	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/scjtqs/jd_cookie/config"
@@ -18,10 +19,14 @@ import (
 var (
 	h          bool
 	d          bool
-	Version    = "v2.0.0"
+	Version    = "v3.0.3"
 	Build      string
 	configPath = "config.json"
 )
+
+// 使用 go 1.16的新特性，自带的打包静态资源的包。
+//go:embed template/*
+var f embed.FS
 
 func init() {
 	var debug bool
@@ -58,6 +63,12 @@ func main() {
 	container := dig.New()
 	container.Provide(func() *config.Conf {
 		return conf
+	})
+	container.Provide(func() embed.FS {
+		return f
+	})
+	container.Provide(func() (version string) {
+		return Version
 	})
 	conf.Save(configPath)
 	log.Infof("欢迎使用jdcookie提取器 by scjtqs %s,build in %s", Version, Build)
