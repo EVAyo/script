@@ -19,6 +19,12 @@ import './assets/css/reset.css'
 
 Vue.use(waterfall)
 
+/*
+* 词云插件
+* wordcloud2 
+*/
+import WordCloud from 'wordcloud';
+Vue.use(WordCloud)
 
 new Vue({
   router,
