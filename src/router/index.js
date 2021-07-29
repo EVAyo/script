@@ -29,6 +29,13 @@ const routes = [
         component: () =>
           import(/*webpackChunkname: "tools/Index" */ '../views/Index.vue')
       },
+      // 查重
+      {
+        path: '/tools/checkArticle',
+        name: "checkArticle",
+        component: () =>
+          import(/*webpackChunkname: "tools/Index" */ '../views/checkArticle/checkArticle.vue')
+      },
       // 成分姬
       {
         path: '/tools/part',
