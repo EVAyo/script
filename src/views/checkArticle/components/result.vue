@@ -65,41 +65,5 @@ props:{
 </script>
 
 <style lang="less" scoped>
- .result-input{
-     margin-top: 13px;
-     padding: 15px;
-     box-sizing: border-box;
-     width: 1073px;
-    //  height: 125px;
-     border: 3px solid #f2f2f2;
-     .result-input_ul{
-         display: flex;
-         flex-wrap:nowrap;
-         font-size: 16px;
-         margin-bottom:15px;
-         li{
-             margin-right: 15px;
-             white-space:nowrap;
-         }
-         .li_1{
-            //  width: 180px;
-         }
-         .li_2{
-             color: #c678d0;
-            //  width: 140px;
-         }
-         .li_3{
-            //  width: 250px;
-         }
-         .li_4{
-             flex: 1;
-             color: #943fef;
-             cursor: pointer;
-         }
-     }
-    .result_content{
-        font-size:15px;
-        line-height: 1.6;
-    }
- }
+@import "./result.less";
 </style>

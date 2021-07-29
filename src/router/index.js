@@ -80,10 +80,10 @@ const routes = [
       },
       // 枝网查重
       {
-        path: '/tools/check',
-        name: "check",
+        path: '/tools/checkArticle',
+        name: "checkArticle",
         component: () =>
-          import(/*webpackChunkname: "tools/fanQuery" */ '../views/check/check.vue')
+          import(/*webpackChunkname: "tools/fanQuery" */ '../views/checkArticle/checkArticle.vue')
       },
 
     ]
