@@ -65,12 +65,18 @@ CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 packr2 build  -o jdcookie_darwin_arm64
 CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 packr2 build  -o jdcookie_darwin_x64
 ```
 
-## v3.x版本(tag) 服务端运行，db多类型支持。
+## v3.x版本(tag) 服务端运行，db多类型支持。同样支持直接下载release中的exe文件本地运行。
 > DB_TYPE 可以选择 mysql、postgres、sqlite3、mssql
 > 
 > 因为增加了sqlite3的支持，引入了cgo。不方便直接交叉编译了。于是 v3.x版本开始，就主要docker版了。docker支持 linux/amd64、linux/arm/v7、linux/arm64、linux/386。这4种架构平台。
 > 
 > release中的[下载](https://github.com/scjtqs/jd_cookie/releases)二进制包，无法使用sqlite3数据库(为了交叉编译，关闭了cgo）(仅linux_amd64的预编译包可以使用sqlite3)，要使用sqlite3数据库的，请自行在需要运行的机器上编译。或者使用docker版本。
+
+v3.0.3
+> 使用golang 1.16新特性，静态文件打包采用 embed包处理，直接go build就可以了。不再依赖packr2。直接go build即可。不过需要安装 go 1.16+版本。
+
+v3.0.2
+> 修复ua失效问题
 
 v3.0.1
 > 除了mysql外，应hcl要求，增加了其他db类型支持: postgres、sqlite3、mssql
@@ -89,15 +95,13 @@ sudo apt-get install build-essential
 ## for Mac OSX
 brew install sqlite3
 brew upgrade icu4c
-#安装编译工具，用于打包html到二进制
-go get -u github.com/gobuffalo/packr/v2/packr2
 go install github.com/mattn/go-sqlite3
 #linux/mac/UNIX下
-CGO_ENABLED=1 packr2 build  -o jdcookie
+CGO_ENABLED=1 go build  -o jdcookie
 #查看帮助
 ./jdcookie -h 
 #windows下
-CGO_ENABLED=1 packr2 build  -o jdcookie.exe
+CGO_ENABLED=1 go build  -o jdcookie.exe
 #查看帮助
 .\jdcookie.exe -h
 ```

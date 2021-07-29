@@ -55,13 +55,12 @@ steps:
       - go env -w GO111MODULE=on
       - sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
       - apk add --no-cache gcc musl-dev
-      - go get -u github.com/gobuffalo/packr/v2/packr2
       - go install github.com/mattn/go-sqlite3
 #      - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
       - go mod tidy
       - go env -w CGO_ENABLED=1
       - go env -w CGO_LDFLAGS="-static"
-      - CGO_ENABLED=1 CGO_LDFLAGS="-static" packr2 build  -ldflags  "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_COMMIT" -installsuffix cgo  -o test
+      - CGO_ENABLED=1 CGO_LDFLAGS="-static" go build  -ldflags  "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_COMMIT" -installsuffix cgo  -o test
       - ./test -h
     depends_on:
       - clone
@@ -84,28 +83,27 @@ steps:
       - sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
       - apk add --no-cache gcc musl-dev sqlite-static sqlite-dev sqlite
 #      - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-      - go get -u github.com/gobuffalo/packr/v2/packr2
 #      - go install github.com/mattn/go-sqlite3
       - go mod tidy
       - go env -w CGO_ENABLED=0
 #      - go env -w CGO_LDFLAGS="-static"
-      - CGO_ENABLED=1 GOOS=linux GOARCH=amd64     CGO_LDFLAGS="-static"    packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_amd64
-      - GOOS=linux GOARCH=386           packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_i386
-      - GOOS=linux GOARCH=arm   GOARM=7 packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo  -o dist/jdcookie_v3_linux_armv7
-      - GOOS=linux GOARCH=arm64         packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo  -o dist/jdcookie_v3_linux_arm64
-      - GOOS=linux GOARCH=ppc64         packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_ppc64
-      - GOOS=linux GOARCH=ppc64le       packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_ppc64le
-      - GOOS=linux GOARCH=mips          packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_mips
-      - GOOS=linux GOARCH=mipsle        packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_mipsle
-      - GOOS=linux GOARCH=mips64        packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_mips64
-      - GOOS=linux GOARCH=mips64le      packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_mips64le
-      - GOOS=windows GOARCH=386         packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo  -o dist/jdcookie_v3_windows_i386.exe
-      - GOOS=windows GOARCH=amd64       packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_windows_adm64.exe
-      - GOOS=windows GOARCH=arm GOARM=7 packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_windows_arm.exe
-      - GOOS=darwin GOARCH=arm64        packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_darwin_arm64
-      - GOOS=darwin GOARCH=amd64        packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_darwin_amd64
-#      - GOOS=android GOARCH=arm   GOARM=7      packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_android_arm
-#      - GOOS=android GOARCH=arm64       packr2 build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_android_arm64
+      - CGO_ENABLED=1 GOOS=linux GOARCH=amd64     CGO_LDFLAGS="-static"    go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_amd64
+      - GOOS=linux GOARCH=386           go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_i386
+      - GOOS=linux GOARCH=arm   GOARM=7 go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo  -o dist/jdcookie_v3_linux_armv7
+      - GOOS=linux GOARCH=arm64         go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo  -o dist/jdcookie_v3_linux_arm64
+      - GOOS=linux GOARCH=ppc64         go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_ppc64
+      - GOOS=linux GOARCH=ppc64le       go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_ppc64le
+      - GOOS=linux GOARCH=mips          go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_mips
+      - GOOS=linux GOARCH=mipsle        go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_mipsle
+      - GOOS=linux GOARCH=mips64        go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_mips64
+      - GOOS=linux GOARCH=mips64le      go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_mips64le
+      - GOOS=windows GOARCH=386         go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo  -o dist/jdcookie_v3_windows_i386.exe
+      - GOOS=windows GOARCH=amd64       go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_windows_adm64.exe
+      - GOOS=windows GOARCH=arm GOARM=7 go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_windows_arm.exe
+      - GOOS=darwin GOARCH=arm64        go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_darwin_arm64
+      - GOOS=darwin GOARCH=amd64        go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_darwin_amd64
+#      - GOOS=android GOARCH=arm   GOARM=7      go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_android_arm
+#      - GOOS=android GOARCH=arm64       go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_android_arm64
     depends_on:
       - buildtest
     when:
