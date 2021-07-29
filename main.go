@@ -73,7 +73,11 @@ func main() {
 	conf.Save(configPath)
 	log.Infof("欢迎使用jdcookie提取器 by scjtqs %s,build in %s", Version, Build)
 	//log.Info("当前开源版本：获取cookie成功后，不会自动提交到挂机服务器，需要自行修改了")
-	web.HTTPServer.Run(":29099", container)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "29099"
+	}
+	web.HTTPServer.Run(":"+port, container)
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, os.Kill)
 	<-c
