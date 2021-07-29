@@ -9,7 +9,7 @@ const request = axios.create({
   //     "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
   // },
   // 配置请求超时时间
-  timeout: 10000, 
+  timeout: 20000, 
 });
 
 // 增加响应拦截
