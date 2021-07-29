@@ -27,7 +27,7 @@ type 用于说明提交的类型 subject 用于概括提交内容。
 1. feat：新功能（feature） 
 2. fix：问题修复 
 3. style：调整格式（不影响代码运行）
-4. upData :  更新代码 
+4. upDate :  更新代码 
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

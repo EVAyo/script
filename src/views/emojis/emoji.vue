@@ -1,19 +1,11 @@
 <template>
-<!-- <el-container class="home-container"> -->
-<!-- <el-header>
-    </el-header> -->
-      <div class="waterfall">
+  <div class="emoji">
         <!-- <div v-for="item in listone" :key="item.id">
             <img :src="item.url" alt="" style="width:20px;height:20px">
         </div> -->
-          <my-waterfall :imgArr="listone"></my-waterfall>
-        </div>
-     
-<!--     
- <el-footer>
-	<img src="..\..\assets\img\emoji\note.png" width="90%">
-</el-footer> -->
-<!-- </el-container> -->
+          <my-waterfall  :imgArr="listone"></my-waterfall>
+  </div>
+
 </template>
 <script>
 import myWaterfall from "@/components/mywaterfall";
@@ -29,12 +21,12 @@ export default {
       count: 0,
     };
   },
-  async created() {
-  await  this.GetLIstImg(this.currentPage, 10);
+  created() {
+    this.GetLIstImg(this.currentPage);
   },
-
+ 
   methods: {
-    async GetLIstImg(page, pageSize) {
+    async GetLIstImg(page, pageSize=20) {
       try {
         this.$loading();
         const res = await this.$request({
@@ -49,21 +41,13 @@ export default {
             })
         })
         this.listone = [...tempList]
-        console.log(this.listone);
-        debugger
       } catch (error) {
         console.log(error);
       } finally {
         //console.log(res);
       this.$closeLoading();
       }
-    },
-
-
-//  load () {
-//         this.count += 2
-//       }
-
+    },  
 
   },
 };
@@ -75,9 +59,12 @@ export default {
 
 
 
-.waterfall{
+.emoji{
   position: relative;
-  background-image:"../../assets/img/emoji/bgp.png";
+  width: 100%;
+  height: 100%;
+  background-image:url('../../assets/img/emoji/bgp.png');
+  background-size: cover;
+  background-color: #000
 }
-@import "./emoji.less";
 </style>

@@ -43,14 +43,6 @@ const routes = [
         component: () =>
         import(/*webpackChunkname: "tools/part" */ '../views/wordCloud/wordCloud.vue')
       },
-      // 随机溜冰
-      {
-        path:'/tools/randomVideo',
-        name:'randomVideo',
-        component: () =>
-        import(/*webpackChunkname: "tools/randomVideo" */ '../views/randomVideo/randomVideo.vue')
-      },
- 
       // 时间线
       {
         path: '/tools/timeline',

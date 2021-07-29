@@ -2,30 +2,12 @@ import Vue from 'vue';
 import {
   Loading,
   Message,
-  // Container,
-  // Aside,
-  // Header,
-  // Main,
-  // Button,
-  // Footer,
-  // Row,
-  // Col,
-  // Image
+  InfiniteScroll
 } from 'element-ui';
 
 Vue.component(Message)
 Vue.use(Loading);
-// Vue.use(Container)
-// Vue.use(Aside)
-
-// Vue.use(Header)
-// Vue.use(Main)
-// Vue.use(Button)
-// Vue.use(Footer)
-// Vue.use(Row)
-// Vue.use(Col)
-// Vue.use(Image)
-
+Vue.use(InfiniteScroll)
 
 
 Vue.prototype.$message = Message;
