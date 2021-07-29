@@ -6,9 +6,10 @@
       <iframe 
       class="iframe-class"
     :src="iframeSrc" 
+     STYLE="background-color: #fff"
     scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true">
       </iframe>
-      <img src="../../assets/img/random/random-button.jpg" class="random-button">
+      <div class="random-button" @click="getRandomVideo"></div>
     </div>
     
     <!-- <img src="../assets/img/BackGround.gif" class="index-bg"> -->
@@ -26,14 +27,20 @@ export default {
     }
   },
   created(){
-    // this.getRandomVideo()
-    this.iframeSrc ="//player.bilibili.com/player.html?bvid=BV1f54y1j7X8"
+    this.getRandomVideo()
   },
   methods:{
     async getRandomVideo(){
-    const res =  await  this.$request('api/stroll/random')
-      console.log(res);
-      // debugger
+      try {
+        this.$loading()
+        const res =  await  this.$request('api/stroll/random')
+        this.iframeSrc = res.play_url
+      } catch (error) {
+        console.log(error);
+      }finally{
+        this.$closeLoading()
+      }
+    
     }
   }
 }
@@ -53,45 +60,46 @@ export default {
   // background-image: url('../../assets/img/ramdon-background.png');
 }
 .background-img{
-  position: fixed;
+  position: absolute;
   width: 100%;
   height: 100%;
   z-index: -1;
   min-width: 600px;
   min-height: 300px;
+  //object-fit: cover;
 }
 .iframe-box{
   // border: 10px solid #c343dc;
   display: flex;
-  flex-direction: column;
-  width: 40vw;
-  height: 30vw;
-  min-width: 600px;
-  min-height: 450px;
-  align-items: center;
+  // flex-direction: column;
+
+  align-items: flex-end;
   justify-content: center;
 }
 .iframe-class{
   // width: 40vw;
   // height: 30vw;
-  width: 100%;
-  height: 100%;
+  width: 40vw;
+  height: 30vw;
+  min-width: 600px;
+  min-height: 450px;
   border: 5px solid #c343dc;
 }
 .random-button{
-  opacity: 0.5;
-    width: 50px;
-    background-color: #333;
-    color: #c242db;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    border-radius: 20%;
-    margin-top: 20px;
+  background-color: #333;
+  cursor: pointer;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 20px;
+  background: url("../../assets/img/random/random-button.jpg") no-repeat center /cover;
 }
 .random-button:hover{
-  opacity: 1;
+  background: url("../../assets/img/random/random-button-on.png") no-repeat center /cover;
+}
+.random-button:active{
+  background: url("../../assets/img/random/random-button-click.png") no-repeat center /cover;
 }
 </style>

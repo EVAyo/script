@@ -6,6 +6,8 @@
 
 // Vue.component(Message)
 // Vue.use(Loading);
+// Vue.use(Container)
+// Vue.use(Aside)
 
 // Vue.prototype.$message = Message;
 // Vue.prototype.$loading = () => {

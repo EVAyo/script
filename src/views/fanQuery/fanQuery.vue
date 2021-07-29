@@ -21,7 +21,7 @@
               src="../../assets/img/fansQuery/bilibili.png"
               style="width: 50%"
               alt=""
-            /><span class="fontConfig">{{ bilibiliFans.ava }}</span>
+            /><span class="fontConfig">{{ BzhanFans.ava||'查询中' }}</span>
           </p>
           <br /><br /><br /><br />
           <p>
@@ -29,7 +29,7 @@
               src="../../assets/img/fansQuery/douyin.png"
               style="width: 18%"
               alt=""
-            /><span class="fontConfig">{{ douyinFans.ava }}</span>
+            /><span class="fontConfig">{{ douyinFans.ava||'查询中' }}</span>
           </p>
         </div>
       </div>
@@ -51,7 +51,7 @@
               src="../../assets/img/fansQuery/bilibili.png"
               style="width: 40%"
               alt=""
-            /><span class="fontConfig">{{ bilibiliFans.carol }}</span>
+            /><span class="fontConfig">{{ BzhanFans.carol||'查询中' }}</span>
           </p>
           <br /><br /><br /><br />
           <p>
@@ -59,7 +59,7 @@
               src="../../assets/img/fansQuery/douyin.png"
               style="width: 18%"
               alt=""
-            /><span class="fontConfig">{{ douyinFans.carol }}</span>
+            /><span class="fontConfig">{{ douyinFans.carol||'查询中' }}</span>
           </p>
         </div>
       </div>
@@ -84,7 +84,7 @@
               src="../../assets/img/fansQuery/bilibili.png"
               style="width: 40%"
               alt=""
-            /><span class="fontConfig">{{ bilibiliFans.eileen }}</span>
+            /><span class="fontConfig">{{ BzhanFans.eileen||'查询中' }}</span>
           </p>
           <br /><br /><br /><br />
           <p>
@@ -92,7 +92,7 @@
               src="../../assets/img/fansQuery/douyin.png"
               style="width: 18%"
               alt=""
-            /><span class="fontConfig">{{ douyinFans.eileen }}</span>
+            /><span class="fontConfig">{{ douyinFans.eileen||'查询中' }}</span>
           </p>
         </div>
       </div>
@@ -117,7 +117,7 @@
               src="../../assets/img/fansQuery/bilibili.png"
               style="width: 40%"
               alt=""
-            /><span class="fontConfig">{{ bilibiliFans.bella }}</span>
+            /><span class="fontConfig">{{ BzhanFans.bella||'查询中' }}</span>
           </p>
           <br /><br /><br /><br />
           <p>
@@ -125,7 +125,7 @@
               src="../../assets/img/fansQuery/douyin.png"
               style="width: 18%"
               alt=""
-            /><span class="fontConfig">{{ douyinFans.bella }}</span>
+            /><span class="fontConfig">{{ douyinFans.bella||'查询中' }}</span>
           </p>
         </div>
       </div>
@@ -150,7 +150,7 @@
               src="../../assets/img/fansQuery/bilibili.png"
               style="width: 40%"
               alt=""
-            /><span class="fontConfig">{{ bilibiliFans.diana }}</span>
+            /><span class="fontConfig">{{ BzhanFans.diana||'查询中' }}</span>
           </p>
           <br /><br /><br /><br />
           <p>
@@ -158,7 +158,7 @@
               src="../../assets/img/fansQuery/douyin.png"
               style="width: 18%"
               alt=""
-            /><span class="fontConfig">{{ douyinFans.diana }}</span>
+            /><span class="fontConfig">{{ douyinFans.diana||'查询中' }}</span>
           </p>
         </div>
       </div>
@@ -183,7 +183,7 @@
               src="../../assets/img/fansQuery/bilibili.png"
               style="width: 40%"
               alt=""
-            /><span class="fontConfig">{{ bilibiliFans.official }}</span>
+            /><span class="fontConfig">{{ BzhanFans.official||'查询中' }}</span>
           </p>
           <br /><br /><br /><br />
           <p>
@@ -191,7 +191,7 @@
               src="../../assets/img/fansQuery/douyin.png"
               style="width: 18%"
               alt=""
-            /><span class="fontConfig">{{ douyinFans.official }}</span>
+            /><span class="fontConfig">{{ douyinFans.official||'查询中' }}</span>
           </p>
         </div>
       </div>
@@ -206,7 +206,7 @@ export default {
   name: "fanQuery",
   data: function () {
     return {
-      bilibiliFans: {
+      BzhanFans: {
         ava: 0,
         bella: 0,
         carol: 0,
@@ -221,86 +221,160 @@ export default {
         diana: 0,
         eileen: 0,
         official: 0,
-      }
+      },
+      // 六个人的B站uid
+      BzhanUid: [
+        {
+          name: "ava",
+          uid: 672346917,
+        },
+        {
+          name: "bella",
+          uid: 672353429,
+        },
+        {
+          name: "carol",
+          uid: 351609538,
+        },
+        {
+          name: "diana",
+          uid: 672328094,
+        },
+        {
+          name: "eileen",
+          uid: 672342685,
+        },
+        {
+          name: "official",
+          uid: 703007996,
+        },
+      ],
+      // 六个人的抖音uid
+      douyinUid:[
+        {
+          name: "ava",
+          uid: 'MS4wLjABAAAAxOXMMwlShWjp4DONMwfEEfloRYiC1rXwQ64eydoZ0ORPFVGysZEd4zMt8AjsTbyt',
+        },
+        {
+          name: "bella",
+          uid: "MS4wLjABAAAAlpnJ0bXVDV6BNgbHUYVWnnIagRqeeZyNyXB84JXTqAS5tgGjAtw0ZZkv0KSHYyhP",
+        },
+        {
+          name: "carol",
+          uid:  "MS4wLjABAAAAuZHC7vwqRhPzdeTb24HS7So91u9ucl9c8JjpOS2CPK-9Kg2D32Sj7-mZYvUCJCya",
+        },
+        {
+          name: "diana",
+          uid:  "MS4wLjABAAAA5ZrIrbgva_HMeHuNn64goOD2XYnk4ItSypgRHlbSh1c",
+        },
+        {
+          name: "eileen",
+          uid:  "MS4wLjABAAAAxCiIYlaaKaMz_J1QaIAmHGgc3bTerIpgTzZjm0na8w5t2KTPrCz4bm_5M5EMPy92",
+        },
+        {
+          name: "official",
+          uid:  "MS4wLjABAAAAflgvVQ5O1K4RfgUu3k0A2erAZSK7RsdiqPAvxcObn93x2vk4SKk1eUb6l_D4MX-n",
+        },
+      ]
     };
   },
   components: {},
   async created() {
-    this.$loading();
-    await this.getBibiliFans();
-    await this.getDouyinFans();
-    this.$closeLoading();
+    this.BzhanUid.forEach((item) => {
+      this.getBibiliFans(item.uid, item.name);
+    });
+    this.douyinUid.forEach((item)=>{
+      this.getDouyinFans(item.uid, item.name);
+    })
+    // this.getDouyinFans();
   },
   methods: {
-    // 获取哔哩哔哩粉丝数
-    async getBibiliFans() {
+    // 获取B站粉丝数
+    async getBibiliFans(uid, name) {
       try {
-        const resAvA = await this.$request(
-          `bilibili/x/relation/stat?vmid=672346917`
-        );
-        const resBella = await this.$request(
-          `bilibili/x/relation/stat?vmid=672353429`
-        );
-        const resCarol = await this.$request(
-          `bilibili/x/relation/stat?vmid=351609538`
-        );
-        const resDiana = await this.$request(
-          `bilibili/x/relation/stat?vmid=672328094`
-        );
-        const resEileen = await this.$request(
-          `bilibili/x/relation/stat?vmid=672342685`
-        );
-        const resOfficial = await this.$request(
-          `bilibili/x/relation/stat?vmid=703007996`
-        );
-        this.bilibiliFans = {
-          ava: resAvA.follower,
-          bella: resBella.follower,
-          carol: resCarol.follower,
-          diana: resDiana.follower,
-          eileen: resEileen.follower,
-          official: resOfficial.follower,
-        };
-        // this.bilibiliFans.Name = res.follower
-      } catch (error) {
-        console.log(error);
-      }
+        const res = await this.$request(`bilibili/x/relation/stat?vmid=${uid}`);
+        this.BzhanFans[name] = res.follower;
+      } catch (error) {}
     },
-    // 获取抖音粉丝数
-    async getDouyinFans() {
-        try {
-         
-          const resAvA = await axios.get(
-          "douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAxOXMMwlShWjp4DONMwfEEfloRYiC1rXwQ64eydoZ0ORPFVGysZEd4zMt8AjsTbyt"
-          );
-          const resBella = await axios.get(
-          "douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAlpnJ0bXVDV6BNgbHUYVWnnIagRqeeZyNyXB84JXTqAS5tgGjAtw0ZZkv0KSHYyhP"
-          );
-          const resCarol = await axios.get(
-          "douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAuZHC7vwqRhPzdeTb24HS7So91u9ucl9c8JjpOS2CPK-9Kg2D32Sj7-mZYvUCJCya"
-          );
-          const resDiana = await axios.get(
-          "douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAA5ZrIrbgva_HMeHuNn64goOD2XYnk4ItSypgRHlbSh1c"
-          );
-          const resEileen = await axios.get(
-          "douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAxCiIYlaaKaMz_J1QaIAmHGgc3bTerIpgTzZjm0na8w5t2KTPrCz4bm_5M5EMPy92"
-          );
-          const resOfficial= await axios.get(
-        "douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAflgvVQ5O1K4RfgUu3k0A2erAZSK7RsdiqPAvxcObn93x2vk4SKk1eUb6l_D4MX-n"
-          );
-          this.douyinFans = {
-          ava: resAvA.data.user_info.follower_count,
-          bella: resBella.data.user_info.follower_count,
-          carol: resCarol.data.user_info.follower_count,
-          diana: resDiana.data.user_info.follower_count,
-          eileen: resEileen.data.user_info.follower_count,
-          official: resOfficial.data.user_info.follower_count,
-        };
+  // 获取抖音粉丝数
+async getDouyinFans(uid,name) {
+  try {
+    const res = await axios.get(
+          `douyin/web/api/v2/user/info/?sec_uid=${uid}`
+        );
+        this.douyinFans[name] = res.data.user_info.follower_count
+  } catch (error) {
+    
+  }
+},
 
-        } catch (error) {
-          console.log(error);
-        }
-    },
+    // 获取哔哩哔哩粉丝数
+    // async getBibiliFans() {
+    //   try {
+    //     const resAvA = await this.$request(
+    //       `bilibili/x/relation/stat?vmid=672346917`
+    //     );
+    //     const resBella = await this.$request(
+    //       `bilibili/x/relation/stat?vmid=672353429`
+    //     );
+    //     const resCarol = await this.$request(
+    //       `bilibili/x/relation/stat?vmid=351609538`
+    //     );
+    //     const resDiana = await this.$request(
+    //       `bilibili/x/relation/stat?vmid=672328094`
+    //     );
+    //     const resEileen = await this.$request(
+    //       `bilibili/x/relation/stat?vmid=672342685`
+    //     );
+    //     const resOfficial = await this.$request(
+    //       `bilibili/x/relation/stat?vmid=703007996`
+    //     );
+    //     this.BzhanFans = {
+    //       ava: resAvA.follower,
+    //       bella: resBella.follower,
+    //       carol: resCarol.follower,
+    //       diana: resDiana.follower,
+    //       eileen: resEileen.follower,
+    //       official: resOfficial.follower,
+    //     };
+    //     // this.BzhanFans.Name = res.follower
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
+    // 获取抖音粉丝数
+    // async getDouyinFans() {
+    //   try {
+    //     const resAvA = await axios.get(
+    //       "douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAxOXMMwlShWjp4DONMwfEEfloRYiC1rXwQ64eydoZ0ORPFVGysZEd4zMt8AjsTbyt"
+    //     );
+    //     const resBella = await axios.get(
+    //       "douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAlpnJ0bXVDV6BNgbHUYVWnnIagRqeeZyNyXB84JXTqAS5tgGjAtw0ZZkv0KSHYyhP"
+    //     );
+    //     const resCarol = await axios.get(
+    //       "douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAuZHC7vwqRhPzdeTb24HS7So91u9ucl9c8JjpOS2CPK-9Kg2D32Sj7-mZYvUCJCya"
+    //     );
+    //     const resDiana = await axios.get(
+    //       "douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAA5ZrIrbgva_HMeHuNn64goOD2XYnk4ItSypgRHlbSh1c"
+    //     );
+    //     const resEileen = await axios.get(
+    //       "douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAxCiIYlaaKaMz_J1QaIAmHGgc3bTerIpgTzZjm0na8w5t2KTPrCz4bm_5M5EMPy92"
+    //     );
+    //     const resOfficial = await axios.get(
+    //       "douyin/web/api/v2/user/info/?sec_uid=MS4wLjABAAAAflgvVQ5O1K4RfgUu3k0A2erAZSK7RsdiqPAvxcObn93x2vk4SKk1eUb6l_D4MX-n"
+    //     );
+    //     this.douyinFans = {
+    //       ava: resAvA.data.user_info.follower_count,
+    //       bella: resBella.data.user_info.follower_count,
+    //       carol: resCarol.data.user_info.follower_count,
+    //       diana: resDiana.data.user_info.follower_count,
+    //       eileen: resEileen.data.user_info.follower_count,
+    //       official: resOfficial.data.user_info.follower_count,
+    //     };
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
   },
 };
 </script>

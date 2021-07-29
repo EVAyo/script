@@ -56,9 +56,9 @@ export default {
         {
           imgShort: require("../assets/img/contents/zhiNet-short.png"),
           imgLong: require("../assets/img/contents/zhiNet-long.png"),
-          routeName: "check",
+          routeName: "checkArticle",
           titleName:"知网查重",
-          route: "/tools/check",
+          route: "/tools/checkArticle",
         },
         {
           imgShort: require("../assets/img/contents/component-short.png"),
@@ -116,8 +116,6 @@ export default {
   watch: {
     $route: {
       handler: function (val, oldVal) {
-        console.log(val,oldVal);
-        debugger
         this.currentPageName = val.name;
         if (val.name == "Index") {
           this.isLongNav = true;
