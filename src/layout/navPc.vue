@@ -28,15 +28,18 @@
         :title="item.titleName"
         :key="index"
         :to="item.route"
-        class="nav-item-common"
-        :class="[true ? 'nav-item-long' : 'nav-item-short']"
+       
       >
+      <div  class="nav-item-common"
+        >
         <img v-show="isLongNav" class="img" :src="item.imgLong" alt="" />
         <img v-show="!isLongNav" class="img" :src="item.imgShort" alt="" />
         <div v-if="currentPageName!==item.routeName" class="nav-mask" ></div>
+        
+      </div>
       </router-link>
     </div>
-    <div class="route-view-class">
+    <div class="route-view-class" id="myRouteView" ref="myRouteView">
       <transition :name="transitionName">
         <router-view />
       </transition>
@@ -116,8 +119,6 @@ export default {
   watch: {
     $route: {
       handler: function (val, oldVal) {
-        console.log(val,oldVal);
-        debugger
         this.currentPageName = val.name;
         if (val.name == "Index") {
           this.isLongNav = true;
@@ -130,11 +131,40 @@ export default {
     },
   },
   computed: {},
-  beforeCreate() {},
   created() {
     this.$route.name;
   },
-  methods: {},
+  mounted(){
+    this.box = this.$refs.myRouteView
+      var $this = this
+      // 监听这个dom的scroll事件
+      this.box.onscroll  = (e) => {
+        console.log('on scroll')
+        $this.temp(e)
+      }
+    //  this.$nextTick(() => {
+    //         this.watchTimeline()
+    //   })
+    // console.log(this.$refs.myRouteView);
+    // debugger
+    //   this.$refs.myRouteView.addEventListener('scroll',this.temp())
+
+  },
+  methods: {
+     watchTimeline() {
+      
+      // console.log(document.getElementById('myRouteView').addEventListener);
+      // debugger
+      document.getElementById('myRouteView').addEventListener('scroll',this.temp())
+    },
+      temp(e){
+       console.log(this.$refs.myRouteView.scrollTop);
+       console.log(this.$refs.myRouteView.scrollHeight);
+       console.log(this.$refs.myRouteView.offsetHeight);
+        // console.log(1);
+        // console.log(e);
+    },
+  },
 };
 </script>
 
@@ -223,7 +253,6 @@ export default {
   flex: auto;
   // width: 100%;
   height: 100vh;
-  // overflow: scroll;
   overflow-y: scroll;
   scrollbar-width: thin;
 }
