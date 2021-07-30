@@ -65,7 +65,7 @@ const routes = [{
         //表情包合集
         {
             path: '/tools/emoji',
-            name: "part",
+            name: "emoji",
             component: () =>
                 import ( /*webpackChunkname: "tools/emoji" */ '../views/emojis/emoji.vue')
         },
