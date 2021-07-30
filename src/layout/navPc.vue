@@ -98,9 +98,9 @@ export default {
         {
           imgShort: require("../assets/img/contents/liveFile-short.png"),
           imgLong: require("../assets/img/contents/liveFile-long.png"),
-          routeName: "",
+          routeName: "streamArchives",
           titleName:"直播内容归档",
-          route: "",
+          route: "/tools/streamArchives",
         },
 
         {
