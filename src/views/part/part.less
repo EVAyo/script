@@ -66,6 +66,9 @@
                 }
             }
             & .search-submit{
+                position: relative;
+                top: 0;
+                left: 0;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -73,17 +76,32 @@
                 height: 100%;
                 font-size: 32px;
                 text-align: center;
-                background: #b13dd6 url('~@/assets/img/part-button-icon.png') no-repeat center center;
+                background: rgba(177,61,214,1) url('~@/assets/img/part-button-icon.png') no-repeat center center;
                 background-size: contain;
                 cursor: pointer;
                 transition: all 0.3s;
                 &:hover{
                     transform: scale(1.1);
                 }
+                &::before{
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: -1;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(177,61,214,0);
+                }
             }
 
             & .search-submit-disable{
                 cursor: no-drop;
+                &::before{
+                    z-index: 11;
+                    background-color: rgba(177,61,214,0.6);
+                }
             }
         }
 
@@ -119,5 +137,11 @@
             font-size: 18px;
             color: #6a6a6a;
         }
+    }
+
+    & /deep/ .el-loading-spinner i,
+    & /deep/ .el-loading-spinner .el-loading-text{
+        color: #f2f2f2;
+        font-size: 18px;
     }
 }
