@@ -1,5 +1,7 @@
 .div{
-    width:100%;
+    // width:95vw;
+    // width:95vw;
+    flex: 1;
     min-height:100vh;
     background-color: #1d1d1d;
     color: #fff;
@@ -12,12 +14,11 @@
         img{
             width:100%;
             height:100%;
-            
         }
     }
     .content{
         margin-top:40px;
-        width: 1073px;
+        width: 100%;
         height: 280px;
         padding:27px 17px 10px 18px;
         border: 3px solid #f2f2f2;
@@ -93,9 +94,13 @@
 
 .BigContent{
   display: flex;
+  .content_left {
+      width:70%;
+      box-sizing: border-box;
+  }
   .content_right{
-    flex: 1;
-    padding-left: 55px;
+    width: 30%;
+    margin-left: 55px;
     box-sizing: border-box;
     margin-top: 50px;
     .intro{
@@ -105,7 +110,7 @@
         margin-bottom: 30px;
         line-height:1.2;
         font-size: 20px;
-        width:400px;
+        // width:400px;
       p{
         height: 32px;
         font-size:22px;

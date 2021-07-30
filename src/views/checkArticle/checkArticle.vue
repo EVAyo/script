@@ -34,7 +34,7 @@
                   
                 </div>
                 <!-- 查询结果 -->
-                <div v-if="result.related">
+                <div v-if="result.related" style="width: 100%;">
                       <div v-for="(item,index) in result.related" :key="index" >
                           <result :result="item"  v-if="item"></result>
                       </div>

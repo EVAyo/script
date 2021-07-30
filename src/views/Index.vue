@@ -24,13 +24,18 @@ export default {
   width: 100%;
   height: 100vh;
   max-height: 100vh;
-  overflow: scroll;
+  //overflow: scroll;
+  overflow: hidden;
   z-index: 0;
 }
 .index-bg{
   position: absolute;
-    width: 100%;
-    height: 100vh;
+    //width: 100%;
+    //height: 100vh;
+    width: 130%;
+    height:130%;
+    top: -30px;
+    left: -30px;  
     filter: blur(20px);
     object-fit: cover
 }
