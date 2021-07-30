@@ -35,7 +35,7 @@
                   
                 </div>
                 <!-- 查询结果 -->
-                <div v-if="result.related">
+                <div v-if="result.related" style="width: 100%;">
                       <div v-for="(item,index) in result.related" :key="index" >
                           <result :result="item"  v-if="item"></result>
                       </div>
@@ -96,7 +96,7 @@ export default {
   name: "ASoulFanCheck",
   data() {
     return {
-        search: '',
+        search: '嘉然小姐嘉然小姐嘉然小姐',
         result:[],
         maxSearchLength: 1000,
     }

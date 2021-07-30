@@ -251,7 +251,7 @@ export default {
 .route-view-class {
   position: relative;
   flex: auto;
-  // width: 100%;
+  width: 100%;
   height: 100vh;
   overflow-y: scroll;
   scrollbar-width: thin;
