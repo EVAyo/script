@@ -2,7 +2,7 @@
  * @Author: maggot-code
  * @Date: 2021-07-24 16:59:06
  * @LastEditors: maggot-code
- * @LastEditTime: 2021-07-27 12:31:31
+ * @LastEditTime: 2021-07-31 02:52:13
  * @Description: file content
 -->
 <template>
@@ -24,7 +24,13 @@
                 ></div>
             </div>
 
-            <div class="body-content">
+            <div
+                class="body-content"
+                v-loading="loading"
+                element-loading-text="成分姬在努力分析捏~"
+                element-loading-spinner="el-icon-loading"
+                element-loading-background="rgba(0, 0, 0, 0.8)"
+            >
                 <p>他 / 她 / 它关注的VUP有:</p>
                 <search-content
                     v-show="searchLoad"
@@ -44,22 +50,6 @@
 
 <script>
 import { default as SearchContent } from "./components/search-content";
-import TestPartData from "@/assets/json/test-part-data.json";
-
-const testSearch = ({ searchValue }) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                code: 1002,
-                msg: "success",
-                data: {
-                    search: searchValue,
-                    list: TestPartData,
-                },
-            });
-        }, 3000);
-    });
-};
 export default {
     name: "a-soul-fan-part",
     mixins: [],
@@ -81,6 +71,9 @@ export default {
         submitDisable() {
             return this.loading ? "search-submit-disable" : "";
         },
+        hasContent() {
+            return this.searchValue.length <= 0;
+        },
     },
     //监控data中的数据变化
     watch: {
@@ -91,45 +84,48 @@ export default {
     //方法集合
     methods: {
         handlerSearch() {
-            if (this.loading || this.hasContent) return false;
+            if (this.loading || this.hasContent) {
+                this.$message({
+                    message: "成分姬想知道你在找什么捏~",
+                    type: "warning",
+                });
+
+                return false;
+            }
 
             this.loading = true;
 
-            fetch(`http://ilovemiku.cn:7123/cfj/uid=${this.searchValue}`)
+            this.$request({
+                url: `http://ilovemiku.cn:7123/cfj/uid=${this.searchValue}`,
+                methods: "GET",
+            })
                 .then(this.setSearchReady)
-                .then(this.setSearchResponse);
-
-            // testSearch({ searchValue: this.searchValue }).then((response) => {
-            //     const { code, data } = response;
-
-            //     const { search, list } = data;
-
-            //     if (code === 1002) {
-            //         console.log(search);
-            //         console.log(list);
-            //         this.searchList = list;
-            //         this.searchLoad = true;
-            //         this.loading = false;
-            //     }
-            // });
+                .then(this.setSearchResponse)
+                .catch(this.searchError);
         },
         handlerCell(cell) {
             const { mid } = cell;
             window.open(`https://space.bilibili.com/${mid}`);
         },
         setSearchReady(success) {
-            this.searchLoad = true;
+            setTimeout(() => {
+                this.searchLoad = true;
 
-            this.loading = false;
+                this.loading = false;
+            }, 1000);
 
-            return success.json();
+            return success;
         },
         setSearchResponse(response) {
-            const { data } = response;
-
-            const { list } = data;
+            const { list } = response;
 
             this.searchList = list;
+        },
+        searchError(error) {
+            console.log(error);
+            this.$message.error("成分姬有点累了捏~");
+            this.searchLoad = true;
+            this.loading = false;
         },
     },
     //生命周期 - 创建完成（可以访问当前this实例）
