@@ -90,7 +90,7 @@ export default {
   name: "ASoulFanCheck",
   data() {
     return {
-        search: '嘉然小姐嘉然小姐嘉然小姐',
+        search: '',
         result:[],
         maxSearchLength: 1000,
     }
