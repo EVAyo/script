@@ -10,7 +10,10 @@
       </div>
       <!--    不同类别切片-->
       <div class="saTypesWrapper">
-        unhappy
+        <div v-for="saType in types" class="saTypes">
+          <img class="saTypesImages" :src="saType.url" :alt="saType.text"/>
+          <p class="saTypesTexts">{{saType.text}}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -47,6 +50,20 @@ export default {
           url: require('../../assets/img/streamArchives/6.png'),
           text: "线下"
         },
+      ],
+      types: [
+        {
+          url: require('../../assets/img/streamArchives/dances.png'),
+          text:"舞蹈"
+        },
+        {
+          url: require('../../assets/img/streamArchives/clips.png'),
+          text:"切片"
+        },
+        {
+          url: require('../../assets/img/streamArchives/musics.png'),
+          text:"音乐"
+        }
       ]
     }
   }
@@ -58,6 +75,7 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
   margin: 0 auto;
+  width:50vw;
 }
 
 .streamArchives {
@@ -68,7 +86,7 @@ export default {
 .saClassesWrapper {
   margin-top: 100px;
   display: flex;
-  width: 60vw;
+  width: 50vw;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -84,12 +102,32 @@ export default {
   font-size: 30px;
 }
 .saClasses{
-  width: 30vw;
+  width: 25vw;
   position: relative;
 }
 .saClassesImages {
   width: 30vw;
   border: 10px;
   z-index: 1;
+}
+.saTypesWrapper{
+  display: flex;
+  margin-top: 30px;
+  width:50vw;
+  wrap-option: nowrap;
+  justify-content: space-around;
+}
+.saTypes{
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.saTypesImages{
+  width: 5vw;
+  height:5vw;
+}
+.saTypesTexts{
+  color: white;
+  font-size: 30px;
 }
 </style>
