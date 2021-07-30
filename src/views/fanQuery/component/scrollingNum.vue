@@ -1,35 +1,67 @@
-<template class="scrollingNum">
-<div class="scrollingNumBox">
-  <div class="animBox" :style="{top:(-1*nowNum*40)+'px'}" >
-    <div class="scNumber" v-for="cntNum in 10" :key="cntNum">{{cntNum-1}}</div>
-  </div>
-</div>
+<template>
+	<div class="number-grow-warp">
+		<span ref="numberGrow" :data-time="time" class="number-grow" :data-value="value">
+      加载中
+    </span>
+	</div>
 </template>
-
+ 
 <script>
 export default {
-  name:"scrollingNum",
-  props: ['nowNum'],
+  props: {
+    time: {
+      type: Number,
+      default: 1
+    },
+    value: {
+      type: Number,
+      default: 0
+    }
+  },
+  watch:{
+    value() {
+      this.numberGrow(this.$refs.numberGrow) 
+      }
+  },
+  methods: {
+    numberGrow (ele) {
+      let step =Math.floor((this.value * 10) / (this.time * 1000))  
+      let current = 0
+      let start = 0
+      let t = setInterval(() =>{
+        start += step
+        if (start > this.value) {
+          clearInterval(t)
+          start = this.value
+          t = null
+        }
+        if (current === start) {
+          return
+        }
+        current = start
+        // console.log(current);
+        // debugger
+        ele.innerHTML = current
+      }, 10)
+    }
+  },
+  // mounted () {
+  //   this.numberGrow(this.$refs.numberGrow)
+  // }
 }
 </script>
-
-<style lang="less" scoped>
-.scrollingNumBox{
-  display: inline-block;
-  position: relative;
-  color:white;
-  font-size: 30px;
-  width:18px;
-  height:38px;
-  overflow: hidden;
+ 
+<style>
+.number-grow-warp{
+  transform: translateZ(0);
 }
-.animBox{
-  position:absolute;
-  text-align:center;
-  transform-origin: 0 0;
-  transition: top 0.8s;
-}
-.scNumber{
-  line-height: 40px;
+.number-grow {
+  /* font-family: Arial-BoldMT; */
+  font-size: 18px;
+  /* color: #ffaf00; */
+  letter-spacing: 2.67px;
+  /* margin:110px 0 20px; */
+  display: block;
+  /* line-height:64px; */
 }
 </style>
