@@ -39,7 +39,7 @@ let jdNotify = true;//是否关闭通知，false打开通知推送，true关闭�
 let cookiesArr = [], cookie = '', message;
 $.shareCodes = [];
 $.blackInfo = {}
-$.appId = 10028;
+$.appId = 10001;
 
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
@@ -254,9 +254,9 @@ function doubleSign() {
 function taskUrl(functionId, body = '', stk) {
   let url = ``
   if (functionId === 'double_sign/IssueReward') {
-    url = `${JD_API_HOST}/${functionId}?sceneval=2&g_login_type=1&_ste=1&g_ty=ajax`;
+    url = `${JD_API_HOST}${functionId}?sceneval=2&g_login_type=1&_ste=1&g_ty=ajax`;
   } else {
-    url = `${JD_API_HOST}/${functionId}?${body}&sceneval=2&g_login_type=1&_=${Date.now()}&_ste=1&g_ty=ls`;
+    url = `${JD_API_HOST}${functionId}?${body}&sceneval=2&g_login_type=1&_=${Date.now()}&_ste=1&g_ty=ls`;
     url += `&h5st=${decrypt(Date.now(), stk, '', url)}`;
     if (stk) {
       url += `&_stk=${encodeURIComponent(stk)}`;
