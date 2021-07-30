@@ -1,6 +1,5 @@
 <!-- 枝网查重 -->
 <template>
-  <div>
       <div class="div">
           <div class="logo">
               <img src="~@/assets/img/checkArticle/logo.png" alt="">
@@ -79,14 +78,9 @@
 
 
 
-          
-      <div class="author">
-          TOOLS V1.0.1 BY GH-X-ST
       </div>
 
-      </div>
 
-  </div>
 </template>
 <script>
 import result from './components/result';

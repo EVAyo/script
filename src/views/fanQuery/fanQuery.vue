@@ -1,7 +1,8 @@
 <template>
   <div class="fanQuery">
     <div class="pages">
-      <div class="cell-33">
+
+      <div class="cell-33 ">
         <div class="displayCard">
           <div
             class="cardLayout0"
@@ -19,22 +20,22 @@
           <p>
             <img
               src="../../assets/img/fansQuery/bilibili.png"
-              style="width: 50%"
+              style="width: 35%"
               alt=""
-            /><span class="fontConfig">{{ BzhanFans.ava||'查询中' }}</span>
+            /><span >&nbsp;<scrolling-num-box v-for="(cnt,index) in BzhanFans.ava" :key=index :nowNum="cnt"></scrolling-num-box></span>
           </p>
-          <br /><br /><br /><br />
+          <br /><br /><br />
           <p>
             <img
               src="../../assets/img/fansQuery/douyin.png"
-              style="width: 18%"
+              style="width: 15%"
               alt=""
-            /><span class="fontConfig">{{ douyinFans.ava||'查询中' }}</span>
+            /><span >&nbsp;<scrolling-num-box v-for="(cnt,index) in douyinFans.ava" :key=index :nowNum="cnt"></scrolling-num-box></span>
           </p>
         </div>
       </div>
 
-      <div class="cell-33">
+      <div class="cell-33 ">
         <div class="displayCard">
           <div class="cardLayout0" style="margin-left: 1.8rem">
             <img
@@ -49,22 +50,22 @@
           <p>
             <img
               src="../../assets/img/fansQuery/bilibili.png"
-              style="width: 40%"
+              style="width: 35%"
               alt=""
-            /><span class="fontConfig">{{ BzhanFans.carol||'查询中' }}</span>
+            /><span >&nbsp;<scrolling-num-box v-for="(cnt,index) in BzhanFans.carol" :key=index :nowNum="cnt"></scrolling-num-box></span>
           </p>
-          <br /><br /><br /><br />
+          <br /><br /><br />
           <p>
             <img
               src="../../assets/img/fansQuery/douyin.png"
-              style="width: 18%"
+              style="width: 15%"
               alt=""
-            /><span class="fontConfig">{{ douyinFans.carol||'查询中' }}</span>
+            /><span >&nbsp;<scrolling-num-box v-for="(cnt,index) in douyinFans.carol" :key=index :nowNum="cnt"></scrolling-num-box></span>
           </p>
         </div>
       </div>
 
-      <div class="cell-33">
+      <div class="cell-33 ">
         <div class="displayCard">
           <div
             class="cardLayout0"
@@ -82,22 +83,22 @@
           <p>
             <img
               src="../../assets/img/fansQuery/bilibili.png"
-              style="width: 40%"
+              style="width: 35%"
               alt=""
-            /><span class="fontConfig">{{ BzhanFans.eileen||'查询中' }}</span>
+            /><span >&nbsp;<scrolling-num-box v-for="(cnt,index) in BzhanFans.eileen" :key=index :nowNum="cnt"></scrolling-num-box></span>
           </p>
-          <br /><br /><br /><br />
+          <br /><br /><br />
           <p>
             <img
               src="../../assets/img/fansQuery/douyin.png"
-              style="width: 18%"
+              style="width: 15%"
               alt=""
-            /><span class="fontConfig">{{ douyinFans.eileen||'查询中' }}</span>
+            /><span >&nbsp;<scrolling-num-box v-for="(cnt,index) in douyinFans.eileen" :key=index :nowNum="cnt"></scrolling-num-box></span>
           </p>
         </div>
       </div>
 
-      <div class="cell-33">
+      <div class="cell-33 ">
         <div class="displayCard">
           <div
             class="cardLayout0"
@@ -115,22 +116,22 @@
           <p>
             <img
               src="../../assets/img/fansQuery/bilibili.png"
-              style="width: 40%"
+              style="width: 35%"
               alt=""
-            /><span class="fontConfig">{{ BzhanFans.bella||'查询中' }}</span>
+            /><span >&nbsp;<scrolling-num-box v-for="(cnt,index) in BzhanFans.bella" :key=index :nowNum="cnt"></scrolling-num-box></span>
           </p>
-          <br /><br /><br /><br />
+          <br /><br /><br />
           <p>
             <img
               src="../../assets/img/fansQuery/douyin.png"
-              style="width: 18%"
+              style="width: 15%"
               alt=""
-            /><span class="fontConfig">{{ douyinFans.bella||'查询中' }}</span>
+            /><span >&nbsp;<scrolling-num-box v-for="(cnt,index) in douyinFans.bella" :key=index :nowNum="cnt"></scrolling-num-box></span>
           </p>
         </div>
       </div>
 
-      <div class="cell-33">
+      <div class="cell-33 ">
         <div class="displayCard">
           <div
             class="cardLayout0"
@@ -148,22 +149,22 @@
           <p>
             <img
               src="../../assets/img/fansQuery/bilibili.png"
-              style="width: 40%"
+              style="width: 35%"
               alt=""
-            /><span class="fontConfig">{{ BzhanFans.diana||'查询中' }}</span>
+            /><span >&nbsp;<scrolling-num-box v-for="(cnt,index) in BzhanFans.diana" :key=index :nowNum="cnt"></scrolling-num-box></span>
           </p>
-          <br /><br /><br /><br />
+          <br /><br /><br />
           <p>
             <img
               src="../../assets/img/fansQuery/douyin.png"
-              style="width: 18%"
+              style="width: 15%"
               alt=""
-            /><span class="fontConfig">{{ douyinFans.diana||'查询中' }}</span>
+            /><span >&nbsp;<scrolling-num-box v-for="(cnt,index) in douyinFans.diana" :key=index :nowNum="cnt"></scrolling-num-box></span>
           </p>
         </div>
       </div>
 
-      <div class="cell-33">
+      <div class="cell-33 ">
         <div class="displayCard">
           <div
             class="cardLayout0"
@@ -181,46 +182,48 @@
           <p>
             <img
               src="../../assets/img/fansQuery/bilibili.png"
-              style="width: 40%"
+              style="width: 35%"
               alt=""
-            /><span class="fontConfig">{{ BzhanFans.official||'查询中' }}</span>
+            /><span >&nbsp;<scrolling-num-box v-for="(cnt,index) in BzhanFans.official" :key=index :nowNum="cnt"></scrolling-num-box></span>
           </p>
-          <br /><br /><br /><br />
+          <br /><br /><br />
           <p>
             <img
               src="../../assets/img/fansQuery/douyin.png"
-              style="width: 18%"
+              style="width: 15%"
               alt=""
-            /><span class="fontConfig">{{ douyinFans.official||'查询中' }}</span>
+            /><span >&nbsp;<scrolling-num-box v-for="(cnt,index) in douyinFans.official" :key=index :nowNum="cnt"></scrolling-num-box></span>
           </p>
         </div>
+      
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
 import axios from "axios";
-
+import scrollingNumBox from "./component/scrollingNum.vue"
 export default {
   name: "fanQuery",
   data: function () {
     return {
       BzhanFans: {
-        ava: 0,
-        bella: 0,
-        carol: 0,
-        diana: 0,
-        eileen: 0,
-        official: 0,
+        ava: [2,0,0,0,0,0,0,0],
+        bella: [0,0,0,0,0,0],
+        carol: [0,0,0,0,0,0],
+        diana: [0,0,0,0,0,0],
+        eileen: [0,0,0,0,0,0],
+        official: [0,0,0,0,0,0],
       },
       douyinFans: {
-        ava: 0,
-        bella: 0,
-        carol: 0,
-        diana: 0,
-        eileen: 0,
-        official: 0,
+        ava: [0,0,0,0,0,0],
+        bella: [0,0,0,0,0,0],
+        carol: [0,0,0,0,0,0],
+        diana: [0,0,0,0,0,0],
+        eileen: [0,0,0,0,0,0],
+        official: [0,0,0,0,0,0],
       },
       // 六个人的B站uid
       BzhanUid: [
@@ -278,7 +281,9 @@ export default {
       ]
     };
   },
-  components: {},
+  components: {
+    scrollingNumBox
+  },
   async created() {
     this.BzhanUid.forEach((item) => {
       this.getBibiliFans(item.uid, item.name);
@@ -289,12 +294,22 @@ export default {
     // this.getDouyinFans();
   },
   methods: {
+    // transform num to num array.
+    tranNum:function(num){
+      let tmp=[];
+      let numstr=num.toString();
+      for(let i=0;i<numstr.length;i++){
+        tmp.push(parseInt(numstr[i]));
+      }
+      return tmp;
+    },
     // 获取B站粉丝数
     async getBibiliFans(uid, name) {
       try {
         const res = await this.$request(`bilibili/x/relation/stat?vmid=${uid}`);
-        this.BzhanFans[name] = res.follower;
-      } catch (error) {}
+        this.BzhanFans[name] = this.tranNum(res.follower);
+      } catch (error) {
+      }
     },
   // 获取抖音粉丝数
 async getDouyinFans(uid,name) {
@@ -302,7 +317,7 @@ async getDouyinFans(uid,name) {
     const res = await axios.get(
           `douyin/web/api/v2/user/info/?sec_uid=${uid}`
         );
-        this.douyinFans[name] = res.data.user_info.follower_count
+        this.douyinFans[name] = this.tranNum(res.data.user_info.follower_count)
   } catch (error) {
     
   }
@@ -397,6 +412,7 @@ async getDouyinFans(uid,name) {
   flex-wrap: wrap;
   align-content: space-around;
   justify-content: space-around;
+  
 }
 .cell-33 {
   flex: 0 0 33%;
@@ -404,7 +420,7 @@ async getDouyinFans(uid,name) {
 
 .displayCard {
   position: relative;
-  width: 160px;
+  width: 180px;
 }
 .backgroundImg {
   max-width: 100px;
@@ -423,10 +439,10 @@ async getDouyinFans(uid,name) {
 }
 .fansNumDiv {
   margin-top: 3rem;
-  margin-left: 16rem;
+  margin-left: 17rem;
 }
 .fansNumDiv p {
-  width: 13rem;
+  width: 20rem;
 }
 .fontConfig {
   margin-left: 8px;
