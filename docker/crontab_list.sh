@@ -153,3 +153,5 @@
 35 0,9 * * * node /scripts/jd_sign.js >> /scripts/logs/jd_sign.log 2>&1
 # 升级赚京豆
 41 1,9 * * * node /scripts/jd_mmdou.js >> /scripts/logs/jd_mmdou.log 2>&1
+# 京喜签到
+17 1 * * * node /scripts/jx_sign.js >> /scripts/logs/jx_sign.log 2>&1
