@@ -81,12 +81,13 @@ export default {
 .streamArchives {
   background-color: #2B343A;
   height: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .saClassesWrapper {
-  margin-top: 100px;
   display: flex;
-  width: 50vw;
+  width: 60vw;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -94,9 +95,6 @@ export default {
   position: absolute;
   z-index:2;
   right:0;
-  top:50%;
-  transform: translate(0, -50%);
-  bottom: 0;
   float: right;
   color: white;
   font-size: 30px;
@@ -104,6 +102,8 @@ export default {
 .saClasses{
   width: 25vw;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 .saClassesImages {
   width: 30vw;
@@ -125,6 +125,7 @@ export default {
 .saTypesImages{
   width: 5vw;
   height:5vw;
+  margin-right: 1vw;
 }
 .saTypesTexts{
   color: white;
