@@ -94,12 +94,25 @@ export default {
   align-items: center;
   justify-content: center;
   margin-left: 20px;
+  background: #943fef;
+  outline: 1px solid;
+  outline-color: rgba(148,63,239, 1);
   background: url("../../assets/img/random/random-button.jpg") no-repeat center /cover;
+  -webkit-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 .random-button:hover{
-  background: url("../../assets/img/random/random-button-on.png") no-repeat center /cover;
+  border: 1 solid;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
+  outline: 5px solid;
+  outline-color: rgba(148,63,239, 0);
+  outline-offset: 20px;
+  text-shadow: 1px 1px 2px #427388;
 }
-.random-button:active{
-  background: url("../../assets/img/random/random-button-click.png") no-repeat center /cover;
-}
+// .random-button:hover{
+//   background: url("../../assets/img/random/random-button-on.png") no-repeat center /cover;
+// }
+// .random-button:active{
+//   background: url("../../assets/img/random/random-button-click.png") no-repeat center /cover;
+// }
 </style>
