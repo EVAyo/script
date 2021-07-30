@@ -1,0 +1,134 @@
+.div{
+    width:100%;
+    min-height:100vh;
+    background-color: #1d1d1d;
+    color: #fff;
+    padding:54px 90px 50px 100px;
+    box-sizing:border-box;
+    position: relative;
+    .logo{
+        width: 486px;
+        height: 121px;
+        img{
+            width:100%;
+            height:100%;
+            
+        }
+    }
+    .content{
+        margin-top:40px;
+        width: 1073px;
+        height: 280px;
+        padding:27px 17px 10px 18px;
+        border: 3px solid #f2f2f2;
+        box-sizing: border-box;
+        .search-input{
+            width: 100%;
+            height: 174px;
+            background: #1d1d1d;
+            border: none;
+            box-sizing:border-box;
+            color: #f2f2f2;
+            font-size: 22px;
+            outline: none;
+            resize:none
+        }
+        // .search-input:fo
+    }
+}
+// 文本框下面的div样式
+.textBottom{
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+  ul {
+    // height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+}
+.li_bottom{
+  color: #c678d0;
+  font-size: 16px;
+}
+.content_length{
+  margin-bottom:7px;
+}
+.input_but{
+  font-size:15px;
+  cursor: pointer;
+  background: #943fef;
+  color: #fff;
+  height: 40px;
+  width: 120px;
+  border: 0 solid;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0);
+  outline: 1px solid;
+  outline-color: rgba(148,63,239, 1);
+  outline-offset: 0px;
+  text-shadow: none;
+  -webkit-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+.input_but:hover{
+  border: 1 solid;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
+  outline: 5px solid;
+  outline-color: rgba(255, 255, 255, 0);
+  outline-offset: 20px;
+  text-shadow: 1px 1px 2px #427388;
+}
+.left{
+  height: 50px;
+};
+.right{
+  margin-bottom:5px;
+  li{
+    text-align: center
+  }
+}
+
+.BigContent{
+  display: flex;
+  .content_right{
+    flex: 1;
+    padding-left: 55px;
+    box-sizing: border-box;
+    margin-top: 50px;
+    .intro{
+      font-size:25px;
+    }
+    ul>li{
+        margin-bottom: 30px;
+        line-height:1.2;
+        font-size: 20px;
+        width:400px;
+      p{
+        height: 32px;
+        font-size:22px;
+      }
+      .exhibition{
+        width: 220px;
+        height: 164px;
+        margin-top:70px;
+        cursor: pointer;
+        border-radius: 5px;
+        overflow: hidden;
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+}
+.pink{
+  color: #c678d0;
+}
+.violet{
+  color: #943fef;
+  cursor: pointer;
+}

@@ -1,0 +1,165 @@
+<!-- 枝网查重 -->
+<template>
+      <div class="div">
+          <div class="logo">
+              <img src="~@/assets/img/checkArticle/logo.png" alt="">
+          </div>
+          
+          <div class="BigContent">
+            <!-- 左边输入文本框 start -->
+            <div class="content_left">
+              
+                <div class="content">
+                  <!-- 文本框 -->
+                  <textarea type="text"
+                      v-model="search"
+                      placeholder="内容字数不少于10字，不多于1000字，输入信息后，点击下方按钮提交进行查重！"
+                      class="search-input">
+                  </textarea>
+
+                  <!-- 文本框里面的配置 -->
+                  <div class="textBottom">
+                    <ul class="left">
+                      <!-- <li>种类：</li> -->
+                      <li class="li_bottom">总复制占比：<span v-if="result.rate">{{toPercent(result.rate)}}</span></li>
+                    </ul>
+                    <ul class="right">
+                      <li class="content_length">{{search.length}}/{{maxSearchLength}}字</li>
+                      <li>
+                        <button class="input_but" @click="submit">提交</button>
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- 文本框里面的配置结束 -->
+                  
+                </div>
+                <!-- 查询结果 -->
+                <div v-if="result.related">
+                      <div v-for="(item,index) in result.related" :key="index" >
+                          <result :result="item"  v-if="item"></result>
+                      </div>
+                </div>
+              
+                     
+            </div>
+            <!-- 左边输入文本框 end -->   
+
+            <div class="content_right">
+              <ul>
+                <li class="intro">
+                  枝网查重系统介绍
+                </li>
+                <li>
+                  <p class="pink">比对库范围</p>
+                  <p>B站动态视频评论区</p>
+                </li>
+                <li>
+                  <p class="pink">参考文献</p>
+                  <div>
+                      [1]李旭.基于串匹配方法的文档复制 检测系统研究[D].燕山大学
+                  </div>
+                </li>
+                <li>
+                  <p class="pink">开源地址</p>
+                  <div class="violet" @click="toUrl('https://github.com/ASoulCnki')">ASoulCnki</div>
+                </li>
+                <li>
+                  <p class="pink">问题反馈戳这里↓</p>
+                  <div class="violet" @click="toUrl('https://space.bilibili.com/1442421278')">ProjectASF</div>
+                </li>
+                <li>
+                  <div class="exhibition" @click="toUrl('https://asoulcnki.asia/rank')">
+                    <img src="~@/assets/img/checkArticle/exhibition.png" alt="">
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+
+
+      </div>
+
+
+</template>
+<script>
+import result from './components/result';
+import request from '@/assets/js/request';
+import { parseTime } from "@/utils/time";
+export default {
+  name: "ASoulFanCheck",
+  data() {
+    return {
+        search: '',
+        result:[],
+        maxSearchLength: 1000,
+    }
+  },
+  components: {
+    result,
+  },
+  computed: {
+    
+  },
+  watch:{
+    search(val){
+        if(val.length > this.maxSearchLength) {
+            this.$message({message: `最多${this.maxSearchLength}个字捏`, type: 'warning'});
+            this.search = String(this.search).slice(0, this.maxSearchLength);
+        }
+    },
+  },
+
+  mounted() {},
+
+  methods: {
+    //提交
+    async submit(){
+        if(this.search.length < 10) {
+          this.$message({message: '至少十个字捏', type: 'warning'});
+          return;
+        }
+        this.$loading();
+        try {
+            const res = await this.$request({
+                baseURL: 'https://asoulcnki.asia/v1/api/check',
+                method: 'post',
+                headers: {
+      　　　　    'Content-Type': 'application/json'
+      　　      },
+                data: {text: this.search}
+            })
+            this.$nextTick(() =>{
+                if(res.related.length == 0) {
+                    this.$message({message: '没有重复的小作文捏', type: 'success'});
+                    this.result = [];
+                    return;
+                }
+                res.related.forEach((item) =>{
+                    item.reply.createTime = parseTime(item.reply.ctime, '{y}/{m}/{d} {h}:{i}')
+                })
+                this.result = res;
+                console.log(this.result);
+            })
+        } catch (error) {
+          this.$message({message: '出错了捏，请重试', type: 'error'});
+        } finally{
+          this.$closeLoading();
+        }
+    },
+    toPercent(point){
+        var str=Number(point*100).toFixed(2);
+        str+="%";
+        return str;
+    },
+    toUrl(url){
+        window.open(url, '_blank') // 新窗口打开外链接
+    },
+  }
+}
+</script>
+
+<style lang="less" scoped>
+@import "./checkArticle.less";
+</style>
+

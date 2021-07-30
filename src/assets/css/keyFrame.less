@@ -1,0 +1,24 @@
+.fadeInUp {
+  -webkit-animation-name: fadeInUp;
+  animation-name: fadeInUp;
+  -webkit-animation-duration: .5s;
+  animation-duration: .5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeInUp {
+  from {
+      opacity: 0;
+      visibility: hidden;
+      -webkit-transform: translate3d(0, 40px, 0);
+      transform: translate3d(0, 40px, 0);
+  }
+  to {
+      opacity: 1;
+      visibility: visible;
+      transition: all  0.5s;
+      -webkit-transform: none;
+      transform: none;
+  }
+}

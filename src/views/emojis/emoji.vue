@@ -1,107 +1,201 @@
-   <template>
-  <container class="home-container">
-    <!-- 头部区域 -->
-    <header>
-      <div>
-        <img src="logo.png" alt="" />
-        <span>表情包合集</span>
+<template>
+  <div class="emoji">
+		<div class="waterfall" ref="waterfallBox">
+      <div v-for="(bigItem,index) in imgList" :key="index" class="column">
+        <div v-for="img in bigItem" :key="img.id" class="column-item fadeInUp"  :style="{'padding-top':img.paddingTop+'%'}">
+				  
+          <a :href="img.url" target="_blank" rel="noopener noreferrer">
+              <img :src="img.url" alt="" class="column-item-img" >
+          </a>
+			  </div>
       </div>
-      <button type="info"></button>
-    </header>
+		</div>
+  </div>
 
-    <!-- 页面主体区域 -->
-    <container>
-      <!-- 右侧内容主体 -->
-      <!-- 路由占位符 -->
-      <router-view></router-view>
-      <!--  卡片视图区域 -->
-      <card>
-        <row>
-          <button type="primary">添加图片</button>
-        </row>
-      </card>
-
-      <div class="block">
-        <span class="demonstration">默认</span>
-      </div>
-
-      <div class="container">
-        <div class="waterfall">
-          <my-waterfall :data="listone"></my-waterfall>
-        </div>
-      </div>
-    </container>
-  </container>
 </template>
-
 <script>
-import myWaterfall from "@/components/mywaterfall";
 
 export default {
-  components: { myWaterfall },
 
   data() {
     return {
-      listone: [],
+      // 当前获取的所有数据的一维数组
+      cacheList:[],
+      imgList: [],
       // 当前页
       currentPage:1,
+      count: 0,
+      screenWidth: document.body.clientWidth,
+      columnNum:3,
     };
   },
   created() {
-    this.GetLIstImg(this.currentPage, 10);
+    this.imgList = Array.from(Array(this.columnNum), () => new Array(0))
+    this.GetLIstImg();
   },
-
+  mounted(){
+          this.listensBoxScroll()
+          // debugger
+            window.onresize = () => {
+                    window.screenWidth = document.body.clientWidth
+                    this.screenWidth = window.screenWidth
+            }
+  },
+  watch:{
+    
+    screenWidth (val) {
+                if (!this.timer) {
+                    this.screenWidth = val
+                    this.timer = true
+                    // let that = this
+                    setTimeout(()=> {
+                      let tempColumn = Math.floor((this.screenWidth*0.8)/340)
+                      if(this.columnNum!=tempColumn){
+                          this.columnNum = tempColumn;
+                          this.setListIndex()
+                      }
+                      
+                    // console.log(      );  
+                        // that.screenWidth = that.$store.state.canvasWidth
+                        console.log(this.screenWidth,'this.screenWidth')
+                        // this.init()
+                        this.timer = false
+                    }, 500)
+                }
+            }
+  },
+ 
   methods: {
-    async GetLIstImg(page, pageSize) {
-      try {
-        this.$loading();
-        const res = await this.$request({
-          url: `emoji/?page=${page}&limit=${pageSize}`,
-        });
-        console.log(res);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        this.$closeLoading();
+    // 重置展示数组列数
+    setListIndex(){
+      const cacheList = [...this.cacheList]
+      const column  = this.columnNum
+      let tempList = Array.from(Array(column),() => new Array())
+      // this.imgList 
+      cacheList.forEach((ele,index)=>{
+          let temp = index%this.column
+          tempList[temp].push(ele)
+      })
+      this.imgList = tempList
+    },
+    // 监听waterfallBox的scroll事件
+    listensBoxScroll(){
+      this.$refs.waterfallBox.onscroll  = (e) => {
+          if (!this.timeBoxScroll) {
+                    this.timeBoxScroll = true
+                    setTimeout(async()=> {
+                      // 目前窗口底部离容器顶部的距离  
+                      let  TopOffsetHeight = this.$refs.waterfallBox.scrollTop +this.$refs.waterfallBox.offsetHeight
+                      let scrollHeight  = this.$refs.waterfallBox.scrollHeight 
+                      // 离底部50px触发翻页
+                      if(TopOffsetHeight +50 >= scrollHeight){
+                        this.currentPage++;
+                        await this.GetLIstImg()
+                      }
+                        this.timeBoxScroll = false
+                    }, 400)
+                }
       }
     },
+    async GetLIstImg(pageSize=20) {
+      try {
+        this.$loading();
+        // const res = await this.$request({
+        //   url: `http://124.156.217.253:8000/?page=${this.currentPage}&limit=${pageSize}`,
+        // });
+        const res = await this.$request({
+          url: `emoji/?page=${this.currentPage}&limit=${pageSize}`,
+        });
+
+        let tempList =  [...this.imgList]
+
+        res.forEach((ele,index)=>{
+            let i = (index+ ((this.currentPage-1)*20))%this.columnNum
+            ele.paddingTop=ele.height/ ele.width *100
+            ele.url = 'https://'+ ele.url
+            tempList[i].push(ele)
+            this.cacheList.push(ele)
+        })
+        this.imgList = [...tempList]  
+      } catch (error) {
+        this.$message({message:error})
+        console.log(error);
+      } finally {
+        //console.log(res);
+      this.$closeLoading();
+      }
+    },  
+
   },
 };
 </script>
 
+
+
 <style lang="less" scoped>
-.home-container {
-  height: 80%;
-  width: 90%;
-}
-.header {
-  background-color: #6d25a7;
-  display: flex;
-  justify-content: space-between;
-  padding-left: 0;
-  align-items: center;
-  color: #fff;
-  font-size: 30px;
-  > div {
-    display: flex;
-    align-items: center;
-    span {
-      margin-left: 20px;
-    }
-  }
-}
-
-.aside {
-  background-color: #403f8d;
-  .menu {
-    border-right: none;
-  }
-}
-
-.el-main {
-  background-color: #6d2a94;
+.emoji{
+  position: relative;
   width: 100%;
+  height: 100%;
+  background-image:url('../../assets/img/emoji/bgp.png');
+  background-size: cover;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
 }
 
-@import "./emoji.less";
+.waterfall{
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+  min-width: 340px;
+  justify-content: center;
+  height: 100vh;
+  overflow-y: auto;
+}
+.column{
+  max-width: 300px ;
+  width: 100%;
+  min-width: 100px;
+  // background-color: blue;
+  margin: 0 20px;
+
+}
+.column-item {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 0;
+  // height: 50px;
+  // padding: 50%;
+  margin: 20px 0 ;
+  background-color: rgba(255, 255, 255);
+  // border-radius: 4px;
+  // transition: transform 0.5s ease-in;
+  // transition: height 0.5s ;
+  transform: scale(0.95,0.95);
+  transition: transform 0.3s ease-out,background-color 0.3s ease-out;
+}
+// .ftco-animate {
+//     opacity: 0;
+//     visibility: hidden;
+// }
+
+.column-item:hover {
+  transform: scale(1.05,1.05);
+  background-color: rgba(255, 255, 255,0);
+  // margin: 20px;
+  // width: 110%;
+  // height: auto;
+}
+.column-item-img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  // border-radius: 4px;   
+}
 </style>
