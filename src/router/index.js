@@ -27,6 +27,13 @@ const routes = [{
             component: () =>
                 import ( /*webpackChunkname: "tools/Index" */ '../views/Index.vue')
         },
+        // 枝网查重
+        {
+            path: '/tools/checkArticle',
+            name: "checkArticle",
+            component: () =>
+                import ( /*webpackChunkname: "tools/checkArticle" */ '../views/checkArticle/checkArticle.vue')
+        },
         // 粉丝查询
         {
             path: '/tools/fanQuery',
