@@ -135,34 +135,28 @@ export default {
     this.$route.name;
   },
   mounted(){
-    this.box = this.$refs.myRouteView
-      var $this = this
       // 监听这个dom的scroll事件
-      this.box.onscroll  = (e) => {
+      this.$refs.myRouteView.onscroll  = (e) => {
         console.log('on scroll')
-        $this.temp(e)
+          if (!this.routeViewScroll) {
+            this.routeViewScroll = true
+              setTimeout(async()=> {
+
+                  this.temp(e)
+            
+                 this.routeViewScroll = false
+              }, 400)
+          }
+          
       }
-    //  this.$nextTick(() => {
-    //         this.watchTimeline()
-    //   })
-    // console.log(this.$refs.myRouteView);
-    // debugger
-    //   this.$refs.myRouteView.addEventListener('scroll',this.temp())
 
   },
   methods: {
-     watchTimeline() {
-      
-      // console.log(document.getElementById('myRouteView').addEventListener);
-      // debugger
-      document.getElementById('myRouteView').addEventListener('scroll',this.temp())
-    },
+      // 临时函数 可删
       temp(e){
        console.log(this.$refs.myRouteView.scrollTop);
        console.log(this.$refs.myRouteView.scrollHeight);
        console.log(this.$refs.myRouteView.offsetHeight);
-        // console.log(1);
-        // console.log(e);
     },
   },
 };

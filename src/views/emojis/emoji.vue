@@ -24,6 +24,7 @@ export default {
       imgList: [],
       // 当前页
       currentPage:1,
+      pageSize:20,
       count: 0,
       screenWidth: document.body.clientWidth,
       columnNum:3,
@@ -97,22 +98,28 @@ export default {
                 }
       }
     },
-    async GetLIstImg(pageSize=20) {
+    async GetLIstImg() {
       try {
         this.$loading();
         // const res = await this.$request({
         //   url: `http://124.156.217.253:8000/?page=${this.currentPage}&limit=${pageSize}`,
         // });
         const res = await this.$request({
-          url: `emoji/?page=${this.currentPage}&limit=${pageSize}`,
+          url: `emoji/?page=${this.currentPage}&limit=${this.pageSize}`,
         });
 
         let tempList =  [...this.imgList]
 
         res.forEach((ele,index)=>{
-            let i = (index+ ((this.currentPage-1)*20))%this.columnNum
             ele.paddingTop=ele.height/ ele.width *100
             ele.url = 'https://'+ ele.url
+        })
+        // 排序 解决某列高度过长问题
+        res.sort((obj1, obj2)=>{
+          return    obj1.paddingTop < obj2.paddingTop ? -1 : (obj1.paddingTop > obj2.paddingTop?1 :0)    
+        })
+        res.forEach((ele,index)=>{
+            let i = (index+ ((this.currentPage-1)*this.pageSize))%this.columnNum
             tempList[i].push(ele)
             this.cacheList.push(ele)
         })
@@ -121,7 +128,6 @@ export default {
         this.$message({message:error})
         console.log(error);
       } finally {
-        //console.log(res);
       this.$closeLoading();
       }
     },  
