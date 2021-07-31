@@ -2,7 +2,7 @@
  * @Author: maggot-code
  * @Date: 2021-07-24 16:59:06
  * @LastEditors: maggot-code
- * @LastEditTime: 2021-07-31 15:04:01
+ * @LastEditTime: 2021-07-31 16:17:35
  * @Description: file content
 -->
 <template>
@@ -96,9 +96,8 @@ export default {
             this.loading = true;
 
             this.searchList = [];
-
             this.$request({
-                url: `http://ilovemiku.cn:7123/cfj/uid=${this.searchValue}`,
+                url: `http://ilovemiku.cn:7123/cfj/?name=${this.searchValue}`,
                 methods: "GET",
             })
                 .then(this.setSearchReady)
@@ -121,7 +120,7 @@ export default {
         setSearchResponse(response) {
             const { list } = response;
 
-            this.searchList = list;
+            this.searchList = list || [];
         },
         searchError(error) {
             console.log(error);
