@@ -357,6 +357,7 @@ background-image: url("../assets/img/contents/random-short.png");
   height: 100vh;
   //padding-left: 18.5vh;
   box-sizing: border-box;
+  background: #2B343A;
   // overflow-y: scroll;
   // scrollbar-width: thin;
 }
