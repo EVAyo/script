@@ -2,7 +2,7 @@
  * @Author: maggot-code
  * @Date: 2021-07-24 16:59:06
  * @LastEditors: maggot-code
- * @LastEditTime: 2021-07-31 02:52:13
+ * @LastEditTime: 2021-07-31 15:04:01
  * @Description: file content
 -->
 <template>
@@ -94,6 +94,8 @@ export default {
             }
 
             this.loading = true;
+
+            this.searchList = [];
 
             this.$request({
                 url: `http://ilovemiku.cn:7123/cfj/uid=${this.searchValue}`,
