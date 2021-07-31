@@ -359,10 +359,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.wordCloud {
+.wordCloud-main {
   position: relative;
-  width: 100%;
   height: 100vh;
+  padding-left: 18.5vh;
   z-index: 10;
   background-color: aqua;
 }

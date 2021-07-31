@@ -3,7 +3,7 @@
 		<div class="waterfall" ref="waterfallBox">
       <div v-for="(bigItem,index) in imgList" :key="index" class="column">
         <div v-for="img in bigItem" :key="img.id" class="column-item fadeInUp"  :style="{'padding-top':img.paddingTop+'%'}">
-				  
+
           <a :href="img.url" target="_blank" rel="noopener noreferrer">
               <img :src="img.url" alt="" class="column-item-img" >
           </a>
@@ -43,7 +43,7 @@ export default {
             }
   },
   watch:{
-    
+
     screenWidth (val) {
                 if (!this.timer) {
                     this.screenWidth = val
@@ -55,8 +55,8 @@ export default {
                           this.columnNum = tempColumn;
                           this.setListIndex()
                       }
-                      
-                    // console.log(      );  
+
+                    // console.log(      );
                         // that.screenWidth = that.$store.state.canvasWidth
                         console.log(this.screenWidth,'this.screenWidth')
                         // this.init()
@@ -65,14 +65,14 @@ export default {
                 }
             }
   },
- 
+
   methods: {
     // 重置展示数组列数
     setListIndex(){
       const cacheList = [...this.cacheList]
       const column  = this.columnNum
       let tempList = Array.from(Array(column),() => new Array())
-      // this.imgList 
+      // this.imgList
       cacheList.forEach((ele,index)=>{
           let temp = index%this.column
           tempList[temp].push(ele)
@@ -85,9 +85,9 @@ export default {
           if (!this.timeBoxScroll) {
                     this.timeBoxScroll = true
                     setTimeout(async()=> {
-                      // 目前窗口底部离容器顶部的距离  
+                      // 目前窗口底部离容器顶部的距离
                       let  TopOffsetHeight = this.$refs.waterfallBox.scrollTop +this.$refs.waterfallBox.offsetHeight
-                      let scrollHeight  = this.$refs.waterfallBox.scrollHeight 
+                      let scrollHeight  = this.$refs.waterfallBox.scrollHeight
                       // 离底部50px触发翻页
                       if(TopOffsetHeight +50 >= scrollHeight){
                         this.currentPage++;
@@ -116,21 +116,21 @@ export default {
         })
         // 排序 解决某列高度过长问题
         res.sort((obj1, obj2)=>{
-          return    obj1.paddingTop < obj2.paddingTop ? -1 : (obj1.paddingTop > obj2.paddingTop?1 :0)    
+          return    obj1.paddingTop < obj2.paddingTop ? -1 : (obj1.paddingTop > obj2.paddingTop?1 :0)
         })
         res.forEach((ele,index)=>{
             let i = (index+ ((this.currentPage-1)*this.pageSize))%this.columnNum
             tempList[i].push(ele)
             this.cacheList.push(ele)
         })
-        this.imgList = [...tempList]  
+        this.imgList = [...tempList]
       } catch (error) {
         this.$message({message:error})
         console.log(error);
       } finally {
       this.$closeLoading();
       }
-    },  
+    },
 
   },
 };
@@ -141,8 +141,8 @@ export default {
 <style lang="less" scoped>
 .emoji{
   position: relative;
-  width: 100%;
   height: 100%;
+  padding-left: 18.5vh;
   background-image:url('../../assets/img/emoji/bgp.png');
   background-size: cover;
   background-color: #000;
@@ -152,7 +152,7 @@ export default {
 
 .waterfall{
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-wrap: wrap;
   width: 80%;
@@ -202,6 +202,6 @@ export default {
     left: 0;
     height: 100%;
     width: 100%;
-  // border-radius: 4px;   
+  // border-radius: 4px;
 }
 </style>

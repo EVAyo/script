@@ -26,28 +26,28 @@
         :title="item.titleName"
         :key="index"
         :to="item.route"
-       
+
       >
       <div  class="nav-item-common"
         >
         <img v-show="isLongNav" class="img" :src="item.imgLong" alt="" />
         <img v-show="!isLongNav" class="img" :src="item.imgShort" alt="" />
         <div v-if="currentPageName!==item.routeName" class="nav-mask" ></div>
-        
+
       </div>
       </router-link>
     </div> -->
     <!--  -->
     <div  >
-      <div class="nav-contain"> 
-        <router-link v-for="(item, index) in routeList" :key="index" 
+      <div class="nav-contain">
+        <router-link v-for="(item, index) in routeList" :key="index"
         :to="item.route"
         :title="item.titleName"
         class="box" :class="'item-'+item.routeName"
         >
         </router-link >
       </div>
-    
+
     <div class="route-view-class" id="myRouteView" ref="myRouteView">
       <transition :name="transitionName">
         <router-view />
@@ -72,7 +72,7 @@ export default {
           titleName:"首页",
           route: "/",
         },
-        { 
+        {
           imgShort: require("../assets/img/contents/zhiNet-short.png"),
           imgLong: require("../assets/img/contents/zhiNet-long.png"),
           routeName: "checkArticle",
@@ -163,7 +163,7 @@ export default {
                  this.routeViewScroll = false
               }, 400)
           }
-          
+
       }
 
   },
@@ -188,7 +188,9 @@ export default {
     height: 100vh;
     flex-direction: column;
     justify-content: flex-start;
-    margin: 10px 0;
+    padding: 10px 0;
+    width: 18.5vh;
+    background-color: transparent;
 }
 .box{
     margin-top: 10px;
@@ -198,9 +200,9 @@ export default {
     min-height: 45px;
     border-radius: 4px;
     // background-image: url("../assets/img/contents/zhiNet-short.png");
-    transition:width 0.5s ,background-image .5s,min-width 0.5s;
+    transition:width 0.5s ,background-image .2s,min-width 0.5s;
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-size: cover;
 }
 .box:hover{
     width: 37vh;
@@ -351,9 +353,10 @@ background-image: url("../assets/img/contents/random-short.png");
 // }
 .route-view-class {
   position: relative;
-  flex: auto;
   width: 100%;
   height: 100vh;
+  //padding-left: 18.5vh;
+  box-sizing: border-box;
   // overflow-y: scroll;
   // scrollbar-width: thin;
 }
@@ -364,7 +367,7 @@ background-image: url("../assets/img/contents/random-short.png");
 //   z-index: 0;
 // }
 
-// 
+//
 
 
 </style>
