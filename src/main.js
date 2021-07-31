@@ -8,7 +8,7 @@ import '@/assets/js/request.js'
 
 import '@/plugins/element'
 Vue.config.productionTip = false
-// Vue.prototype.$DeviceType = 
+// Vue.prototype.$DeviceType =
 
 import waterfall from "vue-waterfall2";
 //瀑布流插件
