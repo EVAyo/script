@@ -8,15 +8,15 @@ Last Modified time: 2021-05-19 16:27:18
 ================QuantumultX==================
 [task_local]
 #京东全民开红包
-1 1,2,23 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_redPacket.js, tag=京东全民开红包, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
+1 1,2,23 * * * jd_redPacket.js, tag=京东全民开红包, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jd_redPacket.png, enabled=true
 ===================Loon==============
 [Script]
-cron "1 1,2,23 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_redPacket.js, tag=京东全民开红包
+cron "1 1,2,23 * * *" script-path=jd_redPacket.js, tag=京东全民开红包
 ===============Surge===============
 [Script]
-京东全民开红包 = type=cron,cronexp="1 1,2,23 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_redPacket.js
+京东全民开红包 = type=cron,cronexp="1 1,2,23 * * *",wake-system=1,timeout=3600,script-path=jd_redPacket.js
 ====================================小火箭=============================
-京东全民开红包 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_redPacket.js, cronexpr="1 1,2,23 * * *", timeout=3600, enable=true
+京东全民开红包 = type=cron,script-path=jd_redPacket.js, cronexpr="1 1,2,23 * * *", timeout=3600, enable=true
  */
 const $ = new Env('京东全民开红包');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -27,8 +27,603 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let cookiesArr = [], cookie = '';
 $.redPacketId = [];
 
+if ($.isNode()) {
+  Object.keys(jdCookieNode).forEach((item) => {
+    cookiesArr.push(jdCookieNode[item])
+  })
+  if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
+  if (JSON.stringify(process.env).indexOf('GITHUB') > -1) process.exit(0);
+} else {
+  cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
+}
+const JD_API_HOST = 'https://api.m.jd.com/api';
+!(async () => {
+  if (!cookiesArr[0]) {
+    $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
+    return;
+  }
+  let res = await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_red.json'), res2 = [];
+  if (!res) res = await getAuthorShareCode();
+  $.authorMyShareIds = [...(res || []),...(res2 || [])];
+  for (let i = 0; i < cookiesArr.length; i++) {
+    if (cookiesArr[i]) {
+      cookie = cookiesArr[i];
+      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+      $.index = i + 1;
+      $.isLogin = true;
+      $.nickName = '';
+      await TotalBean();
+      console.log(`\n****开始【京东账号${$.index}】${$.nickName || $.UserName}****\n`);
+      if (!$.isLogin) {
+        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
 
-var _0xode='jsjiami.com.v6',_0x2868=[_0xode,'K8Kaw7HCjFU=','PlzCpmfCvA==','wrJ6PHnDmw==','wrxawoA=','X33DliE=','KsOwwrJ2P+acseisguivjuawgeWlvOi0kA3igKDvu6vig6TvuZo=','IMKCw50=','DcKAw6nCjGk=','ccK6fWhn','J8K/w7LCsGw=','wqPCj8OCVxE=','OzY9DcK1','MMOaSkAl','w4bDnuWNi+i2oeWInOWIgee7peWMv8Ot5oiW5Yuc77y857mt5Y6TwoNqw5g=','c0/CksOhUA==','wrLDo8KcBh4=','DcOaSGYAwrPDm31bQsKM','cMOewokgAw==','w5YYwpYufA==','wrhTw7RhwrE=','BCHljLvotanli4LliqHnuoXljJAS5ae46Leb776p','esKywrZfLw==','w5wzwoEVesKV','w6YywpQDdA==','FcKvwp3Ci8Ov','wrMpw4jCiEQ=','5Y+R6LWO5YqL5Yi157i+5Y+2w7jlpajotq/vvpw=','N8KXwrjCjsONwozDocOfCA==','wqrDpyhHwpvDjA==','ZMOmwrjCmCTCnMKDw6Jfb3kcwogDwpPClsKVGsOeR8OnH3gww5HDiE4=','OcOSfEvDtknDsw==','woXDujnDscOQ','BDYxK8KJ','AMOtZ8Kow5w=','wrzDr8KiBS0=','B8O+bUIV','H8KSw74TNw==','DsKnwpXCssOwwq7DmsOmMCxdewk=','w4zDjcOEdjkxC8KJw7EwJcKyBA==','w7x3EVcACQ97TcKF','w7taYhQ=','OcOSfHvDvlDDtw==','Wn0IVUQ=','AMKOw4AWLg==','w5ddQBQx','VcKKwqltFA==','wpDChD1AQw==','F8OiOQEHw4w=','w6LClAZEw44=','wp7Dp8KWHD/DoA==','DVPCiHfCgQ==','eEvCrsOQeQ==','ekolckA=','wpJvJn3Dpg==','wogow6LCgzZe','bMOTwrQ/Ag==','wrPCoSB/Zg==','eCpWw5PDnw==','PcOKZsKLw4s=','J8K9w4zCiWk=','wprCiRxF','albCssOb','SV7CvEok','wrVbwpE=','wppxwrgzwoV8TcOp','wrd4EkTDsw==','wqFOw5vDucOz','w5pQJmwxLyFYeg==','MXnCpw==','LcKNwq7CgsObwqTDrg==','EMO2SnHDrg==','eTdxw7c=','wpRtwoEvwqk=','FcOxNwIw','H8OPJzEA','w4TCiDZ7w6U=','wpgVN1IN','d2NXw4DDqg==','wpHDqcKdNSjDtw==','UF8fTGZDw5fCu8Ob','JsKGw4jCm2M=','IcOJBTo1','McOSw4wGMlDDijvCgcOcZ3rDuCVt','chbCoMOQwqcjw5MZwphrPsO3wrpwFg==','RgPCpMKiHcK5w69AVhjCjMOeZcKZw70=','woPCiRZDWBw=','R0IeRmdRw5DCqQ==','wo3Dp8KZGz/DscKxw7dV','wrsww67Cvl/DvBcQ','Sl/CtsKiBsKlw7dd','CDU8BcKhw41D','OsOWfH4=','csOubsKQwrA=','YmUHXF8=','wpJrG3PDrg==','w4XClBtow78=','wp7Dp8KUOD/DqcKS','SEfCnMKNLw==','wr7DtMKfNCI=','M8KawrLCpcO7','5Yqz5Yq45b+D5bqL77+J','wr3Cj8OdQ8Kww4TDusKgwpQ=','PMOECgwgw7w=','w53CnQZEw4bCplLCoMOyC8Kgw6kkLF/CgSzCmjHCpBdUZMOzwpnClALCiULCvQfCpcOlRMKMKMOPUxMyw4rDi8Klwp9vw7U8dsK+YcORw75VMiRJwqLCvMK4UjTCpsOgYsK3McO7wokrRsOqwpPDssKWBMKTwr3DgsK0wrxjUcK2w5XCj8OBcsOlwo82CcOVwrjCuHxyZxXDsihLWkLCmMKQwrpTR8KWdMKNaMKIW1PDicOwwp3DviF/wrdZw4vCvx44PAkbInPDisOj','w7HCghZaw4jCuGHDq8O2G8Kow7Q=','WcOTwrkpNcKsF8Otw47DgMOXUA==','OU/Ct3rCvA==','eMKBwqBSPw==','wojDt2PDosKFOGIOw7V2EcKDOjx/wppLwofDqsKkw5bCmz/CgWbDtnnDvcKewqfCtzZZw4XCmMOoA8Kdw73CqMOSYcK5w51Aw4oMw4fDq8K/LxZ3NXvDhcOmwqrDkzdjwqVyTBTDqlTCjCvCllDCkMKaw43Cu8KSTjPChcO3wrg4w4fCiCrCoVfChA7DncKdKmPDh3bDjcKdwojCkAnDp8KowpXDv8KxflDChMKIJ33Ct8OYYsOwNi3DkcOsOmHDisOVwqfDgQXCkhDDl8Oyw7jCr8OtSg==','w6Igw5XCnTA=','LcOaAg==','LsKGw4QR','Q3nDiyvClC7Dm8KMYDEASQ==','wr5NUDs=','PsKIw57CrmXDtVvCjsOLw5kE','a0jCp8O3e0zDvsK8Y27ChHQ=','ZlrCqVMI','C0zCl2gawqgow5UrWcK2K8Oww63CoyNE','OsO3wqHDhiDDlsOUw6wVU3sB','OsKwYsKPwrMhw5rDrMOmwpQRAsO6','w7jCqTZr','NMOTaW/Drx/DvyxeOcO8SjgnO8Kzw6TCoXhxwpPDtQlYQsKQw5NIwpBFwprDssOcKMOtw6RbEsKKw7PDlsKKwrrDlSgjH8KRw6kaeR3DnMK8w6Uiw5XCoUPCtsKDcWjDhkZMGHEcGELCscKswrHCux/DlHEPwrXDqcOWIBLCrsODNsOCwoJIX8KoGV7CmChyw6bDvi8ow5gFw71CLAI1w5/DnyzCm8KgwqzDocOzwovDtMOnw6dcWcKofcKOwqoEesKGw6fDuhYkw71/EMOhw5INKSZYw7zCn8OhwobCrXpRbE7CsEMpwr/DgMOywr/DvBU=','acOPwp8uDw==','UU4eUGRQ','dg4cEhU=','FsOmamjDkQ==','wpfDkivDoMK1','DQIdO8Kt','wpPCqh1UVw==','DA7DmjRh','DcOHRlIW','WjgVCMKgwpU=','w4HDsnPDpcKAdSoYwqcqRMOUYHNwwpMHw5HDpcO1w5nCnGrDg2zDpTbDrMKGwrvCszQIwqDCm8OqEcKGw7PCq8KcfcKkwo1Lw4xIwpHCqsOhOxJ0YSvChMK7w77CiX0qwrBwCULCsQHDhyXClkTCkMKfw5/CscOFEX7DnMKxw7s0w4bCnSnCpErDkg7CmcOKK3fDhX3CmsKZw43DlAvDosKrw5TCu8KpfAHCkQ==','B1jCt1HCug==','wrVUw5d2wrc=','csO5w7vCrDM=','wqRvw4jDo8OWw49Ke8OfYsOjF8O3aEzCpzLDpMKjwr13wpnDok1ZasK7w7h0w7ETM8Kjw4/DvDTCgcOhw5nDkllEw41Ow6Nw','PEHCrsOXwqp3','dGl1w6LDvg==','Ojptw6oAwqDCo8Odb8KXLyXDuA/DhcKKw7LDt8KPK1smw5pZwpUWTsKWHMO/w7Ixw6jDkcKlw6NCwqQmJsKDwoIxwphmw6LCqkvCkUjCicKbUTZceUhjw6UOD8KcbcO5UsKDf3XCjsOrG3LDksO0RMKzW8Klw4zDtW/CncKndMOzKHvCrsKFwrXDiiLDv8K8MsKNOcOdwqxkw4A1VcKWGSfDvsK9','w6dyw47Chx3Dj3DCpyVnw5MjHCTDnw==','dsKpwptpJA==','wovDlnHDocKy','HlPCiXlEw6w/','dsOtwrs0DA==','CcO5RH7Dqg==','w4o3woYB','wo/DtVfDucKq','UCNHw6bDoA==','BETCr214','w57CiA1Nw5PCvg==','woXDqGLDtcOZ','cwVCw6fDmg==','TwZCw6LDmD/CoMKCdQ==','wrjCmsOWwqHDmQ==','T2bCuV0m','fhc8Cjo=','WHHCkMKlIA==','N8OqYMKQw48ZJMKkTsOiBWMhwotEUAx6wrXDohRvFsKIFEjDj8KwEhBWKMOA','w5vCni1Fw4PCsw==','e8KvwqI=','w4UDw7DCsTrDo1TCkRBZw58DLA==','wpUdw4LCiGPDjCs7w6lowqIvw4A=','McOjwofChDs=','BcO4KBsNw49Xw5jDoxI=','fUbCtcOXwrI+w4Q=','W8KLUVZB','PsOcSEYv','G8KCw5DCl2s=','aULCpMOs','wr7CscOpwqPDmcOu','cHo6YGY=','UcOTwpweKw==','wp7ClsOEQsKc','LDQeJMKD','5Lm85Lip6aWx6aCC54G55YeF4oCE6aCo5Ymc4oCB6YCtw7hhw7rkuq7li7DChw==','Pm3Cg3bCkw==','wrxawoAywrJM','EsK2wqzCtsOk','PCLCsHHChsO1wo7DsMO5Y8OYw6LDlMKfWg==','wrV4ClY=','ECnljJDot4Tlibrli5HnuIfljbXDjOaIguWLqO++g+e5vOWMkCcyfw==','WT5Ww64H','ZMOcw5zCly0=','w4N7UwUTworDlcK6djnCpA==','wodDw6F/','w7fCnC1Hw4Q=','wpDCh8O1dR0AP8Ktw4I8Dw==','wrctw6nCrUPCs1ZLw4tLwolPw77Ds003IDkUw5LDjsKtMjrCkws1wq7Cm05Dw548w7NRw6ltw7NVTMOVNyDDsmfDgA3CocO/w7JJfMOcFMO3woLCsUzDn8KNNsOMwooiw5JiO2tQw6rCpzkxJSwnwrBs','fMOjw7PCniM=','eVNrw6XDrg==','RRdGw4jDuw==','Q0bCqMOmwrs=','woHDuS7DoMKb','wpXDhj5WwqU=','wp9Sw7DDssOk','QsOZQMKZwo8=','wrhqMFjDsiA=','f03Ctw==','RMKXwqx2JMKbwrhgHAV6fkg=','w71jC1UNBxBnXMKBwofDmsO4','wo3DuSrDssKh','w7QwwpsHZQ==','w4FQIHUsBz5bccKZwrzDvMOc','CVjCiA==','wrPDgFnDnMK2B0p5w4BaM8K/DA==','HC7Dhw9E','woLDuys=','TsO7wpMJCMKNDMORw7/DpMO9cMKt','f8KywqcMwrTDuA==','fkjCow==','esKKwrt1Jw==','wrvCjStzZQ==','RMKuwpIWwpQ=','w7bDtMObwobDvOadv+iupeivjeayj+Wkt+i1pgbig7Pvupnig7bvuKE=','wpLCg8OjVhk=','VMOUwpgXIw==','IsKMw5fCmw==','w6V5w5zCjXnmnazorpvorpPms6rlpJ7ot4JB4oKo77qP4oCV77md','6aKg5Y2a5LmO5YmM772+','IcKmw7zCkHc=','fcKbwrVIBQ==','wrZDQx88w5g=','wobDpTTCpsKAwofDoMOZw7rDjiNi','wpzDtsKKHDPDpsKDw7ZRRig9dcKFw5Euw7HDuMK+WiZTByRnTVvCiMOHFjVINA==','w43CqCw=','w4YiwoYQZcObwqVSXD4uOcOeSsObw6NvAMKGH0JGc8KeFcKcw5bCiSbCicO/eMKOwpFLaRZ0B8K6RcOTO8Oaw7MLw7sqTCTDj8OkwrNwMTAcwrjDpsOiVsOLwph8wrgAZcKZTjbDpGjDlsK2cE0=','BCEYNR0AAMOawqhqw53DuSA9XMKPNHrCshJWw6jDiWotEsKO','UGrCmMO+Zw==','QnfCn8KjPA==','MDzDhQxL','wo/Ds3LDvMKXcj0Pw7dzDMKcIXt+w5EEw5DCpcOiwovCkA==','wrVawqgmwoY=','wppaw719wo8=','wr4yw4XCp3g=','VQF+w6TDkj0=','wpBoew8dw69WOkPDjBHDpMOn','IcKNwrw=','Nh4lOcKKw611N3hubHTCow==','Wz5Hw47Dmg==','KsOsaWQ+wpHDt11hXw==','wrg8w6nCuVHDvRg=','MMO7asK3w60=','e1jDrgU=','T8O/w7vCggDDqQ==','w4UzwosT','GcOQXnMAwrPDmA==','wpLCl8OiTQ==','w4s4woQ=','XsObaMKYwrMxw5DDqg==','wp8jw6c=','UMO4wpMdH8KAAcOP','ei50w7AB','wqwtw6/CtF7DrhACw5E=','XWrClcO7woYI','M8OiecKI','aU7CnnoKTkY=','w45BIGE+PCk=','wr7DqcKVGzPDoMKow4YK','ecKkwqABwrLDosOT','Tkod','wrJ2EVzDvyA=','MMOzfMKIw4MI','VAZEw7vDhWLDpsOLbWhkw4bDmMOPSsKWwrvCnXpiesOXwqYP','44CM5o6f56Si44KS6K6T5YeV6Iys5Yyz5Lu75Lqz6LSx5Y+q5LuASsOJwonDsMO7woRV55qS5o+i5L+V55SBwrccCsKMNMO355iT5Luz5LqA56+55Yuw6Iym5Y+n','wpoKMUcZZ8KSw6jDl8OhC8KRBMOgDyfCncKgwonDtMKgCkxcw4zDvzfDtxfDg8OVci/DgcKGwp7Cm37ClcOVwrLClcOD','w6QRwrV0','J8OWYWQP','wo7Dt8KrPBU=','wrJYUCp0woUrBmbDpXrDi8OdLBrClQ4GwoTDtRzClATDk3DCnMOSw446TA==','wqlrw7/DpcOS','JcKWwr7Cj8OMwpnDhcOAIgN5RzgJwoPCvg==','w7MgwohZDA==','wr18EFDDoi0=','cS5sw6AM','R1jCocKkEQ==','ecKjwr9JEcK9wo4=','fsK5wpBNOMK1wo1c','N8Oowq8=','w4YxwpbCucKP5b+15aau44GE5LiS5LiO6Las5Y+O','c8OSwqg8Ig==','wr9wHVzDmCRowoU=','wq/DuwNtwo7Dl8K3','wpwfKFI=','44Ki5oy956WZ44C7w4TCuU3DpcOxCuW0v+Wmt+aUjg==','5LuV5LmY6LaP5Y6y','aVdGw4vDpA==','w7vorJvphqjmlobnmY/lvL3ojr7lj4d/PsKVwqLCqg4yQw9Pw5xtwoHCq8Oow6zDksOsVcOew4XDjRp5wqBYX8OBbGUHDcKQwqdZw4VZL0jDisObw5XCgMOJ','OsKIw4IOL1zltY7lpaPmlr3ChQM0','OUXCm2p4w6khw5U=','5LmO5Lu+6La35Y+S','w5vCgwdPw58=','LOitu+mFuOaVneeYn+W/meiOl+WOi8O5wocDTQTDgQ==','w41NJ2YwPSZK','wpjDtsK5Bi0=','dsOZwqI+LsKq','VUpHw5zDksKSwrU8','wq7DqnTDucKI','AVfCinte','ecOdwqIRP8KuJA==','wr5+w5jDg8OEwpYOMcOKW8Ou','UBdew6zDgjA=','dsOTwqs=','w7BH6IW75bSH6LW85Y+d5Yap6YOF5Lm95Yui','wqJQwoMnwqFdc8OLEFVS','eMOwUA==','6LSa5Y6FEA==','MsOpwqzCjTU=','wooqw7jCr37DqBQB','OuW8o+Wkiue5qsOz','w5LovqXooInlip7li7E=','wpRXw7xfwpDCssOX','wpYiw7Y=','5q265pe35bS655eA5a+B5ouu5raF5Yig54GQ54i277yY6Laf5YSt5YuC5Yi9','N3bCv1rCl8Owwog=','dULCsA==','BCHmn6PlibfkvLLlipPlirzmnK/kvKjli5DnuKfkv6/og5ArwoJ7wo/Ds2Me6L6E6KK75YmB5Yml','w64yw5vCjAbDlEvCtwJ2w7s/HQjDg2w=','T0QK','wrh3GlLDrg==','w5o0w4rClifDh2vCqw==','wo7ovo3oor7li4nlio0=','PcOWZlfDukjDpg==','Vy8P','5qyh5pWJ5beQ55aG5ayQ77+/6LSr5Yaj5Yij5Yid','L8KMw47CnWw=','VWTlppjotaAMwpjljLvlmKxIw4Y=','akTChHs=','wo/Djjpawr4=','STjCnTkfw4TCl8KwQ8Kaw40=','asKsfX5e','chECEh8=','QnTCncKJJg==','wrIUw6fChUM=','W0HCpMOqSw==','aVPCrcOawqc=','UsKFwppyGw==','F8OtbmXDrw==','WGnDnCnCtg==','JFPCmUrCow==','w4Btw5DCphPmn4/or47or5rmsq3lpbrotbEC4oGx77iR4oGv77qT','wovDqGE=','UB1X','EjsXCQ==','6I6j5byI57qV5Y+Z77+s','HS3DmiZCw43DisK4','5YWaJ8Od','UhZtw7IR','worCpMOiwozDnQ==','IMKXwrrCqMOC','wo/CucOYesK0','QWLCo8O9ag==','XkbCtsOawos=','dG/DkDLCoA==','ZMO+VMK3wpMHw5bDmMOM','cVnCo8OoegLCksOwVn/CnjEADmUlwpMywr/DrcOSwrnDkcKbTsK3wqLDr8K+w6nCvCvCmwF5wqUJHWDDm8Opw5oewpzClcKiw7/Dhm1LwoLCikx8w5fCnGpyHMK2Z8KLNcOywqDDnHhCNw7DiE4/WG83BHAYJkrDpMOOQ1rDmsO2w4jDuHjDgn5EwpJZwoU6wphVAsKZwogiw5DDvmUCNEdywqoTwoxFS8OOwpbClQjDgMKjw6EkBsOFc8OYDA49IQ9GN8K0bsKbwrAiwptKJ8OPw5o3w53DrMO6wpsAwo/DpMO4DUJ4wo/DoRIzDsONfEfCkxPCmR18wqrDvw/CtsOQWcOpw5ttcAJPZThSDcORw74gK0g6QcOTMyBCQMOuw77CugvCqU4BKlLDuMK/wqluPMOswo8mcC/Dthhdw44wVsKgwop6wrPDolVbYsOdw5rDv8OQWSvCjjZmCD/Cp8KEWDPDssKN','wrctw6nCrUPCs1ZLw4Aaw4kMwrrDqk18Lz8P','AMOhKCA+','wptAK0LDnA==','axh7w47Dmw==','W3jDmjTClmHDscK/XD8dR8O+wrLDglIPw7jCgsKxw4B0XcOoDBQhwrDCj8KZBsOBNzPCisOsScOeesKowooeEmYPw6PDr8O+cFYUc8Oew5pHwpPCrF5Hw5ksAcKRwpsTwoRSYMOuHsOUF8KpDsOVfGU8TTVhw71lw67Cpi3DnMK6Ew7CnsORwp/CjMOfw78iw6HCpMKsw6wpwrElwr5wOjgbw7nDucK1NFk/ODDCjWFqwoIcUcOPw7bDqyjDtMK2SX3Dpn81aVrCh2LDksOuHULDlsO5wr/DlsOmw4ZJUcOwe8OUQcOBEcKwVMORAMKbSgbDuFvCnjArw44eRzlZwpbCisKFR3I7PG1uw47DpMOTw41Xw5bDlcOLw6c7GUICw4plA8OkasO0bnPDqSILw6AEwrxkXFDCucObXiw0HXxlCzEUw7dAcQtVw6rCsyfDvD7CjcKDNRXCisKowossQ8Ksw73DvE7CiRB5woDDkld2w4jDosO2cMOqwoVpw5bCn8OpTwLCl1QPaF1bw43Cg0Ma','w7vCgjpNw60=','wqTCoMOuwqbDhsKgaBXCpTNtS8Ohw7zCrgDCm3zDjMKhXMKFwo3DpnoAGV8LI8ORw5cLKcKkw50Pw5IuKEXCusKsw73ClCbCqMOywp7DmsO2wq4dw7rCuMO/wq7DnsK1C8Ksw6fDl8KIw4jCg8KmCcOXDsKzAw==','TMOGRM
+        if ($.isNode()) {
+          await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
+        }
+        continue
+      }
+      $.discount = 0;
+      await redPacket();
+      await showMsg();
+    }
+  }
+  for (let v = 0; v < cookiesArr.length; v++) {
+    cookie = cookiesArr[v];
+    $.index = v + 1;
+    $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1]);
+    $.canHelp = true;
+    $.redPacketId = [...new Set($.redPacketId)];
+    if (cookiesArr && cookiesArr.length > 2) {
+      console.log(`\n\n自己账号内部互助`);
+      for (let item of $.redPacketId) {
+        console.log(`账号 ${$.index} ${$.UserName} 开始给 ${item} 进行助力`)
+        await jinli_h5assist(item);
+        if (!$.canHelp) {
+          console.log(`次数已用完或活动火爆，跳出助力`)
+          break
+        }
+      }
+    }
+    if ($.canHelp) {
+      console.log(`\n\n有剩余助力机会则给作者lxk0301进行助力`);
+      for (let item of $.authorMyShareIds || []) {
+        console.log(`\n账号 ${$.index} ${$.UserName} 开始给作者lxk0301 ${item} 进行助力`)
+        await jinli_h5assist(item);
+        if (!$.canHelp) {
+          console.log(`次数已用完，跳出助力`)
+          break
+        }
+      }
+    }
+  }
+})()
+    .catch((e) => {
+      $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
+    })
+    .finally(() => {
+      $.done();
+    })
+
+async function redPacket() {
+  try {
+    await doLuckDrawFun();//券后9.9抽奖
+    await taskHomePage();//查询任务列表
+    await doTask();//领取任务，做任务，领取红包奖励
+    await h5activityIndex();//查询红包基础信息
+    await red();//红包任务(发起助力红包,领取助力红包等)
+    await h5activityIndex();
+  } catch (e) {
+    $.logErr(e);
+  }
+}
+function showMsg() {
+  console.log(`\n\n${$.name}获得红包：${$.discount}元\n\n`);
+  // $.msg($.name, '', `${$.name}：${$.discount}元`)
+}
+async function doLuckDrawFun() {
+  for (let i = 0; i < 3; i++) {
+    await doLuckDrawEntrance();
+  }
+}
+function doLuckDrawEntrance() {
+  return new Promise(resolve => {
+    const options = {
+      url: 'https://api.m.jd.com/client.action?functionId=doLuckDrawEntrance&body=%7B%22platformType%22%3A%221%22%7D&appid=XPMSGC2019&client=m&clientVersion=1.0.0&area=19_1601_50258_62858&geo=%5Bobject%20Object%5D&uuid=88732f840b77821b345bf07fd71f609e6ff12f43',
+      headers: {
+        "Host": "api.m.jd.com",
+        "Origin": "https://h5.m.jd.com",
+        "Cookie": cookie,
+        "Content-Length": "0",
+        "Connection": "keep-alive",
+        "Accept": "application/json, text/plain, */*",
+        "User-Agent": "jdapp;iPhone;9.5.4;14.3;88732f840b77821b345bf07fd71f609e6ff12f43;network/4g;model/iPhone11,8;addressid/2005183373;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1",
+        "Accept-Language": "zh-cn",
+        "Referer": "https://h5.m.jd.com/babelDiy/Zeus/yj8mbcm6roENn7qhNdhiekyeqtd/index.html",
+        "Accept-Encoding": "gzip, deflate, br"
+      }
+    }
+    $.post((options), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if ((data)) {
+            data = JSON.parse(data);
+            if (data.code === '0' && data['busiCode'] === '0') {
+              if (data.result.luckyDrawData.actId) {
+                if (data.result.luckyDrawData.redPacketId) {
+                  console.log(`券后9.9抽奖获得【红包】：${data.result.luckyDrawData.quota}元`);
+                } else {
+                  console.log(`券后9.9抽奖获得【优惠券】：${data.result.luckyDrawData.discount}元：${data.result.luckyDrawData.prizeName}，${data.result.luckyDrawData.quotaDesc}`);
+                }
+              } else {
+                console.log(`券后9.9抽奖获失败：今日3次抽奖机会已用完\n`)
+              }
+            }
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+async function doTask() {
+  if ($.taskHomePageData && $.taskHomePageData.code === 0) {
+    $.taskInfo = $.taskHomePageData.data.result.taskInfos;
+    if ($.taskInfo && $.taskInfo.length > 0) {
+      console.log(`    任务     状态  红包是否领取`);
+      for (let item of $.taskInfo) {
+        console.log(`${item.title.slice(-6)}   ${item.alreadyReceivedCount ? item.alreadyReceivedCount: 0}/${item.requireCount}      ${item.innerStatus === 4 ? '是':'否'}`)
+      }
+      for (let item of $.taskInfo) {
+        //innerStatus=4已领取红包，3：任务已完成，红包未领取，2：任务已领取，但未完成，7,未领取任务
+        if (item.innerStatus === 4) {
+          console.log(`[${item.title}] 已经领取奖励`)
+        } else if (item.innerStatus === 3) {
+          await receiveTaskRedpacket(item.taskType);
+        } else if (item.innerStatus === 2) {
+          if (item.taskType !== 0 &&  item.taskType !== 1) {
+            console.log(`开始做【${item.title}】任务`);
+            await active(item.taskType);
+            console.log(`开始领取【${item.title}】任务所得红包奖励`);
+            await receiveTaskRedpacket(item.taskType);
+          } else if (item.taskType === 1) {
+            //浏览10秒任务
+            console.log(`开始做【${item.title}】任务`);
+            await doAppTask();
+          } else {
+            //TODO 领3张优惠券
+            console.log(`[${item.title}] 功能未开发`)
+          }
+        } else if (item.innerStatus !== 4) {
+          console.log(`\n开始领取【${item.title}】任务`);
+          await startTask(item.taskType);
+          if (item.taskType !== 0 &&  item.taskType !== 1) {
+            console.log(`开始做【${item.title}】任务`);
+            await active(item.taskType);
+            console.log(`开始领取【${item.title}】任务所得红包奖励`);
+            await receiveTaskRedpacket(item.taskType);
+          } else if (item.taskType === 1) {
+            //浏览10秒任务
+            console.log(`开始做【${item.title}】任务`);
+            await doAppTask();
+          } else {
+            //TODO 领3张优惠券
+            console.log(`[${item.title}] 功能未开发`)
+          }
+        }
+      }
+    }
+  } else {
+    console.log(`\n获取任务列表异常：${JSON.stringify($.taskHomePageData)}\n`)
+  }
+}
+async function red() {
+  $.hasSendNumber = 0;
+  $.assistants = 0;
+  if ($.h5activityIndex && $.h5activityIndex.data && $.h5activityIndex.data['result']) {
+    const rewards = $.h5activityIndex['data']['result']['rewards'] || [];
+    $.hasSendNumber = $.h5activityIndex['data']['result']['hasSendNumber'];
+    if ($.h5activityIndex['data']['result']['assistants']) {
+      $.assistants = $.h5activityIndex['data']['result']['assistants'].length || 0;
+    }
+  }
+  if ($.h5activityIndex && $.h5activityIndex.data && $.h5activityIndex.data['biz_code'] === 10002) {
+    //可发起拆红包活动
+    await h5launch();
+  } else if ($.h5activityIndex && $.h5activityIndex.data && $.h5activityIndex.data['biz_code'] === 20001) {
+    //20001:红包活动正在进行，可拆
+    const redPacketId = $.h5activityIndex['data']['result']['redpacketInfo']['id'];
+    if (redPacketId) $.redPacketId.push(redPacketId);
+    console.log(`\n\n当前待拆红包ID:${$.h5activityIndex['data']['result']['redpacketInfo']['id']}，进度：再邀${$.h5activityIndex['data']['result']['requireAssistNum']}个好友，开第${$.hasSendNumber + 1}个红包。当前已拆红包：${$.hasSendNumber}个，剩余${$.h5activityIndex['data']['result']['remainRedpacketNumber']}个红包待开，已有${$.assistants}好友助力\n\n`)
+    const waitOpenTimes = $.h5activityIndex['data']['result']['redpacketInfo']['waitOpenTimes'] || 0;
+    console.log(`当前可拆红包个数：${waitOpenTimes}`)
+    if (waitOpenTimes > 0) {
+      for (let i = 0; i < new Array(waitOpenTimes).fill('').length; i++) {
+        if (!redPacketId) break
+        await h5receiveRedpacket(redPacketId);
+        await $.wait(500);
+      }
+    }
+  } else if ($.h5activityIndex && $.h5activityIndex.data && $.h5activityIndex.data['biz_code'] === 20002) {
+    console.log(`\n${$.h5activityIndex.data['biz_msg']}\n`);
+  }
+}
+//获取任务列表API
+function taskHomePage() {
+  return new Promise((resolve) => {
+    $.post(taskUrl(arguments.callee.name.toString(), {"clientInfo":{}}), (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
+          console.log(JSON.stringify(err));
+        } else {
+          $.taskHomePageData = JSON.parse(data);
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+//领取任务API,需token
+function startTask(taskType) {
+  // 从taskHomePage返回的数据里面拿taskType
+  let data = {taskType};
+  data['token'] = $.md5($.md5("j"+JSON.stringify(data)+"D"))
+  return new Promise((resolve) => {
+    $.post(taskUrl(arguments.callee.name.toString(), data), (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
+          console.log(JSON.stringify(err));
+        } else {
+          console.log(`领取任务：${data}`)
+          data = JSON.parse(data);
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+
+//做任务fun
+async function active(taskType) {
+  const getTaskDetailForColorRes = await getTaskDetailForColor(taskType);
+  if (getTaskDetailForColorRes && getTaskDetailForColorRes.code === 0) {
+    if (getTaskDetailForColorRes.data && getTaskDetailForColorRes.data.result) {
+      const { advertDetails } = getTaskDetailForColorRes.data.result;
+      for (let item of advertDetails) {
+        await $.wait(1000);
+        if (item.id && item.status === 0) {
+          await taskReportForColor(taskType, item.id);
+        }
+      }
+    } else {
+      console.log(`任务列表为空,手动进入app内检查 是否存在[从京豆首页进领券中心逛30秒]的任务,如存在,请手动完成再运行脚本`)
+      $.msg(`${$.name}`, '', '手动进入app内检查\n是否存在[从京豆首页进领券中心逛30秒]的任务\n如存在,请手动完成再运行脚本');
+      if ($.isNode()) await notify.sendNotify(`${$.name} - 账号${$.index} - ${$.nickName}`, `执行脚本出现异常\n请手动进入app内检查\n是否存在[从京豆首页进领券中心逛30秒]的任务\n如存在,请手动完成再运行脚本`)
+    }
+  } else {
+    console.log(`---具体任务详情---${JSON.stringify(getTaskDetailForColorRes)}`);
+  }
+}
+
+//获取具体任务详情API
+function getTaskDetailForColor(taskType) {
+  const data = {"clientInfo":{}, taskType};
+  return new Promise((resolve) => {
+    $.post(taskUrl(arguments.callee.name.toString(), data), (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
+          console.log(JSON.stringify(err));
+        } else {
+          // console.log('getTaskDetailForColor', data);
+          data = JSON.parse(data);
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+//做成任务API
+function taskReportForColor(taskType, detailId) {
+  const data = {taskType, detailId};
+  data['token'] = $.md5($.md5("j"+JSON.stringify(data)+"D"))
+  //console.log(`活动id：：：${detailId}\n`)
+  return new Promise((resolve) => {
+    $.post(taskUrl(arguments.callee.name.toString(), data), (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
+          console.log(JSON.stringify(err));
+        } else {
+          // console.log(`taskReportForColor`, data);
+          data = JSON.parse(data);
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+//领取昨做完任务后的红包
+function receiveTaskRedpacket(taskType) {
+  const body = {"clientInfo":{}, taskType};
+  return new Promise((resolve) => {
+    $.post(taskUrl(arguments.callee.name.toString(), body), (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
+          console.log(JSON.stringify(err));
+        } else {
+          data = JSON.parse(data);
+          if (data.data.success && data.data.biz_code === 0) {
+            console.log(`红包领取成功，获得${data.data.result.discount}元\n`)
+            $.discount += Number(data.data.result.discount);
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+//助力API
+function jinli_h5assist(redPacketId) {
+  //一个人一天只能助力两次，助力码redPacketId 每天都变
+  const body = {"clientInfo":{},redPacketId,"followShop":0,"promUserState":""};
+  const options = taskUrl(arguments.callee.name.toString(), body)
+  return new Promise((resolve) => {
+    $.post(options, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
+          console.log(JSON.stringify(err));
+        } else {
+          data = JSON.parse(data);
+          if (data && data.data && data.data['biz_code'] === 0) {
+            // status ,0:助力成功，1:不能重复助力，3:助力次数耗尽，8:不能为自己助力
+            console.log(`助力结果：${data['data']['result']['statusDesc']}`)
+            if (data['data']['result']['status'] === 3) $.canHelp = false;
+            if (data['data']['result']['status'] === 9) $.canHelp = false;
+          } else {
+            console.log(`助力异常：${JSON.stringify(data)}`);
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+//领取红包API,需token
+function h5receiveRedpacket(redPacketId) {
+  const data = {redPacketId};
+  data['token'] = $.md5($.md5("j"+JSON.stringify(data)+"D"))
+  const options = taskUrl(arguments.callee.name.toString(), data)
+  return new Promise((resolve) => {
+    $.post(options, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
+          console.log(JSON.stringify(err));
+        } else {
+          data = JSON.parse(data);
+          if (data && data.data && data.data['biz_code'] === 0) {
+            console.log(`拆红包获得：${data['data']['result']['discount']}元`)
+          } else {
+            console.log(`领红包失败：${JSON.stringify(data)}`)
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+//发起助力红包API
+function h5launch() {
+  const body = {"clientInfo":{},"followShop":0,"promUserState":""};
+  const options = taskUrl(arguments.callee.name.toString(), body)
+  return new Promise((resolve) => {
+    $.post(options, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
+          console.log(JSON.stringify(err));
+        } else {
+          data = JSON.parse(data);
+          if (data && data.data && data.data['biz_code'] === 0) {
+            if (data['data']['result']['redPacketId']) {
+              console.log(`\n\n发起助力红包 成功：红包ID ${data['data']['result']['redPacketId']}`)
+              $.redPacketId.push(data['data']['result']['redPacketId']);
+            } else {
+              console.log(`\n\n发起助力红包 失败：${data['data']['result']['statusDesc']}`)
+            }
+          } else {
+            console.log(`发起助力红包 失败：${JSON.stringify(data)}`)
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+function h5activityIndex() {
+  const body = {"clientInfo":{},"isjdapp":1};
+  const options = taskUrl(arguments.callee.name.toString(), body);
+  return new Promise((resolve) => {
+    $.post(options, async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`\n${$.name}: API查询请求失败 ‼️‼️`);
+          console.log(JSON.stringify(err));
+        } else {
+          data = JSON.parse(data);
+          $.h5activityIndex = data;
+          $.discount = 0;
+          if ($.h5activityIndex && $.h5activityIndex.data && $.h5activityIndex.data['result']) {
+            const rewards = $.h5activityIndex['data']['result']['rewards'] || [];
+            for (let item of rewards) {
+              $.discount += item['packetSum'];
+            }
+            if ($.discount) $.discount = $.discount.toFixed(2);
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp);
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+async function doAppTask(type = '1') {
+  let body = {
+    "pageClickKey": "CouponCenter",
+    "childActivityUrl": "openapp.jdmobile%3a%2f%2fvirtual%3fparams%3d%7b%5c%22category%5c%22%3a%5c%22jump%5c%22%2c%5c%22des%5c%22%3a%5c%22couponCenter%5c%22%7d",
+    "lat": "",
+    "globalLat": "",
+    "lng": "",
+    "globalLng": ""
+  }
+  await getCcTaskList('getCcTaskList', body, type);
+  body = {
+    "globalLng": "",
+    "globalLat": "",
+    "monitorSource": "ccgroup_ios_index_task",
+    "monitorRefer": "",
+    "taskType": "1",
+    "childActivityUrl": "openapp.jdmobile%3a%2f%2fvirtual%3fparams%3d%7b%5c%22category%5c%22%3a%5c%22jump%5c%22%2c%5c%22des%5c%22%3a%5c%22couponCenter%5c%22%7d",
+    "pageClickKey": "CouponCenter",
+    "lat": "",
+    "taskId": "727",
+    "lng": "",
+  }
+  await $.wait(10500);
+  await getCcTaskList('reportCcTask', body, type);
+}
+function getCcTaskList(functionId, body, type = '1') {
+  let url = '';
+  return new Promise(resolve => {
+    if (functionId === 'getCcTaskList') {
+      url = `https://api.m.jd.com/client.action?functionId=${functionId}&body=${escape(JSON.stringify(body))}&uuid=8888888&client=apple&clientVersion=9.4.1&st=1617158358007&sign=a15f78e5846f9b0178dcabb1093a6a7f&sv=100`
+    } else if (functionId === 'reportCcTask') {
+      url = `https://api.m.jd.com/client.action?functionId=${functionId}&body=${escape(JSON.stringify(body))}&uuid=8888888&client=apple&clientVersion=9.4.1&st=1617158435079&sign=7eff07437dd817dbfa348c209fd5c129&sv=120`
+    }
+    const options = {
+      url,
+      body: `body=${escape(JSON.stringify(body))}`,
+      headers: {
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "zh-cn",
+        "Connection": "keep-alive",
+        "Content-Length": "63",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Host": "api.m.jd.com",
+        "Origin": "https://h5.m.jd.com",
+        "Cookie": cookie,
+        "Referer": "https://h5.m.jd.com/babelDiy/Zeus/4ZK4ZpvoSreRB92RRo8bpJAQNoTq/index.html",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+      }
+    }
+    $.post((options), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if ((data)) {
+            // data = JSON.parse(data);
+            if (type === '1' && functionId === 'reportCcTask') console.log(`京东首页点击“领券”逛10s任务:${data}`)
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
+}
+function getAuthorShareCode(url = "https://cdn.jsdelivr.net/gh/gitupdate/updateTeam@master/shareCodes/jd_red.json") {
+  return new Promise(resolve => {
+    const options = {
+      url: `${url}?${new Date()}`, "timeout": 10000, headers: {
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
+      }
+    };
+    if ($.isNode() && process.env.TG_PROXY_HOST && process.env.TG_PROXY_PORT) {
+      const tunnel = require("tunnel");
+      const agent = {
+        https: tunnel.httpsOverHttp({
+          proxy: {
+            host: process.env.TG_PROXY_HOST,
+            port: process.env.TG_PROXY_PORT * 1
+          }
+        })
+      }
+      Object.assign(options, { agent })
+    }
+    $.get(options, async (err, resp, data) => {
+      try {
+        if (err) {
+        } else {
+          if (data) data = JSON.parse(data)
+        }
+      } catch (e) {
+        // $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+function taskUrl(function_id, body) {
+  return {
+    url: `${JD_API_HOST}?appid=jd_mp_h5&functionId=${function_id}&loginType=2&client=jd_mp_h5&t=${new Date().getTime()*1000}`,
+    body: `body=${JSON.stringify(body)}`,
+    headers: {
+      "Host": "api.m.jd.com",
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Origin": "https://happy.m.jd.com",
+      "Accept-Encoding": "gzip, deflate, br",
+      "Cookie": cookie,
+      "Connection": "keep-alive",
+      "Accept": "*/*",
+      "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+      "Referer": "https://happy.m.jd.com/babelDiy/zjyw/3ugedFa7yA6NhxLN5gw2L3PF9sQC/index.html",
+      "Content-Length": "36",
+      "Accept-Language": "zh-cn"
+    }
+  }
+}
 
 
 function TotalBean() {
