@@ -37,7 +37,7 @@
         </section>
 
         <section class="part-footer">
-            <p>TOOLS V1.0.0 BY GH-X-ST</p>
+            <!-- <p>TOOLS V1.0.0 BY GH-X-ST</p> -->
         </section>
     </main>
 </template>
