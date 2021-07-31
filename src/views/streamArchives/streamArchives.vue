@@ -75,7 +75,7 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
   margin: 0 auto;
-  width:50vw;
+  width:60vw;
 }
 
 .streamArchives {
@@ -95,20 +95,80 @@ export default {
   position: absolute;
   z-index:2;
   right:0;
-  float: right;
   color: white;
   font-size: 30px;
+  margin-right: 1vw;
+}
+@-webkit-keyframes saCI {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes saCI {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.1);
+    }
+}
+@keyframes saCIAfter {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes saCIAfter {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 .saClasses{
-  width: 25vw;
+  width: 30vw;
   position: relative;
   display: flex;
   align-items: center;
+  box-shadow: -3px 0 5px #111111;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 1;
+}
+.saClasses:hover{
+  -webkit-animation: saCI 1s forwards;
+  animation: saCI 0.4s forwards;
+  z-index: 2;
+}
+.saClasses:hover::after{
+  -webkit-animation: saCIAfter 1s forwards;
+  animation: saCIAfter 1s forwards;
+}
+.saClasses::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 1;
+  z-index: 1;
 }
 .saClassesImages {
   width: 30vw;
   border: 10px;
   z-index: 1;
+}
+
+.saClassesImages:hover{
+  filter: brightness(1);
 }
 .saTypesWrapper{
   display: flex;
