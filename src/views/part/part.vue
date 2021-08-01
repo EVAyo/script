@@ -2,7 +2,7 @@
  * @Author: maggot-code
  * @Date: 2021-07-24 16:59:06
  * @LastEditors: maggot-code
- * @LastEditTime: 2021-08-01 17:24:34
+ * @LastEditTime: 2021-08-01 17:37:27
  * @Description: file content
 -->
 <template>
@@ -169,10 +169,14 @@ export default {
             return uname;
         },
         searchError(error) {
-            console.log(error);
-            const { message } = error;
+            const { message: baseMsg } = error;
+
+            const { message } = JSON.parse(baseMsg);
+
             this.$message.error(message || "成分姬有点累了捏~");
+
             this.searchLoad = true;
+
             this.loading = false;
         },
     },
