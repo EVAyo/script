@@ -116,10 +116,11 @@ export default {
     scrollingNumBox
   },
   async created() {
-    this.Asoul.forEach((ele)=>{
+     this.Asoul.forEach((ele)=>{
         this.getBibiliFans(ele.BzhanUid, ele.name);
         this.getDouyinFans(ele.douyinUid, ele.name);
     })
+   
   },
   methods: {
     // 获取B站粉丝数
@@ -128,6 +129,7 @@ export default {
         const res = await this.$request(`bilibili/x/relation/stat?vmid=${uid}`);
         this.BzhanFans[name] = res.follower
       } catch (error) {
+        this.$message({message:error})
       }
     },
   // 获取抖音粉丝数

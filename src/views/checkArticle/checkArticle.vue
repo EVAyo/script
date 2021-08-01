@@ -85,7 +85,6 @@
 </template>
 <script>
 import result from './components/result';
-import request from '@/assets/js/request';
 import { parseTime } from "@/utils/time";
 function copy(text) {
     const fakeElem = document.body.appendChild(
