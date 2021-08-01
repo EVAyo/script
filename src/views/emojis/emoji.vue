@@ -10,6 +10,11 @@
 			  </div>
       </div>
 		</div>
+     <!-- 数据来源 -->
+      <div class="data-souce" @click="toUpSpace">
+          数据来源:B站洛骑塔
+      </div>
+     
   </div>
 
 </template>
@@ -131,7 +136,10 @@ export default {
       this.$closeLoading();
       }
     },
-
+    
+    toUpSpace(){
+      window.open('https://space.bilibili.com/15073186')
+    }
   },
 };
 </script>
@@ -155,7 +163,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-wrap: wrap;
-  width: 80%;
+  width: 70%;
   min-width: 340px;
   justify-content: center;
   height: 100vh;
@@ -182,6 +190,9 @@ export default {
   // transition: transform 0.5s ease-in;
   // transition: height 0.5s ;
   transform: scale(0.95,0.95);
+    -moz-transition: transform 0.3s ease-out,background-color 0.3s ease-out; /* Firefox 4 */
+  -webkit-transition: transform 0.3s ease-out,background-color 0.3s ease-out; /* Safari 和 Chrome */
+  -o-transition: transform 0.3s ease-out,background-color 0.3s ease-out; /* Opera */
   transition: transform 0.3s ease-out,background-color 0.3s ease-out;
 }
 // .ftco-animate {
@@ -203,5 +214,22 @@ export default {
     height: 100%;
     width: 100%;
   // border-radius: 4px;
+}
+.data-souce{
+    position: absolute;
+    color: #f1f2f3;
+    right: 0;
+    bottom: 0;
+    font-size: 12px;
+    margin: 0 20px 20px 0;
+    width: 80px;
+    cursor: pointer;
+    transition: font-size .8s;
+      -moz-transition: ont-size .8s; /* Firefox 4 */
+  -webkit-transition: ont-size .8s; /* Safari 和 Chrome */
+  -o-transition: ont-size .8s; /* Opera */
+}
+.data-souce:hover{
+  font-size: 13px;
 }
 </style>

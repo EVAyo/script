@@ -49,15 +49,11 @@ export default {
 <style lang="less" scoped>
 .random-video{
   position: relative;
-  // width: 100%;
   height: 100vh;
-  overflow: scroll;
   z-index: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  // background-color: black;
-  // background-image: url('../../assets/img/ramdon-background.png');
 }
 .background-img{
   position: absolute;
@@ -69,16 +65,12 @@ export default {
   //object-fit: cover;
 }
 .iframe-box{
-  // border: 10px solid #c343dc;
   display: flex;
-  // flex-direction: column;
 
   align-items: flex-end;
   justify-content: center;
 }
 .iframe-class{
-  // width: 40vw;
-  // height: 30vw;
   width: 40vw;
   height: 30vw;
   min-width: 600px;
@@ -100,6 +92,9 @@ export default {
   background: url("../../assets/img/random/random-button.jpg") no-repeat center /cover;
   -webkit-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
   transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+  -moz-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1); /* Firefox 4 */
+  -webkit-transition:all 1250ms cubic-bezier(0.19, 1, 0.22, 1); /* Safari 和 Chrome */
+  -o-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1); /* Opera */
 }
 .random-button:hover{
   border: 1 solid;
@@ -109,10 +104,4 @@ export default {
   outline-offset: 20px;
   text-shadow: 1px 1px 2px #427388;
 }
-// .random-button:hover{
-//   background: url("../../assets/img/random/random-button-on.png") no-repeat center /cover;
-// }
-// .random-button:active{
-//   background: url("../../assets/img/random/random-button-click.png") no-repeat center /cover;
-// }
 </style>

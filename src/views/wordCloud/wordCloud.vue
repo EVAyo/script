@@ -20,11 +20,11 @@ import WordCloud from "./components/wordCloudComponent.vue";
 
 import TestData from "./assets/test-data.json";
 
-import XWimg from "./assets/xw-mask1_03.png";
-import BLimg from "./assets/bl-mask1_03.png";
-import JLimg from "./assets/jl-mask1_03.png";
-import JRimg from "./assets/jr-mask1_03.png";
-import NLimg from "./assets/nl-mask1_03.png";
+import XWimg from "../../assets/img/wordCloud/xw-mask1_03.png";
+import BLimg from "../../assets/img/wordCloud/bl-mask1_03.png";
+import JLimg from "../../assets/img/wordCloud/jl-mask1_03.png";
+import JRimg from "../../assets/img/wordCloud/jr-mask1_03.png";
+import NLimg from "../../assets/img/wordCloud/nl-mask1_03.png";
 
 const setList = (base) => {
     const data = [];
@@ -78,21 +78,6 @@ export default {
 </script>
 
 <style>
-html,
-body,
-#app {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding:0;
-    overflow: hidden;
-}
-#app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #2c3e50;
-}
 .main {
     display: flex;
     flex-wrap:wrap;
