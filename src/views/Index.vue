@@ -1,25 +1,39 @@
 <template>
   <div class="index">
-    <div class="index-tools" >
-      <img src="../assets/img/Index/tools.png"  class="img" alt="" >
-      <img src="../assets/img/Index/tools.png"  alt="" >
-      <img src="../assets/img/Index/tools.png"  alt="" >
-      <img src="../assets/img/Index/tools.png"  alt="" >
+    <div class="index-tools">
+      <img src="/image/tools.png" class="img" alt />
+      <img src="/image/tools.png" alt />
+      <img src="/image/tools.png" alt />
+      <img src="/image/tools.png" alt />
     </div>
-    <img src="../assets/img/Index/BackGround.gif" class="index-bg">
+    <div
+      class="index-bg"
+      :style="{ '--index-bgi': `url(${bgi}` }"
+      v-if="bgiLoaded"
+    />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Index',
-  components: {
-  }
-}
+  name: "Index",
+  data() {
+    return {
+      bgi: "/image/BackGround.gif",
+      bgiLoaded: false,
+    };
+  },
+  components: {},
+  mounted() {
+    const _img = new Image();
+    _img.src = this.bgi;
+    _img.onload = () => (this.bgiLoaded = true);
+  },
+};
 </script>
 
 <style lang="less" scoped>
-.index{
+.index {
   position: relative;
   width: 100%;
   height: 100vh;
@@ -28,18 +42,18 @@ export default {
   overflow: hidden;
   z-index: 0;
 }
-.index-bg{
+.index-bg {
   position: absolute;
-    //width: 100%;
-    //height: 100vh;
-    width: 130%;
-    height:130%;
-    top: -30px;
-    left: -30px;
-    filter: blur(20px);
-    object-fit: cover
+  width: 100vw;
+  height: 100vh;
+  filter: blur(20px);
+  object-fit: cover;
+  background-image: var(--index-bgi);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  animation: clipCircleIn 2s;
 }
-.index-tools{
+.index-tools {
   width: 60vw;
   right: 0;
   position: absolute;
@@ -49,7 +63,7 @@ export default {
   flex-direction: column;
   margin-right: 40px;
   // background-image: url('../assets/img/Index/tools.png');
-  img{
+  img {
     width: 60vw;
     height: 14vw;
     max-height: 22vh;
@@ -57,7 +71,16 @@ export default {
     // right: 0;
     // height: 20%;
     // width: 98.5%;
-    margin:10px;
+    margin: 10px;
+  }
+}
+
+@keyframes clipCircleIn {
+  0% {
+    clip-path: circle(0 at 50% 50%);
+  }
+  100% {
+    clip-path: circle(100vh at 50% 50%);
   }
 }
 </style>
