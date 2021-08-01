@@ -45,6 +45,7 @@
         :title="item.titleName"
         class="box" :class="'item-'+item.routeName"
         >
+        <div v-if="currentPageName!==item.routeName" class="nav-mask"></div>
         </router-link >
       </div>
 
@@ -193,6 +194,7 @@ export default {
     background-color: transparent;
 }
 .box{
+    position: relative;
     margin-top: 10px;
     width: 18.5vh;
     height: 11vh;
@@ -202,7 +204,7 @@ export default {
     // background-image: url("../assets/img/contents/zhiNet-short.png");
     transition:width 0.5s ,background-image .2s,min-width 0.5s;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 100%;
 }
 .box:hover{
     width: 37vh;
@@ -318,57 +320,28 @@ background-image: url("../assets/img/contents/random-short.png");
 // .nav-item-short {
 // }
 // // 遮罩层
-// .nav-mask {
-//   position: absolute;
-//   width: 100%;
-//   height: 100%;
-//   z-index: 10;
-//   transition: all 0.5s linear;
-//   -moz-transition: all 0.5s linear; /* Firefox 4 */
-//   -webkit-transition: all 0.5s linear; /* Safari 和 Chrome */
-//   -o-transition: all 0.5s linear; /* Opera */
-//   background-color: rgba(0, 0, 0, 0.5);
-// }
-// .nav-mask:hover {
-//   // background-color: rgba(0, 0, 0, 0);
-//   opacity: 0;
-// }
-
-// .temp {
-//   // animation: Yui 3s cubic-bezier(0, 1, 0, 1) 1s infinite;
-// }
-// @keyframes Yui {
-//   0% {
-//     transform: translateX(0px);
-//   }
-//   33% {
-//     transform: translateX(-960px);
-//   }
-//   66% {
-//     transform: translateX(-1920px);
-//   }
-//   100% {
-//     transform: translateX(0px);
-//   }
-// }
+.nav-mask {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  transition: opacity 0.5s;
+  -moz-transition: opacity 0.5s; /* Firefox 4 */
+  -webkit-transition: opacity 0.5s; /* Safari 和 Chrome */
+  -o-transition: opacity 0.5s; /* Opera */
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.nav-mask:hover {
+  // background-color: rgba(0, 0, 0, 0);
+  opacity: 0;
+}
 .route-view-class {
   position: relative;
   width: 100%;
   height: 100vh;
-  //padding-left: 18.5vh;
   box-sizing: border-box;
   background: #2B343A;
-  // overflow-y: scroll;
-  // scrollbar-width: thin;
 }
-
-// .img {
-//   width: 100%;
-//   height: 100%;
-//   z-index: 0;
-// }
-
-//
 
 
 </style>

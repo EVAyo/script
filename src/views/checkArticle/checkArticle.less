@@ -71,8 +71,10 @@
   outline-color: rgba(148,63,239, 1);
   outline-offset: 0px;
   text-shadow: none;
-  -webkit-transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
   transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+  -moz-transition:  all 1250ms cubic-bezier(0.19, 1, 0.22, 1); /* Firefox 4 */
+  -webkit-transition:  all 1250ms cubic-bezier(0.19, 1, 0.22, 1); /* Safari 和 Chrome */
+  -o-transition:  all 1250ms cubic-bezier(0.19, 1, 0.22, 1); /* Opera */
 }
 .input_but:hover{
   border: 1 solid;
