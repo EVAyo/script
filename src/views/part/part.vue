@@ -2,7 +2,7 @@
  * @Author: maggot-code
  * @Date: 2021-07-24 16:59:06
  * @LastEditors: maggot-code
- * @LastEditTime: 2021-07-31 16:17:35
+ * @LastEditTime: 2021-08-01 15:29:30
  * @Description: file content
 -->
 <template>
@@ -31,7 +31,12 @@
                 element-loading-spinner="el-icon-loading"
                 element-loading-background="rgba(0, 0, 0, 0.8)"
             >
-                <p>他 / 她 / 它关注的VUP有:</p>
+                <p>
+                    他 / 她 / 它关注的VUP有:
+                    <span v-show="hasCopyText" @click="handlerCopyText"
+                        >复制文本</span
+                    >
+                </p>
                 <search-content
                     v-show="searchLoad"
                     :list="searchList"
@@ -50,6 +55,26 @@
 
 <script>
 import { default as SearchContent } from "./components/search-content";
+import { parseTime } from "@/utils/time";
+
+function copy(text) {
+    const fakeElem = document.body.appendChild(
+        document.createElement("textarea")
+    );
+    fakeElem.style.position = "absolute";
+    fakeElem.style.left = "-9999px";
+    fakeElem.setAttribute("readonly", "");
+    fakeElem.value = text;
+    fakeElem.select();
+    try {
+        return document.execCommand("copy");
+    } catch (err) {
+        return false;
+    } finally {
+        fakeElem.parentNode.removeChild(fakeElem);
+    }
+}
+
 export default {
     name: "a-soul-fan-part",
     mixins: [],
@@ -73,6 +98,9 @@ export default {
         },
         hasContent() {
             return this.searchValue.length <= 0;
+        },
+        hasCopyText() {
+            return this.searchList.length > 0;
         },
     },
     //监控data中的数据变化
@@ -108,6 +136,19 @@ export default {
             const { mid } = cell;
             window.open(`https://space.bilibili.com/${mid}`);
         },
+        handlerCopyText() {
+            const vupName = this.searchList.map(this.setCopyText).join("、");
+
+            const selectTime = parseTime(new Date(), "{y}-{m}-{d} {h}:{i}:{s}");
+
+            const tmp = `@${this.searchValue} 关注的VUP有：\r\n${vupName}\r\n查询时间：${selectTime}\r\n数据来源：@ProJectASF × http://b23.tv/cflHxi`;
+
+            copy(tmp) &&
+                this.$message({
+                    message: "成分姬内容都告诉你了捏~",
+                    type: "success",
+                });
+        },
         setSearchReady(success) {
             setTimeout(() => {
                 this.searchLoad = true;
@@ -121,6 +162,11 @@ export default {
             const { list } = response;
 
             this.searchList = list || [];
+        },
+        setCopyText(item) {
+            const { uname } = item;
+
+            return uname;
         },
         searchError(error) {
             console.log(error);
