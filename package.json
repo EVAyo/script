@@ -4,16 +4,13 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --open",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "preview": "serve dist/"
   },
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "element": "^0.1.4",
     "element-ui": "^2.15.3",
-    "element.js": "^1.2.0",
-    "less-loader": "^6.1.0",
-    "node-sass": "^4.14.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vue-waterfall2": "^1.10.1",
@@ -27,7 +24,8 @@
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "babel-plugin-component": "^1.1.1",
-    "sass-loader": "^7.3.1",
+    "less-loader": "^6.1.0",
+    "serve": "^12.0.0",
     "vue-template-compiler": "^2.6.11"
   }
 }
