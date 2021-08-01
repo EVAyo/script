@@ -36,16 +36,18 @@ export default {
     };
   },
   created() {
-    this.imgList = Array.from(Array(this.columnNum), () => new Array(0))
-    this.GetLIstImg();
+        
   },
   mounted(){
-          this.listensBoxScroll()
-          // debugger
-            window.onresize = () => {
-                    window.screenWidth = document.body.clientWidth
-                    this.screenWidth = window.screenWidth
+        this.listensBoxScroll()
+        this.columnNum= Math.floor((document.body.clientWidth*0.8)/340)
+        console.log(Math.floor((document.body.clientWidth*0.8)/340));
+        debugger
+        window.onresize = () => {
+                    this.screenWidth = document.body.clientWidth
             }
+    this.imgList = Array.from(Array(this.columnNum), () => new Array(0))
+    this.GetLIstImg();
   },
   watch:{
 
@@ -60,11 +62,6 @@ export default {
                           this.columnNum = tempColumn;
                           this.setListIndex()
                       }
-
-                    // console.log(      );
-                        // that.screenWidth = that.$store.state.canvasWidth
-                        console.log(this.screenWidth,'this.screenWidth')
-                        // this.init()
                         this.timer = false
                     }, 500)
                 }
@@ -79,7 +76,8 @@ export default {
       let tempList = Array.from(Array(column),() => new Array())
       // this.imgList
       cacheList.forEach((ele,index)=>{
-          let temp = index%this.column
+          let temp = index % column
+          console.log(temp);
           tempList[temp].push(ele)
       })
       this.imgList = tempList
@@ -170,8 +168,8 @@ export default {
   overflow-y: auto;
 }
 .column{
-  max-width: 300px ;
-  width: 100%;
+  // max-width: 00px ;
+  width: 20% ;
   min-width: 100px;
   // background-color: blue;
   margin: 0 20px;
