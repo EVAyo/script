@@ -116,10 +116,20 @@ export default {
     scrollingNumBox
   },
   async created() {
+     this.Asoul.forEach((ele)=>{
+        this.getBibiliFans(ele.BzhanUid, ele.name);
+        this.getDouyinFans(ele.douyinUid, ele.name);
+    })
+    this.timer = setInterval(()=>{
     this.Asoul.forEach((ele)=>{
         this.getBibiliFans(ele.BzhanUid, ele.name);
         this.getDouyinFans(ele.douyinUid, ele.name);
     })
+    },5000)
+   
+  },
+  destroyed(){
+    clearInterval(this.timer);
   },
   methods: {
     // 获取B站粉丝数

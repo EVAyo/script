@@ -224,10 +224,10 @@ export default {
     margin: 0 20px 20px 0;
     width: 80px;
     cursor: pointer;
-    transition: font-size .8s;
-      -moz-transition: ont-size .8s; /* Firefox 4 */
-  -webkit-transition: ont-size .8s; /* Safari 和 Chrome */
-  -o-transition: ont-size .8s; /* Opera */
+    transition: font-size .5s;
+    -moz-transition: font-size .5s; /* Firefox 4 */
+    -webkit-transition: font-size .5s; /* Safari 和 Chrome */
+    -o-transition: font-size .5s; /* Opera */
 }
 .data-souce:hover{
   font-size: 13px;
