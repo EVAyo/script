@@ -84,7 +84,6 @@
 </template>
 <script>
 import result from './components/result';
-import request from '@/assets/js/request';
 import { parseTime } from "@/utils/time";
 export default {
   name: "ASoulFanCheck",

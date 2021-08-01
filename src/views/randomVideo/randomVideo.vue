@@ -36,7 +36,7 @@ export default {
         const res =  await  this.$request('api/stroll/random')
         this.iframeSrc = res.play_url
       } catch (error) {
-        console.log(error);
+        this.$message({message:error})
       }finally{
         this.$closeLoading()
       }

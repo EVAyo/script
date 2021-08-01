@@ -9,7 +9,11 @@
           </a>
 			  </div>
       </div>
+      <div class="last-page" v-if="isLastPage">
+      ---------已达最后一页---------
+    </div>
 		</div>
+    
      <!-- 数据来源 -->
       <div class="data-souce" @click="toUpSpace">
           数据来源:B站洛骑塔
@@ -33,6 +37,7 @@ export default {
       count: 0,
       screenWidth: document.body.clientWidth,
       columnNum:3,
+      isLastPage : false,
     };
   },
   created() {
@@ -41,8 +46,6 @@ export default {
   mounted(){
         this.listensBoxScroll()
         this.columnNum= Math.floor((document.body.clientWidth*0.8)/340)
-        console.log(Math.floor((document.body.clientWidth*0.8)/340));
-        debugger
         window.onresize = () => {
                     this.screenWidth = document.body.clientWidth
             }
@@ -63,7 +66,7 @@ export default {
                           this.setListIndex()
                       }
                         this.timer = false
-                    }, 500)
+                    }, 100)
                 }
             }
   },
@@ -85,6 +88,10 @@ export default {
     // 监听waterfallBox的scroll事件
     listensBoxScroll(){
       this.$refs.waterfallBox.onscroll  = (e) => {
+        // 最后一页 不再滚动
+        if(this.isLastPage){
+          return
+        }
           if (!this.timeBoxScroll) {
                     this.timeBoxScroll = true
                     setTimeout(async()=> {
@@ -104,23 +111,31 @@ export default {
     async GetLIstImg() {
       try {
         this.$loading();
-        // const res = await this.$request({
-        //   url: `http://124.156.217.253:8000/?page=${this.currentPage}&limit=${pageSize}`,
-        // });
         const res = await this.$request({
           url: `emoji/?page=${this.currentPage}&limit=${this.pageSize}`,
         });
-
+        if(res.length<this.pageSize){
+            this.isLastPage =true
+        }
         let tempList =  [...this.imgList]
 
         res.forEach((ele,index)=>{
             ele.paddingTop=ele.height/ ele.width *100
             ele.url = 'https://'+ ele.url
         })
+        
         // 排序 解决某列高度过长问题
-        res.sort((obj1, obj2)=>{
-          return    obj1.paddingTop < obj2.paddingTop ? -1 : (obj1.paddingTop > obj2.paddingTop?1 :0)
-        })
+        if(this.currentPage%2==0){
+          res.sort((obj1, obj2)=>{
+                      return    obj1.paddingTop < obj2.paddingTop ? -1 : (obj1.paddingTop > obj2.paddingTop?1 :0)
+                  })
+        }else{
+            res.sort((obj1, obj2)=>{
+                      return    obj1.paddingTop < obj2.paddingTop ? 1 : (obj1.paddingTop > obj2.paddingTop?-1 :0)
+                  })
+        }
+        
+
         res.forEach((ele,index)=>{
             let i = (index+ ((this.currentPage-1)*this.pageSize))%this.columnNum
             tempList[i].push(ele)
@@ -129,7 +144,6 @@ export default {
         this.imgList = [...tempList]
       } catch (error) {
         this.$message({message:error})
-        console.log(error);
       } finally {
       this.$closeLoading();
       }
@@ -157,7 +171,7 @@ export default {
 }
 
 .waterfall{
-  position: absolute;
+  position: relative;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-wrap: wrap;
@@ -180,30 +194,18 @@ export default {
   position: relative;
   width: 100%;
   height: 0;
-  // height: 50px;
-  // padding: 50%;
   margin: 20px 0 ;
   background-color: rgba(255, 255, 255);
-  // border-radius: 4px;
-  // transition: transform 0.5s ease-in;
-  // transition: height 0.5s ;
   transform: scale(0.95,0.95);
     -moz-transition: transform 0.3s ease-out,background-color 0.3s ease-out; /* Firefox 4 */
   -webkit-transition: transform 0.3s ease-out,background-color 0.3s ease-out; /* Safari 和 Chrome */
   -o-transition: transform 0.3s ease-out,background-color 0.3s ease-out; /* Opera */
   transition: transform 0.3s ease-out,background-color 0.3s ease-out;
 }
-// .ftco-animate {
-//     opacity: 0;
-//     visibility: hidden;
-// }
 
 .column-item:hover {
   transform: scale(1.05,1.05);
   background-color: rgba(255, 255, 255,0);
-  // margin: 20px;
-  // width: 110%;
-  // height: auto;
 }
 .column-item-img{
     position: absolute;
@@ -211,7 +213,7 @@ export default {
     left: 0;
     height: 100%;
     width: 100%;
-  // border-radius: 4px;
+  border-radius: 4px;
 }
 .data-souce{
     position: absolute;
@@ -229,5 +231,16 @@ export default {
 }
 .data-souce:hover{
   font-size: 13px;
+}
+.last-page{
+
+  // right: 0;
+  color: #f1f2f3;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  width: 100%;
 }
 </style>
