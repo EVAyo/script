@@ -3,15 +3,15 @@
     <img src="../../assets/img/random/random-background.png" alt="" class="background-img" >
     <!-- <iframe src="" frameborder="0"></iframe> -->
     <div class="iframe-box">
-      <iframe 
+      <iframe
       class="iframe-class"
-    :src="iframeSrc" 
+    :src="iframeSrc"
      STYLE="background-color: #fff"
     scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true">
       </iframe>
       <div class="random-button" @click="getRandomVideo"></div>
     </div>
-    
+
     <!-- <img src="../assets/img/BackGround.gif" class="index-bg"> -->
   </div>
 </template>
@@ -40,7 +40,7 @@ export default {
       }finally{
         this.$closeLoading()
       }
-    
+
     }
   }
 }

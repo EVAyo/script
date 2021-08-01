@@ -18,7 +18,8 @@
     "vue-router": "^3.2.0",
     "vue-waterfall2": "^1.10.1",
     "vuex": "^3.4.0",
-    "waterfall": "^3.0.1"
+    "waterfall": "^3.0.1",
+    "wordcloud": "^1.2.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

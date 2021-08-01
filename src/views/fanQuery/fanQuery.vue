@@ -136,7 +136,7 @@ async getDouyinFans(uid,name) {
     const res = await axios.get(`douyin/web/api/v2/user/info/?sec_uid=${uid}`);
         this.douyinFans[name] = res.data.user_info.follower_count
   } catch (error) {
-    
+
   }
 },
   },
@@ -146,8 +146,8 @@ async getDouyinFans(uid,name) {
 <style lang="less" scoped>
 .fanQuery {
   background-color: #1d1d1d;
-  width: 100%;
   height: 100vh;
+  padding-left: 18.5vh;
   overflow-y: scroll;
 }
 .contain {

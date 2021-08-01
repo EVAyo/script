@@ -35,7 +35,7 @@ export default {
     width: 130%;
     height:130%;
     top: -30px;
-    left: -30px;  
+    left: -30px;
     filter: blur(20px);
     object-fit: cover
 }
@@ -50,7 +50,7 @@ export default {
   margin-right: 40px;
   // background-image: url('../assets/img/Index/tools.png');
   img{
-    width: 69vw;
+    width: 60vw;
     height: 14vw;
     max-height: 22vh;
     // position: relative;
@@ -58,6 +58,6 @@ export default {
     // height: 20%;
     // width: 98.5%;
     margin:10px;
-  } 
+  }
 }
 </style>

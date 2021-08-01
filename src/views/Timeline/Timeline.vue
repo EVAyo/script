@@ -38,23 +38,22 @@ export default {
   },
   methods: {
     format(time) {
-      return new Date(time).toLocaleString('chinese', { hour12:false }).split(' ')[0]
+      return new Date(time).toLocaleString('chinese', { hour12: false }).split(' ')[0]
     },
-  async initData() {
-    try {
-      this.$loading()
+    async initData() {
+      try {
+        this.$loading()
         const res = await this.$request('api/milestone/next-group?next_key=1627227103034')
-          this.dataSource = res.list
-          this.page = res.list.length
-          this.$nextTick(() => {
-            this.renderList(0)
-          })
-    } catch (error) {
-        console.log(error);
-    }finally{
-    this.$closeLoading();
-    }
-      
+        this.dataSource = res.list
+        this.page = res.list.length
+        this.$nextTick(() => {
+          this.renderList(0)
+        })
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.$closeLoading()
+      }
     },
     // 逐个添加轴节点
     renderList(idx) {
@@ -89,6 +88,7 @@ export default {
 }
 
 .timeline {
+  padding-left: 18.5vh;
   background: #2B343A;
 }
 
@@ -180,26 +180,7 @@ export default {
   color: rgba(255, 255, 255, 0.7);
 }
 
-/*.a-timeline-item:nth-child(even) .a-timeline-item-container {*/
-/*  float: right;*/
-/*  box-shadow: 0 10px 5px #000000;*/
-/*}*/
-
-/*.a-timeline-item:nth-child(even) .a-timeline-item-container:before {*/
-/*  top: 24px;*/
-/*  left: auto;*/
-/*  right: 100%;*/
-/*  border-color: transparent;*/
-/*  border-right-color: #333C42;*/
-/*}*/
-
-/*.a-timeline-item:nth-child(even) .a-timeline-item-container .a-timeline-item-date {*/
-/*  left: auto;*/
-/*  right: 122%;*/
-/*  text-align: right;*/
-/*}*/
-
-@media only screen and (min-width: 1170px){
+@media only screen and (min-width: 1170px) {
   .a-timeline:before {
     left: 50%;
     margin-left: -2px;
