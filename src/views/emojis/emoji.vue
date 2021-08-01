@@ -10,7 +10,7 @@
 			  </div>
       </div>
       <div class="last-page" v-if="isLastPage">
-      ---------已达最后一页---------
+      ---------已经是最后一页啦---------
     </div>
 		</div>
     

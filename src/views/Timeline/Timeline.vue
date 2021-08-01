@@ -14,6 +14,7 @@
         <div class="a-timeline-item-space" />
       </div>
     </div>
+    <div class="last-page" v-if="isLastPage">---------已经是最后一页啦---------</div>
   </div>
 </template>
 
@@ -30,22 +31,35 @@ export default {
     return {
       dataSource: [],
       list: [],
-      page: 5
+      page: 5,
+      nextKey:0,
+      isLastPage:false
     }
   },
   created() {
-    this.initData()
+    this.getData()
+  },
+  mounted(){
+    window.addEventListener('scroll', this.watchTimelineScroll,false)
+  },
+  destroyed(){
+    window.removeEventListener('scroll',this.watchTimelineScroll,false)
   },
   methods: {
     format(time) {
       return new Date(time).toLocaleString('chinese', { hour12: false }).split(' ')[0]
     },
-    async initData() {
+    async getData() {
       try {
         this.$loading()
-        const res = await this.$request('api/milestone/next-group?next_key=1627227103034')
-        this.dataSource = res.list
+        const res = await this.$request(`api/milestone/next-group?next_key=${this.nextKey}`)
+        this.dataSource = [...this.dataSource,...res.list]
+        this.nextKey =res.next_key
+        if( this.nextKey ===null){
+          this.isLastPage =true
+        }
         this.page = res.list.length
+        
         this.$nextTick(() => {
           this.renderList(0)
         })
@@ -64,13 +78,28 @@ export default {
         }, 100)
       }
     },
-    watchTimeline() {
-      window.addEventListener('onscroll', (e) => {
-        console.log(e)
-      })
-    },
     handleClick(url) {
       if (url) window.open(url)
+    },
+
+    // 监听滚动条
+    watchTimelineScroll(){
+       if(this.isLastPage){
+          return
+        }
+          if (!this.timelineScroll) {
+                    this.timelineScroll = true
+                    setTimeout(async()=> {
+                      // 目前窗口底部离容器顶部的距离
+                      let  TopOffsetHeight = document.documentElement.scrollTop +document.body.clientHeight
+                      let scrollHeight  = document.body.scrollHeight
+                      // 离底部50px触发翻页
+                      if(TopOffsetHeight +50 >= scrollHeight){
+                        await this.getData()
+                      }
+                        this.timelineScroll = false
+                    }, 400)
+                }
     }
   }
 }
@@ -225,5 +254,15 @@ export default {
     right: 122%;
     text-align: right;
   }
+}
+
+.last-page{
+  color: #f1f2f3;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  width: 100%;
 }
 </style>
