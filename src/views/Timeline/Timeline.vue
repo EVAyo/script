@@ -50,7 +50,7 @@ export default {
           this.renderList(0)
         })
       } catch (error) {
-        this.$message({message:error})
+        this.$message({message:error,type: 'error'})
       } finally {
         this.$closeLoading()
       }

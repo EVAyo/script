@@ -143,7 +143,7 @@ export default {
         })
         this.imgList = [...tempList]
       } catch (error) {
-        this.$message({message:error})
+        this.$message({message:error,type: 'error'})
       } finally {
       this.$closeLoading();
       }

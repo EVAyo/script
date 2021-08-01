@@ -178,7 +178,7 @@ export default {
                 console.log(this.result);
             })
         } catch (error) {
-          this.$message({message: '出错了捏，请重试', type: 'error'});
+          this.$message({message: error, type: 'error'});
         } finally{
           this.$closeLoading();
         }

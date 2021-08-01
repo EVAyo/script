@@ -129,7 +129,7 @@ export default {
         const res = await this.$request(`bilibili/x/relation/stat?vmid=${uid}`);
         this.BzhanFans[name] = res.follower
       } catch (error) {
-        this.$message({message:error})
+        this.$message({message:error,type: 'error'})
       }
     },
   // 获取抖音粉丝数

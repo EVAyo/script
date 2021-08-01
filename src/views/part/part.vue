@@ -169,16 +169,12 @@ export default {
             return uname;
         },
         searchError(error) {
-            const { message: baseMsg } = error;
+            // const { message: baseMsg } = error;
 
-            const { message } = JSON.parse(baseMsg);
+            // const { message } = JSON.parse(baseMsg);
 
-            message
-                ? this.$message({
-                      message: message,
-                      type: "warning",
-                  })
-                : this.$message.error("成分姬有点累了捏~");
+this.$message({ message: error,    type: "error", })
+               
 
             this.searchLoad = true;
 

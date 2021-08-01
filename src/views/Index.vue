@@ -51,7 +51,7 @@ export default {
   background-image: var(--index-bgi);
   background-repeat: no-repeat;
   background-size: 100% 100%;
-  animation: clipCircleIn 2s;
+  animation: clipCircleIn 1s;
 }
 .index-tools {
   width: 60vw;

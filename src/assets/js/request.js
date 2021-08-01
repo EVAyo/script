@@ -24,7 +24,7 @@ request.interceptors.response.use(
     if (code == '0') {
       return data;
     } else {
-      throw new Error(JSON.stringify({ code, message }));
+      return  Promise.reject(message)
     }
   },
   function (error) {
@@ -32,15 +32,5 @@ request.interceptors.response.use(
   },
 );
 
-
-// const  request = async ({url,method='get',param})=>{
-
-//       axios({
-//       url: '/'+ url,
-//       method,
-//       param
-//     }
-//     ).then
-// }
 
 Vue.prototype.$request = request;
