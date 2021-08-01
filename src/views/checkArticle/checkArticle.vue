@@ -21,6 +21,7 @@
                   <div class="textBottom">
                     <ul class="left">
                       <!-- <li>种类：</li> -->
+                      <li class="copy" @click="handlerCopyText" v-if="this.result.related">复制查询结果</li>
                       <li class="li_bottom">总复制占比：<span v-if="result.rate">{{toPercent(result.rate)}}</span></li>
                     </ul>
                     <ul class="right">
@@ -34,7 +35,7 @@
                   
                 </div>
                 <!-- 查询结果 -->
-                <div v-if="result.related" style="width: 100%;">
+                <div v-if="result.related && result.related.length > 0" style="width: 100%;">
                       <div v-for="(item,index) in result.related" :key="index" >
                           <result :result="item"  v-if="item"></result>
                       </div>
@@ -86,6 +87,23 @@
 import result from './components/result';
 import request from '@/assets/js/request';
 import { parseTime } from "@/utils/time";
+function copy(text) {
+    const fakeElem = document.body.appendChild(
+        document.createElement("textarea")
+    );
+    fakeElem.style.position = "absolute";
+    fakeElem.style.left = "-9999px";
+    fakeElem.setAttribute("readonly", "");
+    fakeElem.value = text;
+    fakeElem.select();
+    try {
+        return document.execCommand("copy");
+    } catch (err) {
+        return false;
+    } finally {
+        fakeElem.parentNode.removeChild(fakeElem);
+    }
+}
 export default {
   name: "ASoulFanCheck",
   data() {
@@ -113,6 +131,25 @@ export default {
   mounted() {},
 
   methods: {
+    //一键复制
+    handlerCopyText() {
+        let tmp = '';   //复制文字
+        let rate = this.toPercent(this.result.rate);  //总文字复制比
+        let selectTime = parseTime(new Date(), "{y}-{m}-{d} {h}:{i}:{s}");   //查重时间
+        //没有重复小作文
+        if(this.result.related.length == 0) {
+          tmp = `@ProJectASF × 枝网文本复制检测报告[简洁]\r\n查重时间：${selectTime}\r\n总文字复制比：${rate}\r\n\r\n查重结果仅作参考，请注意辨别是否为原创`
+        }
+        else {
+          let createTime = parseTime(this.result.related[0].reply.ctime, "{y}-{m}-{d} {h}:{i}:{s}");  //发布时间
+          tmp = `@ProJectASF × 枝网文本复制检测报告[简洁]\r\n查重时间：${selectTime}\r\n总文字复制比：${rate}\r\n相似小作文：${this.result.related[0].reply_url}\r\n作者：${this.result.related[0].reply.m_name}\r\n发表时间：${createTime}\r\n\r\n查重结果仅作参考，请注意辨别是否为原创`
+        }
+        copy(tmp) &&
+            this.$message({
+                message: "收到收到收到，复制成功了捏",
+                type: "success",
+            });
+    },
     //提交
     async submit(){
         if(this.search.length < 10) {
@@ -132,12 +169,12 @@ export default {
             this.$nextTick(() =>{
                 if(res.related.length == 0) {
                     this.$message({message: '没有重复的小作文捏', type: 'success'});
-                    this.result = [];
-                    return;
                 }
-                res.related.forEach((item) =>{
-                    item.reply.createTime = parseTime(item.reply.ctime, '{y}/{m}/{d} {h}:{i}')
-                })
+                else {
+                    res.related.forEach((item) =>{
+                        item.reply.createTime = parseTime(item.reply.ctime, '{y}/{m}/{d} {h}:{i}')
+                    })
+                }
                 this.result = res;
                 console.log(this.result);
             })
