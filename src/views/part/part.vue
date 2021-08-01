@@ -2,7 +2,7 @@
  * @Author: maggot-code
  * @Date: 2021-07-24 16:59:06
  * @LastEditors: maggot-code
- * @LastEditTime: 2021-08-01 17:37:27
+ * @LastEditTime: 2021-08-01 17:48:08
  * @Description: file content
 -->
 <template>
@@ -173,7 +173,12 @@ export default {
 
             const { message } = JSON.parse(baseMsg);
 
-            this.$message.error(message || "成分姬有点累了捏~");
+            message
+                ? this.$message({
+                      message: message,
+                      type: "warning",
+                  })
+                : this.$message.error("成分姬有点累了捏~");
 
             this.searchLoad = true;
 
