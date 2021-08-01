@@ -330,6 +330,7 @@ background-image: url("../assets/img/contents/random-short.png");
   -webkit-transition: opacity 0.5s; /* Safari 和 Chrome */
   -o-transition: opacity 0.5s; /* Opera */
   background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
 }
 .nav-mask:hover {
   // background-color: rgba(0, 0, 0, 0);
