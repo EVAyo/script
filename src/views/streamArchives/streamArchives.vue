@@ -3,16 +3,16 @@
     <div class="saMainWrapper">
       <!--  不同类别视频-->
       <div class="saClassesWrapper">
-        <div v-for="saClass in classes" class="saClasses">
+        <div @click="jump(saClass.link)" v-for="saClass in classes" class="saClasses">
           <img class="saClassesImages" :src="saClass.url" :alt="saClass.text"/>
-          <p class="saClassTexts">{{saClass.text}}</p>
+          <p class="saClassTexts">{{ saClass.text }}</p>
         </div>
       </div>
       <!--    不同类别切片-->
       <div class="saTypesWrapper">
-        <div v-for="saType in types" class="saTypes">
+        <div @click="jump(saType.link)" v-for="saType in types" class="saTypes">
           <img class="saTypesImages" :src="saType.url" :alt="saType.text"/>
-          <p class="saTypesTexts">{{saType.text}}</p>
+          <p class="saTypesTexts">{{ saType.text }}</p>
         </div>
       </div>
     </div>
@@ -28,43 +28,52 @@ export default {
       classes: [
         {
           url: require('../../assets/img/streamArchives/1.png'),
-          text: "单人直播"
+          text: "单人直播",
+          link: "https://space.bilibili.com/393396916"
         },
         {
           url: require('../../assets/img/streamArchives/2.png'),
-          text: "游戏室"
+          text: "游戏室",
+          link: "https://space.bilibili.com/393396916"
         },
         {
           url: require('../../assets/img/streamArchives/3.png'),
-          text: "夜谈"
+          text: "夜谈",
+          link: "https://space.bilibili.com/393396916"
         },
         {
           url: require('../../assets/img/streamArchives/4.png'),
-          text: "生日会"
+          text: "生日会",
+          link: "https://space.bilibili.com/393396916"
         },
         {
           url: require('../../assets/img/streamArchives/5.png'),
-          text: "小剧场"
+          text: "小剧场",
+          link: "https://space.bilibili.com/393396916"
         },
         {
           url: require('../../assets/img/streamArchives/6.png'),
-          text: "线下"
+          text: "线下",
+          link: "https://space.bilibili.com/393396916"
         },
       ],
       types: [
         {
           url: require('../../assets/img/streamArchives/dances.png'),
-          text:"舞蹈"
-        },
-        {
-          url: require('../../assets/img/streamArchives/clips.png'),
-          text:"切片"
+          text: "舞蹈",
+          link: "https://space.bilibili.com/393396916"
         },
         {
           url: require('../../assets/img/streamArchives/musics.png'),
-          text:"音乐"
+          text: "音乐",
+          link: "https://space.bilibili.com/393396916"
         }
       ]
+    }
+  },
+  methods: {
+    jump(str) {
+      window.location.href = str;
     }
   }
 }
@@ -75,11 +84,11 @@ export default {
   justify-content: center;
   flex-wrap: wrap;
   margin: 0 auto;
-  width:60vw;
+  width: 60vw;
 }
 
 .streamArchives {
-  background-color: #2B343A;
+  background-color: #282828;
   height: 100%;
   display: flex;
   align-items: center;
@@ -91,14 +100,16 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
 }
-.saClassTexts{
+
+.saClassTexts {
   position: absolute;
-  z-index:2;
-  right:0;
+  z-index: 2;
+  right: 0;
   color: white;
   font-size: 30px;
   margin-right: 1vw;
 }
+
 @-webkit-keyframes saCI {
   0% {
     transform: scale(1);
@@ -109,13 +120,14 @@ export default {
 }
 
 @keyframes saCI {
-    0% {
-      transform: scale(1);
-    }
-    100% {
-      transform: scale(1.1);
-    }
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
 }
+
 @keyframes saCIAfter {
   from {
     opacity: 1;
@@ -124,6 +136,7 @@ export default {
     opacity: 0;
   }
 }
+
 @-webkit-keyframes saCIAfter {
   from {
     opacity: 1;
@@ -132,7 +145,8 @@ export default {
     opacity: 0;
   }
 }
-.saClasses{
+
+.saClasses {
   width: 30vw;
   position: relative;
   display: flex;
@@ -142,15 +156,18 @@ export default {
   cursor: pointer;
   z-index: 1;
 }
-.saClasses:hover{
+
+.saClasses:hover {
   -webkit-animation: saCI 1s forwards;
   animation: saCI 0.4s forwards;
   z-index: 2;
 }
-.saClasses:hover::after{
+
+.saClasses:hover::after {
   -webkit-animation: saCIAfter 1s forwards;
   animation: saCIAfter 1s forwards;
 }
+
 .saClasses::after {
   content: '';
   position: absolute;
@@ -161,33 +178,39 @@ export default {
   opacity: 1;
   z-index: 1;
 }
+
 .saClassesImages {
   width: 30vw;
   border: 10px;
   z-index: 1;
 }
 
-.saClassesImages:hover{
+.saClassesImages:hover {
   filter: brightness(1);
 }
-.saTypesWrapper{
+
+.saTypesWrapper {
   display: flex;
   margin-top: 30px;
-  width:50vw;
+  width: 50vw;
   wrap-option: nowrap;
   justify-content: space-around;
+  cursor: pointer;
 }
-.saTypes{
+
+.saTypes {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
 }
-.saTypesImages{
+
+.saTypesImages {
   width: 5vw;
-  height:5vw;
+  height: 5vw;
   margin-right: 1vw;
 }
-.saTypesTexts{
+
+.saTypesTexts {
   color: white;
   font-size: 30px;
 }
