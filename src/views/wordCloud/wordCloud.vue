@@ -7,11 +7,14 @@
 -->
 <template>
     <div class="main">
-        <template v-for="item in list">
+<!--        <template v-for="item in list">
             <div class="canvas-main" :id="item.id" :keys="item.id">
                 <word-cloud :options="item"> </word-cloud>
             </div>
-        </template>
+        </template>-->
+      <div style="display: flex;justify-content: center;width: 100%;height: 100%;align-items: center">
+        <p style="color: white;font-size: 70px;">敬请期待</p>
+      </div>
     </div>
 </template>
 
@@ -38,7 +41,7 @@ export default {
     components: { WordCloud },
     data() {
         return {
-            list: Object.freeze([
+            /*list: Object.freeze([
                 {
                     id: "XW",
                     src: XWimg,
@@ -69,7 +72,7 @@ export default {
                     data: setList(TestData),
                     fontColor: "#576690",
                 },
-            ]),
+            ]),*/
         };
     },
     methods: {},
