@@ -195,9 +195,10 @@ export default {
   width: 100%;
   height: 0;
   margin: 20px 0 ;
+  border-radius: 4px;
   background-color: rgba(255, 255, 255);
   transform: scale(0.95,0.95);
-    -moz-transition: transform 0.3s ease-out,background-color 0.3s ease-out; /* Firefox 4 */
+  -moz-transition: transform 0.3s ease-out,background-color 0.3s ease-out; /* Firefox 4 */
   -webkit-transition: transform 0.3s ease-out,background-color 0.3s ease-out; /* Safari 和 Chrome */
   -o-transition: transform 0.3s ease-out,background-color 0.3s ease-out; /* Opera */
   transition: transform 0.3s ease-out,background-color 0.3s ease-out;
