@@ -53,7 +53,7 @@ export default {
       try {
         this.$loading()
         const res = await this.$request(`api/milestone/next-group?next_key=${this.nextKey}`)
-        this.dataSource = [...this.dataSource,...res.list]
+        this.dataSource = [...res.list]
         this.nextKey =res.next_key
         if( this.nextKey ===null){
           this.isLastPage =true
