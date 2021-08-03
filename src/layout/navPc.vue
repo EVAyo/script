@@ -1,11 +1,8 @@
 <template>
     <div>
         <div class="nav-contain">
-            <div   class="box item-Index" @click="toAsoulFan">
-                    <div
-                    v-if="currentPageName !== 'Index'"
-                    class="nav-mask"
-                ></div>
+            <div class="box item-Index" @click="toAsoulFan">
+                <div v-if="currentPageName !== 'Index'" class="nav-mask"></div>
             </div>
 
             <router-link
@@ -132,16 +129,15 @@ export default {
         //     if (!this.routeViewScroll) {
         //         this.routeViewScroll = true;
         //         setTimeout(async () => {
-
         //             this.routeViewScroll = false;
         //         }, 400);
         //     }
         // };
     },
     methods: {
-toAsoulFan(){
-    window.open('https://www.asoulfan.com/')
-}
+        toAsoulFan() {
+            window.open("https://www.asoulfan.com/");
+        },
     },
 };
 </script>

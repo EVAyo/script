@@ -135,7 +135,6 @@ export default {
         // 获取B站粉丝数
         async getBibiliFans(uid, name) {
             try {
-                // const res = await this.$request(`bilibili/x/relation/stat?vmid=${uid}`);
                 const res = await this.$request(
                     `/api/px/bilibili/x/relation/stat?vmid=${uid}`
                 );
@@ -147,7 +146,6 @@ export default {
         // 获取抖音粉丝数
         async getDouyinFans(uid, name) {
             try {
-                // const res = await axios.get(`douyin/web/api/v2/user/info/?sec_uid=${uid}`);
                 const res = await axios.get(
                     `/api/px/douyin/web/api/v2/user/info/?sec_uid=${uid}`
                 );
