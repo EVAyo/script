@@ -10,14 +10,14 @@
                 <div class="fans-area">
                     <!-- icon-->
                     <div class="img-box">
-                        <div class="height-30">
+                        <div class="height-30 img-item" @click="toSpace('B',item.BzhanUid)">
                             <img
                                 src="../../assets/img/fansQuery/bilibili.webp"
                                 alt=""
                                 class="b-icon"
                             />
                         </div>
-                        <div class="height-30">
+                        <div class="height-30 img-item" @click="toSpace('D',item.douyinUid)">
                             <img
                                 src="../../assets/img/fansQuery/douyin.webp"
                                 alt=""
@@ -152,6 +152,16 @@ export default {
                 this.douyinFans[name] = res.data.user_info.follower_count;
             } catch (error) {}
         },
+        // 去B站个人空间
+        toSpace(type,uid){
+            let url = ''
+            if(type==='B'){
+                url = 'https://space.bilibili.com/'+uid
+            }else{
+                url = 'https://www.douyin.com/user/'+uid
+            }
+            window.open(url)
+        }
     },
 };
 </script>
@@ -213,5 +223,12 @@ export default {
 }
 .height-30 {
     height: 30%;
+}
+.img-item{
+    cursor: pointer;
+    transition: transform 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.68);
+}
+.img-item:hover{
+        transform: scale(1.2);
 }
 </style>
