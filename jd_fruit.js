@@ -1,5 +1,5 @@
 /*
-东东水果:脚本更新地址 https://gitee.com/lxk0301/jd_scripts/raw/master/jd_fruit.js
+东东水果:脚本更新地址 jd_fruit.js
 更新时间：2021-5-18
 活动入口：京东APP我的-更多工具-东东农场
 东东农场活动链接：https://h5.m.jd.com/babelDiy/Zeus/3KSjXqQabiTuD1cJ28QskrpWoBKT/index.html
@@ -10,16 +10,16 @@
 ==========================Quantumultx=========================
 [task_local]
 #jd免费水果
-5 6-18/6 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_fruit.js, tag=东东农场, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png, enabled=true
+5 6-18/6 * * * jd_fruit.js, tag=东东农场, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdnc.png, enabled=true
 =========================Loon=============================
 [Script]
-cron "5 6-18/6 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_fruit.js,tag=东东农场
+cron "5 6-18/6 * * *" script-path=jd_fruit.js,tag=东东农场
 
 =========================Surge============================
-东东农场 = type=cron,cronexp="5 6-18/6 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_fruit.js
+东东农场 = type=cron,cronexp="5 6-18/6 * * *",wake-system=1,timeout=3600,script-path=jd_fruit.js
 
 =========================小火箭===========================
-东东农场 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_fruit.js, cronexpr="5 6-18/6 * * *", timeout=3600, enable=true
+东东农场 = type=cron,script-path=jd_fruit.js, cronexpr="5 6-18/6 * * *", timeout=3600, enable=true
 
 jd免费水果 搬的https://github.com/liuxiaoyucc/jd-helper/blob/a6f275d9785748014fc6cca821e58427162e9336/fruit/fruit.js
 */
@@ -29,10 +29,10 @@ let cookiesArr = [], cookie = '', jdFruitShareArr = [], isBox = false, notify, n
 //此此内容是IOS用户下载脚本到本地使用，填写互助码的地方，同一京东账号的好友互助码请使用@符号隔开。
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
 let shareCodes = [ // 这个列表填入你要助力的好友的shareCode
-   //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
-  '96fccb20b0e24deeab6b13457c593e3c@f8128854bccb47c092e35444aa921fa9@9353ac4c60e84596b9cfc5e3fe515f30@87ad3f0a3b3a4434867d2da5e026ac6b@55ee8dba47894c719bc465c0cf606d0b@4fc147a47a2b45f2ac7e31c3e1315976@c008698972fd4179bf2cc5d5b5bbec4b',
-  //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
-  '96fccb20b0e24deeab6b13457c593e3c@f8128854bccb47c092e35444aa921fa9@9353ac4c60e84596b9cfc5e3fe515f30@87ad3f0a3b3a4434867d2da5e026ac6b@55ee8dba47894c719bc465c0cf606d0b@4fc147a47a2b45f2ac7e31c3e1315976',
+  //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
+ '96fccb20b0e24deeab6b13457c593e3c@f8128854bccb47c092e35444aa921fa9@9353ac4c60e84596b9cfc5e3fe515f30@87ad3f0a3b3a4434867d2da5e026ac6b@55ee8dba47894c719bc465c0cf606d0b@4fc147a47a2b45f2ac7e31c3e1315976@c008698972fd4179bf2cc5d5b5bbec4b',
+ //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
+ '96fccb20b0e24deeab6b13457c593e3c@f8128854bccb47c092e35444aa921fa9@9353ac4c60e84596b9cfc5e3fe515f30@87ad3f0a3b3a4434867d2da5e026ac6b@55ee8dba47894c719bc465c0cf606d0b@4fc147a47a2b45f2ac7e31c3e1315976',
 ]
 let message = '', subTitle = '', option = {}, isFruitFinished = false;
 const retainWater = 100;//保留水滴大于多少g,默认100g;
@@ -1251,7 +1251,7 @@ function timeFormat(time) {
 }
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `https://action-1251995682.file.myqcloud.com/null.json/`, timeout: 10000,}, (err, resp, data) => {
+    $.get({url: `https://action-1251995682.cos.ap-guangzhou.myqcloud.com/null.json`, timeout: 10000,}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -1331,9 +1331,9 @@ function requireConfig() {
 function TotalBean() {
   return new Promise(async resolve => {
     const options = {
-      url: "https://me-api.jd.com/user_new/info/GetJDUserInfoUnion",
+      url: "https://wq.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2",
       headers: {
-        Host: "me-api.jd.com",
+        Host: "wq.jd.com",
         Accept: "*/*",
         Connection: "keep-alive",
         Cookie: cookie,
@@ -1350,15 +1350,15 @@ function TotalBean() {
         } else {
           if (data) {
             data = JSON.parse(data);
-            if (data['retcode'] === "1001") {
+            if (data['retcode'] === 1001) {
               $.isLogin = false; //cookie过期
               return;
             }
-            if (data['retcode'] === "0" && data.data && data.data.hasOwnProperty("userInfo")) {
+            if (data['retcode'] === 0 && data.data && data.data.hasOwnProperty("userInfo")) {
               $.nickName = data.data.userInfo.baseInfo.nickname;
             }
           } else {
-            $.log('京东服务器返回空数据');
+            console.log('京东服务器返回空数据');
           }
         }
       } catch (e) {
