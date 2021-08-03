@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     jump(str) {
-      window.location.href = str;
+      window.open(str);
     }
   }
 }
