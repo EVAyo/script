@@ -1,45 +1,13 @@
 <template>
-    <!-- <div class="contain"> -->
-    <!-- <div class="nav-common" :class="[isLongNav ? 'nav-long' : 'nav-short']">
-      <router-link title="小工具首页" to="/">
-        <div
-          class="nav-item-common"
-          :class="[isLongNav ? 'nav-item-long' : 'nav-item-short']"
-        >
-          <img
-            v-show="isLongNav"
-            class="img"
-            src="../assets/img/contents/index-long.png"
-            alt=""
-          />
-          <img
-            v-show="!isLongNav"
-            class="img"
-            src="../assets/img/contents/index-short.png"
-            alt=""
-          />
-          <div v-if="currentPageName!=='Index'" class="nav-mask"></div>
-        </div>
-      </router-link>
-      <router-link
-        v-for="(item, index) in routeList"
-        :title="item.titleName"
-        :key="index"
-        :to="item.route"
-
-      >
-      <div  class="nav-item-common"
-        >
-        <img v-show="isLongNav" class="img" :src="item.imgLong" alt="" />
-        <img v-show="!isLongNav" class="img" :src="item.imgShort" alt="" />
-        <div v-if="currentPageName!==item.routeName" class="nav-mask" ></div>
-
-      </div>
-      </router-link>
-    </div> -->
-    <!--  -->
     <div>
         <div class="nav-contain">
+            <div   class="box item-Index" @click="toAsoulFan">
+                    <div
+                    v-if="currentPageName !== 'Index'"
+                    class="nav-mask"
+                ></div>
+            </div>
+
             <router-link
                 v-for="(item, index) in routeList"
                 :key="index"
@@ -72,13 +40,13 @@ export default {
             isLongNav: this.$route.name == "Index" ? true : false,
             currentPageName: this.$route.name,
             routeList: [
-                {
-                    imgShort: require("../assets/img/contents/index-short.png"),
-                    imgLong: require("../assets/img/contents/zhiNet-long.png"),
-                    routeName: "Index",
-                    titleName: "首页",
-                    route: "/",
-                },
+                // {
+                //     imgShort: require("../assets/img/contents/index-short.png"),
+                //     imgLong: require("../assets/img/contents/zhiNet-long.png"),
+                //     routeName: "Index",
+                //     titleName: "首页",
+                //     route: "/",
+                // },
                 {
                     imgShort: require("../assets/img/contents/zhiNet-short.png"),
                     imgLong: require("../assets/img/contents/zhiNet-long.png"),
@@ -159,25 +127,21 @@ export default {
     },
     mounted() {
         // 监听这个dom的scroll事件
-        this.$refs.myRouteView.onscroll = (e) => {
-            console.log("on scroll");
-            if (!this.routeViewScroll) {
-                this.routeViewScroll = true;
-                setTimeout(async () => {
-                    this.temp(e);
+        // this.$refs.myRouteView.onscroll = (e) => {
+        //     console.log("on scroll");
+        //     if (!this.routeViewScroll) {
+        //         this.routeViewScroll = true;
+        //         setTimeout(async () => {
 
-                    this.routeViewScroll = false;
-                }, 400);
-            }
-        };
+        //             this.routeViewScroll = false;
+        //         }, 400);
+        //     }
+        // };
     },
     methods: {
-        // 临时函数 可删
-        temp(e) {
-            console.log(this.$refs.myRouteView.scrollTop);
-            console.log(this.$refs.myRouteView.scrollHeight);
-            console.log(this.$refs.myRouteView.offsetHeight);
-        },
+toAsoulFan(){
+    window.open('https://www.asoulfan.com/')
+}
     },
 };
 </script>
@@ -197,6 +161,7 @@ export default {
     background-color: transparent;
 }
 .box {
+    cursor: pointer;
     position: relative;
     margin-top: 10px;
     width: 18.5vh;
@@ -276,52 +241,6 @@ export default {
 .item-randomVideo:hover {
     background-image: url("../assets/img/contents/random-long.png");
 }
-
-/////////////////////////////////////////////////////////////////////
-
-// // 页面容器
-// .contain {
-//   display: flex;
-//   overflow: hidden;
-//   max-height: 100vh;
-// }
-// // 导航栏最外层
-// .nav-common {
-//   // float: left;
-//   position: fixed;
-//   z-index: 10000;
-//   // max-height: 100vh;
-//   display: flex;
-//   flex-direction: column;
-//   background-color: black;
-//   overflow: hidden;
-// }
-// .nav-long {
-//   width: 37vh;
-//   max-width: 370px;
-//   min-width: 185px;
-// }
-// .nav-short {
-//   width: 18.5vh;
-//   max-width: 185px;
-//   min-width: 92.5px;
-// }
-
-// // 导航栏item
-// .nav-item-common {
-//   margin-bottom: 1px;
-//   height: 11.1vh;
-//   max-height: 222px;
-//   min-height: 55.5px;
-//   display: flex;
-//   width: 100%;
-//   position: relative;
-// }
-// .nav-item-long {
-//   // height: 11.1vh;
-// }
-// .nav-item-short {
-// }
 // // 遮罩层
 .nav-mask {
     position: absolute;
