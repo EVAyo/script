@@ -51,7 +51,7 @@ export default {
                     imgShort: require("../assets/img/contents/zhiNet-short.png"),
                     imgLong: require("../assets/img/contents/zhiNet-long.png"),
                     routeName: "checkArticle",
-                    titleName: "知网查重",
+                    titleName: "枝网查重",
                     route: "/tools/checkArticle",
                 },
                 {
