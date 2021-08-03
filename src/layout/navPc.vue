@@ -1,11 +1,8 @@
 <template>
     <div>
         <div class="nav-contain">
-            <div   class="box item-Index" @click="toAsoulFan">
-                    <div
-                    v-if="currentPageName !== 'Index'"
-                    class="nav-mask"
-                ></div>
+            <div class="box item-Index" @click="toAsoulFan">
+                <div v-if="currentPageName !== 'Index'" class="nav-mask"></div>
             </div>
 
             <router-link
@@ -51,7 +48,7 @@ export default {
                     imgShort: require("../assets/img/contents/zhiNet-short.png"),
                     imgLong: require("../assets/img/contents/zhiNet-long.png"),
                     routeName: "checkArticle",
-                    titleName: "知网查重",
+                    titleName: "枝网查重",
                     route: "/tools/checkArticle",
                 },
                 {
@@ -132,16 +129,15 @@ export default {
         //     if (!this.routeViewScroll) {
         //         this.routeViewScroll = true;
         //         setTimeout(async () => {
-
         //             this.routeViewScroll = false;
         //         }, 400);
         //     }
         // };
     },
     methods: {
-toAsoulFan(){
-    window.open('https://www.asoulfan.com/')
-}
+        toAsoulFan() {
+            window.open("https://www.asoulfan.com/");
+        },
     },
 };
 </script>
