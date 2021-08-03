@@ -1,7 +1,7 @@
 <template>
   <div class="emoji">
 		<div class="waterfall" ref="waterfallBox">
-      <div v-for="(bigItem,index) in imgList" :key="index" class="column">
+      <div v-for="(bigItem,index) in imgList" :key="index" class="column" :style="{'width': columnNumWidth+'%'}">
         <div v-for="img in bigItem" :key="img.id" class="column-item fadeInUp"  :style="{'padding-top':img.paddingTop+'%'}">
 
           <a :href="img.url" target="_blank" rel="noopener noreferrer">
@@ -36,7 +36,8 @@ export default {
       pageSize:20,
       count: 0,
       screenWidth: document.body.clientWidth,
-      columnNum:3,
+      columnNum:4,
+      columnNumWidth:25,
       isLastPage : false,
     };
   },
@@ -45,7 +46,8 @@ export default {
   },
   mounted(){
         this.listensBoxScroll()
-        this.columnNum= Math.floor((document.body.clientWidth*0.8)/340)
+        this.columnNum= Math.floor((document.body.clientWidth*0.8)/340)>4? 4 : Math.floor((this.screenWidth*0.8)/340)
+        this.columnNumWidth = 100/this.columnNum - 5
         window.onresize = () => {
                     this.screenWidth = document.body.clientWidth
             }
@@ -60,9 +62,10 @@ export default {
                     this.timer = true
                     // let that = this
                     setTimeout(()=> {
-                      let tempColumn = Math.floor((this.screenWidth*0.8)/340)
+                      let tempColumn = Math.floor((this.screenWidth*0.8)/340) >4? 4 : Math.floor((this.screenWidth*0.8)/340)
                       if(this.columnNum!=tempColumn){
-                          this.columnNum = tempColumn;
+                          this.columnNum = tempColumn ;
+                          this.columnNumWidth = 100/this.columnNum - 5
                           this.setListIndex()
                       }
                         this.timer = false
@@ -163,7 +166,7 @@ export default {
   position: relative;
   height: 100%;
   padding-left: 18.5vh;
-  background-image:url('../../assets/img/emoji/bgp.png');
+  background-image:url('../../assets/img/emoji/bgp.webp');
   background-size: cover;
   background-color: #000;
   display: flex;
@@ -182,10 +185,9 @@ export default {
   overflow-y: auto;
 }
 .column{
-  // max-width: 00px ;
-  width: 20% ;
+  // min-width: 300px;
   min-width: 100px;
-  // background-color: blue;
+  // width: calc(100%/var(--columns));;
   margin: 0 20px;
 
 }
