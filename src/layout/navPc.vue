@@ -136,7 +136,7 @@ export default {
     },
     methods: {
         toAsoulFan() {
-            window.location.href = "https://www.asoulfan.com/"
+            window.location.href = "https://www.asoulfan.cn/"
         },
     },
 };
