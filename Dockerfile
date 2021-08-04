@@ -22,7 +22,6 @@ ENV GO111MODULE "on"
 RUN cd /src \
     && apk add --no-cache --update gcc musl-dev  make \
     && rm -rf dist \
-    && go get -u github.com/gobuffalo/packr/v2/packr2 \
     && go mod tidy \
     && make
 
@@ -41,7 +40,10 @@ ENV DB_TYPE "mysql"
 COPY --from=builder /src/dist /opt/app
 
 RUN  adduser -D -H www \
-     && chown -R www /opt/app
+     && chown -R www /opt/app \
+     && apk add -U --no-cache tzdata \
+     && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+     && apk del tzdata
 
 USER www
 WORKDIR /opt/app
