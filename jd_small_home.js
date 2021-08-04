@@ -77,7 +77,7 @@ const JD_API_HOST = 'https://lkyl.dianpusoft.cn/api';
       await smallHome();
     }
   }
-  $.inviteCodes = await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_updateSmallHomeInviteCode.json')
+  $.inviteCodes = await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_summer_movement_sh.json')
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
