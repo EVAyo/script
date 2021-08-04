@@ -4,6 +4,8 @@
 30 * * * * sh +x /scripts/docker/auto_help.sh collect >> /scripts/logs/auto_help_collect.log 2>&1
 
 ##############短期活动##############
+#沃尔玛夺宝大战 2021年08月5日
+34 12,16,18 * * * node /scripts/jd_productZ4Brand.js >> /scripts/logs/jd_productZ4Brand.log 2>&1
 #沃尔玛夺宝大战 2021年07月15日-2021年08月8日
 13 0,12,18 * * * node /scripts/jd_walmart.js >> /scripts/logs/jd_walmart.log 2>&1
 #极速版发财大赢家 2021-07-15到2021-08-15
