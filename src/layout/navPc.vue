@@ -123,16 +123,6 @@ export default {
         this.$route.name;
     },
     mounted() {
-        // 监听这个dom的scroll事件
-        // this.$refs.myRouteView.onscroll = (e) => {
-        //     console.log("on scroll");
-        //     if (!this.routeViewScroll) {
-        //         this.routeViewScroll = true;
-        //         setTimeout(async () => {
-        //             this.routeViewScroll = false;
-        //         }, 400);
-        //     }
-        // };
     },
     methods: {
         toAsoulFan() {

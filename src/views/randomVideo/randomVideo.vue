@@ -1,6 +1,6 @@
 <template>
   <div class="random-video">
-    <img src="../../assets/img/random/random-background.png" alt="" class="background-img" >
+    <!-- <img src="../../assets/img/random/random-background.png" alt="" class="background-img" > -->
     <!-- <iframe src="" frameborder="0"></iframe> -->
     <div class="iframe-box">
       <iframe
