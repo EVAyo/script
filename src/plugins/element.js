@@ -13,7 +13,6 @@ Vue.use(InfiniteScroll)
 Vue.prototype.$message = Message;
 Vue.prototype.$loading = () => {
   window._loading = Loading.service({
-    lock: true,
     text: '加载中',
     background: 'rgba(0, 0, 0, 0.7)',
   });

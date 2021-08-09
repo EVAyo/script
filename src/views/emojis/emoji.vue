@@ -1,18 +1,18 @@
 <template>
   <div class="emoji">
-		<div class="waterfall" ref="waterfallBox">
-      <div v-for="(bigItem,index) in imgList" :key="index" class="column" :style="{'width': columnNumWidth+'%'}">
-        <div v-for="img in bigItem" :key="img.id" class="column-item fadeInUp"  :style="{'padding-top':img.paddingTop+'%'}">
+		<!-- <div class="waterfall" ref="waterfallBox"> -->
+      <div v-for="(bigItem,index) in imgList" :key="index" class="column" :style="{'width': columnNumWidth+'%'}" ref="imgBox">
+        <div v-for="img in bigItem" :key="img.id"  class="column-item fadeInUp"   :style="{'padding-top':img.paddingTop+'%'}">
 
           <a :href="img.url" target="_blank" rel="noopener noreferrer">
-              <img :src="img.url" alt="" class="column-item-img" >
+              <img  alt="" :data-src="img.url" class="column-item-img" >
           </a>
 			  </div>
       </div>
       <div class="last-page" v-if="isLastPage">
       ---------已经是最后一页啦---------
     </div>
-		</div>
+		<!-- </div> -->
     
      <!-- 数据来源 -->
       <div class="data-souce" @click="toUpSpace">
@@ -33,26 +33,30 @@ export default {
       imgList: [],
       // 当前页
       currentPage:1,
-      pageSize:20,
+      pageSize:100,
       count: 0,
       screenWidth: document.body.clientWidth,
       columnNum:4,
       columnNumWidth:25,
+      lazyCurrentList:[],
       isLastPage : false,
     };
   },
   created() {
         
   },
-  mounted(){
+ async mounted(){
         this.listensBoxScroll()
-        this.columnNum= Math.floor((document.body.clientWidth*0.8)/340)>4? 4 : Math.floor((this.screenWidth*0.8)/340)
+        
+        this.columnNum= Math.floor((document.body.clientWidth*0.8)/240)>4? 4 : Math.floor((this.screenWidth*0.8)/240)
         this.columnNumWidth = 100/this.columnNum - 5
+
         window.onresize = () => {
                     this.screenWidth = document.body.clientWidth
             }
     this.imgList = Array.from(Array(this.columnNum), () => new Array(0))
-    this.GetLIstImg();
+    await this.GetLIstImg();
+    this.lazyLoadimg()
   },
   watch:{
 
@@ -62,14 +66,17 @@ export default {
                     this.timer = true
                     // let that = this
                     setTimeout(()=> {
-                      let tempColumn = Math.floor((this.screenWidth*0.8)/340) >4? 4 : Math.floor((this.screenWidth*0.8)/340)
+                      let tempColumn = Math.floor((this.screenWidth*0.8)/240) >4? 4 : Math.floor((this.screenWidth*0.8)/240)
                       if(this.columnNum!=tempColumn){
                           this.columnNum = tempColumn ;
                           this.columnNumWidth = 100/this.columnNum - 5
                           this.setListIndex()
+                          this.$nextTick(()=>{
+                            this.lazyLoadimg()
+                          })
                       }
                         this.timer = false
-                    }, 100)
+                    }, 400)
                 }
             }
   },
@@ -80,17 +87,16 @@ export default {
       const cacheList = [...this.cacheList]
       const column  = this.columnNum
       let tempList = Array.from(Array(column),() => new Array())
-      // this.imgList
       cacheList.forEach((ele,index)=>{
           let temp = index % column
-          console.log(temp);
+          // console.log(temp);
           tempList[temp].push(ele)
       })
       this.imgList = tempList
     },
-    // 监听waterfallBox的scroll事件
+    // 监听scroll事件
     listensBoxScroll(){
-      this.$refs.waterfallBox.onscroll  = (e) => {
+      window.onscroll  = (e) => {
         // 最后一页 不再滚动
         if(this.isLastPage){
           return
@@ -98,19 +104,26 @@ export default {
           if (!this.timeBoxScroll) {
                     this.timeBoxScroll = true
                     setTimeout(async()=> {
+                      this.lazyLoadimg()
+                      // console.log(window.documentElement.scrollTop);
+                      
                       // 目前窗口底部离容器顶部的距离
-                      let  TopOffsetHeight = this.$refs.waterfallBox.scrollTop +this.$refs.waterfallBox.offsetHeight
-                      let scrollHeight  = this.$refs.waterfallBox.scrollHeight
+                      let  TopOffsetHeight = document.documentElement.scrollTop +document.documentElement.offsetHeight
+                      let scrollHeight  = document.documentElement.scrollHeight
+                      // console.log(TopOffsetHeight,'TopOffsetHeight');
+                      // console.log(scrollHeight,'scrollHeight');
                       // 离底部50px触发翻页
                       if(TopOffsetHeight +50 >= scrollHeight){
                         this.currentPage++;
                         await this.GetLIstImg()
+                        // this.lazyLoadimg()
                       }
                         this.timeBoxScroll = false
                     }, 400)
                 }
       }
     },
+    // 获取图片
     async GetLIstImg() {
       try {
         this.$loading();
@@ -138,13 +151,12 @@ export default {
                   })
         }
         
-
         res.forEach((ele,index)=>{
             let i = (index+ ((this.currentPage-1)*this.pageSize))%this.columnNum
-            tempList[i].push(ele)
+            this.imgList[i].push(ele)
             this.cacheList.push(ele)
         })
-        this.imgList = [...tempList]
+        // this.imgList = [...tempList]
       } catch (error) {
         this.$message({message:error,type: 'error'})
       } finally {
@@ -154,6 +166,20 @@ export default {
     
     toUpSpace(){
       window.open('https://space.bilibili.com/15073186')
+    },
+    // 懒加载
+    lazyLoadimg(){
+        
+        let list = this.$refs.imgBox
+        for(let i =0;i<list.length;i++){
+        let tempList =  list[i].querySelectorAll('.column-item-img')
+          tempList.forEach((item,index)=>{
+
+            if(!item.src&&((window.innerHeight - item.getBoundingClientRect().top) >0)){
+                  item.src = item.getAttribute('data-src')
+            }
+          })
+        }
     }
   },
 };
@@ -164,11 +190,11 @@ export default {
 <style lang="less" scoped>
 .emoji{
   position: relative;
-  height: 100%;
+  // height: 100%;
   padding-left: 18.5vh;
-  background-image:url('../../assets/img/emoji/bgp.webp');
+  // background-image:url('../../assets/img/emoji/bgp.webp');
   background-size: cover;
-  background-color: #000;
+  background-color: #2B343A;
   display: flex;
   justify-content: center;
 }
@@ -187,6 +213,7 @@ export default {
 .column{
   // min-width: 300px;
   min-width: 100px;
+  max-width: 200px;
   // width: calc(100%/var(--columns));;
   margin: 0 20px;
 
