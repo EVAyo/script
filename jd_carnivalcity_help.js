@@ -19,7 +19,7 @@ cron "10 0,8 * * *" script-path=jd_carnivalcity_help.js, tag=京东手机狂欢�
 ============小火箭=========
 京东手机狂欢城 = type=cron,script-path=jd_carnivalcity_help.js, cronexpr="0 0,6,12,18 * * *", timeout=3600, enable=true
 */
-const $ = new Env('京东手机狂欢城');
+const $ = new Env('京东手机狂欢城助力');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
