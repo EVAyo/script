@@ -1,6 +1,6 @@
 <template>
   <div class="emoji">
-		<!-- <div class="waterfall" ref="waterfallBox"> -->
+		<div class="waterfall" ref="waterfallBox">
       <div v-for="(bigItem,index) in imgList" :key="index" class="column" :style="{'width': columnNumWidth+'%'}" ref="imgBox">
         <div v-for="img in bigItem" :key="img.id"  class="column-item fadeInUp"   :style="{'padding-top':img.paddingTop+'%'}">
 
@@ -12,7 +12,7 @@
       <div class="last-page" v-if="isLastPage">
       ---------已经是最后一页啦---------
     </div>
-		<!-- </div> -->
+		</div>
     
      <!-- 数据来源 -->
       <div class="data-souce" @click="toUpSpace">
@@ -200,15 +200,11 @@ export default {
 }
 
 .waterfall{
-  position: relative;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-wrap: wrap;
-  width: 70%;
-  min-width: 340px;
+  width: 100%;
+  margin: 0 auto;
   justify-content: center;
-  height: 100vh;
-  overflow-y: auto;
 }
 .column{
   // min-width: 300px;
