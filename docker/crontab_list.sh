@@ -4,6 +4,9 @@
 30 * * * * sh +x /scripts/docker/auto_help.sh collect >> /scripts/logs/auto_help_collect.log 2>&1
 
 ##############短期活动##############
+#燃动夏季红包兑换
+16 0,21 * * * node /scripts/jd_summer_movement_exchange.js >> /scripts/logs/jd_summer_movement_exchange.log 2>&1
+
 #七夕情报局 2021年08月4日-2021年08月15日
 31 0,9,22 4-15 8 * node /scripts/jd_doge.js >> /scripts/logs/jd_doge.log 2>&1
 
