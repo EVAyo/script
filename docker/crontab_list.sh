@@ -7,6 +7,9 @@
 #七夕情报局 2021年08月4日-2021年08月15日
 31 0,9,22 4-15 8 * node /scripts/jd_doge.js >> /scripts/logs/jd_doge.log 2>&1
 
+# 5G超级盲盒(活动时间：2021-8-2到2021-10-29)
+0 0,1-23/3 * * * node /scripts/jd_mohe.js >> /scripts/logs/jd_mohe.log 2>&1
+
 #特务Z
 34 12,16,18 * * * node /scripts/jd_productZ4Brand.js >> /scripts/logs/jd_productZ4Brand.log 2>&1
 #沃尔玛夺宝大战 2021年07月15日-2021年08月8日
