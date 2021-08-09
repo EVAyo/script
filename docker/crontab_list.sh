@@ -4,6 +4,9 @@
 30 * * * * sh +x /scripts/docker/auto_help.sh collect >> /scripts/logs/auto_help_collect.log 2>&1
 
 ##############短期活动##############
+#金机奖投票 2021年08月8日-2021年08月20日
+39 1,7,20 * * * node /scripts/jd_golden_machine.js >> /scripts/logs/jd_golden_machine.log 2>&1
+
 #燃动夏季红包兑换
 16 0,21 * * * node /scripts/jd_summer_movement_exchange.js >> /scripts/logs/jd_summer_movement_exchange.log 2>&1
 
