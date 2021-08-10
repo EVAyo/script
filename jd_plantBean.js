@@ -41,6 +41,9 @@ let lastRoundId = null;//上期id
 let roundList = [];
 let awardState = '';//上期活动的京豆是否收取
 let randomCount = $.isNode() ? 20 : 5;
+let current_period_index = -1; //本期索引 
+let last_period_index = -1; //上期索引 
+
 !(async () => {
   await requireConfig();
   if (!cookiesArr[0]) {
@@ -91,13 +94,25 @@ async function jdPlantBean() {
       $.myPlantUuid = getParam(shareUrl, 'plantUuid')
       console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${$.myPlantUuid}\n`);
       roundList = $.plantBeanIndexResult.data.roundList;
-      currentRoundId = roundList[2].roundId;//本期的roundId
-      lastRoundId = roundList[1].roundId;//上期的roundId
-      awardState = roundList[1].awardState;
+
+      //获取上期与本期的索引
+      for (let i = 0; i < roundList.length; i++ ) {
+        // console.log(`\nlastRoundId:${roundList[i].dateDesc}`)
+        if (roundList[i].dateDesc.indexOf('本期') != -1 ) {
+          current_period_index = i;
+          last_period_index = i > 0 ? i - 1 : i +1 ;
+          break;
+        }
+      }
+      // console.log(`本期:${current_period_index}，上期:${last_period_index}`)
+
+      currentRoundId = roundList[current_period_index].roundId;//本期的roundId
+      lastRoundId = roundList[last_period_index].roundId;//上期的roundId
+      awardState = roundList[last_period_index].awardState;
       $.taskList = $.plantBeanIndexResult.data.taskList;
       subTitle = `【京东昵称】${$.plantBeanIndexResult.data.plantUserInfo.plantNickName}`;
-      message += `【上期时间】${roundList[1].dateDesc.replace('上期 ', '')}\n`;
-      message += `【上期成长值】${roundList[1].growth}\n`;
+      message += `【上期时间】${roundList[last_period_index].dateDesc.replace('上期 ', '')}\n`;
+      message += `【上期成长值】${roundList[last_period_index].growth}\n`;
       await receiveNutrients();//定时领取营养液
       await doHelp();//助力
       await doTask();//做日常任务
@@ -121,7 +136,7 @@ async function doGetReward() {
   console.log(`【上轮京豆】${awardState === '4' ? '采摘中' : awardState === '5' ? '可收获了' : '已领取'}`);
   if (awardState === '4') {
     //京豆采摘中...
-    message += `【上期状态】${roundList[1].tipBeanEndTitle}\n`;
+    message += `【上期状态】${roundList[last_period_index].tipBeanEndTitle}\n`;
   } else if (awardState === '5') {
     //收获
     await getReward();
@@ -139,18 +154,18 @@ async function doGetReward() {
     }
   } else if (awardState === '6') {
     //京豆已领取
-    message += `【上期兑换京豆】${roundList[1].awardBeans}个\n`;
+    message += `【上期兑换京豆】${roundList[last_period_index].awardBeans}个\n`;
   }
-  if (roundList[2].dateDesc.indexOf('本期 ') > -1) {
-    roundList[2].dateDesc = roundList[2].dateDesc.substr(roundList[2].dateDesc.indexOf('本期 ') + 3, roundList[2].dateDesc.length);
+  if (roundList[current_period_index].dateDesc.indexOf('本期 ') > -1) {
+    roundList[current_period_index].dateDesc = roundList[current_period_index].dateDesc.substr(roundList[current_period_index].dateDesc.indexOf('本期 ') + 3, roundList[current_period_index].dateDesc.length);
   }
-  message += `【本期时间】${roundList[2].dateDesc}\n`;
-  message += `【本期成长值】${roundList[2].growth}\n`;
+  message += `【本期时间】${roundList[current_period_index].dateDesc}\n`;
+  message += `【本期成长值】${roundList[current_period_index].growth}\n`;
 }
 async function doCultureBean() {
   await plantBeanIndex();
   if ($.plantBeanIndexResult && $.plantBeanIndexResult.code === '0') {
-    const plantBeanRound = $.plantBeanIndexResult.data.roundList[2]
+    const plantBeanRound = $.plantBeanIndexResult.data.roundList[current_period_index]
     if (plantBeanRound.roundState === '2') {
       //收取营养液
       if (plantBeanRound.bubbleInfos && plantBeanRound.bubbleInfos.length) console.log(`开始收取营养液`)
