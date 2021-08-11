@@ -15,7 +15,6 @@ import (
 	"html/template"
 	"net/http"
 	"net/http/cookiejar"
-	"net/url"
 	"os"
 	"strconv"
 	"time"
@@ -153,7 +152,6 @@ func (s *httpServer) initdb() {
 //直接唤起 京东 客户端 后台获取cookie
 func (s *httpServer) backgroundRun() {
 	tk := <-ckChan
-	//jar := s.getCookieJar(c)
 	var res string
 	var err error
 	tm := strconv.FormatInt(time.Now().UnixNano()/1e6, 10)
@@ -166,39 +164,7 @@ func (s *httpServer) backgroundRun() {
 		checkJson := gjson.Parse(res)
 		if checkJson.Get("errcode").Int() == 0 {
 			//获取cookie
-			u, _ := url.Parse("https://plogin.m.jd.com")
-			token := tk.Tk
-			var TrackerID, pt_key, pt_pin, pt_token, pwdt_id, s_key, s_pin = "", "", "", "", "", "", ""
-			for _, v := range tk.CookieJar.Cookies(u) {
-				if v.Name == "TrackerID" {
-					TrackerID = v.Value
-				}
-				if v.Name == "pt_key" {
-					pt_key = v.Value
-				}
-				if v.Name == "pt_pin" {
-					pt_pin = v.Value
-				}
-				if v.Name == "pt_token" {
-					pt_token = v.Value
-				}
-				if v.Name == "pwdt_id" {
-					pwdt_id = v.Value
-				}
-				if v.Name == "s_key" {
-					s_key = v.Value
-				}
-				if v.Name == "s_pin" {
-					s_pin = v.Value
-				}
-			}
-			token.Cookies = "TrackerID=" + TrackerID + "; pt_key=" + pt_key + "; pt_pin=" + pt_pin + "; pt_token=" + pt_token + "; pwdt_id=" + pwdt_id + "; s_key=" + s_key + "; s_pin=" + s_pin + "; wq_skey="
-			token.UserCookie = "pt_key=" + pt_key + ";pt_pin=" + pt_pin + ";"
-			token.PtPin = pt_pin
-			token.PtKey = pt_key
-			log.Info("############  登录成功，获取到 Cookie  #############")
-			log.Infof("Cookie1=%s", token.UserCookie)
-			log.Info("####################################################")
+			token := s.getJdCookie_1(tk.Tk, tk.CookieJar)
 			//写db
 			if s.Conf.DbConf.DbEnable {
 				_, err := s.cookiesRepo.UpdateCookie(token.PtPin, token.PtKey, token.UserCookie)

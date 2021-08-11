@@ -321,8 +321,14 @@ func (s httpServer) checklogin_1(token *Token, jar *cookiejar.Jar, ip string, ua
 
 // 解析用户的cookie
 func (s *httpServer) getJdCookie(resp string, cookie *cookiejar.Jar, c *gin.Context) string {
-	u, _ := url.Parse("https://plogin.m.jd.com")
 	token := s.getToken(c)
+	tk := s.getJdCookie_1(token, cookie)
+	s.updateToken(c, tk)
+	return tk.UserCookie
+}
+
+func (s *httpServer) getJdCookie_1(token *Token, cookie *cookiejar.Jar) *Token {
+	u, _ := url.Parse("https://plogin.m.jd.com")
 	var TrackerID, pt_key, pt_pin, pt_token, pwdt_id, s_key, s_pin = "", "", "", "", "", "", ""
 	for _, v := range cookie.Cookies(u) {
 		if v.Name == "TrackerID" {
@@ -351,11 +357,10 @@ func (s *httpServer) getJdCookie(resp string, cookie *cookiejar.Jar, c *gin.Cont
 	token.UserCookie = "pt_key=" + pt_key + ";pt_pin=" + pt_pin + ";"
 	token.PtPin = pt_pin
 	token.PtKey = pt_key
-	s.updateToken(c, token)
 	log.Info("############  登录成功，获取到 Cookie  #############")
 	log.Infof("Cookie1=%s", token.UserCookie)
 	log.Info("####################################################")
-	return token.UserCookie
+	return token
 }
 
 func (s *httpServer) upsave(c *gin.Context) {
