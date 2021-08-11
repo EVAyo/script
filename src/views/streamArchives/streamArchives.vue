@@ -88,7 +88,7 @@ export default {
 }
 
 .streamArchives {
-  background-color: #282828;
+  background-color: #2B343A;
   height: 100%;
   display: flex;
   align-items: center;
