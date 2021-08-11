@@ -72,6 +72,14 @@ CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 packr2 build  -o jdcookie_darwin_x64
 > 
 > release中的[下载](https://github.com/scjtqs/jd_cookie/releases)二进制包，无法使用sqlite3数据库(为了交叉编译，关闭了cgo）(仅linux_amd64的预编译包可以使用sqlite3)，要使用sqlite3数据库的，请自行在需要运行的机器上编译。或者使用docker版本。
 
+v3.0.5
+> 添加手机页面唤起京东app直接获取cookie。（因小伙伴想要玩这功能
+> 
+> 跳转jdapp方式登录，无法在web上直接拿到cookie，只能在后台控制台打印看到（跳转到了jdapp。无法跳回去），或者推送到指定url、或者写入db中。
+
+v3.0.4
+> 修复ua 远程登录问题
+
 v3.0.3
 > 使用golang 1.16新特性，静态文件打包采用 embed包处理，直接go build就可以了。不再依赖packr2。直接go build即可。不过需要安装 go 1.16+版本。
 
