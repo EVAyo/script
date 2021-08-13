@@ -90,6 +90,7 @@ func (s *httpServer) Run(addr string, ct *dig.Container) {
 	//s.engine.StaticFS("/public", http.FS(f))
 	s.engine.GET("/", func(c *gin.Context) {
 		s.GetclientIP(c)
+		sessions.Default(c)
 		var v string
 		ct.Invoke(func(version string) {
 			v = version
