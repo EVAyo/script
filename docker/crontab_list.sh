@@ -4,11 +4,11 @@
 30 * * * * sh +x /scripts/docker/auto_help.sh collect >> /scripts/logs/auto_help_collect.log 2>&1
 
 ##############短期活动##############
+#骁龙品牌日 2021年08月13日-2021年08月25日
+12 7,22 * * * * * * node /scripts/jd_xl.js >> /scripts/logs/jd_xl.log 2>&1
+
 #金机奖投票 2021年08月8日-2021年08月20日
 39 1,7,20 * * * node /scripts/jd_golden_machine.js >> /scripts/logs/jd_golden_machine.log 2>&1
-
-#燃动夏季红包兑换
-16 0,21 * * * node /scripts/jd_summer_movement_exchange.js >> /scripts/logs/jd_summer_movement_exchange.log 2>&1
 
 #七夕情报局 2021年08月4日-2021年08月15日
 31 0,9,22 4-15 8 * node /scripts/jd_doge.js >> /scripts/logs/jd_doge.log 2>&1
@@ -151,8 +151,6 @@
 30 3,12,22 * * * node /scripts/jd_esManager.js >> /scripts/logs/jd_esManager.log 2>&1
 # 半点红包雨
 30 16-23/1 * * * node /scripts/jd_half_redrain.js >> /scripts/logs/jd_half_redrain.log 2>&1
-# 京喜财富岛提现
-59 11,12,23 * * * node /scripts/jd_cfdtx.js >> /scripts/logs/jd_cfdtx.log 2>&1
 # 宠汪汪
 45 */2,23 * * * node /scripts/jd_joy.js >> /scripts/logs/jd_joy.log 2>&1
 # 宠汪汪偷好友积分与狗粮
