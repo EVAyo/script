@@ -160,12 +160,18 @@ func (s *httpServer) initdb() {
 
 //直接唤起 京东 客户端 后台获取cookie
 func (s *httpServer) backgroundRun() {
-	tk := <-ckChan
+	for{
+		tk := <-ckChan
+		go s.background_check_login(tk)
+	}
+}
+
+func (s *httpServer) background_check_login(tk jumpLogin)  {
 	var res string
 	var err error
 	tm := strconv.FormatInt(time.Now().UnixNano()/1e6, 10)
 	ua := fmt.Sprintf("Mozilla/5.0 (iPhone; CPU iPhone OS 13_3_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 SP-engine/2.14.0 main/1.0 baiduboxapp/11.18.0.16 (Baidu; P2 13.3.1) NABar/0.0 TM/%s", tm)
-	for i := 1; i <= 100; i++ {
+	for i := 1; i <= 30; i++ {
 		res, err = s.checklogin_1(tk.Tk, tk.CookieJar, tk.Ip, ua)
 		if err != nil {
 			return
@@ -226,7 +232,7 @@ func (s *httpServer) backgroundRun() {
 			cache.SetWithExpire(cache_key_cookie+token.Token, token.UserCookie, time.Minute*10)
 			break
 		} else {
-			log.Errorf("获取cookie失败")
+			log.Errorf("获取cookie失败 for token=%s",tk.Tk.Token)
 		}
 		time.Sleep(time.Second * 1)
 	}
