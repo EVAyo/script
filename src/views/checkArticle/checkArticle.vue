@@ -1,71 +1,70 @@
 <!-- 枝网查重 -->
 <template>
 <div class="div">
-    <div class="logo">
-      <img src="~@/assets/img/checkArticle/logo.png" alt="">
-    </div>
-    
-    <div class="BigContent">
-      <!-- 左边输入文本框 start -->
-      <div class="content_left">
-        
-          <div class="content">
-            <!-- 文本框 -->
-            <textarea type="text"
-                v-model="search"
-                placeholder="内容字数不少于10字，不多于1000字，输入信息后，点击下方按钮提交进行查重！"
-                class="search-input">
-            </textarea>
+  <div class="logo">
+    <img src="~@/assets/img/checkArticle/logo.png" alt="">
+  </div>
+  
+  <div class="BigContent">
+    <!-- 左边输入文本框 start -->
+    <div class="content_left">
+      <div class="content">
+        <!-- 文本框 -->
+        <textarea type="text"
+          v-model="search"
+          placeholder="内容字数不少于10字，不多于1000字，输入信息后，点击下方按钮提交进行查重！"
+          :maxlength="maxSearchLength"
+          class="search-input">
+        </textarea>
 
-            <!-- 文本框里面的配置 -->
-            <div class="textBottom">
-              <ul class="left">
-                <!-- <li>种类：</li> -->
-                <li class="copy" @click="handlerCopyText" v-if="this.result.related">复制查询结果</li>
-                <li class="li_bottom">总复制占比：<span v-if="result.rate">{{toPercent(result.rate)}}</span></li>
-              </ul>
-              <ul class="right">
-                <li class="content_length">{{search.length}}/{{maxSearchLength}}字</li>
-                <li>
-                  <button class="input_but" @click="submit">提交</button>
-                </li>
-              </ul>
-            </div>
-            <!-- 文本框里面的配置结束 -->
-            
-          </div>
-          <!-- 查询结果 -->
-          <div v-if="result.related && result.related.length > 0" style="width: 100%;">
-                <div v-for="(item,index) in result.related" :key="index" >
-                    <result :result="item"  v-if="item"></result>
-                </div>
-          </div>
-        
-                
+        <!-- 文本框里面的配置 -->
+        <div class="textBottom">
+          <ul class="left">
+            <!-- <li>种类：</li> -->
+            <li class="copy" @click="handlerCopyText" v-if="this.result.related">复制查询结果</li>
+            <li class="li_bottom">总复制占比：<span v-if="result.rate">{{toPercent(result.rate)}}</span></li>
+          </ul>
+          <ul class="right">
+            <li class="content_length">{{search.length}}/{{maxSearchLength}}字</li>
+            <li>
+              <button class="input_but" @click="submit">提交</button>
+            </li>
+          </ul>
+        </div>
+        <!-- 文本框里面的配置结束 -->  
       </div>
-      <!-- 左边输入文本框 end -->   
-
-      <div class="content_right">
-        <ul>
-          <li class="intro">
-            枝网查重系统介绍
-          </li>
-          <!-- rewite by ch3cknull -->
-          <li v-for="i in intro" :key="i.key">
-            <p>
-              <span class="pink">{{ i.key }}</span>
-              <span v-if="i.type == 'text'">{{i.value}}</span>
-              <span v-else>
-                <a target="_blank" :href="i.value.href">{{i.value.text}}</a>
-              </span>
-            </p>
-          </li>
-          <div class="exhibition" @click="toUrl('https://asoulcnki.asia/rank')">
-            <img src="~@/assets/img/checkArticle/exhibition.png" alt="">
+        <!-- 查询结果 -->
+        <div v-if="result.related && result.related.length > 0" style="width: 100%;">
+          <div v-for="(item,index) in result.related" :key="index" >
+            <result :result="item"  v-if="item"></result>
           </div>
-        </ul>
-      </div>
+        </div>
+      
+              
     </div>
+    <!-- 左边输入文本框 end -->   
+
+    <div class="content_right">
+      <ul>
+        <li class="intro">
+          枝网查重系统介绍
+        </li>
+        <!-- rewite by ch3cknull -->
+        <li v-for="i in intro" :key="i.key">
+          <p>
+            <span class="pink">{{ i.key }}</span>
+            <span v-if="i.type == 'text'">{{i.value}}</span>
+            <span v-else>
+              <a target="_blank" :href="i.value.href">{{i.value.text}}</a>
+            </span>
+          </p>
+        </li>
+        <div class="exhibition" @click="toUrl('https://asoulcnki.asia/rank')">
+          <img src="~@/assets/img/checkArticle/exhibition.png" alt="">
+        </div>
+      </ul>
+    </div>
+  </div>
 </div>
 
 
@@ -81,6 +80,7 @@ const description = [
 
 import result from './components/result';
 import { parseTime } from "@/utils/time";
+import axios from 'axios'
 function copy(text) {
     const fakeElem = document.body.appendChild(
         document.createElement("textarea")
@@ -111,15 +111,12 @@ export default {
   components: {
     result,
   },
-  computed: {
-    
-  },
   watch:{
     search(val){
-        if(val.length > this.maxSearchLength) {
-            this.$message({message: `最多${this.maxSearchLength}个字捏`, type: 'warning'});
-            this.search = String(this.search).slice(0, this.maxSearchLength);
-        }
+      if(val.length > this.maxSearchLength) {
+        this.$message({message: `最多${this.maxSearchLength}个字捏`, type: 'warning'});
+        this.search = String(this.search).slice(0, this.maxSearchLength);
+      }
     },
   },
 
@@ -141,48 +138,43 @@ export default {
         }
         copy(tmp) &&
             this.$message({
-                message: "收到收到收到，复制成功了捏",
-                type: "success",
+              message: "复制成功,适度玩梗捏",
+              type: "success",
             });
     },
     //提交
-    async submit(){
-        if(this.search.length < 10) {
-          this.$message({message: '至少十个字捏', type: 'warning'});
-          return;
-        }
-        this.$loading();
-        try {
-            const res = await this.$request({
-                baseURL: 'https://asoulcnki.asia/v1/api/check',
-                method: 'post',
-                headers: {
-      　　　　    'Content-Type': 'application/json'
-      　　      },
-                data: {text: this.search}
-            })
-            this.$nextTick(() =>{
-                if(res.related.length == 0) {
-                    this.$message({message: '没有重复的小作文捏', type: 'success'});
-                }
-                else {
-                    res.related.forEach((item) =>{
-                        item.reply.createTime = parseTime(item.reply.ctime, '{y}/{m}/{d} {h}:{i}')
-                    })
-                }
-                this.result = res;
-                console.log(this.result);
-            })
-        } catch (error) {
-          this.$message({message: error, type: 'error'});
-        } finally{
+    submit(){
+      if(this.search.length < 10) {
+        this.$message({message: '至少十个字捏', type: 'warning'});
+        return;
+      }
+
+      this.$loading();
+      axios.post('https://asoulcnki.asia/v1/api/check', {text: this.search})
+        .then(res => {
+          const data = res.data.data
+          if (res.data.code) {
+            this.$message({message: data.message, type: 'error'})
+            return
+          }
+          if (data.related.length == 0) {
+            this.$message({message: '没有重复的小作文捏', type: 'success'});
+            return
+          }
+          data.related.forEach(s => {
+            s.reply.createTime = parseTime(s.reply.ctime, '{y}/{m}/{d} {h}:{i}')
+          });
+          this.result = data
+        })
+        .catch(err => {
+          this.$message({message: err, type: 'error'})
+        })
+        .finally(() => {
           this.$closeLoading();
-        }
+        })
     },
     toPercent(point){
-        var str=Number(point*100).toFixed(2);
-        str+="%";
-        return str;
+      return Number(point*100).toFixed(2) + '%';
     },
     toUrl(url){
         window.open(url, '_blank') // 新窗口打开外链接
