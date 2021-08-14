@@ -82,7 +82,7 @@ steps:
      - go env -w GO111MODULE=on
 #      - sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 #      - sed -i 's#http://deb.debian.org#https://mirrors.163.com#g' /etc/apt/sources.list
-     - | 
+     - |
        echo '
         deb http://mirrors.163.com/debian/ buster main non-free contrib
         deb http://mirrors.163.com/debian/ buster-updates main non-free contrib
@@ -118,8 +118,8 @@ steps:
 #      - GOOS=android GOARCH=arm64       go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_android_arm64
     depends_on:
       - buildtest
-    when:
-      event: tag
+#    when:
+#      event: tag
 #    volumes:
 #      - name: dockersock
 #        path: /var/run
