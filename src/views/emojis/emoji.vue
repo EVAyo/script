@@ -2,23 +2,25 @@
   <div class="emoji">
 		<div class="waterfall" ref="waterfallBox">
       <div v-for="(bigItem,index) in imgList" :key="index" class="column" :style="{'width': columnNumWidth+'%'}" ref="imgBox">
-        <div v-for="img in bigItem" :key="img.id"  class="column-item fadeInUp"   :style="{'padding-top':img.paddingTop+'%'}">
-
+        <div v-for="img in bigItem" :key="img.id"  class="column-item fadeInUp" :style="{'padding-top':img.paddingTop+'%'}">
           <a :href="img.url" target="_blank" rel="noopener noreferrer">
-              <img  alt="" :data-src="img.url" class="column-item-img" >
+            <img 
+              src="@/assets/img/loading.gif" 
+              :data-src="img.url + `@` + img.width + 'w_' + img.height + 'h.webp'"
+              :data-apple-src="img.url"
+              class="column-item-img"
+            >
           </a>
 			  </div>
       </div>
       <div class="last-page" v-if="isLastPage">
       ---------已经是最后一页啦---------
-    </div>
-		</div>
-    
-     <!-- 数据来源 -->
-      <div class="data-souce" @click="toUpSpace">
-          数据来源:B站洛骑塔
       </div>
-     
+		</div>
+    <!-- 数据来源 -->
+    <div class="data-souce" @click="toUpSpace">
+      数据来源:B站洛骑塔
+    </div>
   </div>
 
 </template>
@@ -46,14 +48,14 @@ export default {
         
   },
  async mounted(){
-        this.listensBoxScroll()
-        
-        this.columnNum= Math.floor((document.body.clientWidth*0.8)/240)>4? 4 : Math.floor((this.screenWidth*0.8)/240)
-        this.columnNumWidth = 100/this.columnNum - 5
+    this.listensBoxScroll()
+    
+    this.columnNum= Math.floor((document.body.clientWidth*0.8)/240)>4? 4 : Math.floor((this.screenWidth*0.8)/240)
+    this.columnNumWidth = 100/this.columnNum - 5
 
-        window.onresize = () => {
-                    this.screenWidth = document.body.clientWidth
-            }
+    window.onresize = () => {
+      this.screenWidth = document.body.clientWidth
+    }
     this.imgList = Array.from(Array(this.columnNum), () => new Array(0))
     await this.GetLIstImg();
     this.lazyLoadimg()
@@ -61,24 +63,24 @@ export default {
   watch:{
 
     screenWidth (val) {
-                if (!this.timer) {
-                    this.screenWidth = val
-                    this.timer = true
-                    // let that = this
-                    setTimeout(()=> {
-                      let tempColumn = Math.floor((this.screenWidth*0.8)/240) >4? 4 : Math.floor((this.screenWidth*0.8)/240)
-                      if(this.columnNum!=tempColumn){
-                          this.columnNum = tempColumn ;
-                          this.columnNumWidth = 100/this.columnNum - 5
-                          this.setListIndex()
-                          this.$nextTick(()=>{
-                            this.lazyLoadimg()
-                          })
-                      }
-                        this.timer = false
-                    }, 400)
-                }
-            }
+      if (!this.timer) {
+        this.screenWidth = val
+        this.timer = true
+        // let that = this
+        setTimeout(()=> {
+          let tempColumn = Math.floor((this.screenWidth*0.8)/240) >4? 4 : Math.floor((this.screenWidth*0.8)/240)
+          if(this.columnNum!=tempColumn){
+            this.columnNum = tempColumn ;
+            this.columnNumWidth = 100/this.columnNum - 5
+            this.setListIndex()
+            this.$nextTick(()=>{
+              this.lazyLoadimg()
+            })
+          }
+          this.timer = false
+        }, 400)
+      }
+    }
   },
 
   methods: {
@@ -102,25 +104,25 @@ export default {
           return
         }
           if (!this.timeBoxScroll) {
-                    this.timeBoxScroll = true
-                    setTimeout(async()=> {
-                      this.lazyLoadimg()
-                      // console.log(window.documentElement.scrollTop);
-                      
-                      // 目前窗口底部离容器顶部的距离
-                      let  TopOffsetHeight = document.documentElement.scrollTop +document.documentElement.offsetHeight
-                      let scrollHeight  = document.documentElement.scrollHeight
-                      // console.log(TopOffsetHeight,'TopOffsetHeight');
-                      // console.log(scrollHeight,'scrollHeight');
-                      // 离底部50px触发翻页
-                      if(TopOffsetHeight +50 >= scrollHeight){
-                        this.currentPage++;
-                        await this.GetLIstImg()
-                        // this.lazyLoadimg()
-                      }
-                        this.timeBoxScroll = false
-                    }, 400)
-                }
+            this.timeBoxScroll = true
+            setTimeout(async()=> {
+              this.lazyLoadimg()
+              // console.log(window.documentElement.scrollTop);
+              
+              // 目前窗口底部离容器顶部的距离
+              let  TopOffsetHeight = document.documentElement.scrollTop + document.documentElement.offsetHeight
+              let scrollHeight  = document.documentElement.scrollHeight
+              // console.log(TopOffsetHeight,'TopOffsetHeight');
+              // console.log(scrollHeight,'scrollHeight');
+              // 离底部50px触发翻页
+              if(TopOffsetHeight +50 >= scrollHeight){
+                this.currentPage++;
+                await this.GetLIstImg()
+                // this.lazyLoadimg()
+              }
+                this.timeBoxScroll = false
+            }, 400)
+        }
       }
     },
     // 获取图片
@@ -133,7 +135,6 @@ export default {
         if(res.length<this.pageSize){
             this.isLastPage =true
         }
-        let tempList =  [...this.imgList]
 
         res.forEach((ele,index)=>{
             ele.paddingTop=ele.height/ ele.width *100
@@ -143,24 +144,24 @@ export default {
         // 排序 解决某列高度过长问题
         if(this.currentPage%2==0){
           res.sort((obj1, obj2)=>{
-                      return    obj1.paddingTop < obj2.paddingTop ? -1 : (obj1.paddingTop > obj2.paddingTop?1 :0)
-                  })
-        }else{
+            return obj1.paddingTop < obj2.paddingTop ? -1 : (obj1.paddingTop > obj2.paddingTop?1 :0)
+          })
+        } else {
             res.sort((obj1, obj2)=>{
-                      return    obj1.paddingTop < obj2.paddingTop ? 1 : (obj1.paddingTop > obj2.paddingTop?-1 :0)
-                  })
+              return obj1.paddingTop < obj2.paddingTop ? 1 : (obj1.paddingTop > obj2.paddingTop?-1 :0)
+            })
         }
         
         res.forEach((ele,index)=>{
-            let i = (index+ ((this.currentPage-1)*this.pageSize))%this.columnNum
-            this.imgList[i].push(ele)
-            this.cacheList.push(ele)
+          let i = ( index + ((this.currentPage-1) * this.pageSize)) % this.columnNum
+          this.imgList[i].push(ele)
+          this.cacheList.push(ele)
         })
         // this.imgList = [...tempList]
       } catch (error) {
         this.$message({message:error,type: 'error'})
       } finally {
-      this.$closeLoading();
+        this.$closeLoading();
       }
     },
     
@@ -173,14 +174,37 @@ export default {
         let list = this.$refs.imgBox
         for(let i =0;i<list.length;i++){
         let tempList =  list[i].querySelectorAll('.column-item-img')
-          tempList.forEach((item,index)=>{
-
-            if(!item.src&&((window.innerHeight - item.getBoundingClientRect().top) >0)){
-                  item.src = item.getAttribute('data-src')
-            }
+          tempList.forEach((item)=>{
+            this.lazyLoad(item)
           })
         }
-    }
+    },
+    lazyLoad(target) {
+      const isApple = () => {
+        const [ ua, platform ] = [ navigator.userAgent, navigator.platform ]
+        return (
+          !(/chrome/i).test(ua) && (/safari/i).test(ua) &&
+          !(/(win|linux)/i).test(platform)
+        )
+      }
+
+      const io = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            const img = entry.target
+            const src = isApple() ? 
+              img.getAttribute('data-apple-src') : img.getAttribute('data-src')
+            img.setAttribute('src', src)
+            io.unobserve(entry.target)
+          }
+        });
+      }, {
+        root: null,
+        threshold: [0],
+        rootMargin: '0px'
+      })
+      io.observe(target)
+    },
   },
 };
 </script>

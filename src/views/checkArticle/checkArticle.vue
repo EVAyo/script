@@ -1,89 +1,84 @@
 <!-- 枝网查重 -->
 <template>
-      <div class="div">
-          <div class="logo">
-              <img src="~@/assets/img/checkArticle/logo.png" alt="">
-          </div>
-          
-          <div class="BigContent">
-            <!-- 左边输入文本框 start -->
-            <div class="content_left">
-              
-                <div class="content">
-                  <!-- 文本框 -->
-                  <textarea type="text"
-                      v-model="search"
-                      placeholder="内容字数不少于10字，不多于1000字，输入信息后，点击下方按钮提交进行查重！"
-                      class="search-input">
-                  </textarea>
+<div class="div">
+    <div class="logo">
+      <img src="~@/assets/img/checkArticle/logo.png" alt="">
+    </div>
+    
+    <div class="BigContent">
+      <!-- 左边输入文本框 start -->
+      <div class="content_left">
+        
+          <div class="content">
+            <!-- 文本框 -->
+            <textarea type="text"
+                v-model="search"
+                placeholder="内容字数不少于10字，不多于1000字，输入信息后，点击下方按钮提交进行查重！"
+                class="search-input">
+            </textarea>
 
-                  <!-- 文本框里面的配置 -->
-                  <div class="textBottom">
-                    <ul class="left">
-                      <!-- <li>种类：</li> -->
-                      <li class="copy" @click="handlerCopyText" v-if="this.result.related">复制查询结果</li>
-                      <li class="li_bottom">总复制占比：<span v-if="result.rate">{{toPercent(result.rate)}}</span></li>
-                    </ul>
-                    <ul class="right">
-                      <li class="content_length">{{search.length}}/{{maxSearchLength}}字</li>
-                      <li>
-                        <button class="input_but" @click="submit">提交</button>
-                      </li>
-                    </ul>
-                  </div>
-                  <!-- 文本框里面的配置结束 -->
-                  
-                </div>
-                <!-- 查询结果 -->
-                <div v-if="result.related && result.related.length > 0" style="width: 100%;">
-                      <div v-for="(item,index) in result.related" :key="index" >
-                          <result :result="item"  v-if="item"></result>
-                      </div>
-                </div>
-              
-                     
-            </div>
-            <!-- 左边输入文本框 end -->   
-
-            <div class="content_right">
-              <ul>
-                <li class="intro">
-                  枝网查重系统介绍
-                </li>
+            <!-- 文本框里面的配置 -->
+            <div class="textBottom">
+              <ul class="left">
+                <!-- <li>种类：</li> -->
+                <li class="copy" @click="handlerCopyText" v-if="this.result.related">复制查询结果</li>
+                <li class="li_bottom">总复制占比：<span v-if="result.rate">{{toPercent(result.rate)}}</span></li>
+              </ul>
+              <ul class="right">
+                <li class="content_length">{{search.length}}/{{maxSearchLength}}字</li>
                 <li>
-                  <p class="pink">比对库范围</p>
-                  <p>B站动态视频评论区</p>
-                </li>
-                <li>
-                  <p class="pink">参考文献</p>
-                  <div>
-                      [1]李旭.基于串匹配方法的文档复制 检测系统研究[D].燕山大学
-                  </div>
-                </li>
-                <li>
-                  <p class="pink">开源地址</p>
-                  <div class="violet" @click="toUrl('https://github.com/ASoulCnki')">ASoulCnki</div>
-                </li>
-                <li>
-                  <p class="pink">问题反馈戳这里↓</p>
-                  <div class="violet" @click="toUrl('https://space.bilibili.com/1442421278')">ProjectASF</div>
-                </li>
-                <li>
-                  <div class="exhibition" @click="toUrl('https://asoulcnki.asia/rank')">
-                    <img src="~@/assets/img/checkArticle/exhibition.png" alt="">
-                  </div>
+                  <button class="input_but" @click="submit">提交</button>
                 </li>
               </ul>
             </div>
+            <!-- 文本框里面的配置结束 -->
+            
           </div>
-
-
-
+          <!-- 查询结果 -->
+          <div v-if="result.related && result.related.length > 0" style="width: 100%;">
+                <div v-for="(item,index) in result.related" :key="index" >
+                    <result :result="item"  v-if="item"></result>
+                </div>
+          </div>
+        
+                
       </div>
+      <!-- 左边输入文本框 end -->   
+
+      <div class="content_right">
+        <ul>
+          <li class="intro">
+            枝网查重系统介绍
+          </li>
+          <!-- rewite by ch3cknull -->
+          <li v-for="i in intro" :key="i.key">
+            <p>
+              <span class="pink">{{ i.key }}</span>
+              <span v-if="i.type == 'text'">{{i.value}}</span>
+              <span v-else>
+                <a target="_blank" :href="i.value.href">{{i.value.text}}</a>
+              </span>
+            </p>
+          </li>
+          <div class="exhibition" @click="toUrl('https://asoulcnki.asia/rank')">
+            <img src="~@/assets/img/checkArticle/exhibition.png" alt="">
+          </div>
+        </ul>
+      </div>
+    </div>
+</div>
 
 
 </template>
 <script>
+const description = [
+  {key: '比对库范围：', value: 'b站动态、视频评论区', type: 'text'},
+  {key: '参考文献：', value: `[1]李旭.基于串匹配方法的文档复制检测系统研究[D].燕山大学.`, type: 'text'},
+  {key: '开源地址：', value: {text: 'ASoulCnki', href: 'https://github.com/ASoulCnki'}, type: 'link'},
+  {key: '反馈地址：', value: {text: 'ASoulCnki_Official', href: 'https://t.bilibili.com/542031663106174238'}, type: 'link'},
+  {key: '官方API文档：', value: {text: 'GitHub', href: 'https://github.com/ASoulCnki/ASoulCnkiBackend/blob/master/api.md'}, type: 'link'},
+]
+
 import result from './components/result';
 import { parseTime } from "@/utils/time";
 function copy(text) {
@@ -107,9 +102,10 @@ export default {
   name: "ASoulFanCheck",
   data() {
     return {
-        search: '',
-        result:[],
-        maxSearchLength: 1000,
+      search: '',
+      result:[],
+      maxSearchLength: 1000,
+      intro: description
     }
   },
   components: {

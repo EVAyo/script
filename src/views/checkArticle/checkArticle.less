@@ -5,12 +5,13 @@
     min-height:100vh;
     background: #2b343a;
     color: #fff;
-    padding: 54px 90px 50px calc(18.5vh + 100px);
+    padding: 30px 90px 50px calc(18.5vh + 100px);
     box-sizing:border-box;
     position: relative;
     .logo{
-        width: 486px;
-        height: 121px;
+        width: 50%;
+        max-width: 350px;
+        min-width: 200px;
         img{
             width:100%;
             height:100%;
@@ -102,43 +103,71 @@
 }
 
 .BigContent{
-  display: flex;
+  overflow: hidden;
+  .content_left, .content_right {
+    float: left;
+  }
   .content_left {
-      width:70%;
-      box-sizing: border-box;
+    box-sizing: border-box;
   }
   .content_right{
-    width: calc(30% - 55px);
-    margin-left: 55px;
     box-sizing: border-box;
-    margin-top: 50px;
+    margin-top: 40px;
+    border: #f2f2f2 3px solid;
+    padding: 1rem 2rem 2rem 2rem;
     .intro{
-      font-size:25px;
+      font-size:24px;
+      margin: 10px 0;
     }
-    ul>li{
-        margin-bottom: 30px;
-        line-height:1.2;
-        font-size: 20px;
+    .exhibition{
+      width: 220px;
+      height: 164px;
+      margin-top:10px;
+      cursor: pointer;
+      border-radius: 5px;
+      overflow: hidden;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+    }
+    ul > li{
+        margin: 6px 0;
+        line-height:1.3;
+        font-size:18px;
         // width:400px;
       p{
-        height: 32px;
-        font-size:22px;
+        word-break: break-all;
+        overflow: visible;
       }
-      .exhibition{
-        width: 220px;
-        height: 164px;
-        margin-top:70px;
-        cursor: pointer;
-        border-radius: 5px;
-        overflow: hidden;
-        img{
-          width: 100%;
-          height: 100%;
-        }
+      span {
+        line-height: 35px;
       }
     }
   }
 }
+
+@media screen and (max-width: 1000px) {
+  .content_left, .content_right {
+    clear: both;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 1001px) {
+  .content_left, .content_right {
+    float: left;
+  }
+  .content_left {
+    width: 65%;
+  }
+  .content_right {
+    width: calc(35% - 30px);
+    margin: 50px 0 0 30px;
+  }
+}
+
 .pink{
   color: #c678d0;
 }
