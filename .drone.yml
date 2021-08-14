@@ -82,7 +82,7 @@ steps:
      - go env -w GO111MODULE=on
 #      - sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories
 #      - sed -i 's#http://deb.debian.org#https://mirrors.163.com#g' /etc/apt/sources.list
-     - |
+     - | 
        echo '
         deb http://mirrors.163.com/debian/ buster main non-free contrib
         deb http://mirrors.163.com/debian/ buster-updates main non-free contrib
