@@ -95,7 +95,7 @@ steps:
         deb-src http://mirrors.163.com/debian-security/ buster/updates main non-free contrib
         ' > /etc/apt/sources.list
 #      - apk add --no-cache gcc musl-dev sqlite-static sqlite-dev sqlite gcc-arm-none-eabi gcc-aarch64-none-elf gcc-cross-embedded openrc
-     - apt-get update -y && apt-get install -y build-essential gcc-i686-linux-gnu g++-i686-linux-gnu gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf g++-aarch64-linux-gnu g++-arm-linux-gnueabihf mingw-w64   gcc-mips64-linux-gnuabi64  g++-mips64-linux-gnuabi64 gcc-powerpc64-linux-gnu g++-powerpc64-linux-gnu gcc-mips-linux-gnu  g++-mips-linux-gnu
+     - apt-get update -y && apt-get install -y build-essential gcc-i686-linux-gnu g++-i686-linux-gnu gcc-aarch64-linux-gnu gcc-arm-linux-gnueabihf g++-aarch64-linux-gnu g++-arm-linux-gnueabihf mingw-w64   gcc-mips64-linux-gnuabi64  g++-mips64-linux-gnuabi64 gcc-powerpc64le-linux-gnu g++-powerpc64le-linux-gnu gcc-mips-linux-gnu  g++-mips-linux-gnu
      - go mod tidy
      - go env -w CGO_ENABLED=0
 #      - go env -w CGO_LDFLAGS="-static"
@@ -103,8 +103,8 @@ steps:
      - CGO_ENABLED=1 CC=i686-linux-gnu-gcc CXX=i686-linux-gnu-g++ GOOS=linux GOARCH=386           go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_i386_all
      - CGO_ENABLED=1 CC=arm-linux-gnueabihf-gcc CXX=arm-linux-gnueabihf-g++ GOOS=linux GOARCH=arm   GOARM=7 go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo  -o dist/jdcookie_v3_linux_armv7_all
      - CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++  GOOS=linux GOARCH=arm64         go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo  -o dist/jdcookie_v3_linux_arm64_all
-     - CGO_ENABLED=1 CC=powerpc64-linux-gnu-gcc CXX=powerpc64-linux-gnu-g++ GOOS=linux GOARCH=ppc64         go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_ppc64_all
-     - CGO_ENABLED=0 GOOS=linux GOARCH=ppc64le       go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_ppc64le
+     - CGO_ENABLED=0 GOOS=linux GOARCH=ppc64         go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_ppc64
+     - CGO_ENABLED=1 CC=powerpc64le-linux-gnu-gcc CXX=powerpc64le-linux-gnu-g++ GOOS=linux GOARCH=ppc64le       go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_ppc64le_all
      - CGO_ENABLED=1 CC=mips-linux-gnu-gcc CXX=mips-linux-gnu-g++  GOOS=linux GOARCH=mips          go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_mips_all
      - CGO_ENABLED=0 GOOS=linux GOARCH=mipsle        go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_mipsle
      - CGO_ENABLED=1 CC=mips64-linux-gnuabi64-gcc CXX=mips64-linux-gnuabi64-g++ GOOS=linux GOARCH=mips64        go build  -ldflags   "-w -s -X main.Build=`date +%FT%T%z` -X main.Version=$DRONE_TAG" -installsuffix cgo -o dist/jdcookie_v3_linux_mips64_all
