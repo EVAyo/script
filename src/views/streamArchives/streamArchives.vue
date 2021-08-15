@@ -1,5 +1,6 @@
 <template>
   <div class="streamArchives">
+    <div class="saBGWrapper">
     <div class="saMainWrapper">
       <!--  不同类别视频-->
       <div class="saClassesWrapper">
@@ -15,6 +16,7 @@
           <p class="saTypesTexts">{{ saType.text }}</p>
         </div>
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -85,6 +87,12 @@ export default {
   flex-wrap: wrap;
   margin: 0 auto;
   width: 60vw;
+}
+.saBGWrapper{
+  position: absolute;
+  right: 0;
+  background-color: #282828;
+  width: calc(100% - 18.5vh);
 }
 
 .streamArchives {
@@ -188,7 +196,14 @@ export default {
 .saClassesImages:hover {
   filter: brightness(1);
 }
-
+@media screen and (orientation: portrait){
+  .saClasses{
+    width: 60vw;
+  }
+  .saClassesImages{
+    width: 60vw;
+  }
+}
 .saTypesWrapper {
   display: flex;
   margin-top: 30px;
