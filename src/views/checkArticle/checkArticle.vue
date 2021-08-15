@@ -21,8 +21,8 @@
         <div class="textBottom">
           <ul class="left">
             <!-- <li>种类：</li> -->
-            <li class="copy" @click="handlerCopyText" v-if="this.result.related">复制查询结果</li>
-            <li class="li_bottom">总复制占比：<span v-if="result.rate">{{toPercent(result.rate)}}</span></li>
+            <!-- <li class="copy" @click="handlerCopyText" v-if="result.related">复制查询结果</li> -->
+            <li class="li_bottom">总复制占比：<span>{{toPercent(result.rate)}}</span></li>
           </ul>
           <ul class="right">
             <li class="content_length">{{search.length}}/{{maxSearchLength}}字</li>
@@ -34,51 +34,26 @@
         <!-- 文本框里面的配置结束 -->  
       </div>
         <!-- 查询结果 -->
-        <div v-if="result.related && result.related.length > 0" style="width: 100%;">
-          <div v-for="(item,index) in result.related" :key="index" >
-            <result :result="item"  v-if="item"></result>
-          </div>
-        </div>
-      
-              
+      <Article
+        v-for="(item, index) in alike" 
+        :key="index" 
+        :result="item"
+      />
     </div>
     <!-- 左边输入文本框 end -->   
 
-    <div class="content_right">
-      <ul>
-        <li class="intro">
-          枝网查重系统介绍
-        </li>
-        <!-- rewite by ch3cknull -->
-        <li v-for="i in intro" :key="i.key">
-          <p>
-            <span class="pink">{{ i.key }}</span>
-            <span v-if="i.type == 'text'">{{i.value}}</span>
-            <span v-else>
-              <a target="_blank" :href="i.value.href">{{i.value.text}}</a>
-            </span>
-          </p>
-        </li>
-        <div class="exhibition" @click="toUrl('https://asoulcnki.asia/rank')">
-          <img src="~@/assets/img/checkArticle/exhibition.png" alt="">
-        </div>
-      </ul>
-    </div>
+    <RightContent/>
   </div>
 </div>
 
 
 </template>
-<script>
-const description = [
-  {key: '比对库范围：', value: 'b站动态、视频评论区', type: 'text'},
-  {key: '参考文献：', value: `[1]李旭.基于串匹配方法的文档复制检测系统研究[D].燕山大学.`, type: 'text'},
-  {key: '开源地址：', value: {text: 'ASoulCnki', href: 'https://github.com/ASoulCnki'}, type: 'link'},
-  {key: '反馈地址：', value: {text: 'ASoulCnki_Official', href: 'https://t.bilibili.com/542031663106174238'}, type: 'link'},
-  {key: '官方API文档：', value: {text: 'GitHub', href: 'https://github.com/ASoulCnki/ASoulCnkiBackend/blob/master/api.md'}, type: 'link'},
-]
 
-import result from './components/result';
+<script>
+
+
+import Article from './components/result';
+import RightContent from './components/right'
 import { parseTime } from "@/utils/time";
 import axios from 'axios'
 function copy(text) {
@@ -104,43 +79,41 @@ export default {
     return {
       search: '',
       result:[],
+      alike:[],
       maxSearchLength: 1000,
-      intro: description
     }
   },
   components: {
-    result,
+    Article,
+    RightContent
   },
-  watch:{
-    search(val){
-      if(val.length > this.maxSearchLength) {
-        this.$message({message: `最多${this.maxSearchLength}个字捏`, type: 'warning'});
-        this.search = String(this.search).slice(0, this.maxSearchLength);
-      }
-    },
+  mounted() {
+    this.result = {
+      related: false,
+      rate: 0
+    }
+    this.alike = []
   },
-
-  mounted() {},
-
   methods: {
     //一键复制
     handlerCopyText() {
-        let tmp = '';   //复制文字
-        let rate = this.toPercent(this.result.rate);  //总文字复制比
-        let selectTime = parseTime(new Date(), "{y}-{m}-{d} {h}:{i}:{s}");   //查重时间
-        //没有重复小作文
-        if(this.result.related.length == 0) {
-          tmp = `@ProJectASF × 枝网文本复制检测报告[简洁]\r\n查重时间：${selectTime}\r\n总文字复制比：${rate}\r\n\r\n查重结果仅作参考，请注意辨别是否为原创`
-        }
-        else {
-          let createTime = parseTime(this.result.related[0].reply.ctime, "{y}-{m}-{d} {h}:{i}:{s}");  //发布时间
-          tmp = `@ProJectASF × 枝网文本复制检测报告[简洁]\r\n查重时间：${selectTime}\r\n总文字复制比：${rate}\r\n相似小作文：${this.result.related[0].reply_url}\r\n作者：${this.result.related[0].reply.m_name}\r\n发表时间：${createTime}\r\n\r\n查重结果仅作参考，请注意辨别是否为原创`
-        }
-        copy(tmp) &&
-            this.$message({
-              message: "复制成功,适度玩梗捏",
-              type: "success",
-            });
+      let tmp = '';   //复制文字
+      let rate = this.toPercent(this.result.rate);  //总文字复制比
+      let selectTime = parseTime(new Date(), "{y}-{m}-{d} {h}:{i}:{s}");   //查重时间
+      //没有重复小作文
+      if(this.result.related.length == 0) {
+        tmp = `@ProJectASF × 枝网文本复制检测报告[简洁]\r\n查重时间：${selectTime}\r\n总文字复制比：${rate}\r\n\r\n查重结果仅作参考，请注意辨别是否为原创`
+      }
+      else {
+        let createTime = parseTime(this.result.related[0].reply.ctime, "{y}-{m}-{d} {h}:{i}:{s}");  //发布时间
+        tmp = `@ProJectASF × 枝网文本复制检测报告[简洁]\r\n查重时间：${selectTime}\r\n总文字复制比：${rate}\r\n相似小作文：${this.result.related[0].reply_url}\r\n作者：${this.result.related[0].reply.m_name}\r\n发表时间：${createTime}\r\n\r\n查重结果仅作参考，请注意辨别是否为原创`
+      }
+      const status = copy(tmp)
+      if (status) {
+        this.$message({ message: "复制成功,适度玩梗捏", type: "success"});
+      } else {
+        this.$message({ message: "复制失败", type: "error"});
+      }
     },
     //提交
     submit(){
@@ -165,6 +138,7 @@ export default {
             s.reply.createTime = parseTime(s.reply.ctime, '{y}/{m}/{d} {h}:{i}')
           });
           this.result = data
+          this.alike = data.related
         })
         .catch(err => {
           this.$message({message: err, type: 'error'})
@@ -173,12 +147,10 @@ export default {
           this.$closeLoading();
         })
     },
-    toPercent(point){
-      return Number(point*100).toFixed(2) + '%';
-    },
-    toUrl(url){
-        window.open(url, '_blank') // 新窗口打开外链接
-    },
+    toPercent(){
+      const point = this.result.rate
+      return Number(point * 100).toFixed(2) + '%';
+    }
   }
 }
 </script>
@@ -186,4 +158,3 @@ export default {
 <style lang="less" scoped>
 @import "./checkArticle.less";
 </style>
-

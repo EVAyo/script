@@ -5,7 +5,6 @@
         <div v-for="img in bigItem" :key="img.id"  class="column-item fadeInUp" :style="{'padding-top':img.paddingTop+'%'}">
           <a :href="img.url" target="_blank" rel="noopener noreferrer">
             <img 
-              src="@/assets/img/loading.gif" 
               :data-src="img.url + `@` + img.width + 'w_' + img.height + 'h.webp'"
               :data-apple-src="img.url"
               class="column-item-img"
@@ -115,7 +114,7 @@ export default {
               // console.log(TopOffsetHeight,'TopOffsetHeight');
               // console.log(scrollHeight,'scrollHeight');
               // 离底部50px触发翻页
-              if(TopOffsetHeight +50 >= scrollHeight){
+              if(TopOffsetHeight >= scrollHeight){
                 this.currentPage++;
                 await this.GetLIstImg()
                 // this.lazyLoadimg()
@@ -169,12 +168,11 @@ export default {
       window.open('https://space.bilibili.com/15073186')
     },
     // 懒加载
-    lazyLoadimg(){
-        
+    lazyLoadimg(){     
         let list = this.$refs.imgBox
         for(let i =0;i<list.length;i++){
-        let tempList =  list[i].querySelectorAll('.column-item-img')
-          tempList.forEach((item)=>{
+          let tempList =  list[i].querySelectorAll('.column-item-img')
+          tempList.forEach( item => {
             this.lazyLoad(item)
           })
         }
@@ -201,7 +199,7 @@ export default {
       }, {
         root: null,
         threshold: [0],
-        rootMargin: '0px'
+        rootMargin: '50px'
       })
       io.observe(target)
     },
