@@ -168,7 +168,7 @@ export default {
 
 <style lang="less" scoped>
 .fanQuery {
-    background-color: #1d1d1d;
+    background-color: #2B343A;
     height: 100vh;
     padding-left: 18.5vh;
     overflow-y: scroll;

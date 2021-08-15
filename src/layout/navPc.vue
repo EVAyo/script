@@ -249,6 +249,6 @@ export default {
     width: 100%;
     height: 100vh;
     box-sizing: border-box;
-    background: #2b343a;
+    background: #2B343A;
 }
 </style>

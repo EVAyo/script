@@ -1,7 +1,5 @@
 <template>
   <div class="random-video">
-    <!-- <img src="../../assets/img/random/random-background.png" alt="" class="background-img" > -->
-    <!-- <iframe src="" frameborder="0"></iframe> -->
     <div class="iframe-box">
       <iframe
       class="iframe-class"
@@ -11,8 +9,6 @@
       </iframe>
       <div class="random-button" @click="getRandomVideo"></div>
     </div>
-
-    <!-- <img src="../assets/img/BackGround.gif" class="index-bg"> -->
   </div>
 </template>
 
@@ -54,6 +50,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #2B343A;
 }
 .background-img{
   position: absolute;
