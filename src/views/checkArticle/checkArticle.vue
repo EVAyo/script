@@ -21,7 +21,7 @@
         <div class="textBottom">
           <ul class="left">
             <!-- <li>种类：</li> -->
-            <!-- <li class="copy" @click="handlerCopyText" v-if="result.related">复制查询结果</li> -->
+            <li class="copy" @click="handlerCopyText" v-if="result.related">复制查询结果</li>
             <li class="li_bottom">总复制占比：<span>{{toPercent(result.rate)}}</span></li>
           </ul>
           <ul class="right">
