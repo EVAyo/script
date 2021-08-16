@@ -13,12 +13,12 @@
       ---------已经是最后一页啦---------
     </div>
 		</div>
-    
+
      <!-- 数据来源 -->
       <div class="data-souce" @click="toUpSpace">
           数据来源:B站洛骑塔
       </div>
-     
+
   </div>
 
 </template>
@@ -43,11 +43,11 @@ export default {
     };
   },
   created() {
-        
+
   },
  async mounted(){
         this.listensBoxScroll()
-        
+
         this.columnNum= Math.floor((document.body.clientWidth*0.8)/240)>4? 4 : Math.floor((this.screenWidth*0.8)/240)
         this.columnNumWidth = 100/this.columnNum - 5
 
@@ -106,7 +106,7 @@ export default {
                     setTimeout(async()=> {
                       this.lazyLoadimg()
                       // console.log(window.documentElement.scrollTop);
-                      
+
                       // 目前窗口底部离容器顶部的距离
                       let  TopOffsetHeight = document.documentElement.scrollTop +document.documentElement.offsetHeight
                       let scrollHeight  = document.documentElement.scrollHeight
@@ -139,7 +139,7 @@ export default {
             ele.paddingTop=ele.height/ ele.width *100
             ele.url = 'https://'+ ele.url
         })
-        
+
         // 排序 解决某列高度过长问题
         if(this.currentPage%2==0){
           res.sort((obj1, obj2)=>{
@@ -150,7 +150,7 @@ export default {
                       return    obj1.paddingTop < obj2.paddingTop ? 1 : (obj1.paddingTop > obj2.paddingTop?-1 :0)
                   })
         }
-        
+
         res.forEach((ele,index)=>{
             let i = (index+ ((this.currentPage-1)*this.pageSize))%this.columnNum
             this.imgList[i].push(ele)
@@ -163,13 +163,13 @@ export default {
       this.$closeLoading();
       }
     },
-    
+
     toUpSpace(){
       window.open('https://space.bilibili.com/15073186')
     },
     // 懒加载
     lazyLoadimg(){
-        
+
         let list = this.$refs.imgBox
         for(let i =0;i<list.length;i++){
         let tempList =  list[i].querySelectorAll('.column-item-img')
@@ -191,7 +191,6 @@ export default {
 .emoji{
   position: relative;
   // height: 100%;
-  padding-left: 18.5vh;
   // background-image:url('../../assets/img/emoji/bgp.webp');
   background-size: cover;
   background-color: #2B343A;
@@ -269,4 +268,10 @@ export default {
   margin: 20px;
   width: 100%;
 }
+@media only screen and (min-width: 1170px) {
+  .emoji{
+    padding-left: 18.5vh;
+  }
+}
+
 </style>
