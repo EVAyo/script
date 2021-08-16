@@ -46,8 +46,8 @@ export default {
         
   },
  async mounted(){
-        this.listensBoxScroll()
-        
+        // this.listensBoxScroll()
+        window.addEventListener('scroll',this.listensBoxScroll)
         this.columnNum= Math.floor((document.body.clientWidth*0.8)/240)>4? 4 : Math.floor((this.screenWidth*0.8)/240)
         this.columnNumWidth = 100/this.columnNum - 5
 
@@ -57,6 +57,9 @@ export default {
     this.imgList = Array.from(Array(this.columnNum), () => new Array(0))
     await this.GetLIstImg();
     this.lazyLoadimg()
+  },
+  destroyed(){
+    window.removeEventListener('scroll', this.listensBoxScroll)
   },
   watch:{
 
@@ -94,9 +97,9 @@ export default {
       })
       this.imgList = tempList
     },
-    // 监听scroll事件
+    // 监听scroll事件函数
     listensBoxScroll(){
-      window.onscroll  = (e) => {
+      // window.onscroll  = (e) => {
         // 最后一页 不再滚动
         if(this.isLastPage){
           return
@@ -121,7 +124,7 @@ export default {
                         this.timeBoxScroll = false
                     }, 400)
                 }
-      }
+      // }
     },
     // 获取图片
     async GetLIstImg() {
