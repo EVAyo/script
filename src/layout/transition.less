@@ -1,79 +1,37 @@
-// .turn-down-enter {
-//   position: absolute;
-//   transform: translate3d(100%, 0, 0);
-// }
-// .turn-down-leave-to {
-//   /* transform: translate3d(-20%, 0, 0); */
-// }
-// .turn-down-enter-active,
-// .turn-down-leave-active {
-//   position: absolute;
-//   transition: transform 2s ease;
-//   // z-index: 1000;
-// }
-
-
-
-
-
-// .turn-right-enter {
-//   /* transform: translate3d(-20%, 0, 0); */
-// }
-// .turn-right-leave-to {
-//   position: fixed;
-// }
-// .turn-right-enter-active,
-// .turn-right-leave-active {
-//   transition: transform 2s ease;
-// }
-// .turn-right-leave-active {
-//   z-index: 2;
-// }
-
-// .slide-right-enter-active,
-// .slide-right-leave-active,
-// .slide-left-enter-active,
-// .slide-left-leave-active {
-//     will-change: transform;
-//     transition: all 30s;
-//     position: absolute;
-//     width:100%;
-//     left:0;
-// }
-// .slide-right-enter {
-//     transform: translateX(-100%);
-// }
-// .slide-right-leave-active {
-//     transform: translateX(100%);
-// }
-// .slide-left-enter {
-//     transform: translateX(100%);
-// }
-// .slide-left-leave-active {
-//     transform: translateX(-100%);
-// }
-
-.slide-left-enter, .slide-right-leave-to {
-  opacity: 0;
-  transform: translateY(100%)
+.slide-down-enter-active{
+  animation: fadeInDown 0.5s ease-out;
+}
+.slide-up-enter-active
+{
+  animation: fadeInUp 0.5s ease-out;
 }
 
-.slide-left-leave-to, .slide-right-enter {
-  opacity: 0;
-  transform: translateY(-50%)
+@keyframes fadeInDown {
+  from {
+      opacity: 0;
+      visibility: hidden;
+      -webkit-transform: translateY(100%);
+      transform:translateY(100%);
+  }
+  to {
+      opacity: 1;
+      visibility: visible;
+      -webkit-transform: none;
+      transform: none;
+  }
 }
 
-.slide-left-enter-active,
-.slide-right-enter-active,
-.slide-left-leave-active,
-.slide-right-leave-active{
-  width: 100%;
-  transition: 1s;
-  -moz-transition: 1s; /* Firefox 4 */
-  -webkit-transition: 1s; /* Safari 和 Chrome */
-  -o-transition: 1s; /* Opera */
-  position: absolute !important;
-  box-sizing: border-box;
-  // position: relative;
-  top:0;
+@keyframes fadeInUp {
+  from {
+      opacity: 0;
+      visibility: hidden;
+      -webkit-transform:translateY(-100%);
+      transform:translateY(-100%);
+  }
+  to {
+      visibility: visible;
+      opacity: 1;
+      -webkit-transform: none;
+      transform: none;
+  }
 }

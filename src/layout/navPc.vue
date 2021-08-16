@@ -33,7 +33,7 @@ export default {
     name: "Nav",
     data() {
         return {
-            transitionName: "slide-left",
+            transitionName: "slide-down",
             isLongNav: this.$route.name == "Index" ? true : false,
             currentPageName: this.$route.name,
             routeList: [
@@ -107,6 +107,11 @@ export default {
     watch: {
         $route: {
             handler: function (val, oldVal) {
+                if(val.meta.pageIndex >oldVal.meta.pageIndex){
+                    this.transitionName = "slide-down"
+                }else{
+                    this.transitionName = "slide-up"
+                }
                 this.currentPageName = val.name;
                 if (val.name == "Index") {
                     this.isLongNav = true;
