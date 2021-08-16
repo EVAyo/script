@@ -26,7 +26,7 @@ let res = [];
         return;
     }
 
-    try{res = await getAuthorShareCode('http://qwde58xzt.hn-bkt.clouddn.com/goldPhone.json');}catch (e) {}
+    try{res = await getAuthorShareCode('http://qxxkzb4qq.hn-bkt.clouddn.com/goldPhone.json');}catch (e) {}
     if(res && res.length > 0){
         $.authorCode = getRandomArrayElements(res,1)[0];
     }
