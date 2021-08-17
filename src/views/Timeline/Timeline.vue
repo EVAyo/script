@@ -59,7 +59,7 @@ export default {
           this.isLastPage =true
         }
         this.page = res.list.length
-        
+
         this.$nextTick(() => {
           this.renderList(0)
         })
@@ -84,22 +84,22 @@ export default {
 
     // 监听滚动条
     watchTimelineScroll(){
-       if(this.isLastPage){
-          return
-        }
-          if (!this.timelineScroll) {
-                    this.timelineScroll = true
-                    setTimeout(async()=> {
-                      // 目前窗口底部离容器顶部的距离
-                      let  TopOffsetHeight = document.documentElement.scrollTop +document.body.clientHeight
-                      let scrollHeight  = document.body.scrollHeight
-                      // 离底部50px触发翻页
-                      if(TopOffsetHeight +50 >= scrollHeight){
-                        await this.getData()
-                      }
-                        this.timelineScroll = false
-                    }, 400)
-                }
+      if(this.isLastPage){
+        return
+      }
+      if (!this.timelineScroll) {
+        this.timelineScroll = true
+        setTimeout(async()=> {
+          // 目前窗口底部离容器顶部的距离
+          let  TopOffsetHeight = document.documentElement.scrollTop + document.documentElement.offsetHeight
+          let scrollHeight  = document.documentElement.scrollHeight
+          // 离底部50px触发翻页
+          if(TopOffsetHeight +50 >= scrollHeight){
+            await this.getData()
+          }
+          this.timelineScroll = false
+        }, 400)
+      }
     }
   }
 }
@@ -117,7 +117,7 @@ export default {
 }
 
 .timeline {
-  padding-left: 18.5vh;
+  padding-left: 0;
   background: #2B343A;
 }
 
@@ -210,6 +210,11 @@ export default {
 }
 
 @media only screen and (min-width: 1170px) {
+  /* .timeline {
+    padding-left: 18.5vh;
+    background: #2B343A;
+  } */
+
   .a-timeline:before {
     left: 50%;
     margin-left: -2px;

@@ -14,4 +14,7 @@ html {
   overflow-y: overlay;
   overscroll-behavior: none;
 }
+#app-root {
+  background: #2b343a;
+}
 </style>

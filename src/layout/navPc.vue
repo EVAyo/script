@@ -1,31 +1,40 @@
 <template>
-    <div>
-        <div class="nav-contain">
-            <div class="box item-Index" @click="toAsoulFan">
-                <div v-if="currentPageName !== 'Index'" class="nav-mask"></div>
-            </div>
+  <div>
+    <div :class="{ device: !device, 'expand-main': expand }" class="nav-contain">
+      <div v-if="device" class="box item-Index" @click="toAsoulFan">
+        <div v-if="currentPageName !== 'Index'" class="nav-mask"></div>
+      </div>
 
-            <router-link
-                v-for="(item, index) in routeList"
-                :key="index"
-                :to="item.route"
-                :title="item.titleName"
-                class="box"
-                :class="'item-' + item.routeName"
-            >
-                <div
-                    v-if="currentPageName !== item.routeName"
-                    class="nav-mask"
-                ></div>
-            </router-link>
-        </div>
-
-        <div class="route-view-class" id="myRouteView" ref="myRouteView">
-            <transition :name="transitionName">
-                <router-view />
-            </transition>
-        </div>
+      <router-link
+          v-for="(item, index) in routeList"
+          :key="index"
+          :to="item.route"
+          :title="item.titleName"
+          class="box"
+          :class="'item-' + item.routeName"
+      >
+        <div
+            v-if="currentPageName !== item.routeName"
+            class="nav-mask"
+        ></div>
+      </router-link>
     </div>
+    <div v-if="!device" class="nav-btn" :class="{ expand }" @click="openMain">
+      <i class="nav-btn-icon">
+        <span />
+        <span />
+        <span />
+      </i>
+    </div>
+
+    <div class="route-view-class" id="myRouteView" ref="myRouteView">
+      <transition :name="transitionName">
+        <keep-alive>
+          <router-view />
+        </keep-alive>
+      </transition>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -33,7 +42,7 @@ export default {
     name: "Nav",
     data() {
         return {
-            transitionName: "slide-left",
+            transitionName: "slide-down",
             isLongNav: this.$route.name == "Index" ? true : false,
             currentPageName: this.$route.name,
             routeList: [
@@ -102,11 +111,19 @@ export default {
                     route: "/tools/randomVideo",
                 },
             ],
+            expand: false,
+            device:document.body.clientWidth > 1170
         };
     },
     watch: {
         $route: {
             handler: function (val, oldVal) {
+                if(val.meta.pageIndex >oldVal.meta.pageIndex){
+                    this.transitionName = "slide-down"
+                }else{
+                    this.transitionName = "slide-up"
+                }
+                this.expand = false
                 this.currentPageName = val.name;
                 if (val.name == "Index") {
                     this.isLongNav = true;
@@ -116,25 +133,39 @@ export default {
             },
             // 深度观察监听
             deep: true,
+
         },
     },
-    computed: {},
     created() {
         this.$route.name;
     },
     mounted() {
+        this.watchWidth()
     },
     methods: {
         toAsoulFan() {
             window.location.href = "https://www.asoulfan.cn/"
         },
+        openMain() {
+            this.expand = !this.expand
+        },
+        // 监控屏幕宽度
+        watchWidth(){
+            window.onresize = () => {
+        this.device = document.body.clientWidth > 1170
+    }
+        }
     },
 };
 </script>
 
 <style scoped lang="less">
 @import "./transition.less";
-
+@media only screen and (min-width: 1170px) {
+ .route-view-class {
+    padding-left: 18.5vh;
+}
+}
 .nav-contain {
     position: fixed;
     z-index: 100000;
@@ -165,6 +196,15 @@ export default {
     min-width: 150px;
     // background-image: url("../assets/img/contents/zhiNet-long.png");
 }
+
+.route-view-class {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    background: #2B343A;
+}
+
 .item-Index {
     background-image: url("../assets/img/contents/index-short.png");
 }
@@ -244,11 +284,80 @@ export default {
     // background-color: rgba(0, 0, 0, 0);
     opacity: 0;
 }
-.route-view-class {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    box-sizing: border-box;
-    background: #2B343A;
+
+
+
+.mobile-box {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 8vh;
+  height: 8vh;
+  border-radius: 50%;
+  cursor: pointer;
+  background-image: url("../assets/img/contents/index-short.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  z-index: 4;
+}
+
+.nav-btn {
+  display: block;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 5px;
+  z-index: 100001;
+  transition: transform ease-in-out 0.3s;
+}
+
+.nav-btn.expand {
+  transform: translate(calc(100vw - 80px), 0);
+}
+
+.nav-btn-icon {
+  display: block;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  z-index: 100002;
+}
+.nav-btn-icon span {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 3px;
+  background-color: #ddd;
+  transition: transform ease-in-out 0.3s;
+}
+.nav-btn-icon span:nth-child(1) {
+  transform: translate(0, -350%);
+}
+.nav-btn-icon span:nth-child(2) {
+  transform: translate(0, -50%);
+}
+.nav-btn-icon span:nth-child(3) {
+  right: 0;
+  transform: translate(0, 250%);
+}
+.expand .nav-btn-icon span:nth-child(1) {
+  transform: rotateZ(45deg) scaleX(0.5) translate(-50%);
+}
+.expand .nav-btn-icon span:nth-child(2) {
+  transform: rotateZ(-45deg);
+}
+.expand .nav-btn-icon span:nth-child(3) {
+  transform: rotateZ(45deg) scaleX(0.5) translate(50%);
+}
+
+.device {
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+  transform: translate(-100%);
+  transition: transform ease-in-out 0.3s;
+}
+.expand-main {
+  transform: translate(0);
 }
 </style>
