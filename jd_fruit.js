@@ -30,9 +30,9 @@ let cookiesArr = [], cookie = '', jdFruitShareArr = [], isBox = false, notify, n
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
 let shareCodes = [ // 这个列表填入你要助力的好友的shareCode
   //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
- '96fccb20b0e24deeab6b13457c593e3c@f8128854bccb47c092e35444aa921fa9@9353ac4c60e84596b9cfc5e3fe515f30@87ad3f0a3b3a4434867d2da5e026ac6b@55ee8dba47894c719bc465c0cf606d0b@4fc147a47a2b45f2ac7e31c3e1315976@c008698972fd4179bf2cc5d5b5bbec4b',
- //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
- '96fccb20b0e24deeab6b13457c593e3c@f8128854bccb47c092e35444aa921fa9@9353ac4c60e84596b9cfc5e3fe515f30@87ad3f0a3b3a4434867d2da5e026ac6b@55ee8dba47894c719bc465c0cf606d0b@4fc147a47a2b45f2ac7e31c3e1315976',
+  '96fccb20b0e24deeab6b13457c593e3c@9353ac4c60e84596b9cfc5e3fe515f30@f8128854bccb47c092e35444aa921fa9@c008698972fd4179bf2cc5d5b5bbec4b@6c1b806d74224feca18ff49da7b95b5d@87ad3f0a3b3a4434867d2da5e026ac6b@55ee8dba47894c719bc465c0cf606d0b@4fc147a47a2b45f2ac7e31c3e1315976',
+  //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
+  '96fccb20b0e24deeab6b13457c593e3c@9353ac4c60e84596b9cfc5e3fe515f30@f8128854bccb47c092e35444aa921fa9@c008698972fd4179bf2cc5d5b5bbec4b@6c1b806d74224feca18ff49da7b95b5d@87ad3f0a3b3a4434867d2da5e026ac6b@55ee8dba47894c719bc465c0cf606d0b@4fc147a47a2b45f2ac7e31c3e1315976',
 ]
 let message = '', subTitle = '', option = {}, isFruitFinished = false;
 const retainWater = 100;//保留水滴大于多少g,默认100g;
@@ -156,9 +156,7 @@ async function doDailyTask() {
     }
   }
   console.log(`签到结束,开始广告浏览任务`);
-  if ($.farmTask.gotBrowseTaskAdInit.f) {
-    console.log(`今天已经做过浏览广告任务\n`);
-  } else {
+  if (!$.farmTask.gotBrowseTaskAdInit.f) {
     let adverts = $.farmTask.gotBrowseTaskAdInit.userBrowseTaskAds
     let browseReward = 0
     let browseSuccess = 0
@@ -195,6 +193,8 @@ async function doDailyTask() {
       console.log(`【广告浏览】完成${browseSuccess}个,获得${browseReward}g💧\n`);
       // message += `【广告浏览】完成${browseSuccess}个,获得${browseReward}g💧\n`;
     }
+  } else {
+    console.log(`今天已经做过浏览广告任务\n`);
   }
   //定时领水
   if (!$.farmTask.gotThreeMealInit.f) {
@@ -1142,9 +1142,9 @@ async function gotThreeMealForFarm() {
 async function browseAdTaskForFarm(advertId, type) {
   const functionId = arguments.callee.name.toString();
   if (type === 0) {
-    $.browseResult = await request(functionId, { advertId, type, "version": 14, "channel": 1, "babelChannel": "45" });
+    $.browseResult = await request(functionId, {advertId, type});
   } else if (type === 1) {
-    $.browseRwardResult = await request(functionId, { advertId, type, "version": 14, "channel": 1, "babelChannel": "45" });
+    $.browseRwardResult = await request(functionId, {advertId, type});
   }
 }
 // 被水滴砸中API
@@ -1163,7 +1163,7 @@ async function initForFarm() {
   return new Promise(resolve => {
     const option =  {
       url: `${JD_API_HOST}?functionId=initForFarm`,
-      body: `body=${escape(JSON.stringify({ "version":14}))}&appid=wh5&clientVersion=9.1.0`,
+      body: `body=${escape(JSON.stringify({"version":4}))}&appid=wh5&clientVersion=9.1.0`,
       headers: {
         "accept": "*/*",
         "accept-encoding": "gzip, deflate, br",
@@ -1205,7 +1205,7 @@ async function initForFarm() {
 async function taskInitForFarm() {
   console.log('\n初始化任务列表')
   const functionId = arguments.callee.name.toString();
-  $.farmTask = await request(functionId, {"version": 14, "channel": 1, "babelChannel":"45"});
+  $.farmTask = await request(functionId, {"version":14,"channel":1,"babelChannel":"120"});
 }
 //获取好友列表API
 async function friendListInitForFarm() {
@@ -1251,14 +1251,14 @@ function timeFormat(time) {
 }
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `https://action-1251995682.cos.ap-guangzhou.myqcloud.com/null.json`, timeout: 10000,}, (err, resp, data) => {
+    $.get({url: `http://share.turinglabs.net/api/v3/farm/query/${randomCount}/`, timeout: 10000,}, (err, resp, data) => {
       try {
         if (err) {
-        // console.log(`${JSON.stringify(err)}`)
-        // console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {
-       //   console.log(`随机取个${randomCount}码放到您固定的互助码后面(不影响已有固定互助)`)
+            console.log(`随机取个${randomCount}码放到您固定的互助码后面(不影响已有固定互助)`)
             data = JSON.parse(data);
           }
         }
@@ -1279,15 +1279,15 @@ function shareCodesFormat() {
     if ($.shareCodesArr[$.index - 1]) {
       newShareCodes = $.shareCodesArr[$.index - 1].split('@');
     } else {
-    // console.log(`由于您第${$.index}个京东账号未提供shareCode,将采纳本脚本自带的助力码\n`)
+      console.log(`由于您第${$.index}个京东账号未提供shareCode,将采纳本脚本自带的助力码\n`)
       const tempIndex = $.index > shareCodes.length ? (shareCodes.length - 1) : ($.index - 1);
       newShareCodes = shareCodes[tempIndex].split('@');
     }
-    const readShareCodeRes = await readShareCode();
-    if (readShareCodeRes && readShareCodeRes.code === 200) {
-      // newShareCodes = newShareCodes.concat(readShareCodeRes.data || []);
-      newShareCodes = [...new Set([...newShareCodes, ...(readShareCodeRes.data || [])])];
-    }
+    // const readShareCodeRes = await readShareCode();
+    // if (readShareCodeRes && readShareCodeRes.code === 200) {
+    //   // newShareCodes = newShareCodes.concat(readShareCodeRes.data || []);
+    //   newShareCodes = [...new Set([...newShareCodes, ...(readShareCodeRes.data || [])])];
+    // }
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify(newShareCodes)}`)
     resolve();
   })
@@ -1331,9 +1331,9 @@ function requireConfig() {
 function TotalBean() {
   return new Promise(async resolve => {
     const options = {
-      url: "https://me-api.jd.com/user_new/info/GetJDUserInfoUnion",
+      url: "https://wq.jd.com/user_new/info/GetJDUserInfoUnion?sceneval=2",
       headers: {
-        Host: "me-api.jd.com",
+        Host: "wq.jd.com",
         Accept: "*/*",
         Connection: "keep-alive",
         Cookie: cookie,
@@ -1350,15 +1350,15 @@ function TotalBean() {
         } else {
           if (data) {
             data = JSON.parse(data);
-            if (data['retcode'] === "1001") {
+            if (data['retcode'] === 1001) {
               $.isLogin = false; //cookie过期
               return;
             }
-            if (data['retcode'] === "0" && data.data && data.data.hasOwnProperty("userInfo")) {
+            if (data['retcode'] === 0 && data.data && data.data.hasOwnProperty("userInfo")) {
               $.nickName = data.data.userInfo.baseInfo.nickname;
             }
           } else {
-            $.log('京东服务器返回空数据');
+            console.log('京东服务器返回空数据');
           }
         }
       } catch (e) {
