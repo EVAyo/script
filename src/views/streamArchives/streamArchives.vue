@@ -1,6 +1,5 @@
 <template>
   <div class="streamArchives">
-    <div class="saBGWrapper">
     <div class="saMainWrapper">
       <!--  不同类别视频-->
       <div class="saClassesWrapper">
@@ -16,7 +15,6 @@
           <p class="saTypesTexts">{{ saType.text }}</p>
         </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
@@ -81,6 +79,13 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.streamArchives {
+  background-color: #2B343A;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .saMainWrapper {
   display: flex;
   justify-content: center;
@@ -88,23 +93,10 @@ export default {
   margin: 0 auto;
   width: 60vw;
 }
-.saBGWrapper{
-  position: absolute;
-  right: 0;
-  background-color: #282828;
-  width: calc(100% - 18.5vh);
-}
-
-.streamArchives {
-  background-color: #2B343A;
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-
 .saClassesWrapper {
   display: flex;
   width: 60vw;
+  margin-top: 60px;
   flex-wrap: wrap;
   justify-content: center;
 }
@@ -114,7 +106,7 @@ export default {
   z-index: 2;
   right: 0;
   color: white;
-  font-size: 30px;
+  font-size: 26px;
   margin-right: 1vw;
 }
 
@@ -202,7 +194,10 @@ export default {
     width: 60vw;
   }
   .saClassesImages{
-    width: 60vw;
+    width: 100%;
+  }
+  .saClassTexts{
+    font-size: 20px;
   }
 }
 .saTypesWrapper {
@@ -229,6 +224,6 @@ export default {
 
 .saTypesTexts {
   color: white;
-  font-size: 30px;
+  font-size: 26px;
 }
 </style>
