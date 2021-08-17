@@ -111,7 +111,8 @@ export default {
                     route: "/tools/randomVideo",
                 },
             ],
-            expand: false
+            expand: false,
+            device:document.body.clientWidth > 1170
         };
     },
     watch: {
@@ -132,17 +133,14 @@ export default {
             },
             // 深度观察监听
             deep: true,
+
         },
-    },
-    computed: {
-        device () {
-            return document.body.clientWidth > 1170
-        }
     },
     created() {
         this.$route.name;
     },
     mounted() {
+        this.watchWidth()
     },
     methods: {
         toAsoulFan() {
@@ -150,6 +148,12 @@ export default {
         },
         openMain() {
             this.expand = !this.expand
+        },
+        // 监控屏幕宽度
+        watchWidth(){
+            window.onresize = () => {
+        this.device = document.body.clientWidth > 1170
+    }
         }
     },
 };
@@ -157,7 +161,11 @@ export default {
 
 <style scoped lang="less">
 @import "./transition.less";
-
+@media only screen and (min-width: 1170px) {
+ .route-view-class {
+    padding-left: 18.5vh;
+}
+}
 .nav-contain {
     position: fixed;
     z-index: 100000;
@@ -188,6 +196,15 @@ export default {
     min-width: 150px;
     // background-image: url("../assets/img/contents/zhiNet-long.png");
 }
+
+.route-view-class {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    background: #2B343A;
+}
+
 .item-Index {
     background-image: url("../assets/img/contents/index-short.png");
 }
@@ -267,13 +284,7 @@ export default {
     // background-color: rgba(0, 0, 0, 0);
     opacity: 0;
 }
-.route-view-class {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    box-sizing: border-box;
-    background: #2B343A;
-}
+
 
 
 .mobile-box {

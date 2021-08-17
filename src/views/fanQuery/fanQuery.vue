@@ -232,9 +232,9 @@ export default {
 }
 
 
-@media only screen and (min-width: 1170px) {
-  .fanQuery{
-    padding-left: 18.5vh;
-  }
-}
+// @media only screen and (min-width: 1170px) {
+//   .fanQuery{
+//     padding-left: 18.5vh;
+//   }
+// }
 </style>

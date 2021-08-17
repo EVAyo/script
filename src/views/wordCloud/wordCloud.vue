@@ -100,7 +100,7 @@ export default {
   justify-content: center;
   align-items: flex-start;
   background-color: #333;
-  padding-left: 18.5vh;
+  /* padding-left: 18.5vh; */
   height: 100%;
   min-height: 100vh;
 }

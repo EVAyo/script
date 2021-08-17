@@ -211,8 +211,8 @@ export default {
 
 @media only screen and (min-width: 1170px) {
   .timeline {
-    padding-left: 18.5vh;
-    background: #2B343A;
+    /* padding-left: 18.5vh; */
+    /* background: #2B343A; */
   }
 
   .a-timeline:before {

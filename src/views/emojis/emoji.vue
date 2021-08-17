@@ -266,7 +266,7 @@ export default {
   border-radius: 4px;
 }
 .data-souce{
-    position: absolute;
+    position: fixed;
     color: #f1f2f3;
     right: 0;
     bottom: 0;
@@ -293,10 +293,10 @@ export default {
   margin: 20px;
   width: 100%;
 }
-@media only screen and (min-width: 1170px) {
-  .emoji{
-    padding-left: 18.5vh;
-  }
-}
+// @media only screen and (min-width: 1170px) {
+//   .emoji{
+//     padding-left: 18.5vh;
+//   }
+// }
 
 </style>
