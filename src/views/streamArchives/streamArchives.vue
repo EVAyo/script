@@ -3,14 +3,14 @@
     <div class="saMainWrapper">
       <!--  不同类别视频-->
       <div class="saClassesWrapper">
-        <div @click="jump(saClass.link)" v-for="saClass in classes" class="saClasses">
+        <div @click="jump(saClass.link)" v-for="saClass in classes" class="saClasses" :key="saClass.url">
           <img class="saClassesImages" :src="saClass.url" :alt="saClass.text"/>
           <p class="saClassTexts">{{ saClass.text }}</p>
         </div>
       </div>
       <!--    不同类别切片-->
       <div class="saTypesWrapper">
-        <div @click="jump(saType.link)" v-for="saType in types" class="saTypes">
+        <div @click="jump(saType.link)" v-for="saType in types" class="saTypes" :key="saType.url">
           <img class="saTypesImages" :src="saType.url" :alt="saType.text"/>
           <p class="saTypesTexts">{{ saType.text }}</p>
         </div>
@@ -148,6 +148,7 @@ export default {
 
 .saClasses {
   width: 30vw;
+  min-width: 300px;
   position: relative;
   display: flex;
   align-items: center;
@@ -180,7 +181,7 @@ export default {
 }
 
 .saClassesImages {
-  width: 30vw;
+  width: 100%;
   border: 10px;
   z-index: 1;
 }
@@ -193,15 +194,16 @@ export default {
   display: flex;
   margin-top: 30px;
   width: 50vw;
-  wrap-option: nowrap;
+  // wrap-option: nowrap;
   justify-content: space-around;
-  cursor: pointer;
+  
 }
 
 .saTypes {
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
+  cursor: pointer;
 }
 
 .saTypesImages {
