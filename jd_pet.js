@@ -1,5 +1,5 @@
 /*
-东东萌宠 更新地址： https://gitee.com/lxk0301/jd_scripts/raw/master/jd_pet.js
+东东萌宠 更新地址： jd_pet.js
 更新时间：2021-05-21
 活动入口：京东APP我的-更多工具-东东萌宠
 已支持IOS多京东账号,Node.js支持N个京东账号
@@ -11,17 +11,17 @@
 =================================Quantumultx=========================
 [task_local]
 #东东萌宠
-15 6-18/6 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_pet.js, tag=东东萌宠, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdmc.png, enabled=true
+15 6-18/6 * * * jd_pet.js, tag=东东萌宠, img-url=https://raw.githubusercontent.com/58xinian/icon/master/jdmc.png, enabled=true
 
 =================================Loon===================================
 [Script]
-cron "15 6-18/6 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_pet.js,tag=东东萌宠
+cron "15 6-18/6 * * *" script-path=jd_pet.js,tag=东东萌宠
 
 ===================================Surge================================
-东东萌宠 = type=cron,cronexp="15 6-18/6 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_pet.js
+东东萌宠 = type=cron,cronexp="15 6-18/6 * * *",wake-system=1,timeout=3600,script-path=jd_pet.js
 
 ====================================小火箭=============================
-东东萌宠 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_pet.js, cronexpr="15 6-18/6 * * *", timeout=3600, enable=true
+东东萌宠 = type=cron,script-path=jd_pet.js, cronexpr="15 6-18/6 * * *", timeout=3600, enable=true
 
 */
 const $ = new Env('东东萌宠');
@@ -30,10 +30,10 @@ let cookiesArr = [], cookie = '', jdPetShareArr = [], isBox = false, notify, new
 //此此内容是IOS用户下载脚本到本地使用，填写互助码的地方，同一京东账号的好友互助码请使用@符号隔开。
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
 let shareCodes = [ // IOS本地脚本用户这个列表填入你要助力的好友的shareCode
-   //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
-  'MTAxODcxOTI2NTAwMDAwMDAzMTExODEyMw==@MTEzMzI0OTE0NTAwMDAwMDA0Mzc2ODgwMQ==@MTE1NDAxNzgwMDAwMDAwMzYxNjUwOTk=@MTAxNzIyNTU1NDAwMDAwMDA0Nzc2ODE1Nw==@MTEzMzI1MTE4NDAwMDAwMDA1MDIxOTkwOQ==@MTAxODc2NTEzNTAwMDAwMDAwMDAwMzA3Nw==',
+  //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
+  'MTAxODcxOTI2NTAwMDAwMDAzMTExODEyMw==@MTE1NDAxNzgwMDAwMDAwMzYxNjUwOTk=@MTEzMzI0OTE0NTAwMDAwMDA0Mzc2ODgwMQ==@MTAxNzIyNTU1NDAwMDAwMDA1MjEwNDI4NQ==@MTE1NDQ5OTUwMDAwMDAwNDIwNjk4ODM=@MTAxNzIyNTU1NDAwMDAwMDA0Nzc2ODE1Nw==@MTEzMzI1MTE4NDAwMDAwMDA1MDIxOTkwOQ==@MTAxODc2NTEzNTAwMDAwMDAwMDAwMzA3Nw==',
   //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
-  'MTAxODcxOTI2NTAwMDAwMDAzMTExODEyMw==@MTEzMzI0OTE0NTAwMDAwMDA0Mzc2ODgwMQ==@MTE1NDAxNzgwMDAwMDAwMzYxNjUwOTk=@MTAxNzIyNTU1NDAwMDAwMDA0Nzc2ODE1Nw==@MTEzMzI1MTE4NDAwMDAwMDA1MDIxOTkwOQ==@MTAxODc2NTEzNTAwMDAwMDAwMDAwMzA3Nw==',
+  'MTAxODcxOTI2NTAwMDAwMDAzMTExODEyMw==@MTE1NDAxNzgwMDAwMDAwMzYxNjUwOTk=@MTEzMzI0OTE0NTAwMDAwMDA0Mzc2ODgwMQ==@MTAxNzIyNTU1NDAwMDAwMDA1MjEwNDI4NQ==@MTE1NDQ5OTUwMDAwMDAwNDIwNjk4ODM=@MTAxNzIyNTU1NDAwMDAwMDA0Nzc2ODE1Nw==@MTEzMzI1MTE4NDAwMDAwMDA1MDIxOTkwOQ==@MTAxODc2NTEzNTAwMDAwMDAwMDAwMzA3Nw==',
 ]
 let message = '', subTitle = '', option = {};
 let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
@@ -450,10 +450,9 @@ async function showMsg() {
     $.log(`\n${message}\n`);
   }
 }
-//互助API；更改为空CND
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `https://action-1251995682.file.myqcloud.com/null.json/`, 'timeout': 10000}, (err, resp, data) => {
+    $.get({url: `https://action-1251995682.cos.ap-guangzhou.myqcloud.com/null.json`, 'timeout': 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
