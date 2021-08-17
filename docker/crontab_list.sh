@@ -10,9 +10,6 @@
 #金机奖投票 2021年08月8日-2021年08月20日
 39 1,7,20 * * * node /scripts/jd_golden_machine.js >> /scripts/logs/jd_golden_machine.log 2>&1
 
-#七夕情报局 2021年08月4日-2021年08月15日
-31 0,9,22 4-15 8 * node /scripts/jd_doge.js >> /scripts/logs/jd_doge.log 2>&1
-
 # 手机狂欢城(8.9-8.28)
 0 0,12,18,21 * * * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
 
@@ -24,8 +21,7 @@
 
 #特务Z
 34 12,16,18 * * * node /scripts/jd_productZ4Brand.js >> /scripts/logs/jd_productZ4Brand.log 2>&1
-#沃尔玛夺宝大战 2021年07月15日-2021年08月8日
-13 0,12,18 * * * node /scripts/jd_walmart.js >> /scripts/logs/jd_walmart.log 2>&1
+
 #极速版发财大赢家 2021-07-15到2021-08-15
 20,40 0-23/1 * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
 #惊喜88红包
@@ -114,7 +110,6 @@
 21 1,6 * * * node /scripts/jd_speed_sign.js >> /scripts/logs/jd_speed_sign.log 2>&1
 #监控crazyJoy分红
 #10 12 * * * node /scripts/jd_crazy_joy_bonus.js >> /scripts/logs/jd_crazy_joy_bonus.log 2>&1
-
 # 删除优惠券(默认注释，如需要自己开启，如有误删，已删除的券可以在回收站中还原，慎用)
 #20 9 * * 6 node /scripts/jd_delCoupon.js >> /scripts/logs/jd_delCoupon.log 2>&1
 #家庭号
