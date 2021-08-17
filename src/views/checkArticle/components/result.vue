@@ -1,70 +1,69 @@
 <!-- 查重返回结果 -->
 <template>
-  <div class="result-input" v-if="data!=null">
-      <ul class="result-input_ul" >
-          <li class="li_1">发表时间：<span>{{data.reply.createTime}}</span></li>
-          <li class="li_2">重复率：{{toPercent(data.rate)}}</li>
-          <li class="li_3">作者：{{data.reply.m_name}}</li>
-          <li class="li_4" @click="toUrl">原文地址</li>
-      </ul>
-      <div class="result_content">
-          {{data.reply.content}}
-          <!-- 嘉然小姐，嘉然小姐，嘉然小姐，新的一天，我又呼唤起了你的名字但也许 -->
-      </div>
+  <div class="article">
+    <ul class="article-header" >
+      <li>
+        <span class="article-key">发表时间：</span>
+        <span class="article-value">{{ result.reply.createTime }}</span>
+      </li>
+      <li>
+        <span class="article-key">重复率：</span>
+        <span class="article-value">{{ toPercent }}</span>
+      </li>
+      <li>
+        <span class="article-key">作者：</span>
+        <span class="article-value">{{ result.reply.m_name }}</span>
+      </li>
+      <li>
+        <span class="article-value"><a :href="result.reply_url" class="link">原文地址</a></span>
+      </li>
+    </ul>
+    <div class="article-content">{{ result.reply.content }}</div>
   </div>
 </template>
+
 <script>
 export default {
-props:{
-    result: {
-        type: Object,
-        // default: () => {}
-    }
-},
-  name: "app",
-  data() {
-    return {
-        data: null,
-    }
+  props:{
+    result:Object
   },
-  components: {
-  },
+  name: "Article",
   computed: {
-    //   checkData(){
-    //       return this.result;
-    //   },
-  },
-  watch:{
-    //   checkData(val) {
-    //      this.data = val;
-    //      console.log(this.data);
-    //   }
-    result:function (newVal,oldVal) {
-        // console.log(newVal);
-        this.data=newVal;
+    toPercent(){
+      const point = this.result.rate
+      return Number(point * 100).toFixed(2) + '%';
     }
-  },
-
-  mounted() {
-      this.getDate()
-  },
-  
-  methods: {
-      getDate(){
-          this.data=this.result
-      },
-      toPercent(point){
-        var str=Number(point*100).toFixed(2);
-        str+="%";
-        return str;
-      },
-      toUrl(){
-          window.open(this.data.reply_url, '_blank') // 新窗口打开外链接
-      },
   }
 }
 </script>
 
-<style lang="less" scoped>
-@import "./result.less";
+<style scoped>
+  .article {
+    border: 3px solid;
+    @apply w-full overflow-hidden border-gray-100 p-2 pt-5;
+  }
+
+  .article-header {
+    grid-template-columns: 65% 35%;
+    @apply w-full grid pl-2 my-2;
+    @apply xl:inline;
+  }
+
+  .article-header li {
+    @apply text-2xl lg:inline lg:pr-5;
+  }
+
+  .article-key, .link {
+    color: #c678d0;
+    /* @apply font-semibold; */
+  }
+
+  .link {
+    @apply cursor-pointer;
+  }
+
+  .article-content {
+    @apply break-all whitespace-pre-wrap text-2xl;
+    @apply w-full p-2 leading-relaxed;
+  }
 </style>

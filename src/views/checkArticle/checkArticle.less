@@ -5,19 +5,20 @@
     min-height:100vh;
     background: #2b343a;
     color: #fff;
-    padding: 54px 90px 50px calc(18.5vh + 100px);
+    padding: 30px 90px 50px calc(18.5vh + 100px);
     box-sizing:border-box;
     position: relative;
     .logo{
-        width: 486px;
-        height: 121px;
+        width: 50%;
+        max-width: 350px;
+        min-width: 200px;
         img{
             width:100%;
             height:100%;
         }
     }
     .content{
-        margin-top:40px;
+        margin:40px 0 20px 0;
         width: 100%;
         height: 280px;
         padding:27px 17px 10px 18px;
@@ -41,8 +42,9 @@
 // 文本框下面的div样式
 .textBottom{
   display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
+  // flex-wrap: nowrap;
+  justify-content: center;
+  // align-items: center;
   justify-content: space-between;
   height: 70px;
   ul {
@@ -102,43 +104,36 @@
 }
 
 .BigContent{
-  display: flex;
-  .content_left {
-      width:70%;
-      box-sizing: border-box;
+  overflow: hidden;
+  .content_left, .content_right {
+    float: left;
   }
-  .content_right{
-    width: calc(30% - 55px);
-    margin-left: 55px;
+  .content_left {
     box-sizing: border-box;
-    margin-top: 50px;
-    .intro{
-      font-size:25px;
-    }
-    ul>li{
-        margin-bottom: 30px;
-        line-height:1.2;
-        font-size: 20px;
-        // width:400px;
-      p{
-        height: 32px;
-        font-size:22px;
-      }
-      .exhibition{
-        width: 220px;
-        height: 164px;
-        margin-top:70px;
-        cursor: pointer;
-        border-radius: 5px;
-        overflow: hidden;
-        img{
-          width: 100%;
-          height: 100%;
-        }
-      }
-    }
   }
 }
+
+@media screen and (max-width: 1000px) {
+  .content_left, .content_right {
+    clear: both;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 1001px) {
+  .content_left, .content_right {
+    float: left;
+  }
+  .content_left {
+    width: 65%;
+  }
+  .content_right {
+    width: calc(35% - 30px);
+    margin: 40px 0 0 30px;
+  }
+}
+
 .pink{
   color: #c678d0;
 }

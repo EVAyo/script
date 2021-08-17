@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import "tailwindcss/tailwind.css"
 
 // 引入全局请求
 import '@/assets/js/request.js'
@@ -11,10 +12,12 @@ Vue.config.productionTip = false
 // Vue.prototype.$DeviceType =
 
 import waterfall from "vue-waterfall2";
+
 //瀑布流插件
 
 // 重置全局样式
 import './assets/css/reset.css'
+
 // import './assets/js/commin.js'
 
 Vue.use(waterfall)
