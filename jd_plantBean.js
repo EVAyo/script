@@ -21,7 +21,6 @@ cron "1 7-21/2 * * *" script-path=jd_plantBean.js,tag=京东种豆得豆
 ====================================小火箭=============================
 京东种豆得豆 = type=cron,script-path=jd_plantBean.js, cronexpr="1 7-21/2 * * *", timeout=3600, enable=true
 
-搬的https://github.com/uniqueque/QuantumultX/blob/4c1572d93d4d4f883f483f907120a75d925a693e/Script/jd_plantBean.js
 */
 const $ = new Env('京东种豆得豆');
 //Node.js用户请在jdCookie.js处填写京东ck;
@@ -33,17 +32,19 @@ const JD_API_HOST = 'https://api.m.jd.com/client.action';
 //助力好友分享码(最多3个,否则后面的助力失败)
 //此此内容是IOS用户下载脚本到本地使用，填写互助码的地方，同一京东账号的好友互助码请使用@符号隔开。
 //下面给出两个账号的填写示例（iOS只支持2个京东账号）
-//更改互助区域为空值
-let shareCodes = [''];
+let shareCodes = [ // IOS本地脚本用户这个列表填入你要助力的好友的shareCode
+  //账号一的好友shareCode,不同好友的shareCode中间用@符号隔开
+  'lc7eqgnugkdtwp2qlnvggt2bj7xxnwaayh5essa@uwgpfl3hsfqp3img4qkteo5oicqmyqcumye2jhy@cbagzqdyjhmq32xxyd2qn475eu@5lb4jekjrdv4bps42tjybtuj4rzl7p2gjzddzna@rrekjxxgudh77izz4af4oyjsei@mlrdw3aw26j3wa4kkuxkrefll5q5nudih2og5ca@or5rrfpoyauuoqnbliahsmf5ty@w5twvmn6thlgvgffr5mmzvaojsqttperzjydn2q',
+  //账号二的好友shareCode,不同好友的shareCode中间用@符号隔开
+  'lc7eqgnugkdtwp2qlnvggt2bj7xxnwaayh5essa@uwgpfl3hsfqp3img4qkteo5oicqmyqcumye2jhy@cbagzqdyjhmq32xxyd2qn475eu@5lb4jekjrdv4bps42tjybtuj4rzl7p2gjzddzna@rrekjxxgudh77izz4af4oyjsei@mlrdw3aw26j3wa4kkuxkrefll5q5nudih2og5ca@or5rrfpoyauuoqnbliahsmf5ty@w5twvmn6thlgvgffr5mmzvaojsqttperzjydn2q',
+]
 let allMessage = ``;
 let currentRoundId = null;//本期活动id
 let lastRoundId = null;//上期id
 let roundList = [];
 let awardState = '';//上期活动的京豆是否收取
 let randomCount = $.isNode() ? 20 : 5;
-let current_period_index = -1; //本期索引 
-let last_period_index = -1; //上期索引 
-
+let num;
 !(async () => {
   await requireConfig();
   if (!cookiesArr[0]) {
@@ -88,31 +89,25 @@ async function jdPlantBean() {
   try {
     console.log(`获取任务及基本信息`)
     await plantBeanIndex();
+    for (let i = 0; i < $.plantBeanIndexResult.data.roundList.length; i++) {
+      if ($.plantBeanIndexResult.data.roundList[i].roundState === "2") {
+        num = i
+        break
+      }
+    }
     // console.log(plantBeanIndexResult.data.taskList);
     if ($.plantBeanIndexResult && $.plantBeanIndexResult.code === '0' && $.plantBeanIndexResult.data) {
       const shareUrl = $.plantBeanIndexResult.data.jwordShareInfo.shareUrl
       $.myPlantUuid = getParam(shareUrl, 'plantUuid')
       console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${$.myPlantUuid}\n`);
       roundList = $.plantBeanIndexResult.data.roundList;
-
-      //获取上期与本期的索引
-      for (let i = 0; i < roundList.length; i++ ) {
-        // console.log(`\nlastRoundId:${roundList[i].dateDesc}`)
-        if (roundList[i].dateDesc.indexOf('本期') != -1 ) {
-          current_period_index = i;
-          last_period_index = i > 0 ? i - 1 : i +1 ;
-          break;
-        }
-      }
-      // console.log(`本期:${current_period_index}，上期:${last_period_index}`)
-
-      currentRoundId = roundList[current_period_index].roundId;//本期的roundId
-      lastRoundId = roundList[last_period_index].roundId;//上期的roundId
-      awardState = roundList[last_period_index].awardState;
+      currentRoundId = roundList[num].roundId;//本期的roundId
+      lastRoundId = roundList[num - 1].roundId;//上期的roundId
+      awardState = roundList[num - 1].awardState;
       $.taskList = $.plantBeanIndexResult.data.taskList;
       subTitle = `【京东昵称】${$.plantBeanIndexResult.data.plantUserInfo.plantNickName}`;
-      message += `【上期时间】${roundList[last_period_index].dateDesc.replace('上期 ', '')}\n`;
-      message += `【上期成长值】${roundList[last_period_index].growth}\n`;
+      message += `【上期时间】${roundList[num - 1].dateDesc.replace('上期 ', '')}\n`;
+      message += `【上期成长值】${roundList[num - 1].growth}\n`;
       await receiveNutrients();//定时领取营养液
       await doHelp();//助力
       await doTask();//做日常任务
@@ -136,7 +131,7 @@ async function doGetReward() {
   console.log(`【上轮京豆】${awardState === '4' ? '采摘中' : awardState === '5' ? '可收获了' : '已领取'}`);
   if (awardState === '4') {
     //京豆采摘中...
-    message += `【上期状态】${roundList[last_period_index].tipBeanEndTitle}\n`;
+    message += `【上期状态】${roundList[num - 1].tipBeanEndTitle}\n`;
   } else if (awardState === '5') {
     //收获
     await getReward();
@@ -154,18 +149,18 @@ async function doGetReward() {
     }
   } else if (awardState === '6') {
     //京豆已领取
-    message += `【上期兑换京豆】${roundList[last_period_index].awardBeans}个\n`;
+    message += `【上期兑换京豆】${roundList[num - 1].awardBeans}个\n`;
   }
-  if (roundList[current_period_index].dateDesc.indexOf('本期 ') > -1) {
-    roundList[current_period_index].dateDesc = roundList[current_period_index].dateDesc.substr(roundList[current_period_index].dateDesc.indexOf('本期 ') + 3, roundList[current_period_index].dateDesc.length);
+  if (roundList[num].dateDesc.indexOf('本期 ') > -1) {
+    roundList[num].dateDesc = roundList[num].dateDesc.substr(roundList[num].dateDesc.indexOf('本期 ') + 3, roundList[num].dateDesc.length);
   }
-  message += `【本期时间】${roundList[current_period_index].dateDesc}\n`;
-  message += `【本期成长值】${roundList[current_period_index].growth}\n`;
+  message += `【本期时间】${roundList[num].dateDesc}\n`;
+  message += `【本期成长值】${roundList[num].growth}\n`;
 }
 async function doCultureBean() {
   await plantBeanIndex();
   if ($.plantBeanIndexResult && $.plantBeanIndexResult.code === '0') {
-    const plantBeanRound = $.plantBeanIndexResult.data.roundList[current_period_index]
+    const plantBeanRound = $.plantBeanIndexResult.data.roundList[num]
     if (plantBeanRound.roundState === '2') {
       //收取营养液
       if (plantBeanRound.bubbleInfos && plantBeanRound.bubbleInfos.length) console.log(`开始收取营养液`)
@@ -540,17 +535,16 @@ async function helpShare(plantUuid) {
 async function plantBeanIndex() {
   $.plantBeanIndexResult = await request('plantBeanIndex');//plantBeanIndexBody
 }
-//更改互助链接,直接去掉会提示解析json错误,故更换为空值链接
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `https://action-1251995682.cos.ap-guangzhou.myqcloud.com/null.json`, timeout: 10000}, (err, resp, data) => {
+    $.get({url: `http://share.turinglabs.net/api/v3/bean/query/${randomCount}/`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {
-            console.log(`随机取个0码放到您固定的互助码后面(不影响已有固定互助)`)
+            console.log(`随机取个${randomCount}码放到您固定的互助码后面(不影响已有固定互助)`)
             data = JSON.parse(data);
           }
         }
@@ -576,10 +570,10 @@ function shareCodesFormat() {
       const tempIndex = $.index > shareCodes.length ? (shareCodes.length - 1) : ($.index - 1);
       newShareCodes = shareCodes[tempIndex].split('@');
     }
-    const readShareCodeRes = await readShareCode();
-    if (readShareCodeRes && readShareCodeRes.code === 200) {
-      newShareCodes = [...new Set([...newShareCodes, ...(readShareCodeRes.data || [])])];
-    }
+    // const readShareCodeRes = await readShareCode();
+    // if (readShareCodeRes && readShareCodeRes.code === 200) {
+    //   newShareCodes = [...new Set([...newShareCodes, ...(readShareCodeRes.data || [])])];
+    // }
     console.log(`第${$.index}个京东账号将要助力的好友${JSON.stringify(newShareCodes)}`)
     resolve();
   })

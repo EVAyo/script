@@ -7,8 +7,8 @@
 // 同一个京东账号的好友互助码用@符号隔开,不同京东账号之间用&符号或者换行隔开,下面给一个示例
 // 如: 京东账号1的shareCode1@京东账号1的shareCode2&京东账号2的shareCode1@京东账号2的shareCode2
 let PlantBeanShareCodes = [
-  '',//账号一的好友shareCode,不同好友中间用@符号隔开
-  '',//账号二的好友shareCode，不同好友中间用@符号隔开
+  'lc7eqgnugkdtwp2qlnvggt2bj7xxnwaayh5essa@uwgpfl3hsfqp3img4qkteo5oicqmyqcumye2jhy@cbagzqdyjhmq32xxyd2qn475eu@5lb4jekjrdv4bps42tjybtuj4rzl7p2gjzddzna@rrekjxxgudh77izz4af4oyjsei@mlrdw3aw26j3wa4kkuxkrefll5q5nudih2og5ca@or5rrfpoyauuoqnbliahsmf5ty@w5twvmn6thlgvgffr5mmzvaojsqttperzjydn2q',//账号一的好友shareCode,不同好友中间用@符号隔开
+  'lc7eqgnugkdtwp2qlnvggt2bj7xxnwaayh5essa@uwgpfl3hsfqp3img4qkteo5oicqmyqcumye2jhy@cbagzqdyjhmq32xxyd2qn475eu@5lb4jekjrdv4bps42tjybtuj4rzl7p2gjzddzna@rrekjxxgudh77izz4af4oyjsei@mlrdw3aw26j3wa4kkuxkrefll5q5nudih2og5ca@or5rrfpoyauuoqnbliahsmf5ty@w5twvmn6thlgvgffr5mmzvaojsqttperzjydn2q',//账号二的好友shareCode，不同好友中间用@符号隔开
 ]
 
 // 从日志获取互助码
