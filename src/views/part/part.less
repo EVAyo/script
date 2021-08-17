@@ -16,8 +16,7 @@
 
     & .part-body,
     & .part-footer{
-        width: calc(100% - 18.5vh);
-        margin-left: 18.5vh;
+        width: 100%;
         box-sizing: border-box;
     }
 
@@ -157,5 +156,15 @@
     & /deep/ .el-loading-spinner .el-loading-text{
         color: #f2f2f2;
         font-size: 18px;
+    }
+}
+
+@media only screen and (min-width: 1170px) {
+    .a-soul-fan-part{
+        & .part-body,
+        & .part-footer{
+            width: calc(100% - 18.5vh);
+            margin-left: 18.5vh;
+        }
     }
 }

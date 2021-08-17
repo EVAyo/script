@@ -170,7 +170,6 @@ export default {
 .fanQuery {
     background-color: #2B343A;
     height: 100vh;
-    padding-left: 18.5vh;
     overflow-y: scroll;
 }
 .contain {
@@ -230,5 +229,12 @@ export default {
 }
 .img-item:hover{
         transform: scale(1.2);
+}
+
+
+@media only screen and (min-width: 1170px) {
+  .fanQuery{
+    padding-left: 18.5vh;
+  }
 }
 </style>

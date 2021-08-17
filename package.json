@@ -12,6 +12,8 @@
     "autoprefixer": "^9",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "echarts": "^5.1.2",
+    "echarts-wordcloud": "^2.0.0",
     "element-ui": "^2.15.3",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",

@@ -1,31 +1,40 @@
 <template>
-    <div>
-        <div class="nav-contain">
-            <div class="box item-Index" @click="toAsoulFan">
-                <div v-if="currentPageName !== 'Index'" class="nav-mask"></div>
-            </div>
+  <div>
+    <div :class="{ device: !device, 'expand-main': expand }" class="nav-contain">
+      <div v-if="device" class="box item-Index" @click="toAsoulFan">
+        <div v-if="currentPageName !== 'Index'" class="nav-mask"></div>
+      </div>
 
-            <router-link
-                v-for="(item, index) in routeList"
-                :key="index"
-                :to="item.route"
-                :title="item.titleName"
-                class="box"
-                :class="'item-' + item.routeName"
-            >
-                <div
-                    v-if="currentPageName !== item.routeName"
-                    class="nav-mask"
-                ></div>
-            </router-link>
-        </div>
-
-        <div class="route-view-class" id="myRouteView" ref="myRouteView">
-            <transition :name="transitionName">
-                <router-view />
-            </transition>
-        </div>
+      <router-link
+          v-for="(item, index) in routeList"
+          :key="index"
+          :to="item.route"
+          :title="item.titleName"
+          class="box"
+          :class="'item-' + item.routeName"
+      >
+        <div
+            v-if="currentPageName !== item.routeName"
+            class="nav-mask"
+        ></div>
+      </router-link>
     </div>
+    <div v-if="!device" class="nav-btn" :class="{ expand }" @click="openMain">
+      <i class="nav-btn-icon">
+        <span />
+        <span />
+        <span />
+      </i>
+    </div>
+
+    <div class="route-view-class" id="myRouteView" ref="myRouteView">
+      <transition :name="transitionName">
+        <keep-alive>
+          <router-view />
+        </keep-alive>
+      </transition>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -102,6 +111,7 @@ export default {
                     route: "/tools/randomVideo",
                 },
             ],
+            expand: false
         };
     },
     watch: {
@@ -112,6 +122,7 @@ export default {
                 }else{
                     this.transitionName = "slide-up"
                 }
+                this.expand = false
                 this.currentPageName = val.name;
                 if (val.name == "Index") {
                     this.isLongNav = true;
@@ -123,7 +134,11 @@ export default {
             deep: true,
         },
     },
-    computed: {},
+    computed: {
+        device () {
+            return document.body.clientWidth > 1170
+        }
+    },
     created() {
         this.$route.name;
     },
@@ -133,6 +148,9 @@ export default {
         toAsoulFan() {
             window.location.href = "https://www.asoulfan.cn/"
         },
+        openMain() {
+            this.expand = !this.expand
+        }
     },
 };
 </script>
@@ -255,5 +273,80 @@ export default {
     height: 100vh;
     box-sizing: border-box;
     background: #2B343A;
+}
+
+
+.mobile-box {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 8vh;
+  height: 8vh;
+  border-radius: 50%;
+  cursor: pointer;
+  background-image: url("../assets/img/contents/index-short.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  z-index: 4;
+}
+
+.nav-btn {
+  display: block;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 5px;
+  z-index: 100001;
+  transition: transform ease-in-out 0.3s;
+}
+
+.nav-btn.expand {
+  transform: translate(calc(100vw - 80px), 0);
+}
+
+.nav-btn-icon {
+  display: block;
+  position: relative;
+  width: 30px;
+  height: 30px;
+  z-index: 100002;
+}
+.nav-btn-icon span {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 3px;
+  background-color: #ddd;
+  transition: transform ease-in-out 0.3s;
+}
+.nav-btn-icon span:nth-child(1) {
+  transform: translate(0, -350%);
+}
+.nav-btn-icon span:nth-child(2) {
+  transform: translate(0, -50%);
+}
+.nav-btn-icon span:nth-child(3) {
+  right: 0;
+  transform: translate(0, 250%);
+}
+.expand .nav-btn-icon span:nth-child(1) {
+  transform: rotateZ(45deg) scaleX(0.5) translate(-50%);
+}
+.expand .nav-btn-icon span:nth-child(2) {
+  transform: rotateZ(-45deg);
+}
+.expand .nav-btn-icon span:nth-child(3) {
+  transform: rotateZ(45deg) scaleX(0.5) translate(50%);
+}
+
+.device {
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+  transform: translate(-100%);
+  transition: transform ease-in-out 0.3s;
+}
+.expand-main {
+  transform: translate(0);
 }
 </style>

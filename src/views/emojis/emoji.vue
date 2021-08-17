@@ -44,7 +44,7 @@ export default {
     };
   },
   created() {
-        
+
   },
  async mounted(){
         // this.listensBoxScroll()
@@ -142,7 +142,7 @@ export default {
             ele.paddingTop=ele.height/ ele.width *100
             ele.url = 'https://'+ ele.url
         })
-        
+
         // 排序 解决某列高度过长问题
         if(this.currentPage%2==0){
           res.sort((obj1, obj2)=>{
@@ -153,7 +153,7 @@ export default {
               return obj1.paddingTop < obj2.paddingTop ? 1 : (obj1.paddingTop > obj2.paddingTop?-1 :0)
             })
         }
-        
+
         res.forEach((ele,index)=>{
           let i = ( index + ((this.currentPage-1) * this.pageSize)) % this.columnNum
           this.imgList[i].push(ele)
@@ -166,7 +166,7 @@ export default {
         this.$closeLoading();
       }
     },
-    
+
     toUpSpace(){
       window.open('https://space.bilibili.com/15073186')
     },
@@ -216,7 +216,6 @@ export default {
 .emoji{
   position: relative;
   // height: 100%;
-  padding-left: 18.5vh;
   // background-image:url('../../assets/img/emoji/bgp.webp');
   background-size: cover;
   background-color: #2B343A;
@@ -294,4 +293,10 @@ export default {
   margin: 20px;
   width: 100%;
 }
+@media only screen and (min-width: 1170px) {
+  .emoji{
+    padding-left: 18.5vh;
+  }
+}
+
 </style>
