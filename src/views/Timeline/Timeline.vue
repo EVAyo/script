@@ -91,8 +91,8 @@ export default {
         this.timelineScroll = true
         setTimeout(async()=> {
           // 目前窗口底部离容器顶部的距离
-          let  TopOffsetHeight = document.documentElement.scrollTop +document.body.clientHeight
-          let scrollHeight  = document.body.scrollHeight
+          let  TopOffsetHeight = document.documentElement.scrollTop + document.documentElement.offsetHeight
+          let scrollHeight  = document.documentElement.scrollHeight
           // 离底部50px触发翻页
           if(TopOffsetHeight +50 >= scrollHeight){
             await this.getData()
@@ -210,10 +210,10 @@ export default {
 }
 
 @media only screen and (min-width: 1170px) {
-  .timeline {
-    /* padding-left: 18.5vh; */
-    /* background: #2B343A; */
-  }
+  /* .timeline {
+    padding-left: 18.5vh;
+    background: #2B343A;
+  } */
 
   .a-timeline:before {
     left: 50%;
