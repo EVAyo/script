@@ -18,17 +18,21 @@ npm run build
 ```
 
 
-### 提交规范
+### Commit提交规范
 
-Header Header 部分只有 1 行，格式为<type>: <subject>。
+##### Header Header 部分只有 1 行，格式为 < type > : < subject >。
 
-type 用于说明提交的类型 subject 用于概括提交内容。
+###### type 用于说明提交的类型： 
 
-1. feat：新功能（feature） 
-2. fix：问题修复 
-3. style：调整格式（不影响代码运行）
-4. upDate :  更新代码 
+1. Feat：增加**新**功能
+2. Fix：问题**修复** 
+3. Style：只修改了**样式**，即不影响业务逻辑功能等
+4. UpDate :  更新原有代码，例如优化性能、 需求变更等
 
+###### subject 用于说明提交内容：
+
+1. 简要概括即可
+2. 使用中文
 
 
 ### 文件夹结构
