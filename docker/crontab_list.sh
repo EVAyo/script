@@ -5,10 +5,10 @@
 
 ##############短期活动##############
 #女装盲盒
-13 0,12 * * * * * * node /scripts/jd_nzmh.js >> /scripts/logs/jd_nzmh.log 2>&1
+13 0,12 * * * node /scripts/jd_nzmh.js >> /scripts/logs/jd_nzmh.log 2>&1
 
 #骁龙品牌日 2021年08月13日-2021年08月25日
-12 1,22 * * * * * * node /scripts/jd_xl.js >> /scripts/logs/jd_xl.log 2>&1
+12 1,22 * * * node /scripts/jd_xl.js >> /scripts/logs/jd_xl.log 2>&1
 
 #金机奖投票 2021年08月8日-2021年08月20日
 39 1,7,20 * * * node /scripts/jd_golden_machine.js >> /scripts/logs/jd_golden_machine.log 2>&1
