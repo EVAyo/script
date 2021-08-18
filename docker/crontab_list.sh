@@ -4,6 +4,9 @@
 30 * * * * sh +x /scripts/docker/auto_help.sh collect >> /scripts/logs/auto_help_collect.log 2>&1
 
 ##############短期活动##############
+#众筹许愿池 2021年08月1日-2021年12月31日
+19 7,13 * * * node /scripts/jd_wish.js >> /scripts/logs/jd_wish.log 2>&1
+
 #女装盲盒
 13 0,12 * * * node /scripts/jd_nzmh.js >> /scripts/logs/jd_nzmh.log 2>&1
 
