@@ -48,7 +48,8 @@ function Update_Cron {
       RanHour="${RanHour},${RanHourArray[i]}"
     done
     perl -i -pe "s|.+(bash git_pull.+)|${RanMin} ${RanHour} \* \* \* sleep ${RanSleep} && \1|" ${ListCron}
-    perl -i -pe "s| *\ *\ *\ *\ *\ *\ (.+jd_nzmh\W*.*)|\1|" ${ListCron}
+    perl -i -pe "s| *\ *\ *\ *\ *\ *\ (.+jd_nzmh\W*.*)| \1|" ${ListCron}
+    perl -i -pe "s| *\ *\ *\ *\ *\ *\ (.+jd_xl\W*.*)| \1|" ${ListCron}
     crontab ${ListCron}
   fi
 }
