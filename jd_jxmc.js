@@ -1,6 +1,6 @@
 /**
 惊喜牧场
-cron 23 0-23/3 * * * https://raw.githubusercontent.com/star261/jd/main/scripts/jd_jxmc.js
+cron 23 0-23/3 * * * jd_jxmc.js
 */
 const $ = new Env('惊喜牧场');
 const notify = $.isNode() ? require('./sendNotify') : '';
