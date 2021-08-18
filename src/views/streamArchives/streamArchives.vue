@@ -1,18 +1,20 @@
 <template>
   <div class="streamArchives">
-    <div class="saMainWrapper">
-      <!--  不同类别视频-->
-      <div class="saClassesWrapper">
-        <div @click="jump(saClass.link)" v-for="saClass in classes" class="saClasses" :key="saClass.url">
-          <img class="saClassesImages" :src="saClass.url" :alt="saClass.text"/>
-          <p class="saClassTexts">{{ saClass.text }}</p>
+    <div class="saBGWrapper">
+      <div class="saMainWrapper">
+        <!--  不同类别视频-->
+        <div class="saClassesWrapper">
+          <div @click="jump(saClass.link)" v-for="saClass in classes" class="saClasses" :key="saClass.url">
+            <img class="saClassesImages" :src="saClass.url" :alt="saClass.text"/>
+            <p class="saClassTexts">{{ saClass.text }}</p>
+          </div>
         </div>
-      </div>
-      <!--    不同类别切片-->
-      <div class="saTypesWrapper">
-        <div @click="jump(saType.link)" v-for="saType in types" class="saTypes" :key="saType.url">
-          <img class="saTypesImages" :src="saType.url" :alt="saType.text"/>
-          <p class="saTypesTexts">{{ saType.text }}</p>
+        <!--    不同类别切片-->
+        <div class="saTypesWrapper">
+          <div @click="jump(saType.link)" v-for="saType in types" class="saTypes" :key="saType.url">
+            <img class="saTypesImages" :src="saType.url" :alt="saType.text"/>
+            <p class="saTypesTexts">{{ saType.text }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -80,12 +82,23 @@ export default {
 </script>
 <style lang="less" scoped>
 .streamArchives {
-  background-color: #2B343A;
+  background-color: #282828;
+  position: absolute;
+  left: 0;
   min-height: 100vh;
   display: flex;
+  width: 100vw;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 }
+
+.saBGWrapper {
+  background-color: #282828;
+  height: 100%;
+  display: flex;
+  width: calc(100% - 18.5vh);
+}
+
 .saMainWrapper {
   display: flex;
   justify-content: center;
@@ -93,6 +106,7 @@ export default {
   margin: 0 auto;
   width: 60vw;
 }
+
 .saClassesWrapper {
   display: flex;
   width: 60vw;
@@ -189,24 +203,31 @@ export default {
 .saClassesImages:hover {
   filter: brightness(1);
 }
-@media screen and (orientation: portrait){
-  .saClasses{
+
+@media screen and (orientation: portrait) {
+  .saClasses {
     width: 60vw;
   }
-  .saClassesImages{
+
+  .saClassesImages {
     width: 100%;
   }
-  .saClassTexts{
+
+  .saClassTexts {
     font-size: 20px;
   }
+  .saBGWrapper{
+    width: 100%;
+  }
 }
+
 .saTypesWrapper {
   display: flex;
   margin-top: 30px;
   width: 50vw;
   // wrap-option: nowrap;
   justify-content: space-around;
-  
+
 }
 
 .saTypes {
