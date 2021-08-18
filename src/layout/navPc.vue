@@ -1,40 +1,38 @@
 <template>
-  <div>
+<div>
     <div :class="{ device: !device, 'expand-main': expand }" class="nav-contain">
-      <div v-if="device" class="box item-Index" @click="toAsoulFan">
-        <div v-if="currentPageName !== 'Index'" class="nav-mask"></div>
-      </div>
-
-      <router-link
-          v-for="(item, index) in routeList"
-          :key="index"
-          :to="item.route"
-          :title="item.titleName"
-          class="box"
-          :class="'item-' + item.routeName"
-      >
+        <div class="box item-Index" @click="toAsoulFan">
+            <div v-if="currentPageName !== 'Index'" class="nav-mask"></div>
+        </div>
+        <router-link
+            v-for="(item, index) in routeList"
+            :key="index"
+            :to="item.route"
+            :title="item.titleName"
+            class="box"
+            :class="'item-' + item.routeName"
+        >
         <div
             v-if="currentPageName !== item.routeName"
             class="nav-mask"
         ></div>
-      </router-link>
+        </router-link>
     </div>
     <div v-if="!device" class="nav-btn" :class="{ expand }" @click="openMain">
-      <i class="nav-btn-icon">
-        <span />
-        <span />
-        <span />
-      </i>
+        <i class="nav-btn-icon">
+            <span />
+            <span />
+            <span />
+        </i>
     </div>
-
     <div class="route-view-class" id="myRouteView" ref="myRouteView">
-      <transition :name="transitionName">
+    <transition :name="transitionName">
         <keep-alive>
-          <router-view />
+        <router-view />
         </keep-alive>
-      </transition>
+    </transition>
     </div>
-  </div>
+</div>
 </template>
 
 <script>
