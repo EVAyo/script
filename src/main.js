@@ -11,7 +11,7 @@ import '@/plugins/element'
 Vue.config.productionTip = false
 // Vue.prototype.$DeviceType =
 
-import waterfall from "vue-waterfall2";
+// import waterfall from "vue-waterfall2";
 
 //瀑布流插件
 
@@ -20,7 +20,7 @@ import './assets/css/reset.css'
 
 // import './assets/js/commin.js'
 
-Vue.use(waterfall)
+// Vue.use(waterfall)
 
 
 new Vue({

@@ -5,7 +5,7 @@
  * @LastEditTime: 2021-07-31 03:32:53
  * @Description: file content
  */
-import WordCloud from "wordcloud";
+// import WordCloud from "wordcloud";
 
 const handlerImageData = (baseImageData, newImageData) => {
     for (let i = 0; i < baseImageData.data.length; i += 4) {

@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import * as echarts from 'echarts'
-import 'echarts-wordcloud'
+// import * as echarts from 'echarts'
+// import 'echarts-wordcloud'
 
 export default {
   name: 'a-soul-fan-word-cloud',
