@@ -33,11 +33,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@media only screen and (min-width: 1170px) {
+ .index {
+     margin-left: -18.5vh;
+}
+}
 .index {
   position: relative;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
-  max-height: 100vh;
+  // max-height: 100vh;
   //overflow: scroll;
   overflow: hidden;
   z-index: 0;
@@ -50,8 +55,8 @@ export default {
   object-fit: cover;
   background-image: var(--index-bgi);
   background-repeat: no-repeat;
-  background-size: 100% 100%;
-  animation: clipCircleIn 1s;
+  background-size: cover;
+  animation: clipCircleIn 0.45s;
 }
 .index-tools {
   width: 60vw;
@@ -77,10 +82,10 @@ export default {
 
 @keyframes clipCircleIn {
   0% {
-    clip-path: circle(0 at 50% 50%);
+    // clip-path: circle(0 at 50% 50%);
   }
   100% {
-    clip-path: circle(100vh at 50% 50%);
+    // clip-path: circle(100vh at 50% 50%);
   }
 }
 </style>
