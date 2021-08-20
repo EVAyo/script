@@ -24,7 +24,8 @@
         align-self: center;
         display: flex;
         flex-direction: column;
-        width: 75%;
+        width: 80%;
+        padding-top: 40px;
 
         & .body-search,
         & .body-content,
@@ -159,12 +160,11 @@
     }
 }
 
-@media only screen and (min-width: 1170px) {
-    .a-soul-fan-part{
-        & .part-body,
-        & .part-footer{
-            width: calc(100% - 18.5vh);
-            margin-left: 18.5vh;
-        }
+@media only screen and(max-width: 768px ) {
+    .body-search{
+        height: 60px !important;
+    }
+    .search-input{
+            font-size: 30px !important;
     }
 }

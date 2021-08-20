@@ -8,20 +8,22 @@
 <template>
     <main class="a-soul-fan-part">
         <section class="part-body">
+            <!-- 搜索框 -->
             <div class="body-search">
                 <input
                     class="search-input"
                     type="text"
-                    placeholder="输入用户名"
+                    placeholder="请输入用户名"
                     v-model="searchValue"
                     :disabled="loading"
+                    @blur=" handlerSearch"
                     @keydown.enter="handlerSearch"
                 />
-                <div
+                <!-- <div
                     class="search-submit"
                     :class="submitDisable"
                     @click="handlerSearch"
-                ></div>
+                ></div> -->
             </div>
 
             <div
@@ -45,10 +47,6 @@
             </div>
 
             <p class="body-support">Bilibili@成分姬Official</p>
-        </section>
-
-        <section class="part-footer">
-            <!-- <p>TOOLS V1.0.0 BY GH-X-ST</p> -->
         </section>
     </main>
 </template>
@@ -113,10 +111,10 @@ export default {
     methods: {
         handlerSearch() {
             if (this.loading || this.hasContent) {
-                this.$message({
-                    message: "成分姬想知道你在找什么捏~",
-                    type: "warning",
-                });
+                // this.$message({
+                //     message: "成分姬想知道你在找什么捏~",
+                //     type: "warning",
+                // });
 
                 return false;
             }
