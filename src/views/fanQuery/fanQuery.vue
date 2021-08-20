@@ -37,32 +37,42 @@
       </div>
     </div>
     <div class="contain-sm">
-      <div
-          class="contain-item-sm"
-          v-for="(item, index) in Asoul"
-          :key="index"
-          :style="{'background-color': item.color}">
-        <!--    使用背景来控制图片易于控制    -->
-        <div class="drawing-sm" :style="{'background-image': `url(${item.drawing})`}"></div>
-        <div class="fans-wrapper">
-          <div class="bilibili-fans">
-            <div class="bilibili-icon">
-              <img src="../../assets/img/fansQuery/bilibili.webp" alt="">
+      <el-carousel
+          direction="vertical"
+          ref="slideCarousel"
+          arrow="always"
+          :autoplay="false"
+          style="height: 100vh; width: 100%;">
+        <el-carousel-item
+            v-for="(item, index) in Asoul"
+            :key="index"
+            style="height: 100vh; width: 100%;">
+          <div
+              class="contain-item-sm"
+              :style="{'background-color': item.color}">
+            <!--    使用背景来控制图片易于控制    -->
+            <div class="drawing-sm" :style="{'background-image': `url(${item.drawing})`}"></div>
+            <div class="fans-wrapper">
+              <div class="bilibili-fans" @click="toSpace('B',item.BzhanUid)">
+                <div class="bilibili-icon">
+                  <img src="../../assets/img/fansQuery/bilibili.webp" alt="">
+                </div>
+                <scrolling-num-box
+                    :value="BzhanFans[item.name]"
+                    class="bilibili-fans-num"></scrolling-num-box>
+              </div>
+              <div class="douyin-fans" @click="toSpace('D',item.douyinUid)">
+                <div class="douyin-icon">
+                  <img src="../../assets/img/fansQuery/douyin.webp" alt="">
+                </div>
+                <scrolling-num-box
+                    :value="douyinFans[item.name]"
+                    class="douyin-fans-num"></scrolling-num-box>
+              </div>
             </div>
-            <scrolling-num-box
-                :value="BzhanFans[item.name]"
-                class="bilibili-fans-num"></scrolling-num-box>
           </div>
-          <div class="douyin-fans">
-            <div class="douyin-icon">
-              <img src="../../assets/img/fansQuery/douyin.webp" alt="">
-            </div>
-            <scrolling-num-box
-                :value="douyinFans[item.name]"
-                class="douyin-fans-num"></scrolling-num-box>
-          </div>
-        </div>
-      </div>
+        </el-carousel-item>
+      </el-carousel>
     </div>
   </div>
 </template>
@@ -70,6 +80,7 @@
 <script>
 import axios from "axios";
 import scrollingNumBox from "./component/scrollingNum.vue";
+import {Carousel, CarouselItem} from 'element-ui';
 
 export default {
   name: "fanQuery",
@@ -148,12 +159,17 @@ export default {
   },
   components: {
     scrollingNumBox,
+    Carousel,
+    CarouselItem
   },
   async created() {
     this.Asoul.forEach((ele) => {
       this.getBibiliFans(ele.BzhanUid, ele.name);
       this.getDouyinFans(ele.douyinUid, ele.name);
     });
+  },
+  mounted() {
+    this.slideBanner()
   },
   methods: {
     // 获取B站粉丝数
@@ -186,7 +202,45 @@ export default {
         url = 'https://www.douyin.com/user/' + uid
       }
       window.open(url)
-    }
+    },
+    slideBanner() {
+      //选中的轮播图
+      var box = document.querySelector('.fanQuery .el-carousel__container');
+      var startPoint = 0;
+      var stopPoint = 0;
+      //重置坐标
+      var resetPoint = function () {
+        startPoint = 0;
+        stopPoint = 0;
+      }
+      //手指按下
+      box.addEventListener("touchstart", function (e) {
+        //手指点击位置的X坐标
+        startPoint = e.changedTouches[0].pageY;
+      });
+      //手指滑动
+      box.addEventListener("touchmove", function (e) {
+        //手指滑动后终点位置X的坐标
+        stopPoint = e.changedTouches[0].pageY;
+      });
+      //当手指抬起的时候，判断图片滚动离左右的距离
+      let that = this
+      box.addEventListener("touchend", () => {
+        if (stopPoint === 0 || startPoint - stopPoint === 0) {
+          resetPoint();
+          return;
+        }
+        if (startPoint - stopPoint > 0) {
+          resetPoint();
+          that.$refs.slideCarousel.next();
+          return;
+        }
+        if (startPoint - stopPoint < 0) {
+          resetPoint();
+          that.$refs.slideCarousel.prev();
+        }
+      });
+    },
   },
 };
 </script>
@@ -276,16 +330,15 @@ export default {
 @media screen and (max-width: 1170px) {
   .contain-sm {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: stretch;
+    height: 100%;
+    position: fixed;
   }
 
   .contain-item-sm {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: center;
     color: #fff;
 
     .drawing-sm {
@@ -305,6 +358,8 @@ export default {
       height: 15%;
       width: 75%;
       max-width: 450px;
+      user-select: none;
+      cursor: pointer;
 
       & > div {
         height: 50px;
