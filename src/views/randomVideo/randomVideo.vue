@@ -70,7 +70,6 @@ export default {
 .iframe-class{
   width: 60vw;
   height: 40vw;
-  
   min-width: 300px;
   // min-height: 450px;
   border: 4px solid #c343dc;
@@ -112,6 +111,7 @@ export default {
   .iframe-class{
     width: 80vw;
     height: 60vh;
+    margin-top: 70px;
     border: 1px solid #c343dc;
   }
   .random-button{
