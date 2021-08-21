@@ -1,10 +1,7 @@
 <template>
   <div class="index">
     <div class="index-tools">
-      <!-- <img src="/image/tools.png" class="img" alt />
-      <img src="/image/tools.png" alt />
-      <img src="/image/tools.png" alt />
-      <img src="/image/tools.png" alt /> -->
+      <img src="/image/tools.png"/>
     </div>
     <div
       class="index-bg"
@@ -42,8 +39,9 @@ export default {
   position: relative;
   width: 100vw;
   height: 100vh;
-  // max-height: 100vh;
-  //overflow: scroll;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
   z-index: 0;
 }
@@ -59,24 +57,14 @@ export default {
   animation: clipCircleIn 0.45s;
 }
 .index-tools {
-  width: 60vw;
-  right: 0;
-  position: absolute;
   z-index: 1;
   height: 100%;
   display: flex;
   flex-direction: column;
-  margin-right: 40px;
-  // background-image: url('../assets/img/Index/tools.png');
+  margin: 0 20px;
+  margin-top: 140px;
   img {
-    width: 60vw;
-    height: 14vw;
     max-height: 22vh;
-    // position: relative;
-    // right: 0;
-    // height: 20%;
-    // width: 98.5%;
-    margin: 10px;
   }
 }
 
