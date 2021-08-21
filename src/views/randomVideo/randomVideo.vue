@@ -72,7 +72,7 @@ export default {
   height: 40vw;
   min-width: 300px;
   // min-height: 450px;
-  border: 4px solid #c343dc;
+  border: 3px solid #c343dc;
 }
 .random-button{
   background-color: #333;
