@@ -45,8 +45,9 @@ export default {
 <style lang="less" scoped>
 .random-video{
   position: relative;
-  height: 100vh;
+  // height: 100vh;
   z-index: 0;
+  padding-top: 70px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,22 +64,23 @@ export default {
 }
 .iframe-box{
   display: flex;
-
   align-items: flex-end;
   justify-content: center;
 }
 .iframe-class{
-  width: 40vw;
-  height: 30vw;
-  min-width: 600px;
-  min-height: 450px;
-  border: 5px solid #c343dc;
+  width: 60vw;
+  height: 40vw;
+  
+  min-width: 300px;
+  // min-height: 450px;
+  border: 4px solid #c343dc;
 }
 .random-button{
   background-color: #333;
   cursor: pointer;
   width: 100px;
   height: 100px;
+  margin-top: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -100,5 +102,21 @@ export default {
   outline-color: rgba(148,63,239, 0);
   outline-offset: 20px;
   text-shadow: 1px 1px 2px #427388;
+}
+
+@media screen and (max-width: 1170px) {
+  .iframe-box{
+      flex-direction: column;
+      align-items: center;
+  }
+  .iframe-class{
+    width: 80vw;
+    height: 60vh;
+    border: 1px solid #c343dc;
+  }
+  .random-button{
+      width: 80px;
+      height: 80px;
+  }
 }
 </style>

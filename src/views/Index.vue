@@ -1,10 +1,10 @@
 <template>
   <div class="index">
     <div class="index-tools">
-      <img src="/image/tools.png" class="img" alt />
+      <!-- <img src="/image/tools.png" class="img" alt />
       <img src="/image/tools.png" alt />
       <img src="/image/tools.png" alt />
-      <img src="/image/tools.png" alt />
+      <img src="/image/tools.png" alt /> -->
     </div>
     <div
       class="index-bg"
