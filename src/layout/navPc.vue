@@ -27,9 +27,7 @@
     </div>
     <div class="route-view-class" id="myRouteView" ref="myRouteView">
     <transition :name="transitionName">
-        <keep-alive>
         <router-view />
-        </keep-alive>
     </transition>
     </div>
 </div>
