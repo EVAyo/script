@@ -27,9 +27,7 @@
     </div>
     <div class="route-view-class" id="myRouteView" ref="myRouteView">
     <transition :name="transitionName">
-        <keep-alive>
         <router-view />
-        </keep-alive>
     </transition>
     </div>
 </div>
@@ -149,9 +147,18 @@ export default {
         },
         // 监控屏幕宽度
         watchWidth(){
-            window.onresize = () => {
-        this.device = document.body.clientWidth > 1170
-    }
+            window.addEventListener('load',()=> {
+    // console.log(window.innerWidth);
+    
+    window.addEventListener('resize', ()=> {
+        // console.log(window.innerWidth);
+         this.device = document.body.clientWidth > 1170
+    })
+
+})
+    // window.onresize = () => {
+    //     this.device = document.body.clientWidth > 1170
+    // }
         }
     },
 };
@@ -187,7 +194,7 @@ export default {
     // background-image: url("../assets/img/contents/zhiNet-short.png");
     transition: width 0.5s, background-image 0.2s, min-width 0.5s;
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: 100% 100%;
 }
 .box:hover {
     width: 37vh;

@@ -1,10 +1,7 @@
 <template>
   <div class="index">
     <div class="index-tools">
-      <img src="/image/tools.png" class="img" alt />
-      <img src="/image/tools.png" alt />
-      <img src="/image/tools.png" alt />
-      <img src="/image/tools.png" alt />
+      <img src="/image/tools.png"/>
     </div>
     <div
       class="index-bg"
@@ -33,12 +30,18 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@media only screen and (min-width: 1170px) {
+ .index {
+     margin-left: -18.5vh;
+}
+}
 .index {
   position: relative;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
-  max-height: 100vh;
-  //overflow: scroll;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
   z-index: 0;
 }
@@ -50,37 +53,27 @@ export default {
   object-fit: cover;
   background-image: var(--index-bgi);
   background-repeat: no-repeat;
-  background-size: 100% 100%;
-  animation: clipCircleIn 1s;
+  background-size: cover;
+  animation: clipCircleIn 0.45s;
 }
 .index-tools {
-  width: 60vw;
-  right: 0;
-  position: absolute;
   z-index: 1;
   height: 100%;
   display: flex;
   flex-direction: column;
-  margin-right: 40px;
-  // background-image: url('../assets/img/Index/tools.png');
+  margin: 0 20px;
+  margin-top: 140px;
   img {
-    width: 60vw;
-    height: 14vw;
     max-height: 22vh;
-    // position: relative;
-    // right: 0;
-    // height: 20%;
-    // width: 98.5%;
-    margin: 10px;
   }
 }
 
 @keyframes clipCircleIn {
   0% {
-    clip-path: circle(0 at 50% 50%);
+    // clip-path: circle(0 at 50% 50%);
   }
   100% {
-    clip-path: circle(100vh at 50% 50%);
+    // clip-path: circle(100vh at 50% 50%);
   }
 }
 </style>

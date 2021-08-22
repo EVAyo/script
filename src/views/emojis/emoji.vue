@@ -49,9 +49,7 @@ export default {
  async mounted(){
         // this.listensBoxScroll()
         window.addEventListener('scroll',this.listensBoxScroll)
-        this.columnNum= Math.floor((document.body.clientWidth*0.8)/240)>4? 4 : Math.floor((this.screenWidth*0.8)/240)
-        this.columnNumWidth = 100/this.columnNum - 5
-
+      this.initColumn()
     window.onresize = () => {
       this.screenWidth = document.body.clientWidth
     }
@@ -66,26 +64,43 @@ export default {
 
     screenWidth (val) {
       if (!this.timer) {
-        this.screenWidth = val
         this.timer = true
-        // let that = this
         setTimeout(()=> {
-          let tempColumn = Math.floor((this.screenWidth*0.8)/240) >4? 4 : Math.floor((this.screenWidth*0.8)/240)
+          let tempColumn = 0
+          if(val>1170){
+              tempColumn =  4
+          }else if(val<=1170&&val>750)  {
+              tempColumn  =  3
+          }else if(val<=750){
+              tempColumn  =  2
+          }
           if(this.columnNum!=tempColumn){
             this.columnNum = tempColumn ;
-            this.columnNumWidth = 100/this.columnNum - 5
+            this.columnNumWidth = 100/this.columnNum
             this.setListIndex()
             this.$nextTick(()=>{
               this.lazyLoadimg()
             })
           }
           this.timer = false
-        }, 400)
+        }, 100)
       }
     }
   },
 
   methods: {
+    // 初始化列数和列宽
+    initColumn(){
+        //  获取屏幕宽度
+        if(document.body.clientWidth>1170){
+            this.columnNum = 4
+        }else if(document.body.clientWidth<=1170&&document.body.clientWidth>750) {
+            this.columnNum = 3
+        }else if(document.body.clientWidth<750){
+            this.columnNum = 2
+        }
+        this.columnNumWidth = 100/this.columnNum
+    },
     // 重置展示数组列数
     setListIndex(){
       const cacheList = [...this.cacheList]
@@ -93,8 +108,7 @@ export default {
       let tempList = Array.from(Array(column),() => new Array())
       cacheList.forEach((ele,index)=>{
           let temp = index % column
-          // console.log(temp);
-          tempList[temp].push(ele)
+          tempList[temp]?.push(ele)
       })
       this.imgList = tempList
     },
@@ -114,16 +128,14 @@ export default {
               // 目前窗口底部离容器顶部的距离
               let  TopOffsetHeight = document.documentElement.scrollTop + document.documentElement.offsetHeight
               let scrollHeight  = document.documentElement.scrollHeight
-              // console.log(TopOffsetHeight,'TopOffsetHeight');
-              // console.log(scrollHeight,'scrollHeight');
-              // 离底部50px触发翻页
-              if(TopOffsetHeight >= scrollHeight){
+              // 离底部100px触发翻页
+              if(TopOffsetHeight +100 >= scrollHeight){
                 this.currentPage++;
                 await this.GetLIstImg()
                 // this.lazyLoadimg()
               }
                 this.timeBoxScroll = false
-            }, 400)
+            }, 200)
         }
       
     },
@@ -202,7 +214,7 @@ export default {
       }, {
         root: null,
         threshold: [0],
-        rootMargin: '50px'
+        rootMargin: '100px'
       })
       io.observe(target)
     },
@@ -225,15 +237,16 @@ export default {
 
 .waterfall{
   display: flex;
-  flex-wrap: wrap;
+  padding: 40px 80px;
+  // flex-wrap: wrap;
   width: 100%;
   margin: 0 auto;
   justify-content: center;
 }
 .column{
   // min-width: 300px;
-  min-width: 100px;
-  max-width: 200px;
+  min-width: 50px;
+  max-width: 250px;
   // width: calc(100%/var(--columns));;
   margin: 0 20px;
 
@@ -298,5 +311,12 @@ export default {
 //     padding-left: 18.5vh;
 //   }
 // }
-
+@media only screen and (max-width: 750px) {
+ .waterfall{
+  padding: 40px 20px;
+}
+.data-souce{
+    display: none;
+}
+}
 </style>

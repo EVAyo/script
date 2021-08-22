@@ -3,17 +3,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: 100%;
-    height: 100vh;
-    // background: #282828 url('~@/assets/img/part-bg.png') repeat -40px 0px;
     overflow: hidden;
-    &::before{
-        content: '';
-        display: block;
-        width: 100%;
-        height: 140px;
-    }
-
+    padding-top: 70px;
     & .part-body,
     & .part-footer{
         width: 100%;
@@ -24,7 +15,8 @@
         align-self: center;
         display: flex;
         flex-direction: column;
-        width: 75%;
+        width: 80%;
+        padding-top: 40px;
 
         & .body-search,
         & .body-content,
@@ -36,7 +28,7 @@
 
         & .body-search,
         & .body-content{
-            border: 6px solid #b13dd6;
+            border: 3px solid #b13dd6;
             border-radius: 4px;
             overflow: hidden;
         }
@@ -55,8 +47,8 @@
             & .search-input{
                 flex: 1;
                 height: 100%;
-                padding: 0 30px;
-                font-size: 48px;
+                padding-left:30px;
+                font-size: 32px;
                 background-color: #282828;
                 outline-style: none;
                 border: none;
@@ -117,7 +109,7 @@
             overflow-y: auto;
             &>p{
                 line-height: 32px;
-                font-size: 24px;
+                font-size: 16px;
                 color: #f2f2f2;
                 &>span{
                     color: #b13dd6;
@@ -135,7 +127,7 @@
         & .body-support{
             text-align: center;
             line-height: 32px;
-            font-size: 24px;
+            font-size: 16px;
             color: #f2f2f2;
         }
     }
@@ -159,12 +151,11 @@
     }
 }
 
-@media only screen and (min-width: 1170px) {
-    .a-soul-fan-part{
-        & .part-body,
-        & .part-footer{
-            width: calc(100% - 18.5vh);
-            margin-left: 18.5vh;
-        }
+@media only screen and(max-width: 768px ) {
+    .body-search{
+        height: 60px !important;
+    }
+    .search-input{
+            font-size: 30px !important;
     }
 }

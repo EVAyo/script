@@ -2,12 +2,16 @@ import Vue from 'vue';
 import {
   Loading,
   Message,
-  InfiniteScroll
+  InfiniteScroll,
+  CarouselItem,
+  Carousel
 } from 'element-ui';
 
 Vue.component(Message)
 Vue.use(Loading);
 Vue.use(InfiniteScroll)
+Vue.use(CarouselItem)
+Vue.use(Carousel)
 
 
 Vue.prototype.$message = Message;

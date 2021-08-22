@@ -250,13 +250,13 @@ export default {
   .a-timeline-item-date {
     position: absolute;
     width: 100%;
-    left: 122%;
+    left: 130%;
     top: 10px;
   }
 
   .a-timeline-item:nth-child(even) .a-timeline-item-date {
     left: auto;
-    right: 122%;
+    right: 130%;
     text-align: right;
   }
 }
