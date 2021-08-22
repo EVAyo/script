@@ -31,44 +31,44 @@ export default {
         {
           url: require('../../assets/img/streamArchives/1.png'),
           text: "单人直播",
-          link: "https://space.bilibili.com/393396916"
+          link: "https://space.bilibili.com/393396916/favlist"
         },
         {
           url: require('../../assets/img/streamArchives/2.png'),
           text: "游戏室",
-          link: "https://space.bilibili.com/393396916"
+          link: "https://space.bilibili.com/1442421278/favlist?fid=1331326978"
         },
         {
           url: require('../../assets/img/streamArchives/3.png'),
           text: "夜谈",
-          link: "https://space.bilibili.com/393396916"
+          link: "https://space.bilibili.com/1442421278/favlist?fid=1331514678"
         },
         {
           url: require('../../assets/img/streamArchives/4.png'),
           text: "生日会",
-          link: "https://space.bilibili.com/393396916"
+          link: "https://space.bilibili.com/1442421278/favlist?fid=1331195378"
         },
         {
           url: require('../../assets/img/streamArchives/5.png'),
           text: "小剧场",
-          link: "https://space.bilibili.com/393396916"
+          link: "https://space.bilibili.com/1442421278/favlist?fid=1331327278"
         },
         {
           url: require('../../assets/img/streamArchives/6.png'),
           text: "线下",
-          link: "https://space.bilibili.com/393396916"
+          link: "https://space.bilibili.com/1442421278/favlist?fid=1331250478"
         },
       ],
       types: [
         {
           url: require('../../assets/img/streamArchives/dances.png'),
           text: "舞蹈",
-          link: "https://space.bilibili.com/393396916"
+          link: "https://space.bilibili.com/1442421278/favlist?fid=1331424678"
         },
         {
           url: require('../../assets/img/streamArchives/musics.png'),
           text: "音乐",
-          link: "https://space.bilibili.com/393396916"
+          link: "https://space.bilibili.com/1442421278/favlist?fid=1331250578"
         }
       ]
     }
