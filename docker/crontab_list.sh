@@ -13,9 +13,6 @@
 #骁龙品牌日 2021年08月13日-2021年08月25日
 12 1,22 * * * node /scripts/jd_xl.js >> /scripts/logs/jd_xl.log 2>&1
 
-#金机奖投票 2021年08月8日-2021年08月20日
-39 1,7,20 * * * node /scripts/jd_golden_machine.js >> /scripts/logs/jd_golden_machine.log 2>&1
-
 # 手机狂欢城(8.9-8.28)
 0 0,12,18,21 * * * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
 
