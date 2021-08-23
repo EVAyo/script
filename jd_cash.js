@@ -8,17 +8,17 @@
 ============Quantumultx===============
 [task_local]
 #签到领现金
-2 0-23/4 * * * https://gitee.com/lxk0301/jd_scripts/raw/master/jd_cash.js, tag=签到领现金, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+2 0-23/4 * * * jd_cash.js, tag=签到领现金, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "2 0-23/4 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_cash.js,tag=签到领现金
+cron "2 0-23/4 * * *" script-path=jd_cash.js,tag=签到领现金
 
 ===============Surge=================
-签到领现金 = type=cron,cronexp="2 0-23/4 * * *",wake-system=1,timeout=3600,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_cash.js
+签到领现金 = type=cron,cronexp="2 0-23/4 * * *",wake-system=1,timeout=3600,script-path=jd_cash.js
 
 ============小火箭=========
-签到领现金 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_cash.js, cronexpr="2 0-23/4 * * *", timeout=3600, enable=true
+签到领现金 = type=cron,script-path=jd_cash.js, cronexpr="2 0-23/4 * * *", timeout=3600, enable=true
  */
 const $ = new Env('签到领现金');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -30,7 +30,7 @@ let cookiesArr = [], cookie = '', message;
 let helpAuthor = true;
 const randomCount = $.isNode() ? 5 : 5;
 let cash_exchange = false;//是否消耗2元红包兑换200京豆，默认否
-const inviteCodes =['']
+const inviteCodes = ['']
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -47,7 +47,7 @@ let allMessage = '';
     return;
   }
   await requireConfig()
-  await getAuthorShareCode();
+  $.authorCode = await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_updateCash.json')
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
@@ -82,41 +82,50 @@ let allMessage = '';
     })
 async function jdCash() {
   $.signMoney = 0;
+
+  await appindex()
   await index()
+
   await shareCodesFormat()
-  await helpFriends()
+  // await helpFriends()
   await getReward()
   await getReward('2');
   $.exchangeBeanNum = 0;
   cash_exchange = $.isNode() ? (process.env.CASH_EXCHANGE ? process.env.CASH_EXCHANGE : `${cash_exchange}`) : ($.getdata('cash_exchange') ? $.getdata('cash_exchange') : `${cash_exchange}`);
-  if (cash_exchange === 'true') {
-    if(Number($.signMoney) >= 2){
-      console.log(`\n\n开始花费2元红包兑换200京豆，一周可换五次`)
-      for (let item of ["-1", "0", "1", "2", "3"]) {
-        $.canLoop = true;
-        if ($.canLoop) {
-          for (let i = 0; i < 5; i++) {
-            await exchange2(item);//兑换200京豆(2元红包换200京豆，一周5次。)
-          }
-          if (!$.canLoop) {
-            console.log(`已找到符合的兑换条件，跳出\n`);
-            break
-          }
-        }
-      }
-      if ($.exchangeBeanNum) {
-        message += `兑换京豆成功，获得${$.exchangeBeanNum * 100}京豆\n`;
-      }
-    }else{
-      console.log(`\n\n现金不够2元，不进行兑换200京豆，`)
-    }
-  }
-  await index(true)
+  // if (cash_exchange === 'true') {
+  //   if(Number($.signMoney) >= 2){
+  //     console.log(`\n\n开始花费2元红包兑换200京豆，一周可换五次`)
+  //     for (let item of ["-1", "0", "1", "2", "3"]) {
+  //       $.canLoop = true;
+  //       if ($.canLoop) {
+  //         for (let i = 0; i < 5; i++) {
+  //           await exchange2(item);//兑换200京豆(2元红包换200京豆，一周5次。)
+  //         }
+  //         if (!$.canLoop) {
+  //           console.log(`已找到符合的兑换条件，跳出\n`);
+  //           break
+  //         }
+  //       }
+  //     }
+  //     if ($.exchangeBeanNum) {
+  //       message += `兑换京豆成功，获得${$.exchangeBeanNum * 100}京豆\n`;
+  //     }
+  //   }else{
+  //     console.log(`\n\n现金不够2元，不进行兑换200京豆，`)
+  //   }
+  // }
+  await appindex(true)
   // await showMsg()
 }
-function index(info=false) {
+
+async function appindex(info=false) {
+  let functionId = "cash_homePage"
+  let body = "%7B%7D"
+  let uuid = randomString(16)
+  let sign = await getSign(functionId, decodeURIComponent(body), uuid)
+  let url = `${JD_API_HOST}?functionId=${functionId}&build=167774&client=apple&clientVersion=10.1.0&uuid=${uuid}&${sign}`
   return new Promise((resolve) => {
-    $.get(taskUrl("cash_mob_home",), async (err, resp, data) => {
+    $.post(apptaskUrl(url, body), async (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -127,38 +136,91 @@ function index(info=false) {
             if(data.code===0 && data.data.result){
               if(info){
                 if (message) {
-                  message += `当前现金：${data.data.result.signMoney}元`;
+                  message += `当前现金：${data.data.result.totalMoney}元`;
                   allMessage += `京东账号${$.index}${$.nickName}\n${message}${$.index !== cookiesArr.length ? '\n\n' : ''}`;
                 }
-                console.log(`\n\n当前现金：${data.data.result.signMoney}元`);
+                console.log(`\n\n当前现金：${data.data.result.totalMoney}元`);
                 return
               }
-              $.signMoney = data.data.result.signMoney;
-              // console.log(`您的助力码为${data.data.result.inviteCode}`)
-              console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${data.data.result.inviteCode}\n`);
+              $.signMoney = data.data.result.totalMoney;
+              // console.log(`您的助力码为${data.data.result.invitedCode}`)
+              console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${data.data.result.invitedCode}\n`);
               let helpInfo = {
-                'inviteCode': data.data.result.inviteCode,
+                'inviteCode': data.data.result.invitedCode,
                 'shareDate': data.data.result.shareDate
               }
               $.shareDate = data.data.result.shareDate;
               // $.log(`shareDate: ${$.shareDate}`)
               // console.log(helpInfo)
-              for(let task of data.data.result.taskInfos){
+              for (let task of data.data.result.taskInfos) {
+                if (task.type === 4) {
+                  for (let i = task.doTimes; i < task.times; ++i) {
+                    console.log(`去做${task.name}任务 ${i+1}/${task.times}`)
+                    await appdoTask(task.type, task.jump.params.skuId)
+                    await $.wait(5000)
+                  }
+                } else if (task.type === 2) {
+                  for (let i = task.doTimes; i < task.times; ++i) {
+                    console.log(`去做${task.name}任务 ${i+1}/${task.times}`)
+                    await appdoTask(task.type, task.jump.params.shopId)
+                    await $.wait(5000)
+                  }
+                } else if (task.type === 30) {
+                  for (let i = task.doTimes; i < task.times; ++i) {
+                    console.log(`去做${task.name}任务 ${i+1}/${task.times}`)
+                    await appdoTask(task.type, task.jump.params.path)
+                    await $.wait(5000)
+                  }
+                } else if (task.type === 16 || task.type===3 || task.type===5 || task.type===17 || task.type===21) {
+                  for (let i = task.doTimes; i < task.times; ++i) {
+                    console.log(`去做${task.name}任务 ${i+1}/${task.times}`)
+                    await appdoTask(task.type, task.jump.params.url)
+                    await $.wait(5000)
+                  }
+                }
+              }
+            }
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+function index() {
+  return new Promise((resolve) => {
+    $.get(taskUrl("cash_mob_home"), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (safeGet(data)) {
+            data = JSON.parse(data);
+            if (data.code === 0 && data.data.result) {
+              for (let task of data.data.result.taskInfos) {
                 if (task.type === 4) {
                   for (let i = task.doTimes; i < task.times; ++i) {
                     console.log(`去做${task.name}任务 ${i+1}/${task.times}`)
                     await doTask(task.type, task.jump.params.skuId)
                     await $.wait(5000)
                   }
-                }
-                else if (task.type === 2) {
+                } else if (task.type === 2) {
                   for (let i = task.doTimes; i < task.times; ++i) {
                     console.log(`去做${task.name}任务 ${i+1}/${task.times}`)
                     await doTask(task.type, task.jump.params.shopId)
                     await $.wait(5000)
                   }
-                }
-                else if (task.type === 16 || task.type===3 || task.type===5 || task.type===17 || task.type===21) {
+                } else if (task.type === 31) {
+                  for (let i = task.doTimes; i < task.times; ++i) {
+                    console.log(`去做${task.name}任务 ${i+1}/${task.times}`)
+                    await doTask(task.type, task.jump.params.path)
+                    await $.wait(5000)
+                  }
+                } else if (task.type === 16 || task.type===3 || task.type===5 || task.type===17 || task.type===21) {
                   for (let i = task.doTimes; i < task.times; ++i) {
                     console.log(`去做${task.name}任务 ${i+1}/${task.times}`)
                     await doTask(task.type, task.jump.params.url)
@@ -212,6 +274,38 @@ function helpFriend(helpInfo) {
               $.canHelp = false
             } else{
               console.log(data.data.bizMsg)
+            }
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+
+async function appdoTask(type,taskInfo) {
+  let functionId = 'cash_doTask'
+  let body = escape(JSON.stringify({"type":type,"taskInfo":taskInfo}))
+  let uuid = randomString(16)
+  let sign = await getSign(functionId, decodeURIComponent(body), uuid)
+  let url = `${JD_API_HOST}?functionId=${functionId}&build=167774&client=apple&clientVersion=10.1.0&uuid=${uuid}&${sign}`
+  return new Promise((resolve) => {
+    $.post(apptaskUrl(url, body), (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          if (safeGet(data)) {
+            data = JSON.parse(data);
+            if( data.code === 0){
+              console.log(`任务完成成功`)
+              // console.log(data.data.result.taskInfos)
+            }else{
+              console.log(data)
             }
           }
         }
@@ -335,6 +429,45 @@ function exchange2(node) {
     })
   })
 }
+function getSign(functionid, body, uuid) {
+  return new Promise(async resolve => {
+    let data = {
+      "functionId":functionid,
+      "body":body,
+      "uuid":uuid,
+      "client":"apple",
+      "clientVersion":"10.1.0"
+    }
+    let options = {
+      url: `https://service-ft43gk13-1302176878.sh.apigw.tencentcs.com/release/ddo`,
+      body: JSON.stringify(data),
+      headers: {
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
+      }
+    }
+    $.post(options, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} getSign API请求失败，请检查网路重试`)
+        } else {
+
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data);
+      }
+    })
+  })
+}
+function randomString(e) {
+  e = e || 32;
+  let t = "abcdefghijklmnopqrstuvwxyz0123456789", a = t.length, n = "";
+  for (let i = 0; i < e; i++)
+    n += t.charAt(Math.floor(Math.random() * a));
+  return n
+}
 function showMsg() {
   return new Promise(resolve => {
     if (!jdNotify) {
@@ -348,14 +481,14 @@ function showMsg() {
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
-    $.get({url: `https://action-1251995682.file.myqcloud.com/null.json`, 'timeout': 10000}, (err, resp, data) => {
+    $.get({url: `https://code.chiang.fun/api/v1/jd/jdcash/read/${randomCount}/`, 'timeout': 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {
-            console.log(`随机取0个码放到您固定的互助码后面(不影响已有固定互助)`)
+            console.log(`随机取${randomCount}个码放到您固定的互助码后面(不影响已有固定互助)`)
             data = JSON.parse(data);
           }
         }
@@ -416,7 +549,7 @@ function requireConfig() {
       })
     } else {
       if ($.getdata('jd_cash_invite')) $.shareCodesArr = $.getdata('jd_cash_invite').split('\n').filter(item => !!item);
-      console.log(`\nBoxJs设置的京喜财富岛邀请码:${$.getdata('jd_cash_invite')}\n`);
+      console.log(`\nBoxJs设置的京东签到领现金邀请码:${$.getdata('jd_cash_invite')}\n`);
     }
     console.log(`您提供了${$.shareCodesArr.length}个账号的${$.name}助力码\n`);
     resolve()
@@ -439,6 +572,23 @@ function deepCopy(obj) {
   }
   return objClone;
 }
+
+function apptaskUrl(url, body) {
+  return {
+    url,
+    body: `body=${body}`,
+    headers: {
+      'Cookie': cookie,
+      'Host': 'api.m.jd.com',
+      'Connection': 'keep-alive',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Referer': '',
+      'User-Agent': 'JD4iPhone/167774 (iPhone; iOS 14.7.1; Scale/3.00)',
+      'Accept-Language': 'zh-Hans-CN;q=1',
+      'Accept-Encoding': 'gzip, deflate, br',
+    }
+  }
+}
 function taskUrl(functionId, body = {}) {
   return {
     url: `${JD_API_HOST}?functionId=${functionId}&body=${escape(JSON.stringify(body))}&appid=CashRewardMiniH5Env&appid=9.1.0`,
@@ -455,26 +605,39 @@ function taskUrl(functionId, body = {}) {
   }
 }
 
-function getAuthorShareCode(url = "https://action-1251995682.file.myqcloud.com/shareCodes/jd_updateCash.json") {
+function getAuthorShareCode(url) {
   return new Promise(resolve => {
-    $.get({url, headers:{
+    const options = {
+      url: `${url}?${new Date()}`, "timeout": 10000, headers: {
         "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1 Edg/87.0.4280.88"
-      }, timeout: 200000,}, async (err, resp, data) => {
-      $.authorCode = [];
+      }
+    };
+    if ($.isNode() && process.env.TG_PROXY_HOST && process.env.TG_PROXY_PORT) {
+      const tunnel = require("tunnel");
+      const agent = {
+        https: tunnel.httpsOverHttp({
+          proxy: {
+            host: process.env.TG_PROXY_HOST,
+            port: process.env.TG_PROXY_PORT * 1
+          }
+        })
+      }
+      Object.assign(options, { agent })
+    }
+    $.get(options, async (err, resp, data) => {
       try {
         if (err) {
         } else {
-          $.authorCode = JSON.parse(data)
+          if (data) data = JSON.parse(data)
         }
       } catch (e) {
-        $.logErr(e, resp)
+        // $.logErr(e, resp)
       } finally {
-        resolve();
+        resolve(data);
       }
     })
   })
 }
-
 function TotalBean() {
   return new Promise(async resolve => {
     const options = {
