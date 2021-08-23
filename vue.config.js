@@ -32,7 +32,9 @@ module.exports = {
         }
       },
       '/api/cfj': {
-        target: 'http://ilovemiku.com:7123',
+        target: 'https://tools.asoulfan.com/api',
+        // https://tools.asoulfan.com/api/cfj/?name=
+
         changeOrigin: true,
         pathRewrite: {
           '^/api/cfj': '/cfj'
