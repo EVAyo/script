@@ -12,8 +12,8 @@
                 <img :src="cellParams.face" :alt="cellParams.uid" />
             </div>
             <div class="head-main">
-                <p :style="unameStyle">{{ cellParams.uname }}</p>
-                <p>{{ cellParams.officialVerify }}</p>
+                <div :style="unameStyle" class="head-main-cell">{{ cellParams.uname }}</div>
+                <div class="head-main-cell">{{ cellParams.officialVerify }}</div>
             </div>
         </div>
         <p class="cell-body">{{ cellParams.sign }}</p>
