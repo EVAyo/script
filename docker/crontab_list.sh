@@ -167,3 +167,5 @@
 17 1,21 * * * node /scripts/jx_sign.js >> /scripts/logs/jx_sign.log 2>&1
 # 积分换话费
 33 7,19 * * * node /scripts/jd_dwapp.js >> /scripts/logs/jd_dwapp.log 2>&1
+# 领券中心签到
+35 0,21 * * * node /scripts/jd_ccSign.js >> /scripts/logs/jd_ccSign.log 2>&1
