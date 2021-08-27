@@ -39,18 +39,18 @@ export default {
 
 <style scoped>
   .article {
-    @apply w-full overflow-hidden p-2 pt-5 rounded-lg;
+    @apply w-full overflow-hidden px-2 my-8 rounded-lg;
     @apply border-[3px] border-gray-100;
   }
 
   .article-header {
-    @apply w-full grid pl-2 my-2;
-    @apply grid-cols-[65%,35%]
+    @apply w-full grid pl-1 pt-2;
+    @apply grid-cols-[63%,37%] text-[14px];
     @apply xl:inline;
   }
 
   .article-header li {
-    @apply text-2xl lg:inline lg:pr-5;
+    @apply lg:inline lg:pr-5 leading-relaxed;
   }
 
   .article-key, .link {
@@ -63,6 +63,6 @@ export default {
 
   .article-content {
     @apply break-all whitespace-pre-wrap text-2xl;
-    @apply w-full p-2 leading-relaxed;
+    @apply w-full p-1 leading-relaxed;
   }
 </style>

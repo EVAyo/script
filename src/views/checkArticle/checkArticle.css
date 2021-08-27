@@ -3,7 +3,7 @@
 }
 
 .BigContent {
-  @apply text-gray-300 box-border px-2 text-2xl leading-relaxed;
+  @apply text-gray-300 box-border text-2xl leading-relaxed;
   @apply min-h-full relative overflow-hidden;
   @apply lg:(p-8 pb-0);
 }
@@ -28,22 +28,21 @@
 }
 
 .content {
-  @apply w-full box-border p-4 rounded-lg my-8 overflow-hidden;
-  @apply border-[3px] border-[#f2f2f2]
+  @apply w-full box-border rounded-lg my-8 overflow-hidden;
+  @apply border-[3px] border-[#f2f2f2];
 }
 
 .search-input {
-  @apply w-full box-border outline-none resize-none;
-  @apply h-[200px] bg-[#2B343A] text-[#f2f2f2];
+  @apply w-full box-border outline-none resize-none p-3;
+  @apply h-[200px] bg-[#2B343A] text-[#f2f2f2] text-[14px] leading-relaxed;
 }
 
 .textBottom {
-  @apply flex justify-between;
+  @apply flex justify-between p-2 pt-0 pb-4;
 }
 
 .textBottom ul {
-  height: 70px;
-  @apply flex flex-col justify-around text-center;
+  @apply flex flex-col justify-around text-center h-[60px];
 }
 
 .copy {
