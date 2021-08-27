@@ -10,15 +10,6 @@
 #女装盲盒
 13 0,12 * * * node /scripts/jd_nzmh.js >> /scripts/logs/jd_nzmh.log 2>&1
 
-#骁龙品牌日 2021年08月13日-2021年08月25日
-12 1,22 * * * node /scripts/jd_xl.js >> /scripts/logs/jd_xl.log 2>&1
-
-# 手机狂欢城(8.9-8.28)
-0 0,12,18,21 * * * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
-
-# 手机狂欢城互助(8.9-8.28)
-33 0,11,17,20 * * * node /scripts/jd_carnivalcity_help.js >> /scripts/logs/jd_carnivalcity_help.log 2>&1
-
 # 5G超级盲盒(活动时间：2021-8-2到2021-10-29)
 0 0,1-23/3 * * * node /scripts/jd_mohe.js >> /scripts/logs/jd_mohe.log 2>&1
 
