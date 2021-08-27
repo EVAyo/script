@@ -87,6 +87,7 @@ export default {
             searchLoad: false,
             searchValue: "",
             searchList: [],
+            oldSearchValue:'',
         };
     },
     //监听属性 类似于data概念
@@ -110,15 +111,10 @@ export default {
     //方法集合
     methods: {
         handlerSearch() {
-            if (this.loading || this.hasContent) {
-                // this.$message({
-                //     message: "成分姬想知道你在找什么捏~",
-                //     type: "warning",
-                // });
-
+            if (this.loading || this.hasContent||(this.oldSearchValue===this.searchValue)) {
                 return false;
             }
-
+            this.oldSearchValue = this.searchValue
             this.loading = true;
 
             this.searchList = [];
