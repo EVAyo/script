@@ -39,13 +39,13 @@ export default {
 
 <style scoped>
   .article {
-    border: 3px solid;
-    @apply w-full overflow-hidden border-gray-100 p-2 pt-5;
+    @apply w-full overflow-hidden p-2 pt-5 rounded-lg;
+    @apply border-[3px] border-gray-100;
   }
 
   .article-header {
-    grid-template-columns: 65% 35%;
     @apply w-full grid pl-2 my-2;
+    @apply grid-cols-[65%,35%]
     @apply xl:inline;
   }
 
@@ -54,8 +54,7 @@ export default {
   }
 
   .article-key, .link {
-    color: #c678d0;
-    /* @apply font-semibold; */
+    @apply text-[#c678d0];
   }
 
   .link {

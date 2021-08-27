@@ -11,7 +11,7 @@
     <div class="content-right-item">
       <ul class="intro-list">
         <li class="intro">
-          枝网查重系统介绍
+          <a href="https://asoulcnki.asia/" class="hover:underline"> 枝网查重系统</a>介绍
         </li>
         <!-- rewite by ch3cknull -->
         <li v-for="i in intro" :key="i.key">
@@ -50,8 +50,8 @@ export default {
 
 <style scoped>
   .content-right-item {
-    border: 3px solid;
-    @apply border-gray-100 mb-10 text-3xl p-3;
+    @apply my-8 text-2xl p-3 rounded-lg;
+    @apply border-[3px] border-gray-100;
   }
 
   .title {
@@ -63,13 +63,12 @@ export default {
   }
 
   .ab-content {
-    font-size: 16px;
+    @apply text-[16px];
     @apply w-full break-all my-3 leading-relaxed tracking-wider;
   }
 
   .intro-list {
-    font-size: 17px;
-    @apply break-all font-medium leading-loose;
+    @apply break-all font-medium text-2xl leading-loose;
   }
 
   .intro {
@@ -77,6 +76,6 @@ export default {
   }
 
   .pink {
-    color: #c678d0;
+    @apply text-[#c678d0];
   }
 </style>
