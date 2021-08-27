@@ -7,6 +7,7 @@
             <img 
               :data-src="img.url + `@` + img.width + 'w_' + img.height + 'h.webp'"
               :data-apple-src="img.url"
+              data-loaded="false"
               class="column-item-img"
             >
           </a>
@@ -205,9 +206,16 @@ export default {
         entries.forEach((entry, i) => {
           if (entry.isIntersecting) {
             const img = entry.target
+
+            const loaded = img.getAttribute('data-loaded')
+            if (loaded == "true") {
+              return
+            }
+
             const src = isApple() ? 
               img.getAttribute('data-apple-src') : img.getAttribute('data-src')
             img.setAttribute('src', src)
+            img.setAttribute('data-loaded', "true")
             io.unobserve(entry.target)
           }
         });
