@@ -1,0 +1,81 @@
+.div {
+  @apply mx-auto;
+}
+
+.BigContent {
+  @apply text-gray-300 box-border text-2xl leading-relaxed;
+  @apply min-h-full relative overflow-hidden;
+  @apply lg:(p-8 pb-0);
+}
+
+.content_left {
+  @apply box-border m-0 px-5 w-full;
+  @apply lg:(float-left w-2/3);
+}
+
+.content_right {
+  @apply box-border m-0 px-5 w-full;
+  @apply lg:(float-left w-1/3);
+}
+
+.logo {
+  @apply w-1/2 pl-14 pt-10 -mb-2;
+  @apply min-w-[200px] max-w-[350px];
+}
+
+.logo img {
+  @apply w-full h-full;
+}
+
+.content {
+  @apply w-full box-border rounded-lg my-8 overflow-hidden;
+  @apply border-[3px] border-[#f2f2f2];
+}
+
+.search-input {
+  @apply w-full box-border outline-none resize-none p-3;
+  @apply h-[200px] bg-[#2B343A] text-[#f2f2f2] text-[14px] leading-relaxed;
+}
+
+.textBottom {
+  @apply flex justify-between p-2 pt-0 pb-4;
+}
+
+.textBottom ul {
+  @apply flex flex-col justify-around text-center h-[60px];
+}
+
+.copy {
+  @apply underline cursor-pointer;
+}
+
+.li_bottom {
+  @apply text-[16px] text-[#c678d0];
+}
+
+.input_but{
+  outline-offset: 0px;
+  transition: all 1250ms cubic-bezier(0.19, 1, 0.22, 1);
+  -moz-transition:  all 1250ms cubic-bezier(0.19, 1, 0.22, 1); /* Firefox 4 */
+  -webkit-transition:  all 1250ms cubic-bezier(0.19, 1, 0.22, 1); /* Safari 和 Chrome */
+  -o-transition:  all 1250ms cubic-bezier(0.19, 1, 0.22, 1); /* Opera */
+  @apply cursor-pointer shadow-inner rounded-lg;
+  @apply h-[35px] w-[100px];
+  @apply bg-[#943fef] text-white;
+}
+
+.input_but:hover{
+  border: 1 solid;
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.5), 0 0 20px rgba(255, 255, 255, 0.2);
+  outline: 5px solid;
+  outline-color: rgba(255, 255, 255, 0);
+  outline-offset: 20px;
+}
+
+.pink{
+  @apply text-[#c678d0];
+}
+
+.violet{
+  @apply text-[#943fef] cursor-pointer;
+}

@@ -50,7 +50,7 @@
 </template>
 
 <script>
-
+import './checkArticle.css'
 
 import Article from './components/result';
 import RightContent from './components/right'
@@ -154,7 +154,3 @@ export default {
   }
 }
 </script>
-
-<style lang="less" scoped>
-@import "./checkArticle.less";
-</style>
