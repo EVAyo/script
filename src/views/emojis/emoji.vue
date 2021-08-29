@@ -13,10 +13,11 @@
           </a>
 			  </div>
       </div>
+
+		</div>
       <div class="last-page" v-if="isLastPage">
       ---------已经是最后一页啦---------
       </div>
-		</div>
     <!-- 数据来源 -->
     <div class="data-souce" @click="toUpSpace">
       数据来源:B站洛骑塔
@@ -239,8 +240,6 @@ export default {
   // background-image:url('../../assets/img/emoji/bgp.webp');
   background-size: cover;
   background-color: #2B343A;
-  display: flex;
-  justify-content: center;
 }
 
 .waterfall{
@@ -314,11 +313,6 @@ export default {
   margin: 20px;
   width: 100%;
 }
-// @media only screen and (min-width: 1170px) {
-//   .emoji{
-//     padding-left: 18.5vh;
-//   }
-// }
 @media only screen and (max-width: 750px) {
  .waterfall{
   padding: 40px 20px;
