@@ -140,7 +140,7 @@ export default {
     },
     methods: {
         toAsoulFan() {
-            window.location.href = "https://www.asoulfan.cn/"
+            window.location.href = "https://www.asoulfan.com"
         },
         openMain() {
             this.expand = !this.expand
