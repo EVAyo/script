@@ -45,6 +45,11 @@ if [ ! -s ${JD_DIR}/config/bot.json ]; then
   echo
 fi
 
+if [ ! -s ${JD_DIR}/config/wskey.json ]; then
+  echo -e "检测到config配置目录下不存在wskey.json，从示例文件复制一份用于初始化...\n"
+  cp -fv ${JD_DIR}/sample/wskey.json.sample ${JD_DIR}/config/wskey.json
+  echo
+fi
 echo -e "========================3. 启动JOY挂机程序========================\n"
 # 清空pm2日志
 rm -rf /root/.pm2/logs/*

@@ -7,6 +7,9 @@
 # 导出所有互助码清单，日志在log/export_sharecodes下
 48 5 * * * bash export_sharecodes
 
+# 自动更新cookie，需要在config目录的wskey.json配置wskey
+55 23 * * * bash jd wskey
+
 # 重启挂机脚本，挂机脚本可以随容器启动而启动，建议需要重启挂机程序时直接重启容器，如实在不想通过重启容器而重启挂机程序，可以解除下一行注释
 # 33 13 * * * bash jd hangup
 
