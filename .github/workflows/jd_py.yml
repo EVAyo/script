@@ -1,9 +1,9 @@
 # File: .github/workflows/repo-sync.yml
-name: ninja-panel #action名字，随便起 
+name: jd_py #action名字，随便起 
 env:
-  ID: ninja-panel
-  URL: https://github.com/MoonBegonia/ninja.git
-  BRANCH: main
+  ID: jd_py
+  URL: https://github.com/ClassmateLin/jd_scripts.git
+  BRANCH: master
 on:
   schedule:
     - cron: '1 0,15 * * *'
