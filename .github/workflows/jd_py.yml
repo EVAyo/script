@@ -23,9 +23,7 @@ jobs:
           node-version: 10.x      
       - name: '运行同步'
         run: |
-          git clone ${URL} tmp
-          cp -r tmp/* /home/runner/work/sync/tmp
-          rm -rf tmp
+          git clone -b main ${URL} tmp
       - name: commit
         run: |
           git config --global user.email ${{ secrets.EMAIL }}
