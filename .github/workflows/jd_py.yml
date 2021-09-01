@@ -2,7 +2,7 @@ name: jd_py #action名字，随便起
 env:
   ID: jd_py
   URL: https://github.com/ClassmateLin/jd_scripts.git
-  BRANCH: master
+  BRANCH: main
 on:
   workflow_dispatch:
   schedule:
@@ -23,7 +23,10 @@ jobs:
           node-version: 10.x      
       - name: '运行同步'
         run: |
-          git clone -b main ${URL} tmp
+          git clone -b ${BRANCH} ${URL} tmp
+          rm -rf tmp/.git
+          mv tmp/* /home/runner/work/script/script/
+          rm -rf tmp
       - name: commit
         run: |
           git config --global user.email ${{ secrets.EMAIL }}
@@ -31,4 +34,7 @@ jobs:
           git add .
           git commit -m "update" -a || echo "Nothing to update"
       - name: Push changes
-        run: git push origin ${ID}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: ${ID}
