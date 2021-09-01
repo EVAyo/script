@@ -1,45 +1,38 @@
-# File: .github/workflows/repo-sync.yml
 name: jd_py #action名字，随便起 
 env:
   ID: jd_py
   URL: https://github.com/ClassmateLin/jd_scripts.git
   BRANCH: master
 on:
-  schedule:
-    - cron: '1 0,15 * * *'
   workflow_dispatch:
+  schedule:
+    - cron: '45 0-23 * * *'
   watch:
     types: started
-  push:
-    branches: [ master ]
   repository_dispatch:
-    types: sync #同随便起
+    types: sync
 jobs:
-  repo-sync:
-    env:
-      PAT: ${{ secrets.PAT }} 
-      dst_key: ${{ secrets.GITEE_PRIVATE_KEY }} # 我自己同步到gitee使用，其他人可忽略
+  build:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
+      - name: Use Node.js 10.x
+        uses: actions/setup-node@v1
         with:
-          persist-credentials: false
-      - name: sync ${ID}
-        uses: repo-sync/github-sync@v2
-        if: env.PAT
+          node-version: 10.x      
+      - name: '运行同步'
+        run: |
+          git clone ${URL} tmp
+          rm -rf .git*
+      - name: commit
+        run: |
+          git config --global user.email ${{ secrets.EMAIL }}
+          git config --global user.name ${{ secrets.USER_NAME }}
+          git add .
+          git commit -m "update" -a || echo "Nothing to update"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
-          source_repo: ${URL} #关键内容，对方github库信息
-          source_branch: ${BRANCH}
-          destination_branch: ${ID}
           github_token: ${{ secrets.PAT }}
-      # 我自己同步到gitee使用，其他人可忽略
-      - name: sync github -> gitee
-        uses: Yikun/hub-mirror-action@master
-        if: env.dst_key
-        with:
-          src: github/lxk0301
-          dst: gitee/lxk0301
-          static_list: "jd_scripts"
-          dst_key: ${{ secrets.GITEE_PRIVATE_KEY }}
-          dst_token: ${{ secrets.GITEE_TOKEN }}
+          branch: ${ID}
