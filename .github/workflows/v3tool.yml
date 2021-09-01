@@ -27,7 +27,7 @@ jobs:
 
     - name: Clone Master
       run: |
-        git clone -b master git@gitee:dockere/jd_tools.git master
+        git clone -b master git@gitee.com:dockere/jd_tools.git master
 
     - name: Push Master
       uses: ad-m/github-push-action@master
