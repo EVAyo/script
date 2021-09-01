@@ -31,7 +31,4 @@ jobs:
           git add .
           git commit -m "update" -a || echo "Nothing to update"
       - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.PAT }}
-          branch: ${ID}
+        run: git push origin ${ID}
