@@ -24,7 +24,8 @@ jobs:
       - name: '运行同步'
         run: |
           git clone ${URL} tmp
-          rm -rf .git*
+          cp -r tmp/* /home/runner/work/tmp/tmp
+          rm -rf tmp
       - name: commit
         run: |
           git config --global user.email ${{ secrets.EMAIL }}
