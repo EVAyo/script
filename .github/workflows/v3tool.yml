@@ -1,5 +1,8 @@
 name: sync-jd_scripts
 
+env:
+  ID: v3tool
+
 on:
   workflow_dispatch:
   schedule:
@@ -34,7 +37,7 @@ jobs:
       with:
         directory: master
         github_token: ${{ secrets.PAT }}
-        branch: v3tool
+        branch: ${ID}
 
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
