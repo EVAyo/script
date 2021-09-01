@@ -24,7 +24,7 @@ jobs:
       - name: '运行同步'
         run: |
           git clone ${URL} tmp
-          cp -r tmp/* /home/runner/work/tmp/tmp
+          cp -r tmp/* /home/runner/work/sync/tmp
           rm -rf tmp
       - name: commit
         run: |
