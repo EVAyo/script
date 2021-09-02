@@ -31,7 +31,7 @@ jobs:
 
     - name: Clone Master
       run: |
-        git clone -b ${{ env.BRANCH }} ${{ env.URL }} master --log --no-commit
+        git clone -b ${{ env.BRANCH }} ${{ env.URL }} master --no-commit
         cd master && git add .&& git commit -m "update by Action" -a || echo "Nothing to update"
 
     - name: Push Master
