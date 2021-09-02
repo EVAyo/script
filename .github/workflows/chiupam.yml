@@ -39,6 +39,7 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         directory: master
+        force: true
         github_token: ${{ secrets.PAT }}
         branch: ${{ env.ID }}
 
