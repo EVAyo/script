@@ -31,10 +31,9 @@ jobs:
 
     - name: Clone Master
       run: |
-        git clone -b ${{ env.ID }} https://github.com/EVAyo/script master
-        git clone -b ${{ env.BRANCH }} ${{ env.URL }} tmp
-        cd tmp && rm -rf .git && mv * ../master && cd ..
-        cd master && git add .&& git commit -m "update by Action" -a || echo "Nothing to update"
+        git clone -b ${{ env.BRANCH }} ${{ env.URL }} master
+        cd master && echo -e "`date`\n" >> history
+        git add .&& git commit -m "update by Action" -a || echo "Nothing to update"
 
     - name: Push Master
       uses: ad-m/github-push-action@master
