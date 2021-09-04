@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import os
-import sys
-
-from telethon import events
-
 from .. import chat_id, jdbot, logger, _LogDir
+from telethon import events
+import os, sys
 
 
 @jdbot.on(events.NewMessage(from_users=chat_id, pattern=r'^e$'))
