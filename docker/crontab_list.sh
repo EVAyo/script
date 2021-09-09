@@ -4,19 +4,18 @@
 30 * * * * sh +x /scripts/docker/auto_help.sh collect >> /scripts/logs/auto_help_collect.log 2>&1
 
 ##############短期活动##############
-#众筹许愿池 2021年08月1日-2021年12月31日
+# 内容鉴赏官 2021年09月1日-2021年09月30
+35 1,5 * * * node /scripts/jd_connoisseur.js >> /scripts/logs/jd_connoisseur.log 2>&1
+# 众筹许愿池 2021年08月1日-2021年12月31日
 19 7,13 * * * node /scripts/jd_wish.js >> /scripts/logs/jd_wish.log 2>&1
-#iqoo生而为赢酷跑
+# iqoo生而为赢酷跑
 2 6,20 28-31,1-12 8,9 * node /scripts/jd_iqoo_run.js >> /scripts/logs/jd_iqoo_run.log 2>&1
-#女装盲盒
+# 女装盲盒
 13 0,12 * * * node /scripts/jd_nzmh.js >> /scripts/logs/jd_nzmh.log 2>&1
-
 # 5G超级盲盒(活动时间：2021-8-2到2021-10-29)
 0 0,1-23/3 * * * node /scripts/jd_mohe.js >> /scripts/logs/jd_mohe.log 2>&1
-
 #特务Z
 34 12,16,18 * * * node /scripts/jd_productZ4Brand.js >> /scripts/logs/jd_productZ4Brand.log 2>&1
-
 #极速版发财大赢家 2021-07-15到2021-08-15
 20,40 0-23/1 * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
 #惊喜88红包
