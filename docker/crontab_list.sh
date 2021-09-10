@@ -134,8 +134,6 @@
 25 9 * * * node /scripts/jd_speed.js >> /scripts/logs/jd_speed.log 2>&1
 # 京喜财富岛
 5 * * * * node /scripts/jd_cfd.js >> /scripts/logs/jd_cfd.log 2>&1
-#来客有礼送豆得豆
-43 1,9 * * * node /scripts/jd_sendBeans.js >> /scripts/logs/jd_sendBeans.log 2>&1
 # 电竞经理
 30 3,12,22 * * * node /scripts/jd_esManager.js >> /scripts/logs/jd_esManager.log 2>&1
 # 半点红包雨
