@@ -6,11 +6,11 @@
 //TG群:https://t.me/passerbyb2021
 
 //[task_local]
-//7 */1 * * * https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_getPoints.js
+//7 */1 * * * jd_jddj_getPoints.js
 
 
 //[Script]
-//cron "7 */1 * * *" script-path=https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_getPoints.js,tag=京东到家鲜豆庄园收水滴
+//cron "7 */1 * * *" script-path=jd_jddj_getPoints.js,tag=京东到家鲜豆庄园收水滴
 
 
 const $ = new API("jddj_getPoints");
