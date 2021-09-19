@@ -6,10 +6,10 @@ v5.6
 boxjs订阅地址:https://gitee.com/passerby-b/javascript/raw/master/JD/passerby-b.boxjs.json
 
 [task_local]
-10 0,3,8,11,17 * * * jd_jddj_fruit.js
+10 0,3,8,11,17 * * * https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_fruit.js
 
 [Script]
-cron "10 0,3,8,11,17 * * *" script-path=jd_jddj_fruit.js,tag=京东到家果园任务
+cron "10 0,3,8,11,17 * * *" script-path=https://raw.githubusercontent.com/passerby-b/JDDJ/main/jddj_fruit.js,tag=京东到家果园任务
 
 */
 
@@ -18,8 +18,8 @@ let ckPath = './jdCookie.js';//ck路径,环境变量:JDDJ_CKPATH
 
 const $ = new API("jddj_fruit");
 try {
-    //jd_jddj_fruit.js
-    $.http.get({ url: 'jd_jddj_fruit.js' }).then(response => {
+    //https://ghproxy.com/https://raw.githubusercontent.com/passerby-b/Script/master/jddj_fruit_code.js
+    $.http.get({ url: 'https://raw.githubusercontents.com/passerby-b/Script/master/jddj_fruit_code.js' }).then(response => {
         if (!!response.body) eval(response.body);
     });
 } catch (error) {
