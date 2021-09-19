@@ -43,8 +43,10 @@ let tuanActiveId = ``, hasSend = false;
 const jxOpenUrl = `openjd://virtual?params=%7B%20%22category%22:%20%22jump%22,%20%22des%22:%20%22m%22,%20%22url%22:%20%22https://wqsd.jd.com/pingou/dream_factory/index.html%22%20%7D`;
 let cookiesArr = [], cookie = '', message = '', allMessage = '';
 const inviteCodes = [
-  'XOR3A1bQDLLlTvR5WzR3bg==@0f51WgzYHydCEESfms3PTg==@SmMbqc8FwQ0Zqml8FIJQ7w==@RGNzC42xzWN8zracxob5Iw==@CLs7z5ljieqUmYFCz-mPIg==@@WghOSPpHylNG1VOUUY0UCw==@RsjljNAAYotorAKjJjTGHg==',
-  'XOR3A1bQDLLlTvR5WzR3bg==@0f51WgzYHydCEESfms3PTg==@SmMbqc8FwQ0Zqml8FIJQ7w==@RGNzC42xzWN8zracxob5Iw==@CLs7z5ljieqUmYFCz-mPIg==@@WghOSPpHylNG1VOUUY0UCw==@RsjljNAAYotorAKjJjTGHg==',
+  XOR3A1bQDLLlTvR5WzR3bg==@0f51WgzYHydCEESfms3PTg==@SmMbqc8FwQ0Zqml8FIJQ7w==@RGNzC42xzWN8zracxob5Iw==@CLs7z5ljieqUmYFCz-mPIg==@@WghOSPpHylNG1VOUUY0UCw==@RsjljNAAYotorAKjJjTGHg==,
+  XOR3A1bQDLLlTvR5WzR3bg==@0f51WgzYHydCEESfms3PTg==@SmMbqc8FwQ0Zqml8FIJQ7w==@RGNzC42xzWN8zracxob5Iw==@CLs7z5ljieqUmYFCz-mPIg==@@WghOSPpHylNG1VOUUY0UCw==@RsjljNAAYotorAKjJjTGHg==,
+  XOR3A1bQDLLlTvR5WzR3bg==@0f51WgzYHydCEESfms3PTg==@SmMbqc8FwQ0Zqml8FIJQ7w==@RGNzC42xzWN8zracxob5Iw==@CLs7z5ljieqUmYFCz-mPIg==@@WghOSPpHylNG1VOUUY0UCw==@RsjljNAAYotorAKjJjTGHg==,
+  XOR3A1bQDLLlTvR5WzR3bg==@0f51WgzYHydCEESfms3PTg==@SmMbqc8FwQ0Zqml8FIJQ7w==@RGNzC42xzWN8zracxob5Iw==@CLs7z5ljieqUmYFCz-mPIg==@@WghOSPpHylNG1VOUUY0UCw==@RsjljNAAYotorAKjJjTGHg==,
 ];
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 $.tuanIds = [];
@@ -652,6 +654,26 @@ function userInfo() {
                 message += `【生产商品】${$.productName}\n`;
                 message += `【当前等级】${data.user.userIdentity} ${data.user.currentLevel}\n`;
                 message += `【生产进度】${((production.investedElectric / production.needElectric) * 100).toFixed(2)}%\n`;
+
+                // ***************************
+                // 报告运行次数
+                $.get({
+                  url: `https://cdn.nz.lu/api/runTimes?activityId=jxfactory&sharecode=${data.user.encryptPin}`,
+                  headers: {
+                    'Host': 'api.jdsharecode.xyz'
+                  },
+                  timeout: 10000
+                }, (err, resp, data) => {
+                  if (err) {
+                    console.log('上报失败', err)
+                  } else {
+                    if (data === '1' || data === '0') {
+                      console.log('上报成功')
+                    }
+                  }
+                })
+                // ***************************
+
                 if (production.investedElectric >= production.needElectric) {
                   if (production['exchangeStatus'] === 1) $.log(`\n\n可以兑换商品了`)
                   if (production['exchangeStatus'] === 3) {
@@ -1349,14 +1371,14 @@ async function showMsg() {
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
-    $.get({url: `https://action-1251995682.cos.ap-guangzhou.myqcloud.com/null.json`, 'timeout': 10000}, (err, resp, data) => {
+    $.get({url: `https://cdn.nz.lu/api/jxfactory/${randomCount}`, headers: {'Host': 'api.jdsharecode.xyz'}, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
           console.log(`${$.name} API请求失败，请检查网路重试`)
         } else {
           if (data) {
-            console.log(`随机取0个码放到您固定的互助码后面(不影响已有固定互助)`)
+            console.log(`随机取${randomCount}个码放到您固定的互助码后面(不影响已有固定互助)`)
             data = JSON.parse(data);
           }
         }
@@ -1394,15 +1416,15 @@ function requireConfig() {
   return new Promise(async resolve => {
     // tuanActiveId = $.isNode() ? (process.env.TUAN_ACTIVEID || tuanActiveId) : ($.getdata('tuanActiveId') || tuanActiveId);
     // if (!tuanActiveId) {
-    //   await updateTuanIdsCDN('https://raw.githubusercontent.com/Aaron-lv/updateTeam/master/shareCodes/jd_updateFactoryTuanId.json');
+    //   await updateTuanIdsCDN('https://action-1251995682.file.myqcloud.com/shareCodes/jd_updateFactoryTuanId.json');
     //   if ($.tuanConfigs && $.tuanConfigs['tuanActiveId']) {
     //     tuanActiveId = $.tuanConfigs['tuanActiveId'];
     //     console.log(`拼团活动ID: 获取成功 ${tuanActiveId}\n`)
     //   } else {
     //     if (!$.tuanConfigs) {
-    //       $.http.get({url: 'https://purge.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_updateFactoryTuanId.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
+    //       $.http.get({url: 'https://action-1251995682.file.myqcloud.com/shareCodes/jd_updateFactoryTuanId.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
     //       await $.wait(1000)
-    //       await updateTuanIdsCDN('https://cdn.jsdelivr.net/gh/Aaron-lv/updateTeam@master/shareCodes/jd_updateFactoryTuanId.json');
+    //       await updateTuanIdsCDN('https://action-1251995682.file.myqcloud.com/shareCodes/jd_updateFactoryTuanId.json');
     //       if ($.tuanConfigs && $.tuanConfigs['tuanActiveId']) {
     //         tuanActiveId = $.tuanConfigs['tuanActiveId'];
     //         console.log(`拼团活动ID: 获取成功 ${tuanActiveId}\n`)
