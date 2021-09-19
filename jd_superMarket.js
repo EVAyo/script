@@ -834,7 +834,7 @@ function smtg_sellMerchandise(body) {
   })
 }
 //新版东东超市
-function updatePkActivityId(url = 'jd_superMarket.json') {
+function updatePkActivityId(url = 'https://raw.githubusercontent.com/xxx/updateTeam/master/jd_updateTeam.json') {
   return new Promise(resolve => {
     $.get({url}, async (err, resp, data) => {
       try {

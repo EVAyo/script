@@ -1,5 +1,5 @@
 /*
-京东抽奖机 jd_lotteryMachine.js
+京东抽奖机 https://raw.githubusercontent.com/yangtingxiao/QuantumultX/master/scripts/jd/jd_lotteryMachine.js
 author：yangtingxiao
 github： https://github.com/yangtingxiao
 活动入口：京东APP中各种抽奖活动的汇总
@@ -216,7 +216,7 @@ function harmony_collectScore(timeout = 0) {
   })
 }
 
-function updateShareCodes(url = 'jd_lotteryMachine.js') {
+function updateShareCodes(url = 'https://raw.githubusercontent.com/yangtingxiao/QuantumultX/master/scripts/jd/jd_lotteryMachine.js') {
   return new Promise(resolve => {
     const options = {
       url: `${url}?${Date.now()}`, "timeout": 10000, headers: {
