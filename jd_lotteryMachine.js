@@ -1,5 +1,5 @@
 /*
-京东抽奖机 https://raw.githubusercontent.com/yangtingxiao/QuantumultX/master/scripts/jd/jd_lotteryMachine.js
+京东抽奖机 jd_lotteryMachine.js
 author：yangtingxiao
 github： https://github.com/yangtingxiao
 活动入口：京东APP中各种抽奖活动的汇总
@@ -18,7 +18,7 @@ Object.keys(jdCookieNode).forEach((item) => {
 if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
 if (JSON.stringify(process.env).indexOf('GITHUB') > -1) process.exit(0);
 
-const appIdArr = ['1EFRRxA','1EFRQwA','1E1NYwqc','1EFRXxg','1EFVRxg','1E1NYw6w']
+const appIdArr = ['1EFRRxA','1EFRQwA','1EFRXxg','1EFVRxg','1E1xVyqw']
 const homeDataFunPrefixArr = ['interact_template','interact_template','harmony_template','','','','','','','','','','interact_template','interact_template']
 const collectScoreFunPrefixArr = ['','','','','','','','','','','','','interact_template','interact_template']
 
@@ -216,7 +216,7 @@ function harmony_collectScore(timeout = 0) {
   })
 }
 
-function updateShareCodes(url = 'https://raw.githubusercontent.com/yangtingxiao/QuantumultX/master/scripts/jd/jd_lotteryMachine.js') {
+function updateShareCodes(url = 'jd_lotteryMachine.js') {
   return new Promise(resolve => {
     const options = {
       url: `${url}?${Date.now()}`, "timeout": 10000, headers: {
