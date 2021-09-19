@@ -4,6 +4,8 @@
 30 * * * * sh +x /scripts/docker/auto_help.sh collect >> /scripts/logs/auto_help_collect.log 2>&1
 
 ##############短期活动##############
+# 东东玩家 2021-9-17至2021-10-11
+43 0,16 * * * node /scripts/jd_ddwj.js >> /scripts/logs/jd_ddwj.log 2>&1
 # 手机狂欢城 2021-9-16至2021-10-1
 0 0-18/6 * * * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
 # 内容鉴赏官 2021年09月1日-2021年09月30
