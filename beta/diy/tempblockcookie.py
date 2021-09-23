@@ -85,7 +85,7 @@ async def v4_block(sender):
                     message = f"目前的屏蔽情况是：\n{str(' '.join('%s' % _ for _ in sorted(blocks, reverse=False))) if len(blocks) != 0 else '没有帐号被屏蔽'}"
                     return await operate(conv, sender, msg, message)
                 elif res == 'designated block':
-                    acounts = len(myck(_ConfigFile))
+                    acounts = len(myck(_ConfigFile)[0])
                     if acounts == len(blocks):
                         message = "所有账号都已被屏蔽，无需继续屏蔽"
                         return await operate(conv, sender, msg, message)
@@ -435,13 +435,13 @@ async def myautoblock(event):
                     await jdbot.edit_message(msg, "无法找到 TempBlockCookie 目标字符串，请检查是否使用了标准配置模板")
                     return
             if expired in blocks:
-                await jdbot.edit_message(msg, f"pin为{pt_pin}的账号先前已经被屏蔽，因此取消屏蔽！")
+                await jdbot.edit_message(msg, f"【取消】{pt_pin}先前已经被屏蔽，因此取消屏蔽！")
             else:
                 blocks.append(expired)
                 blocks = " ".join('%s' % _ for _ in sorted(blocks, reverse=False))
                 configs[line] = f'TempBlockCookie="{blocks}"\n'
                 rwcon(configs)
-                await jdbot.edit_message(msg, f"pin为{pt_pin}的账号屏蔽成功！")
+                await jdbot.edit_message(msg, f"【成功】{pt_pin}屏蔽成功！")
         elif QL8:
             token = ql_token(_Auth)
             url = 'http://127.0.0.1:5600/api/envs'
@@ -452,7 +452,7 @@ async def myautoblock(event):
                 if pt_pin in data['value'] and "pt_key" in data['value']:
                     url = 'http://127.0.0.1:5600/api/envs/disable'
                     requests.put(url, headers=headers, json=[data['_id']])
-                    await jdbot.edit_message(msg, f"pin为{pt_pin}的账号屏蔽成功！")
+                    await jdbot.edit_message(msg, f"【成功】{pt_pin}屏蔽成功！")
                     break
         else:
             token = ql_token(_Auth)
@@ -463,7 +463,7 @@ async def myautoblock(event):
                 if pt_pin in data['value'] and "pt_key" in data['value']:
                     url = 'http://127.0.0.1:5600/api/cookies/disable'
                     requests.put(url, headers=headers, json=[data['_id']])
-                    await jdbot.edit_message(msg, f"pin为{pt_pin}的账号屏蔽成功！")
+                    await jdbot.edit_message(msg, f"【成功】{pt_pin}屏蔽成功！")
                     break
     except Exception as e:
         title = "【💥错误💥】"

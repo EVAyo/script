@@ -19,7 +19,7 @@ async def myaddwskey(event):
         text = ""
         msg = await jdbot.send_message(chat_id, "获取到wskey，正在工作中……")
         messages = event.raw_text.split("\n")
-        if V4 or QL2:
+        if V4:
             file = f"{_ConfigDir}/wskey.list"
         else:
             file = "/ql/db/wskey.list"
@@ -93,18 +93,29 @@ async def myaddwskey(event):
                 if pin + "wskey" in configs:
                     configs = re.sub(f'{pin}wskey=.*;', message, configs)
                     text += f"更新wskey成功！pin为：{pt_pin}\n"
-                elif V4:
+                elif V4 and f"pt_pin={pt_pin}" in configs:
                     configs = read("list")
                     for config in configs:
-                        if pin in config and "wskey" not in config:
+                        if f"pt_pin={pt_pin}" in config:
                             line = configs.index(config)
                             num = re.findall(r'(?<=[Cc]ookie)[\d]+(?==")', config)[0]
                             configs.insert(line, f'wskey{num}="{message}"\n')
                             text += f"新增wskey成功！pin为：{pt_pin}\n"
                             break
                         elif "第二区域" in config:
-                            await jdbot.edit_message(msg, "请使用标准模板！")
+                            await jdbot.send_message(chat_id, "请使用标准模板！")
                             return
+                elif V4 and f"pt_pin={pt_pin}" not in configs:
+                    configs, line, num = read("list"), 0, 0
+                    for config in configs:
+                        if "pt_pin" in config and "##" not in config:
+                            line = configs.index(config) + 1
+                            num = int(re.findall(r'(?<=[Cc]ookie)[\d]+(?==")', config)[0]) + 1
+                        elif "第二区域" in config:
+                            break
+                    configs.insert(line, f'Cookie{str(num)}="pt_key=xxxxxx;pt_pin={pt_pin};"\n')
+                    configs.insert(line, f'wskey{str(num)}="{message}"\n')
+                    text += f"新增wskey成功！pin为：{pt_pin} 但请在配置中输入cookie值！\n"
                 else:
                     configs = read("str")
                     configs += f"{message}\n"
@@ -143,7 +154,16 @@ async def myaddwskey(event):
             elif os.path.exists("/ql/scripts/wskey_ptkey.py"):
                 text += "\n将自动更新cookie列表，自行查看更新情况"
                 await cmd("task /ql/scripts/wskey_ptkey.py")
-            if "更新" in text:
+            elif os.path.exists("/ql/scripts/ql_pandaAPI_refreshCK.py") and not os.path.exists("/ql/db/wskey.list"):
+                text += "\n将自动更新cookie列表，自行查看更新情况"
+                await cmd("task /ql/scripts/ql_pandaAPI_refreshCK.py")
+            elif os.path.exists("/ql/raw/ql_pandaAPI_refreshCK.py") and not os.path.exists("/ql/db/wskey.list"):
+                text += "\n将自动更新cookie列表，自行查看更新情况"
+            elif os.path.exists("/ql/scripts/ql_pandaAPI_refreshCK.py") and os.path.exists("/ql/db/wskey.list"):
+                text += "\n由于使用wskey.list存储，无法执行scripts目录下的ql_pandaAPI_refreshCK.py脚本"
+            elif os.path.exists("/ql/raw/ql_pandaAPI_refreshCK.py") and os.path.exists("/ql/db/wskey.list"):
+                text += "\n由于使用wskey.list存储，无法执行raw目录下的ql_pandaAPI_refreshCK.py脚本"
+            if "自动更新" in text or "无法执行" in text:
                 await jdbot.edit_message(msg, text)
     except Exception as e:
         title = "【💥错误💥】"

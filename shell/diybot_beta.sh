@@ -6,7 +6,7 @@ else
   root=/ql
 fi
 
-diybot_url="https://github.com/chiupam/diybot.git"
+diybot_url="https://github.com/chiupam/JD_Diy.git"
 jbot_botset=$root/config/bot.json
 diybot_repo=$root/repo/diybot
 diybot_diy=$root/jbot/diy
@@ -16,6 +16,8 @@ diybot_repo_user=$root/repo/diybot/beta/diy/user.py
 diybot_diy_user=$root/jbot/diy/user.py
 diybot_repo_diy=$root/repo/diybot/beta/diy/diy.py
 diybot_diy_diy=$root/jbot/diy/diy.py
+diybot_repo_hello=$root/repo/diybot/beta/__main__.py
+diybot_diy_hello=$root/jbot/__main__.py
 if [ $# = 1 ];then
   up=$1
 else
@@ -60,7 +62,7 @@ fix() {
   if [ -z "$zoo_opencard" ]
     then echo "请先修改 $diybot_config_diybotset 的内容，再重新启动！参考链接如下"
     echo ""
-    echo "https://raw.githubusercontent.com/chiupam/diybot/master/config/diybotset.json"
+    echo "https://raw.githubusercontent.com/chiupam/JD_Diy/master/config/diybotset.json"
     echo ""
     exit
   fi
@@ -68,7 +70,7 @@ fix() {
   if [ -z "$shoptokenId" ]
     then echo "请先修改 $diybot_config_diybotset 的内容，再重新启动！参考链接如下"
     echo ""
-    echo "https://raw.githubusercontent.com/chiupam/diybot/master/config/diybotset.json"
+    echo "https://raw.githubusercontent.com/chiupam/JD_Diy/master/config/diybotset.json"
     echo ""
     exit
   fi
@@ -111,6 +113,11 @@ file_diy() {
   fi
 }
 
+file_hello() {
+  echo "修改启动问候语文件"
+  cp -f $diybot_repo_hello $diybot_diy_hello
+}
+
 copy() {
   echo "拉取diy机器人文件进入 $root/jbot/diy 目录"
   cp -rf $root/repo/diybot/beta/diy/* $root/jbot/diy
@@ -138,6 +145,7 @@ main() {
   file_diybotset
   file_user
   file_diy
+  file_hello
   copy
   start
 }
