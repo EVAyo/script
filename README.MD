@@ -1,3 +1,5 @@
+后端面板接口使用示例项目:https://github.com/zhanggaolei001/raypanel
+
 一个基于CefSharp的京东cookie获取工具
 运行后,登录京东,会自动将cookie复制到粘贴板.
 
@@ -18,7 +20,7 @@ app.post('/addck', function (request, response) {
 
 
 主要提供了验证码登录并自动获取cookie功能,规避夸地域登录判定导致的登陆失败. 
-目前cookie有效期已经可以超过48小时，具体多久，还没掉线，我也不知道。
+目前cookie有效期应该恢复30天了。
 ## 介绍
 
 本项目是我学习C#/WPF操作cefSharp/selenium的一个🌰，也是一种京东获取Cookie的方案.
