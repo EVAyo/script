@@ -1,5 +1,5 @@
 /**
-https://lzdz1-isv.isvjcloud.com/dingzhi/vivo/iqoojieyapa/activity/3422323?activityId=dz2109100009716201
+https://lzdz1-isv.isvjd.com/dingzhi/vivo/iqoojieyapa/activity/3422323?activityId=dz2109100009716201
 6 6,23 jd_vivo.js
 **/
 const $ = new Env("Phone狂制噪吧");
@@ -51,7 +51,7 @@ if ($.isNode()) {
             $.authorNum = `${random(1000000, 9999999)}`
             $.activityId = 'dz2109100009716201'
             $.activityShopId = '1000097162'
-            $.activityUrl = `https://lzdz1-isv.isvjcloud.com/dingzhi/vivo/iqoojieyapa/activity/${$.authorNum}?activityId=${$.activityId}&shareUuid=${encodeURIComponent($.authorCode)}&adsource=null&shareuserid4minipg=null&shopid=${$.activityShopId}&lng=00.000000&lat=00.000000&sid=&un_area=`
+            $.activityUrl = `https://lzdz1-isv.isvjd.com/dingzhi/vivo/iqoojieyapa/activity/${$.authorNum}?activityId=${$.activityId}&shareUuid=${encodeURIComponent($.authorCode)}&adsource=null&shareuserid4minipg=null&shopid=${$.activityShopId}&lng=00.000000&lat=00.000000&sid=&un_area=`
             await vivo();
             await $.wait(3000);
             if ($.bean > 0) {
@@ -332,15 +332,15 @@ function bindWithVender(venderId) {
 }
 function taskUrl(function_id, body, isCommon) {
     return {
-        url: isCommon ? `https://lzdz1-isv.isvjcloud.com/${function_id}` : `https://lzdz1-isv.isvjcloud.com/dingzhi/${function_id}`,
+        url: isCommon ? `https://lzdz1-isv.isvjd.com/${function_id}` : `https://lzdz1-isv.isvjd.com/dingzhi/${function_id}`,
         headers: {
-            Host: 'lzdz1-isv.isvjcloud.com',
+            Host: 'lzdz1-isv.isvjd.com',
             Accept: 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
             'Accept-Language': 'zh-cn',
             'Accept-Encoding': 'gzip, deflate, br',
             'Content-Type': 'application/x-www-form-urlencoded',
-            Origin: 'https://lzdz1-isv.isvjcloud.com',
+            Origin: 'https://lzdz1-isv.isvjd.com',
             'User-Agent': `jdapp;iPhone;9.5.4;13.6;${$.UUID};network/wifi;ADID/${$.ADID};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
             Connection: 'keep-alive',
             Referer: $.activityUrl,
@@ -353,15 +353,15 @@ function taskUrl(function_id, body, isCommon) {
 
 function getMyPing() {
     let opt = {
-        url: `https://lzdz1-isv.isvjcloud.com/customer/getMyPing`,
+        url: `https://lzdz1-isv.isvjd.com/customer/getMyPing`,
         headers: {
-            "Host": "lzdz1-isv.isvjcloud.com",
+            "Host": "lzdz1-isv.isvjd.com",
             "Accept": "application/json",
             "X-Requested-With": "XMLHttpRequest",
             "Accept-Language": "zh-cn",
             "Accept-Encoding": "gzip, deflate, br",
             "Content-Type": "application/x-www-form-urlencoded",
-            "Origin": "https://lzdz1-isv.isvjcloud.com",
+            "Origin": "https://lzdz1-isv.isvjd.com",
             "User-Agent": `jdapp;iPhone;9.5.4;13.6;${$.UUID};network/wifi;ADID/${$.ADID};model/iPhone10,3;addressid/0;appBuild/167668;jdSupportDarkMode/0;Mozilla/5.0 (iPhone; CPU iPhone OS 13_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1`,
             "Connection": "keep-alive",
             "Referer": $.activityUrl,
