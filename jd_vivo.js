@@ -1,5 +1,5 @@
 /**
-https://lzdz1-isv.isvjd.com/dingzhi/vivo/iqoojieyapa/activity/3422323?activityId=dz2109100009716201
+https://lzdz1-isv.isvjcloud.com/dingzhi/vivo/iqoojieyapa/activity/3422323?activityId=dz2109100009716201
 6 6,23 jd_vivo.js
 **/
 const $ = new Env("Phone狂制噪吧");
