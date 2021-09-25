@@ -177,3 +177,5 @@
 11 */1 * * * node /scripts/jd_jddj_getPoints.js >> /scripts/logs/jd_jddj_getPoints.log 2>&1
 # 京东到家自动浇水
 16 2,10 * * * node /scripts/jd_jddj_plantBeans.js >> /scripts/logs/jd_jddj_plantBeans.log 2>&1
+# 集魔方
+19 3,11 * * * node /scripts/jd_mofang.js >> /scripts/logs/jd_mofang.log 2>&1
