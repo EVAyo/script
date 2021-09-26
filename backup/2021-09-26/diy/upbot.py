@@ -32,7 +32,7 @@ async def myupbot(event):
                 Button.inline("不更新", data="no")
             ]
             async with jdbot.conversation(SENDER, timeout=60) as conv:
-                msg = await jdbot.edit_message(msg, "【diy机器人】\n\n下载shell文件成功\n是否更新 user.py？（覆盖式更新）", buttons=split_list(btns, row))
+                msg = await jdbot.edit_message(msg, "【diy正式版】\n\n下载shell文件成功\n是否更新 user.py？（覆盖式更新）", buttons=split_list(btns, row))
                 convdata = await conv.wait_event(press_event(SENDER))
                 res = bytes.decode(convdata.data)
                 if res == "user":
