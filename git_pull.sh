@@ -50,6 +50,7 @@ function Update_Cron {
     perl -i -pe "s|.+(bash git_pull.+)|${RanMin} ${RanHour} \* \* \* sleep ${RanSleep} && \1|" ${ListCron}
     perl -i -pe "s| \* \* \* \* \* \* (.+jd_nzmh\W*.*)| \* \* \* \1|" ${ListCron}
     perl -i -pe "s| \* \* \* \* \* \* (.+jd_xl\W*.*)| \* \* \* \1|" ${ListCron}
+    perl -i -pe "s| "0,12,22" (.+jd_jxmc\W*.*)| "0-23/3" \1|" ${ListCron}
     crontab ${ListCron}
   fi
 }
