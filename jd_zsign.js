@@ -11,7 +11,6 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
-$.shareCodes = [];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -56,7 +55,12 @@ async function main() {
   await signPrizeDetailList();
   if ($.tasklist) {
     for (const vo of $.tasklist) {
-      await apCashWithDraw(vo.prizeType, vo.business, vo.id, vo.poolBaseId, vo.prizeGroupId, vo.prizeBaseId)
+      if (vo.remainTime != null) {
+        $.log(`去提现金额：${vo.prizeValue}`)
+        await apCashWithDraw(vo.prizeType, vo.business, vo.id, vo.poolBaseId, vo.prizeGroupId, vo.prizeBaseId)
+      } else {
+        console.log("当天已经提现了")
+      }
     }
   } else {
     $.log("没有获取到信息")
@@ -76,8 +80,8 @@ function apCashWithDraw(prizeType, business, id, poolBaseId, prizeGroupId, prize
             if (data.success) {
               if (data.data.status === "310") {
                 console.log(data.data.message)
-              } else if (data.data.status === "1000") {
-                console.log("今天已经完成提现了");
+              } else {
+                console.log(JSON.stringify(data));
               }
             } else {
               console.log(JSON.stringify(data));
@@ -130,8 +134,8 @@ function apSignIn_day() {
           if (data) {
             data = JSON.parse(data);
             if (data.success) {
-              if (data.data.historySignInAnCycle) {
-                console.log(`签到成功：获得${data.data.historySignInAnCycle[0].prizeAwardVale}`)
+              if (data.data.retCode === 0) {
+                console.log(`签到状态：${data.errMsg}`)
               } else {
                 console.log(data.data.retMessage)
               }
