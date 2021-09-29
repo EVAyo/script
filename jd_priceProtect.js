@@ -10,7 +10,7 @@ const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
-let cookiesArr = [], cookie = '';
+let cookiesArr = [], cookie = '', message = '';
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -34,7 +34,6 @@ if ($.isNode()) {
       $.index = i + 1;
       $.isLogin = true;
       $.nickName = '';
-      message = '';
       await TotalBean();
       console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
       if (!$.isLogin) {
@@ -46,6 +45,13 @@ if ($.isNode()) {
         continue
       }
       await main()
+    }
+  }
+  if (message !== '') {
+    if ($.isNode()) {
+      await notify.sendNotify($.name, message, '', ``);
+    } else {
+      $.msg($.name, '遇见你是一种福气', message);
     }
   }
 })().catch((e) => { $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '') }).finally(() => { $.done(); })
@@ -91,6 +97,7 @@ async function appliedSuccAmount() {
           if (data) {
             if (data.flag) {
               console.log(`保价成功：获得${data.succAmount}`)
+              message += (`保价成功：获得${data.succAmount}`)
             } else {
               console.log(JSON.stringify(data));
             }
