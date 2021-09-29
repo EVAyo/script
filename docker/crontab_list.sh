@@ -122,7 +122,7 @@
 # 跳跳乐瓜分京豆
 15 0,12,22 * * * node /scripts/jd_jump.js >> /scripts/logs/jd_jump.log 2>&1
 #京喜牧场
-15 0,12,22 * * * node /scripts/jd_jxmc.js >> /scripts/logs/jd_jxmc.log 2>&1
+15 0-23/3 * * * node /scripts/jd_jxmc.js >> /scripts/logs/jd_jxmc.log 2>&1
 #京东到家
 0 8,12,17,22 * * * node /scripts/jd_daojia.js >> /scripts/logs/jd_daojia.log 2>&1
 #京东到家鲜豆庄园
