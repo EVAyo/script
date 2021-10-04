@@ -177,3 +177,5 @@
 19 3,11 * * * node /scripts/jd_mofang.js >> /scripts/logs/jd_mofang.log 2>&1
 # 芥么签到
 19 0,8 * * * node /scripts/jd_zsign.js >> /scripts/logs/jd_zsign.log 2>&1
+# 芥么赚豪礼
+28 0,11 * * * node /scripts/jd_genz.js >> /scripts/logs/jd_genz.log 2>&1
