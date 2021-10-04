@@ -57,9 +57,8 @@ async function main() {
     await task('apTaskList', { "linkId": appid, "uniqueId": "" })
     await $.wait(500);
     await task('findPostTagList', { "typeId": typeid })
-    await $.wait(500);
-    await task('genzTaskCenter')
     if (!$.reg && $.tasklist) {
+        await task('genzTaskCenter')
         if ($.genzTask) {
             $.log(`当前芥么豆：${$.totalPoints}`)
             for (const vo of $.genzTask) {
@@ -121,7 +120,7 @@ async function main() {
                 $.log(`任务：${vo.taskShowTitle}，已完成`)
             }
         }
-    } else { console.log("未注册，请手动登录一次小程序进入任务！") } return;
+    } else { console.log("未注册！请手动进入一次小程序任务\n入口：微信小程序-芥么-赚豪礼") } return;
 }
 function task(function_id, body) {
     return new Promise(resolve => {
