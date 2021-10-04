@@ -4,8 +4,6 @@
 30 * * * * sh +x /scripts/docker/auto_help.sh collect >> /scripts/logs/auto_help_collect.log 2>&1
 
 ##############短期活动##############
-# 手机狂欢城 2021-9-16至2021-10-1
-0 0-18/6 * * * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
 # 内容鉴赏官 2021年09月1日-2021年09月30
 35 1,5 * * * node /scripts/jd_connoisseur.js >> /scripts/logs/jd_connoisseur.log 2>&1
 # 众筹许愿池 2021年08月1日-2021年12月31日
@@ -177,5 +175,5 @@
 16 2,10 * * * node /scripts/jd_jddj_plantBeans.js >> /scripts/logs/jd_jddj_plantBeans.log 2>&1
 # 集魔方
 19 3,11 * * * node /scripts/jd_mofang.js >> /scripts/logs/jd_mofang.log 2>&1
-# 芥末签到
+# 芥么签到
 19 0,8 * * * node /scripts/jd_zsign.js >> /scripts/logs/jd_zsign.log 2>&1

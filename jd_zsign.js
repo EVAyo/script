@@ -58,9 +58,10 @@ async function main() {
       if (vo.remainTime != null) {
         $.log(`去提现金额：${vo.prizeValue}`)
         await apCashWithDraw(vo.prizeType, vo.business, vo.id, vo.poolBaseId, vo.prizeGroupId, vo.prizeBaseId)
-      } else {
-        console.log("当天已经提现了")
       }
+    }
+    if ($.tasklist[0].remainTime === null) {
+      console.log("当天已提现")
     }
   } else {
     $.log("没有获取到信息")
