@@ -205,8 +205,7 @@ function mkdirConfigBakDir() {
 function bakConfFile(file) {
     mkdirConfigBakDir();
     let date = new Date();
-    let bakConfFile = confBakDir + file + '_' + date.getFullYear() + '-' + date.getMonth() + '-' + date.getDay() + '-' + date.getHours() + '-' + date.getMinutes() + '-' + date.getMilliseconds();
-    let oldConfContent = "";
+    let bakConfFile = confBakDir + file + '_' + date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getHours() + '-' + date.getMinutes() + '-' + date.getSeconds(); let oldConfContent = "";
     switch (file) {
         case "config.sh":
             oldConfContent = getFileContentByName(confFile);
@@ -489,7 +488,7 @@ app.get('/run', function (request, response) {
     }
 });
 
-app.post('/runCmd', function(request, response) {
+app.post('/runCmd', function (request, response) {
     if (request.session.loggedin) {
         const cmd = `cd ${rootPath};` + request.body.cmd;
         const delay = request.body.delay || 0;
@@ -728,7 +727,7 @@ app.get('/api/scripts', function (request, response) {
                 if (excludeRegExp.test(fileList[i])) {
                     continue;
                 }
-                
+
                 var dirMap = {
                     dirName: fileList[i],
                     files: fileListTmp
@@ -738,7 +737,7 @@ app.get('/api/scripts', function (request, response) {
                 if (excludeRegExp.test(fileList[i])) {
                     continue;
                 }
-                
+
                 rootFiles.push(fileList[i]);
             }
         }
@@ -779,13 +778,13 @@ app.get('/api/scripts/:dir/:file', function (request, response) {
  * 生成随机 iPhoneID
  * @returns {string}
  */
- function randomString(e) {
+function randomString(e) {
     e = e || 32;
     let t = "abcdef0123456789", a = t.length, n = "";
     for (i = 0; i < e; i++)
-      n += t.charAt(Math.floor(Math.random() * a));
+        n += t.charAt(Math.floor(Math.random() * a));
     return n
-  }
+}
 
 checkConfigFile()
 
