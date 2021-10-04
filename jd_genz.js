@@ -55,9 +55,20 @@ async function main() {
     $.reg = false;
     $.tasklist = [];
     await task('apTaskList', { "linkId": appid, "uniqueId": "" })
+    await $.wait(500);
     await task('findPostTagList', { "typeId": typeid })
-
+    await $.wait(500);
+    await task('genzTaskCenter')
     if (!$.reg && $.tasklist) {
+        if ($.genzTask) {
+            $.log(`当前芥么豆：${$.totalPoints}`)
+            for (const vo of $.genzTask) {
+                if (!vo.completionStatus) {
+                    $.log(`去完成：${vo.taskName}新手任务！`)
+                    await task('genzDoNoviceTasks', { "taskId": vo.taskId, "completionStatus": 1 })
+                }
+            }
+        }
         for (const vo of $.tasklist) {
             if (vo.taskType != "JOIN_INTERACT_ACT" && vo.taskType != "SHARE_INVITE") {
                 $.log(`去完成：${vo.taskShowTitle}`)
@@ -108,15 +119,6 @@ async function main() {
             }
             if (vo.taskDoTimes === vo.taskLimitTimes) {
                 $.log(`任务：${vo.taskShowTitle}，已完成`)
-            }
-        }
-        await task('genzTaskCenter')
-        if ($.genzTask) {
-            for (const vo of $.genzTask) {
-                if (!vo.completionStatus) {
-                    $.log(`去完成：${vo.taskName}新手任务！`)
-                    await task('genzDoNoviceTasks', { "taskId": vo.taskId, "completionStatus": 1 })
-                }
             }
         }
     } else { console.log("未注册，请手动登录一次小程序进入任务！") } return;
@@ -186,6 +188,7 @@ function task(function_id, body) {
                             break;
                         case 'genzTaskCenter':
                             $.genzTask = data.data.noviceTaskStatusList;
+                            $.totalPoints = data.data.totalPoints;
                             break;
                         case 'genzDoNoviceTasks':
                             if (data.success) {
