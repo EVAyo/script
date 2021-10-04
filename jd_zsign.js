@@ -9,6 +9,7 @@ const $ = new Env('芥么签到');
 const notify = $.isNode() ? require('./sendNotify') : '';
 //Node.js用户请在jdCookie.js处填写京东ck;
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
+let appid = "KRFM89OcZwyjnyOIPyAZxA";
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '';
 if ($.isNode()) {
@@ -51,8 +52,10 @@ if ($.isNode()) {
 })().catch((e) => { $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '') }).finally(() => { $.done(); })
 
 async function main() {
+  $.hotFlag = false;
   await apSignIn_day();
   await signPrizeDetailList();
+  if ($.hotFlag) return;
   if ($.tasklist) {
     for (const vo of $.tasklist) {
       if (vo.remainTime != null) {
@@ -68,7 +71,7 @@ async function main() {
   }
 }
 function apCashWithDraw(prizeType, business, id, poolBaseId, prizeGroupId, prizeBaseId) {
-  let body = { "linkId": "KRFM89OcZwyjnyOIPyAZxA", "businessSource": "DAY_DAY_RED_PACKET_SIGN", "base": { "prizeType": prizeType, "business": business, "id": id, "poolBaseId": poolBaseId, "prizeGroupId": prizeGroupId, "prizeBaseId": prizeBaseId } }
+  let body = { "linkId": appid, "businessSource": "DAY_DAY_RED_PACKET_SIGN", "base": { "prizeType": prizeType, "business": business, "id": id, "poolBaseId": poolBaseId, "prizeGroupId": prizeGroupId, "prizeBaseId": prizeBaseId } }
   return new Promise(resolve => {
     $.post(taskPostUrl("apCashWithDraw", body), async (err, resp, data) => {
       try {
@@ -100,7 +103,7 @@ function apCashWithDraw(prizeType, business, id, poolBaseId, prizeGroupId, prize
   })
 }
 function signPrizeDetailList() {
-  let body = { "linkId": "KRFM89OcZwyjnyOIPyAZxA", "serviceName": "dayDaySignGetRedEnvelopeSignService", "business": 1, "pageSize": 20, "page": 1 }
+  let body = { "linkId": appid, "serviceName": "dayDaySignGetRedEnvelopeSignService", "business": 1, "pageSize": 20, "page": 1 }
   return new Promise(resolve => {
     $.post(taskPostUrl("signPrizeDetailList", body), async (err, resp, data) => {
       try {
@@ -124,7 +127,7 @@ function signPrizeDetailList() {
   })
 }
 function apSignIn_day() {
-  let body = { "linkId": "KRFM89OcZwyjnyOIPyAZxA", "serviceName": "dayDaySignGetRedEnvelopeSignService", "business": 1 }
+  let body = { "linkId": appid, "serviceName": "dayDaySignGetRedEnvelopeSignService", "business": 1 }
   return new Promise(resolve => {
     $.post(taskPostUrl("apSignIn_day", body), async (err, resp, data) => {
       try {
@@ -137,6 +140,9 @@ function apSignIn_day() {
             if (data.success) {
               if (data.data.retCode === 0) {
                 console.log(`签到状态：${data.errMsg}`)
+              } else if (data.data.retCode === 10010) {
+                console.log(data.data.retMessage)
+                $.hotFlag = true;
               } else {
                 console.log(data.data.retMessage)
               }
