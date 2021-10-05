@@ -1,8 +1,7 @@
 name: 
 UnblockNeteaseMusic  #action名字，随便起 
 env:
-  ID: 
-UnblockNeteaseMusic 
+  ID: UnblockNeteaseMusic 
   URL: https://github.com/nondanee/UnblockNeteaseMusic
   BRANCH: master
 
