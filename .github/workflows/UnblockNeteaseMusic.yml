@@ -3,17 +3,14 @@ env:
   ID: UnblockNeteaseMusic 
   URL: https://github.com/nondanee/UnblockNeteaseMusic
   BRANCH: master
-
 on:
   workflow_dispatch:
   schedule:
     - cron: '*/20 0-16 * * *'
-
 jobs:
   build:
     runs-on: ubuntu-18.04
     steps:
-    
     - name: Init Build Dependencies
       env:
         DEBIAN_FRONTEND: noninteractive
@@ -27,7 +24,6 @@ jobs:
     #     echo -e "${{ secrets.v3_scriptskey }}" > ~/.ssh/id_rsa
     #     chmod 600 ~/.ssh/id_rsa
     #     ssh-keyscan gitee.com > ~/.ssh/known_hosts
-
     - name: Clone Master
       run: |
         git clone -b ${{ env.BRANCH }} ${{ env.URL }} master
@@ -37,7 +33,6 @@ jobs:
         directory: master
         github_token: ${{ secrets.PAT }}
         branch: ${{ env.ID }}
-
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
       with:
