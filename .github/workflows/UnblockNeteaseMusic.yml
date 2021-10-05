@@ -1,5 +1,4 @@
-name: 
-UnblockNeteaseMusic  #action名字，随便起 
+name: UnblockNeteaseMusic  #action名字，随便起 
 env:
   ID: UnblockNeteaseMusic 
   URL: https://github.com/nondanee/UnblockNeteaseMusic
