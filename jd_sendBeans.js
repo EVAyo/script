@@ -42,13 +42,14 @@ if ($.isNode()) {
     $.isLogin = true;
     $.nickName = ''
     if (isLoginInfo[$.UserName] === false) {
-      continue
+      
     } else {
       if (!isLoginInfo[$.UserName]) {
         await TotalBean();
         isLoginInfo[$.UserName] = $.isLogin
       }
     }
+    if (!isLoginInfo[$.UserName]) continue
     await getActivityInfo();
   }
   if ($.activityId === '') {
@@ -67,13 +68,14 @@ if ($.isNode()) {
     $.nickName = '';
     console.log(`\n*****开始【京东账号${$.index}】${$.nickName || $.UserName}*****\n`);
     if (isLoginInfo[$.UserName] === false) {
-      continue
+      
     } else {
       if (!isLoginInfo[$.UserName]) {
         await TotalBean();
         isLoginInfo[$.UserName] = $.isLogin
       }
     }
+    if (!isLoginInfo[$.UserName]) continue
     await openTuan();
   }
   console.log('\n开团信息\n'+JSON.stringify($.openTuanList));
@@ -111,13 +113,14 @@ if ($.isNode()) {
     $.isLogin = true;
     console.log(`\n*****开始【京东账号${$.index}】${$.nickName || $.UserName}*****\n`);
     if (isLoginInfo[$.UserName] === false) {
-      continue
+      
     } else {
       if (!isLoginInfo[$.UserName]) {
         await TotalBean();
         isLoginInfo[$.UserName] = $.isLogin
       }
     }
+    if (!isLoginInfo[$.UserName]) continue
     await rewardMain();
   }
   for (let i = 0; i < cookiesArr.length; i++) {
@@ -128,13 +131,14 @@ if ($.isNode()) {
     $.nickName = ''
     console.log(`\n*****开始【京东账号${$.index}】${$.nickName || $.UserName}*****\n`);
     if (isLoginInfo[$.UserName] === false) {
-      continue
+      
     } else {
       if (!isLoginInfo[$.UserName]) {
         await TotalBean();
         isLoginInfo[$.UserName] = $.isLogin
       }
     }
+    if (!isLoginInfo[$.UserName]) continue
     await myReward()
   }
 })().catch((e) => {$.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')}).finally(() => {$.done();});
