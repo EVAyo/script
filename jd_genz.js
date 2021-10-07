@@ -111,6 +111,14 @@ async function main() {
                                 }
                             }
                         }
+                        if (vo.taskShowTitle === '订阅芥么活动通知') {
+                            $.log("去完成订阅任务")
+                            for (let x = 0; x < vo.taskLimitTimes; x++) {
+                                if (vo.taskDoTimes != vo.taskLimitTimes) {
+                                    await task('commonSubscribeMessage', { "businessCode": "SUB10015", "behaviour": "accept", "jumpPage": "/pages/login/wv-common/wv-common?h5_url=https%3A%2F%2Fzsign.jd.com%2F%3FactivityId%3DKRFM89OcZwyjnyOIPyAZxA%26channel%3Dtasks" })
+                                }
+                            }
+                        }
                     }
                 }
             } else {
