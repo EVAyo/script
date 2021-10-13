@@ -30,15 +30,16 @@ namespace JdLoginTool.Wpf
                 ICookieManager cm = Browser.WebBrowser.GetCookieManager();
                 var visitor = new TaskCookieVisitor();
                 cm.VisitAllCookies(visitor);
-                ck = visitor.Task.Result.Where(cookie => cookie.Name == "pt_key" || cookie.Name == "pt_pin").Aggregate(ck, (current, cookie) => current + $"{cookie.Name}={System.Web.HttpUtility.UrlEncode(cookie.Value)};");
-
+                var cks = visitor.Task.Result; 
+                ck = cks.Where(cookie => cookie.Name == "pt_key" || cookie.Name == "pt_pin").Aggregate(ck, (current, cookie) => current + $"{cookie.Name}={System.Web.HttpUtility.UrlEncode(cookie.Value)};");
                 if (ck.Contains("pt_key") && ck.Contains("pt_pin"))
                 {
                     Clipboard.SetText(ck);
                     UploadToServer(ck);
                     UploadToQingLong(ck);
-
-                    Application.Current.Shutdown();
+                    cm.DeleteCookies(".jd.com", "pt_key");
+                    cm.DeleteCookies(".jd.com", "pt_pin");
+                    Browser.Address = "m.jd.com";
                 }
             }));
         }
@@ -65,7 +66,7 @@ namespace JdLoginTool.Wpf
                 //todo:检测是新ck还是老ck,即是否是更新.
                 //暂不实现,是否登陆重复先自己搞吧.
 
-              
+
                 var client = new RestClient($"{qlUrl}/open/envs");
                 client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
@@ -118,7 +119,7 @@ namespace JdLoginTool.Wpf
                     var request = new RestRequest(method == "post" ? Method.POST : Method.GET);
                     var response = client.Execute(request);
                     Console.WriteLine(response.Content);
-                    MessageBox.Show(ck, "Cookie已上传服务器,且已复制到剪切板");
+                    MessageBox.Show(ck, "Cookie已上传服务器");
                 }
                 catch (Exception e)
                 {
