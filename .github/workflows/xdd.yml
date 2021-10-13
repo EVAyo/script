@@ -1,8 +1,8 @@
 # File: .github/workflows/repo-sync.yml
-name: xdd #action名字，随便起 
+name: xdd-plus #action名字，随便起 
 env:
-  ID: xdd
-  URL: https://github.com/whzsyx/xdd
+  ID: xdd-plus
+  URL: https://github.com/764763903a/xdd-plus
   BRANCH: main
 on:
   schedule:

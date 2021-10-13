@@ -4,6 +4,7 @@ env:
   URL: https://github.com/unlock-music/unlock-music
   BRANCH: master
 
+
 on:
   workflow_dispatch:
   schedule:
@@ -11,39 +12,33 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-18.04
-    steps:
     
-    - name: Init Build Dependencies
-      env:
-        DEBIAN_FRONTEND: noninteractive
-      run: |
-        sudo -E rm -rf /etc/apt/sources.list.d
-        sudo -E apt-get update -y && apt-get install -y build-essential git git-core curl wget && apt-get clean -y
-        git config --global user.name 'GitHub Actions' && git config --global user.email 'noreply@github.com'
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 10.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x      
 
-    # - name: Prepare #拉取私库用
-    #   run: |
-    #     mkdir -p ~/.ssh
-    #     echo -e "${{ secrets.v3_scriptskey }}" > ~/.ssh/id_rsa
-    #     chmod 600 ~/.ssh/id_rsa
-    #     ssh-keyscan gitee.com > ~/.ssh/known_hosts
+      - name: Sync
+        run: |
+          git checkout ${{ env.ID }}
+          git clone -b ${{ env.BRANCH }} ${{ env.URL }} tmp
+          cd tmp && cp -r * ..
+          cd .. && rm -rf tmp
 
-    - name: Clone Master
-      run: |
-        git clone -b ${{ env.BRANCH }} ${{ env.URL }} master
+      - name: Reset Commit
+        run: |
+          git config --global user.email ${{ secrets.EMAIL }}
+          git config --global user.name ${{ secrets.USER_NAME }}
+          git add .
+          git commit -m "update by Action" -a || echo "Nothing to update"
 
-    - name: Push Master
-      uses: ad-m/github-push-action@master
-      with:
-        directory: master
-        github_token: ${{ secrets.PAT }}
-        branch: ${{ env.ID }}
-
-    - name: Delete workflow runs
-      uses: Mattraks/delete-workflow-runs@main
-      with:
-        token: ${{ secrets.PAT }}
-        retain_days: 1
-        keep_minimum_runs: 3
-
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          force: true
+          github_token: ${{ secrets.PAT }}
+          branch: ${{ env.ID }}
