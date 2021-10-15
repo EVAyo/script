@@ -452,7 +452,7 @@ async function showMsg() {
 }
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `https://gitee.com/dockere/jd-base/raw/master/null.json.lu/pet`, timeout: 10000}, (err, resp, data) => {
+    $.get({url: `https://gitee.com/dockere/jd-base/raw/master/null.json
       try {
         if (err) {
           console.log(JSON.stringify(err))
