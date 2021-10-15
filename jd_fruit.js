@@ -1259,7 +1259,7 @@ function timeFormat(time) {
 }
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `http://transfer.nz.lu/farm`, timeout: 10000}, (err, resp, data) => {
+    $.get({url: `https://gitee.com/dockere/jd-base/raw/master/null.json.lu/farm`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(JSON.stringify(err))
