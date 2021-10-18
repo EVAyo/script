@@ -1627,7 +1627,7 @@ function showMsg() {
 
 function readShareCode() {
   return new Promise(async resolve => {
-    $.get({url: `https://gitee.com/dockere/jd-base/raw/master/null.json``, timeout: 10000}, (err, resp, data) => {
+    $.get({url: `http://transfer.nz.lu/cfd`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(JSON.stringify(err))
@@ -1650,7 +1650,7 @@ function readShareCode() {
 }
 function uploadShareCode(code, pin) {
   return new Promise(async resolve => {
-    $.post({url: `https://gitee.com/dockere/jd-base/raw/master/null.json`/cfd?code=${code}&ptpin=${encodeURIComponent(pin)}`, timeout: 10000}, (err, resp, data) => {
+    $.post({url: `http://transfer.nz.lu/upload/cfd?code=${code}&ptpin=${encodeURIComponent(pin)}`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(JSON.stringify(err))
