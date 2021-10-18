@@ -28,8 +28,8 @@
 0 1,22 * * * node /scripts/jd_gold_creator.js >> /scripts/logs/jd_gold_creator.log 2>&1
 # 酷跑零食街 活动时间：2021-06-20至2021-12-31
 18 7,12,20 * * * node /scripts/jd_foodRunning.js >> /scripts/logs/jd_foodRunning.log 2>&1
-# Phone狂制噪吧 活动时间：2021-09-21至2021-10-16
-6 6,23 * * * node /scripts/jd_vivo.js >> /scripts/logs/jd_vivo.log 2>&1
+# 攒金币 赢大礼
+36 0,9 * * * node /scripts/jd_GoldcoinToGift.js >> /scripts/logs/jd_GoldcoinToGift.log 2>&1
 ##############长期活动##############
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
