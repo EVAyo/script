@@ -1,6 +1,6 @@
-## Version: v3.37.1
-## Date: 2021-09-7
-## Update Content: 添加是否启用京东试用环境变量和京东农场赞水滴环境变量。添加wskey自动更新cookie说明! TG通知频道：https://t.me/sheeplost
+## Version: v3.37.2
+## Date: 2021-10-20
+## Update Content: 城城领现金互助! TG通知频道：https://t.me/sheeplost
 
 ## 上面版本号中，如果第2位数字有变化，那么代表增加了新的参数，如果只有第3位数字有变化，仅代表更新了注释，没有增加新的参数，可更新可不更新
 
@@ -434,7 +434,15 @@ MyCarniB=""
 ForOtherCarni1=""
 ForOtherCarni2=""
 
+################################## 定义城城领现金互助（选填） ##################################
+## 具体填法及要求详见本文件最下方“互助码填法示例”
+MyCity1=""
+MyCity2=""
+MyCityA=""
+MyCityB=""
 
+ForOtherCity1=""
+ForOtherCity2=""
 ################################## 定义jd_superMarket蓝币兑换数量（选填） ##################################
 ## jd_superMarket蓝币兑换，可用值包括：
 ## 一、0：表示不兑换京豆，这也是js脚本的默认值

@@ -32,6 +32,7 @@ EnvName=(
   JDGLOBAL_SHARECODES
   JDHEALTH_SHARECODES
   JD818_SHARECODES
+  CITY_SHARECODES
 )
 
 VarName=(
@@ -51,6 +52,7 @@ VarName=(
   ForOtherGlobal
   ForOtherHealth
   ForOtherCarni
+  ForOtherCity
 )
 
 ## 导入config.sh
