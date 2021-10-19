@@ -37,10 +37,8 @@ if ($.isNode()) {
 }
 const JD_API_HOST = 'https://api.m.jd.com/client.action';
 let inviteCodes = [
-  'GYThyeujSBehf4aeH9Ix0_j32kYQ8-nZl3cYrbAeHkSRS9I9eQ',
-  'W9GZnK_9K3T2BdXffat_mu5IAWvPU2HFm8Wc1iPx161j4Ow',
-  'RtGKlrDTO1zQA-XTQ4x0mkbHikgkr7_AWOGVK2LFayTWO1p8',
-  'RtGKzOvxFAiheoeTQtcz1QWWFmT-UAQiOY1AfV1jpRHl0yfAFg'
+  'GYThyeujSBehf4aeH9Ix0_j32kYQ8-nZl3cYrbAeHkSRS9I9eQ@W9GZnK_9K3T2BdXffat_mu5IAWvPU2HFm8Wc1iPx161j4Ow@RtGKlrDTO1zQA-XTQ4x0mkbHikgkr7_AWOGVK2LFayTWO1p8@ySR9HWUrl7kzMs_WF5h_mglJWBvDPyTngfBrKntF@yA9ztJPCDUbvfs_WW41tkrrbZXsIXMjIUu7k@RtGKzb-mRwiqKIPPQdU70-1Ol8bmR8V7WVk_t6P45OmiKMom6g',
+  'GYThyeujSBehf4aeH9Ix0_j32kYQ8-nZl3cYrbAeHkSRS9I9eQ@W9GZnK_9K3T2BdXffat_mu5IAWvPU2HFm8Wc1iPx161j4Ow@RtGKlrDTO1zQA-XTQ4x0mkbHikgkr7_AWOGVK2LFayTWO1p8@ySR9HWUrl7kzMs_WF5h_mglJWBvDPyTngfBrKntF@yA9ztJPCDUbvfs_WW41tkrrbZXsIXMjIUu7k@RtGKzb-mRwiqKIPPQdU70-1Ol8bmR8V7WVk_t6P45OmiKMom6g'
 ]
 !(async () => {
   if (!cookiesArr[0]) {
@@ -256,7 +254,7 @@ function city_lotteryAward() {
 function readShareCode() {
   console.log(`开始`)
   return new Promise(async resolve => {
-    $.get({ url: `http://share.turinglabs.net/api/v3/city/query/10/`, 'timeout': 10000 }, (err, resp, data) => {
+    $.get({ url: `https://gitee.com/dockere/jd-base/raw/master/null.json`, 'timeout': 10000 }, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
