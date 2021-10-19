@@ -177,6 +177,13 @@ export default {
       this.handlerSearch();
     },
     handlerSearch() {
+    if (
+        this.loading ||
+        this.hasContent ||
+        this.oldSearchValue === this.searchValue
+      ) {
+        return false;
+      }
       // 第一次搜索
       if (this.isFirstSearch) {
         this.openDig();
@@ -189,13 +196,6 @@ export default {
           type: "warning",
         });
         return;
-      }
-      if (
-        this.loading ||
-        this.hasContent ||
-        this.oldSearchValue === this.searchValue
-      ) {
-        return false;
       }
       this.isSearch = false;
       setTimeout(() => {
