@@ -9,7 +9,7 @@ const SYNTAX_MODULE = '!function(n){var r={};function o(e){if(r[e])';
 const REG_SCRIPT = /<script type="text\/javascript" src="([^><]+\/(app\.\w+\.js))\">/gm;
 const REG_ENTRY = /(__webpack_require__\(__webpack_require__.s=)(\d+)(?=\)})/;
 const needModuleId = 355
-const DATA = {appid:'50085',sceneid:'OY217hPageh5'};
+const DATA = { appid: '50085', sceneid: 'OY217hPageh5' };
 let smashUtils;
 
 class MovementFaker {
@@ -33,7 +33,7 @@ class MovementFaker {
         }).log;
         var o = JSON.stringify({
             extraData: {
-                log:  e || -1,
+                log: e || -1,
                 // log: encodeURIComponent(e),
                 sceneid: DATA.sceneid,
             },
@@ -47,39 +47,39 @@ class MovementFaker {
 
     async init() {
         try {
-        console.time('MovementFaker');
-        process.chdir(__dirname);
-        const html = await MovementFaker.httpGet(URL);
-        const script = REG_SCRIPT.exec(html);
+            console.time('MovementFaker');
+            process.chdir(__dirname);
+            const html = await MovementFaker.httpGet(URL);
+            const script = REG_SCRIPT.exec(html);
 
-        if (script) {
-            const [, scriptUrl, filename] = script;
-            const jsContent = await this.getJSContent(filename, scriptUrl);
-            const fnMock = new Function;
-            const ctx = {
-                window: { addEventListener: fnMock },
-                document: {
-                    addEventListener: fnMock,
-                    removeEventListener: fnMock,
-                    cookie: this.cookie,
-                },
-                navigator: { userAgent: this.ua },
-            };
+            if (script) {
+                const [, scriptUrl, filename] = script;
+                const jsContent = await this.getJSContent(filename, scriptUrl);
+                const fnMock = new Function;
+                const ctx = {
+                    window: { addEventListener: fnMock },
+                    document: {
+                        addEventListener: fnMock,
+                        removeEventListener: fnMock,
+                        cookie: this.cookie,
+                    },
+                    navigator: { userAgent: this.ua },
+                };
 
-            vm.createContext(ctx);
-            vm.runInContext(jsContent, ctx);
-            smashUtils = ctx.window.smashUtils;
-            smashUtils.init(DATA);
+                vm.createContext(ctx);
+                vm.runInContext(jsContent, ctx);
+                smashUtils = ctx.window.smashUtils;
+                smashUtils.init(DATA);
 
-            // console.log(ctx);
+                // console.log(ctx);
+            }
+
+            // console.log(html);
+            // console.log(script[1],script[2]);
+            console.timeEnd('MovementFaker');
+        } catch (e) {
+            console.log(e)
         }
-
-        // console.log(html);
-        // console.log(script[1],script[2]);
-        console.timeEnd('MovementFaker');
-    } catch (e) {
-        console.log(e)
-    }
     }
 
     async getJSContent(cacheKey, url) {
