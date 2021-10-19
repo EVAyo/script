@@ -4,10 +4,12 @@ import {
   Message,
   InfiniteScroll,
   CarouselItem,
-  Carousel
+  Carousel,
+  Dialog
 } from 'element-ui';
 
 Vue.component(Message)
+Vue.use(Dialog)
 Vue.use(Loading);
 Vue.use(InfiniteScroll)
 Vue.use(CarouselItem)
