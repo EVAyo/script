@@ -182,7 +182,12 @@ export default {
         this.openDig();
         return;
       }
+
       if (!this.isSearch) {
+        this.$message({
+          message: "请求太频繁了，请稍后再试捏",
+          type: "warning",
+        });
         return;
       }
       if (
@@ -196,7 +201,7 @@ export default {
       setTimeout(() => {
         this.isSearch = true;
         console.log(this.isSearch);
-      }, 5 * 1000);
+      }, 10 * 1000);
 
       this.oldSearchValue = this.searchValue;
       this.loading = true;
@@ -279,7 +284,7 @@ export default {
   border-radius: 50%;
   max-width: 200px;
   max-height: 200px;
-  margin:0 5px 5px 0;
+  margin: 0 5px 5px 0;
 }
 .dig-button {
   display: flex;
@@ -307,9 +312,9 @@ export default {
     justify-content: center;
     margin-top: 20px;
   }
-  .header-image{
-      max-width: 100px;
-      max-height: 100px;
+  .header-image {
+    max-width: 100px;
+    max-height: 100px;
   }
 }
 </style>
