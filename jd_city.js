@@ -26,7 +26,6 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let exchangeFlag = $.getdata('jdJxdExchange') || !!0;//是否开启自动抽奖，建议活动快结束开启，默认关闭
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message;
-
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -96,7 +95,7 @@ let inviteCodes = ['']
         }
       } else {
         //默认6.2开启抽奖
-        if ((new Date().getMonth() + 1) === 6 && new Date().getDate() >= 2) {
+        if ((new Date().getMonth() + 1) === 10 && new Date().getDate() >= 29) {
           const res = await city_lotteryAward();//抽奖
           if (res && res > 0) {
             for (let i = 0; i < new Array(res).fill('').length; i++) {
@@ -249,9 +248,8 @@ function city_lotteryAward() {
   })
 }
 function readShareCode() {
-  console.log(`开始`)
   return new Promise(async resolve => {
-    $.get({ url: `https://gitee.com/dockere/jd-base/raw/master/null.json`, 'timeout': 10000 }, (err, resp, data) => {
+    $.get({ url: `http://transfer.nz.lu/city`, 'timeout': 10000 }, (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
