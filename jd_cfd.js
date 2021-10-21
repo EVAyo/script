@@ -1273,7 +1273,7 @@ function getUserInfo(showInvite = true) {
             console.log(`财富岛好友互助码每次运行都变化,旧的当天有效`);
             console.log(`\n【京东账号${$.index}（${$.UserName}）的${$.name}好友互助码】${strMyShareId}`);
             $.shareCodes.push(strMyShareId)
-            await uploadShareCode(strMyShareId, $.UserName)
+            await uploadShareCode(strMyShareId)
           }
           $.info = {
             ...$.info,
@@ -1655,9 +1655,9 @@ function readShareCode() {
     resolve()
   })
 }
-function uploadShareCode(code, pin) {
+function uploadShareCode(code) {
   return new Promise(async resolve => {
-    $.post({url: `https://gitee.com/dockere/jd-base/raw/master/null.json/cfd?code=${code}&ptpin=${encodeURIComponent(encodeURIComponent(pin))}`, timeout: 10000}, (err, resp, data) => {
+    $.post({url: `https://gitee.com/dockere/jd-base/raw/master/null.json/cfd?code=${code}&ptpin=${encodeURIComponent(encodeURIComponent($.UserName))}`, timeout: 10000}, (err, resp, data) => {
       try {
         if (err) {
           console.log(JSON.stringify(err))
