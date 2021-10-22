@@ -34,6 +34,8 @@
 0 0-23/1 * * * node /scripts/jd_city.js >> /scripts/logs/jd_city.log 2>&1
 # 东东超市抢京豆
 5 0,9 * * * node /scripts/jd_fission.js >> /scripts/logs/jd_fission.log 2>&1
+# 预售福利机
+33 1,9 * * * node /scripts/jd_ys.js >> /scripts/logs/jd_ys.log 2>&1
 ##############长期活动##############
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
