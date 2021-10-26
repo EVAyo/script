@@ -43,11 +43,6 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     return;
   }
   $.updatePkActivityIdRes = await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_cityShareCodes.json')
-  if (!$.updatePkActivityIdRes) {
-    $.http.get({url: 'https://action-1251995682.file.myqcloud.com/shareCodes/jd_cityShareCodes.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
-    await $.wait(1000)
-    $.updatePkActivityIdRes = await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_cityShareCodes.json')
-  }
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
