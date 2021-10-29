@@ -51,11 +51,6 @@ let allMessage = '';
   }
   await requireConfig()
   $.authorCode = await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_updateCash.json')
-  if (!$.authorCode) {
-    $.http.get({url: 'https://action-1251995682.file.myqcloud.com/shareCodes/jd_updateCash.json'}).then((resp) => {}).catch((e) => $.log('刷新CDN异常', e));
-    await $.wait(1000)
-    $.authorCode = await getAuthorShareCode('https://action-1251995682.file.myqcloud.com/shareCodes/jd_updateCash.json') || []
-  }
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
       cookie = cookiesArr[i];
