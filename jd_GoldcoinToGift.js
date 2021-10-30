@@ -64,11 +64,6 @@ const JD_API_HOST = 'https://api.m.jd.com/api';
     }
   }
   let res = await getAuthorShareCode('')
-  if (!res) {
-    $.http.get({url: ''}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
-    await $.wait(1000)
-    res = await getAuthorShareCode('')
-  }
   $.shareId = [...new Set([...$.shareId, ...(res || [])])]
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
