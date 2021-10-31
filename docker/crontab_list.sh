@@ -40,6 +40,8 @@
 0 0,12,18,20 * * * node /scripts/jd_red.js >> /scripts/logs/jd_red.log 2>&1
 # 发财挖宝
 1 1,7,12 * * * node /scripts/jd_fcwb.js >> /scripts/logs/jd_fcwb.log 2>&1
+# 沸腾之夜
+0 17,20,21,22,23 * * * node /scripts/jd_hotNeight.js >> /scripts/logs/jd_hotNeight.log 2>&1
 ##############长期活动##############
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
