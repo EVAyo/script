@@ -1,7 +1,7 @@
 /*
 双十一无门槛红包
 0 0,12,18,20 * * * jd_redEnvelope.js
-添加环境变量JFFLCODE 如需自己返利，请填写该变量（https://u.jd.com/后面的英文）
+添加环境变量FLCODE 如需自己返利，请填写该变量（https://u.jd.com/后面的英文）
 */
 const $ = new Env("京享红包");
 const jdCookieNode = $.isNode() ? require("./jdCookie.js") : "";
@@ -11,7 +11,7 @@ if ($.isNode()) {
     cookiesArr.push(jdCookieNode[item]);
   });
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === "false")
-    console.log = () => {};
+    console.log = () => { };
 } else {
   cookiesArr = [$.getdata("CookieJD"), $.getdata("CookieJD2"), ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
@@ -32,7 +32,7 @@ $.shareCode = "DH50c";
       //await TotalBean();
       console.log(`\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
       if (!$.isLogin) {
-        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
+        $.msg($.name, `【提示】cookie已失效`, `京东账号${$.index} ${$.nickName || $.UserName}\n请重新登录获取\nhttps://bean.m.jd.com/bean/signIndex.action`, { "open-url": "https://bean.m.jd.com/bean/signIndex.action" });
         if ($.isNode()) {
           await notify.sendNotify(`${$.name}cookie已失效 - ${$.UserName}`, `京东账号${$.index} ${$.UserName}\n请重新登录获取cookie`);
         }
@@ -55,9 +55,17 @@ async function main() {
   $.max = false;
   $.hotFlag = false;
   const flCodeArr = ["3K9D5Kc", "3IVMKm8", "3I9UVcJ", "3IXbyRK", "3wVdViu"];
-  const flCode = $.isNode() ? process.env.JFFLCODE ? process.env.JFFLCODE : flCodeArr[Math.floor(Math.random() * flCodeArr.length)] : flCodeArr[Math.floor(Math.random() * flCodeArr.length)];
+  let flCode = flCodeArr[Math.floor(Math.random() * flCodeArr.length)];
+  let FLCODE = $.isNode() ? process.env.FLCODE ? process.env.FLCODE : '' : $.getdata("FLCODE") ? $.getdata("FLCODE") : ''
+  if (FLCODE) {
+    if ($.index === 1) {
+      flCode = FLCODE;
+    } else {
+      flCode = [flCode, FLCODE];
+      flCode = flCode[Math.floor(Math.random() * flCode.length)];
+    }
+  }
   $.code = flCode;
-  console.log($.code)
   for (let i = 0; i < 10 && !$.max; i++) {
     $.newCookie = "";
     $.url1 = "";
@@ -89,8 +97,8 @@ async function main() {
     await $.wait(2000);
   }
   if ($.index === 1 && !$.hotFlag) {
-      await $.wait(2000)
-      await mainInfo()
+    await $.wait(2000)
+    await mainInfo()
   }
 }
 
@@ -297,7 +305,7 @@ async function getInfo1(cookie) {
 }
 
 const navigator = {
-  userAgent: require("./USER_AGENTS").USER_AGENT,
+  userAgent: $.isNode() ? require("./USER_AGENTS").USER_AGENT : $.UA,
   plugins: { length: 0 },
   language: "zh-CN",
 };
@@ -472,35 +480,35 @@ try {
     -1 != f.indexOf("95") &&
     ((r = "windows"), (k = "95")),
     -1 != f.indexOf("win") &&
-      -1 != f.indexOf("98") &&
-      ((r = "windows"), (k = "98")),
+    -1 != f.indexOf("98") &&
+    ((r = "windows"), (k = "98")),
     -1 != f.indexOf("win 9x") &&
-      -1 != f.indexOf("4.90") &&
-      ((r = "windows"), (k = "me")),
+    -1 != f.indexOf("4.90") &&
+    ((r = "windows"), (k = "me")),
     -1 != f.indexOf("win") &&
-      -1 != f.indexOf("nt 5.0") &&
-      ((r = "windows"), (k = "2000")),
+    -1 != f.indexOf("nt 5.0") &&
+    ((r = "windows"), (k = "2000")),
     -1 != f.indexOf("win") &&
-      -1 != f.indexOf("nt") &&
-      ((r = "windows"), (k = "NT")),
+    -1 != f.indexOf("nt") &&
+    ((r = "windows"), (k = "NT")),
     -1 != f.indexOf("win") &&
-      -1 != f.indexOf("nt 5.1") &&
-      ((r = "windows"), (k = "xp")),
+    -1 != f.indexOf("nt 5.1") &&
+    ((r = "windows"), (k = "xp")),
     -1 != f.indexOf("win") &&
-      -1 != f.indexOf("32") &&
-      ((r = "windows"), (k = "32")),
+    -1 != f.indexOf("32") &&
+    ((r = "windows"), (k = "32")),
     -1 != f.indexOf("win") &&
-      -1 != f.indexOf("nt 5.1") &&
-      ((r = "windows"), (k = "7")),
+    -1 != f.indexOf("nt 5.1") &&
+    ((r = "windows"), (k = "7")),
     -1 != f.indexOf("win") &&
-      -1 != f.indexOf("6.0") &&
-      ((r = "windows"), (k = "8")),
+    -1 != f.indexOf("6.0") &&
+    ((r = "windows"), (k = "8")),
     -1 == f.indexOf("win") ||
-      (-1 == f.indexOf("nt 6.0") && -1 == f.indexOf("nt 6.1")) ||
-      ((r = "windows"), (k = "9")),
+    (-1 == f.indexOf("nt 6.0") && -1 == f.indexOf("nt 6.1")) ||
+    ((r = "windows"), (k = "9")),
     -1 != f.indexOf("win") &&
-      -1 != f.indexOf("nt 6.2") &&
-      ((r = "windows"), (k = "10")),
+    -1 != f.indexOf("nt 6.2") &&
+    ((r = "windows"), (k = "10")),
     -1 != f.indexOf("linux") && (r = "linux"),
     -1 != f.indexOf("unix") && (r = "unix"),
     -1 != f.indexOf("sun") && -1 != f.indexOf("os") && (r = "sun os"),
@@ -515,16 +523,16 @@ try {
     -1 != f.indexOf("irix") && ((r = "IRIX"), (k = "")),
     -1 != f.indexOf("freebsd") && (r = "FreeBSD"),
     -1 != f.indexOf("symbianos") &&
-      ((r = "SymbianOS"), (k = f.substring(f.indexOf("SymbianOS/") + 10, 3)));
-} catch (a) {}
+    ((r = "SymbianOS"), (k = f.substring(f.indexOf("SymbianOS/") + 10, 3)));
+} catch (a) { }
 _fingerprint_step = 3;
 var g = "NA",
   m = "NA";
 try {
   -1 != f.indexOf("msie") &&
     ((g = "ie"),
-    (m = f.substring(f.indexOf("msie ") + 5)),
-    m.indexOf(";") && (m = m.substring(0, m.indexOf(";"))));
+      (m = f.substring(f.indexOf("msie ") + 5)),
+      m.indexOf(";") && (m = m.substring(0, m.indexOf(";"))));
   -1 != f.indexOf("firefox") &&
     ((g = "Firefox"), (m = f.substring(f.indexOf("firefox/") + 8)));
   -1 != f.indexOf("opera") &&
@@ -533,14 +541,14 @@ try {
     ((g = "safari"), (m = f.substring(f.indexOf("safari/") + 7)));
   -1 != f.indexOf("chrome") &&
     ((g = "chrome"),
-    (m = f.substring(f.indexOf("chrome/") + 7)),
-    m.indexOf(" ") && (m = m.substring(0, m.indexOf(" "))));
+      (m = f.substring(f.indexOf("chrome/") + 7)),
+      m.indexOf(" ") && (m = m.substring(0, m.indexOf(" "))));
   -1 != f.indexOf("navigator") &&
     ((g = "navigator"), (m = f.substring(f.indexOf("navigator/") + 10)));
   -1 != f.indexOf("applewebkit") &&
     ((g = "applewebkit_chrome"),
-    (m = f.substring(f.indexOf("applewebkit/") + 12)),
-    m.indexOf(" ") && (m = m.substring(0, m.indexOf(" "))));
+      (m = f.substring(f.indexOf("applewebkit/") + 12)),
+      m.indexOf(" ") && (m = m.substring(0, m.indexOf(" "))));
   -1 != f.indexOf("sogoumobilebrowser") &&
     (g = "\u641c\u72d7\u624b\u673a\u6d4f\u89c8\u5668");
   if (-1 != f.indexOf("ucbrowser") || -1 != f.indexOf("ucweb"))
@@ -552,7 +560,7 @@ try {
   -1 != f.indexOf("the world") &&
     (g = "\u4e16\u754c\u4e4b\u7a97\u6d4f\u89c8\u5668");
   -1 != f.indexOf("maxthon") && (g = "\u9068\u6e38\u6d4f\u89c8\u5668");
-} catch (a) {}
+} catch (a) { }
 
 class JdJrTdRiskFinger {
   f = {
@@ -618,7 +626,7 @@ class JdJrTdRiskFinger {
       return a;
     },
     replaceAll: function (a, b, c) {
-      for (; 0 <= a.indexOf(b); ) a = a.replace(b, c);
+      for (; 0 <= a.indexOf(b);) a = a.replace(b, c);
       return a;
     },
     browserRedirect: function (a) {
@@ -639,17 +647,17 @@ class JdJrTdRiskFinger {
     languageKey: function (a) {
       "" ||
         (a.push(navigator.language),
-        (y =
-          y +
-          ",'language':'" +
-          this.replaceAll(navigator.language, " ", "_") +
-          "'"));
+          (y =
+            y +
+            ",'language':'" +
+            this.replaceAll(navigator.language, " ", "_") +
+            "'"));
       return a;
     },
     colorDepthKey: function (a) {
       "" ||
         (a.push(screen.colorDepth),
-        (y = y + ",'colorDepth':'" + screen.colorDepth + "'"));
+          (y = y + ",'colorDepth':'" + screen.colorDepth + "'"));
       return a;
     },
     screenResolutionKey: function (a) {
@@ -657,7 +665,7 @@ class JdJrTdRiskFinger {
         var b = this.getScreenResolution();
         "undefined" !== typeof b &&
           (a.push(b.join("x")),
-          (y = y + ",'screenResolution':'" + b.join("x") + "'"));
+            (y = y + ",'screenResolution':'" + b.join("x") + "'"));
       }
       return a;
     },
@@ -671,11 +679,11 @@ class JdJrTdRiskFinger {
     timezoneOffsetKey: function (a) {
       this.options.excludeTimezoneOffset ||
         (a.push(new Date().getTimezoneOffset()),
-        (y =
-          y +
-          ",'timezoneOffset':'" +
-          new Date().getTimezoneOffset() / 60 +
-          "'"));
+          (y =
+            y +
+            ",'timezoneOffset':'" +
+            new Date().getTimezoneOffset() / 60 +
+            "'"));
       return a;
     },
     sessionStorageKey: function (a) {
@@ -698,8 +706,8 @@ class JdJrTdRiskFinger {
     },
     addBehaviorKey: function (a) {
       document.body &&
-      !this.options.excludeAddBehavior &&
-      document.body.addBehavior
+        !this.options.excludeAddBehavior &&
+        document.body.addBehavior
         ? (a.push("addBehaviorKey"), (y += ",'addBehavior':true"))
         : (y += ",'addBehavior':false");
       return a;
@@ -713,13 +721,13 @@ class JdJrTdRiskFinger {
     cpuClassKey: function (a) {
       this.options.excludeCpuClass ||
         (a.push(this.getNavigatorCpuClass()),
-        (y = y + ",'cpu':'" + this.getNavigatorCpuClass() + "'"));
+          (y = y + ",'cpu':'" + this.getNavigatorCpuClass() + "'"));
       return a;
     },
     platformKey: function (a) {
       this.options.excludePlatform ||
         (a.push(this.getNavigatorPlatform()),
-        (y = y + ",'platform':'" + this.getNavigatorPlatform() + "'"));
+          (y = y + ",'platform':'" + this.getNavigatorPlatform() + "'"));
       return a;
     },
     hardwareConcurrencyKey: function (a) {
@@ -731,7 +739,7 @@ class JdJrTdRiskFinger {
     doNotTrackKey: function (a) {
       this.options.excludeDoNotTrack ||
         (a.push(this.getDoNotTrack()),
-        (y = y + ",'track':'" + this.getDoNotTrack() + "'"));
+          (y = y + ",'track':'" + this.getDoNotTrack() + "'"));
       return a;
     },
     canvasKey: function (a) {
@@ -775,17 +783,17 @@ class JdJrTdRiskFinger {
     getIEPluginsString: function () {
       return window.ActiveXObject
         ? this.map(
-            "AcroPDF.PDF;Adodb.Stream;AgControl.AgControl;DevalVRXCtrl.DevalVRXCtrl.1;MacromediaFlashPaper.MacromediaFlashPaper;Msxml2.DOMDocument;Msxml2.XMLHTTP;PDF.PdfCtrl;QuickTime.QuickTime;QuickTimeCheckObject.QuickTimeCheck.1;RealPlayer;RealPlayer.RealPlayer(tm) ActiveX Control (32-bit);RealVideo.RealVideo(tm) ActiveX Control (32-bit);Scripting.Dictionary;SWCtl.SWCtl;Shell.UIHelper;ShockwaveFlash.ShockwaveFlash;Skype.Detection;TDCCtl.TDCCtl;WMPlayer.OCX;rmocx.RealPlayer G2 Control;rmocx.RealPlayer G2 Control.1".split(
-              ";"
-            ),
-            function (a) {
-              try {
-                return new ActiveXObject(a), a;
-              } catch (b) {
-                return null;
-              }
+          "AcroPDF.PDF;Adodb.Stream;AgControl.AgControl;DevalVRXCtrl.DevalVRXCtrl.1;MacromediaFlashPaper.MacromediaFlashPaper;Msxml2.DOMDocument;Msxml2.XMLHTTP;PDF.PdfCtrl;QuickTime.QuickTime;QuickTimeCheckObject.QuickTimeCheck.1;RealPlayer;RealPlayer.RealPlayer(tm) ActiveX Control (32-bit);RealVideo.RealVideo(tm) ActiveX Control (32-bit);Scripting.Dictionary;SWCtl.SWCtl;Shell.UIHelper;ShockwaveFlash.ShockwaveFlash;Skype.Detection;TDCCtl.TDCCtl;WMPlayer.OCX;rmocx.RealPlayer G2 Control;rmocx.RealPlayer G2 Control.1".split(
+            ";"
+          ),
+          function (a) {
+            try {
+              return new ActiveXObject(a), a;
+            } catch (b) {
+              return null;
             }
-          ).join(";")
+          }
+        ).join(";")
         : "";
     },
     hasSessionStorage: function () {
@@ -910,18 +918,18 @@ class JdJrTdRiskFinger {
       c.push("w7" + b.getParameter(b.GREEN_BITS));
       c.push(
         "w8" +
-          (function (D) {
-            var B,
-              F =
-                D.getExtension("EXT_texture_filter_anisotropic") ||
-                D.getExtension("WEBKIT_EXT_texture_filter_anisotropic") ||
-                D.getExtension("MOZ_EXT_texture_filter_anisotropic");
-            return F
-              ? ((B = D.getParameter(F.MAX_TEXTURE_MAX_ANISOTROPY_EXT)),
-                0 === B && (B = 2),
-                B)
-              : null;
-          })(b)
+        (function (D) {
+          var B,
+            F =
+              D.getExtension("EXT_texture_filter_anisotropic") ||
+              D.getExtension("WEBKIT_EXT_texture_filter_anisotropic") ||
+              D.getExtension("MOZ_EXT_texture_filter_anisotropic");
+          return F
+            ? ((B = D.getParameter(F.MAX_TEXTURE_MAX_ANISOTROPY_EXT)),
+              0 === B && (B = 2),
+              B)
+            : null;
+        })(b)
       );
       c.push("w9" + b.getParameter(b.MAX_COMBINED_TEXTURE_IMAGE_UNITS));
       c.push("w10" + b.getParameter(b.MAX_CUBE_MAP_TEXTURE_SIZE));
@@ -944,8 +952,8 @@ class JdJrTdRiskFinger {
         var C = b.getExtension("WEBGL_debug_renderer_info");
         C &&
           (c.push("wuv:" + b.getParameter(C.UNMASKED_VENDOR_WEBGL)),
-          c.push("wur:" + b.getParameter(C.UNMASKED_RENDERER_WEBGL)));
-      } catch (D) {}
+            c.push("wur:" + b.getParameter(C.UNMASKED_RENDERER_WEBGL)));
+      } catch (D) { }
       return c.join("\u00a7");
     },
     isCanvasSupported: function () {
@@ -970,7 +978,7 @@ class JdJrTdRiskFinger {
         ((0 < c.indexOf("jdjr-app") || 0 <= c.indexOf("jdapp")) &&
           (0 < c.indexOf("iphone") || 0 < c.indexOf("ipad"))) ||
           (b = a.getContext("webgl") || a.getContext("experimental-webgl"));
-      } catch (l) {}
+      } catch (l) { }
       b || (b = null);
       return b;
     },
@@ -1059,8 +1067,8 @@ class JdJrTdRiskFinger {
       return 0 === b
         ? a
         : 32 > b
-        ? [(a[0] << b) | (a[1] >>> (32 - b)), a[1] << b]
-        : [a[1] << (b - 32), 0];
+          ? [(a[0] << b) | (a[1] >>> (32 - b)), a[1] << b]
+          : [a[1] << (b - 32), 0];
     },
     x64Xor: function (a, b) {
       return [a[0] ^ b[0], a[1] ^ b[1]];
@@ -1081,32 +1089,32 @@ class JdJrTdRiskFinger {
       b = [0, b];
       for (
         var q,
-          z,
-          C = [2277735313, 289559509],
-          D = [1291169091, 658871167],
-          B = 0;
+        z,
+        C = [2277735313, 289559509],
+        D = [1291169091, 658871167],
+        B = 0;
         B < l;
         B += 16
       )
         (q = [
           (a.charCodeAt(B + 4) & 255) |
-            ((a.charCodeAt(B + 5) & 255) << 8) |
-            ((a.charCodeAt(B + 6) & 255) << 16) |
-            ((a.charCodeAt(B + 7) & 255) << 24),
+          ((a.charCodeAt(B + 5) & 255) << 8) |
+          ((a.charCodeAt(B + 6) & 255) << 16) |
+          ((a.charCodeAt(B + 7) & 255) << 24),
           (a.charCodeAt(B) & 255) |
-            ((a.charCodeAt(B + 1) & 255) << 8) |
-            ((a.charCodeAt(B + 2) & 255) << 16) |
-            ((a.charCodeAt(B + 3) & 255) << 24),
+          ((a.charCodeAt(B + 1) & 255) << 8) |
+          ((a.charCodeAt(B + 2) & 255) << 16) |
+          ((a.charCodeAt(B + 3) & 255) << 24),
         ]),
           (z = [
             (a.charCodeAt(B + 12) & 255) |
-              ((a.charCodeAt(B + 13) & 255) << 8) |
-              ((a.charCodeAt(B + 14) & 255) << 16) |
-              ((a.charCodeAt(B + 15) & 255) << 24),
+            ((a.charCodeAt(B + 13) & 255) << 8) |
+            ((a.charCodeAt(B + 14) & 255) << 16) |
+            ((a.charCodeAt(B + 15) & 255) << 24),
             (a.charCodeAt(B + 8) & 255) |
-              ((a.charCodeAt(B + 9) & 255) << 8) |
-              ((a.charCodeAt(B + 10) & 255) << 16) |
-              ((a.charCodeAt(B + 11) & 255) << 24),
+            ((a.charCodeAt(B + 9) & 255) << 8) |
+            ((a.charCodeAt(B + 10) & 255) << 16) |
+            ((a.charCodeAt(B + 11) & 255) << 24),
           ]),
           (q = this.x64Multiply(q, C)),
           (q = this.x64Rotl(q, 31)),
@@ -1188,7 +1196,7 @@ var JDDSecCryptoJS =
     var v = {},
       x = (v.lib = {}),
       w = (x.Base = (function () {
-        function g() {}
+        function g() { }
 
         return {
           extend: function (m) {
@@ -1208,7 +1216,7 @@ var JDDSecCryptoJS =
             m.init.apply(m, arguments);
             return m;
           },
-          init: function () {},
+          init: function () { },
           mixIn: function (m) {
             for (var a in m) m.hasOwnProperty(a) && (this[a] = m[a]);
             m.hasOwnProperty("toString") && (this.toString = m.toString);
@@ -1264,8 +1272,8 @@ var JDDSecCryptoJS =
       generateUuid: function () {
         for (
           var g = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".split(""),
-            m = 0,
-            a = g.length;
+          m = 0,
+          a = g.length;
           m < a;
           m++
         )
@@ -1630,12 +1638,12 @@ JDDSecCryptoJS.lib.Cipher ||
           var q = l[h - 1];
           h % c
             ? 6 < c &&
-              4 == h % c &&
-              (q =
-                (x[q >>> 24] << 24) |
-                (x[(q >>> 16) & 255] << 16) |
-                (x[(q >>> 8) & 255] << 8) |
-                x[q & 255])
+            4 == h % c &&
+            (q =
+              (x[q >>> 24] << 24) |
+              (x[(q >>> 16) & 255] << 16) |
+              (x[(q >>> 8) & 255] << 8) |
+              x[q & 255])
             : ((q = (q << 8) | (q >>> 24)),
               (q =
                 (x[q >>> 24] << 24) |
@@ -1653,9 +1661,9 @@ JDDSecCryptoJS.lib.Cipher ||
             4 > c || 4 >= h
               ? q
               : f[x[q >>> 24]] ^
-                r[x[(q >>> 16) & 255]] ^
-                k[x[(q >>> 8) & 255]] ^
-                g[x[q & 255]]);
+              r[x[(q >>> 16) & 255]] ^
+              k[x[(q >>> 8) & 255]] ^
+              g[x[q & 255]]);
     },
     encryptBlock: function (a, b) {
       this._doCryptBlock(a, b, this._keySchedule, A, y, n, e, x);
@@ -1672,21 +1680,21 @@ JDDSecCryptoJS.lib.Cipher ||
     _doCryptBlock: function (a, b, c, l, h, q, z, C) {
       for (
         var D = this._nRounds,
-          B = a[b] ^ c[0],
-          F = a[b + 1] ^ c[1],
-          H = a[b + 2] ^ c[2],
-          G = a[b + 3] ^ c[3],
-          I = 4,
-          M = 1;
+        B = a[b] ^ c[0],
+        F = a[b + 1] ^ c[1],
+        H = a[b + 2] ^ c[2],
+        G = a[b + 3] ^ c[3],
+        I = 4,
+        M = 1;
         M < D;
         M++
       ) {
         var J =
-            l[B >>> 24] ^
-            h[(F >>> 16) & 255] ^
-            q[(H >>> 8) & 255] ^
-            z[G & 255] ^
-            c[I++],
+          l[B >>> 24] ^
+          h[(F >>> 16) & 255] ^
+          q[(H >>> 8) & 255] ^
+          z[G & 255] ^
+          c[I++],
           K =
             l[F >>> 24] ^
             h[(H >>> 16) & 255] ^
@@ -1758,12 +1766,12 @@ JDDSecCryptoJS.lib.Cipher ||
     _doProcessBlock: function (A, y) {
       for (
         var n = this._hash.words,
-          e = n[0],
-          f = n[1],
-          r = n[2],
-          k = n[3],
-          g = n[4],
-          m = 0;
+        e = n[0],
+        f = n[1],
+        r = n[2],
+        k = n[3],
+        g = n[4],
+        m = 0;
         80 > m;
         m++
       ) {
@@ -1777,10 +1785,10 @@ JDDSecCryptoJS.lib.Cipher ||
           20 > m
             ? a + (((f & r) | (~f & k)) + 1518500249)
             : 40 > m
-            ? a + ((f ^ r ^ k) + 1859775393)
-            : 60 > m
-            ? a + (((f & r) | (f & k) | (r & k)) - 1894007588)
-            : a + ((f ^ r ^ k) - 899497514);
+              ? a + ((f ^ r ^ k) + 1859775393)
+              : 60 > m
+                ? a + (((f & r) | (f & k) | (r & k)) - 1894007588)
+                : a + ((f ^ r ^ k) - 899497514);
         g = k;
         k = r;
         r = (f << 30) | (f >>> 2);
@@ -1874,7 +1882,7 @@ JDDSecCryptoJS.lib.Cipher ||
         ];
         for (e = 0; 8 > e && y + 0.625 * e < w; e++) v.push(A.charAt(n[e]));
       }
-      if ((x = A.charAt(32))) for (; v.length % 8; ) v.push(x);
+      if ((x = A.charAt(32))) for (; v.length % 8;) v.push(x);
       return v.join("");
     },
     parse: function (v) {
@@ -1917,7 +1925,7 @@ class JDDMAC {
 }
 
 var _CurrentPageProtocol =
-    "https:" == document.location.protocol ? "https://" : "http://",
+  "https:" == document.location.protocol ? "https://" : "http://",
   _JdJrTdRiskDomainName = window.__fp_domain || "gia.jd.com",
   _url_query_str = "",
   _root_domain = "",
@@ -1928,13 +1936,13 @@ var _CurrentPageProtocol =
         /^https?:\/\/(?:\w+\.)*?(\w*\.(?:com\.cn|cn|com|net|id))[\\\/]*/.exec(
           t
         )[1];
-    } catch (v) {}
+    } catch (v) { }
     var u = t.indexOf("?");
     0 < u &&
       ((_url_query_str = t.substring(u + 1)),
-      500 < _url_query_str.length &&
+        500 < _url_query_str.length &&
         (_url_query_str = _url_query_str.substring(0, 499)),
-      (t = t.substring(0, u)));
+        (t = t.substring(0, u)));
     return (t = t.substring(_CurrentPageProtocol.length));
   })(),
   jd_shadow__ = (function () {
@@ -1972,17 +1980,17 @@ var td_collect = new (function () {
       window.RTCPeerConnection;
     if (n) {
       var e = function (k) {
-          var g = /([0-9]{1,3}(\.[0-9]{1,3}){3})/,
-            m =
-              /\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*/;
-          try {
-            var a = g.exec(k);
-            if (null == a || 0 == a.length || void 0 == a) a = m.exec(k);
-            var b = a[1];
-            void 0 === f[b] && w.push(b);
-            f[b] = !0;
-          } catch (c) {}
-        },
+        var g = /([0-9]{1,3}(\.[0-9]{1,3}){3})/,
+          m =
+            /\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*/;
+        try {
+          var a = g.exec(k);
+          if (null == a || 0 == a.length || void 0 == a) a = m.exec(k);
+          var b = a[1];
+          void 0 === f[b] && w.push(b);
+          f[b] = !0;
+        } catch (c) { }
+      },
         f = {};
       try {
         var r = new n({
@@ -1992,40 +2000,40 @@ var td_collect = new (function () {
             },
           ],
         });
-      } catch (k) {}
+      } catch (k) { }
       try {
         void 0 === r &&
           (r = new n({
             iceServers: [],
           }));
-      } catch (k) {}
+      } catch (k) { }
       if (r || window.mozRTCPeerConnection)
         try {
           r.createDataChannel("chat", {
             reliable: !1,
           });
-        } catch (k) {}
+        } catch (k) { }
       r &&
         ((r.onicecandidate = function (k) {
           k.candidate && e(k.candidate.candidate);
         }),
-        r.createOffer(
-          function (k) {
-            r.setLocalDescription(
-              k,
-              function () {},
-              function () {}
-            );
-          },
-          function () {}
-        ),
-        setTimeout(function () {
-          try {
-            r.localDescription.sdp.split("\n").forEach(function (k) {
-              0 === k.indexOf("a=candidate:") && e(k);
-            });
-          } catch (k) {}
-        }, 800));
+          r.createOffer(
+            function (k) {
+              r.setLocalDescription(
+                k,
+                function () { },
+                function () { }
+              );
+            },
+            function () { }
+          ),
+          setTimeout(function () {
+            try {
+              r.localDescription.sdp.split("\n").forEach(function (k) {
+                0 === k.indexOf("a=candidate:") && e(k);
+              });
+            } catch (k) { }
+          }, 800));
     }
   }
 
@@ -2110,36 +2118,36 @@ var td_collect = new (function () {
         "$1"
       );
       0 !== f.length && (e.cookie = f);
-    } catch (k) {}
+    } catch (k) { }
     try {
       window.localStorage &&
         null !== window.localStorage &&
         0 !== window.localStorage.length &&
         (e.localStorage = window.localStorage.getItem("3AB9D23F7A4B3C9B"));
-    } catch (k) {}
+    } catch (k) { }
     try {
       window.sessionStorage &&
         null !== window.sessionStorage &&
         (e.sessionStorage = window.sessionStorage["3AB9D23F7A4B3C9B"]);
-    } catch (k) {}
+    } catch (k) { }
     try {
       p.globalStorage &&
         (e.globalStorage =
           window.globalStorage[".localdomain"]["3AB9D23F7A4B3C9B"]);
-    } catch (k) {}
+    } catch (k) { }
     try {
       d &&
         "function" == typeof d.load &&
         "function" == typeof d.getAttribute &&
         (d.load("jdgia_user_data"),
-        (e.userData = d.getAttribute("3AB9D23F7A4B3C9B")));
-    } catch (k) {}
+          (e.userData = d.getAttribute("3AB9D23F7A4B3C9B")));
+    } catch (k) { }
     try {
       E.indexedDbId && (e.indexedDb = E.indexedDbId);
-    } catch (k) {}
+    } catch (k) { }
     try {
       E.webDbId && (e.webDb = E.webDbId);
-    } catch (k) {}
+    } catch (k) { }
     try {
       for (var r in e)
         if (32 < e[r].length) {
@@ -2147,14 +2155,14 @@ var td_collect = new (function () {
           n || (_eidFlag = !0);
           break;
         }
-    } catch (k) {}
+    } catch (k) { }
     try {
       ("undefined" === typeof _JdEid || 0 >= _JdEid.length) &&
         this.db("3AB9D23F7A4B3C9B");
       if ("undefined" === typeof _JdEid || 0 >= _JdEid.length)
         _JdEid = u("3AB9D23F7A4B3C9B");
       if ("undefined" === typeof _JdEid || 0 >= _JdEid.length) _eidFlag = !0;
-    } catch (k) {}
+    } catch (k) { }
     return _JdEid;
   };
   var w = [],
@@ -2206,7 +2214,7 @@ var td_collect = new (function () {
       this.deviceInfo.userAgent = navigator.userAgent;
       this.deviceInfo.isAndroid = e;
       this.createWorker();
-    } catch (f) {}
+    } catch (f) { }
   };
   this.db = function (n, e) {
     try {
@@ -2220,32 +2228,32 @@ var td_collect = new (function () {
         );
         void 0 !== e && "" != e
           ? f.transaction(function (r) {
-              r.executeSql(
-                "CREATE TABLE IF NOT EXISTS cache(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, value TEXT NOT NULL, UNIQUE (name))",
-                [],
-                function (k, g) {},
-                function (k, g) {}
-              );
-              r.executeSql(
-                "INSERT OR REPLACE INTO cache(name, value) VALUES(?, ?)",
-                [n, e],
-                function (k, g) {},
-                function (k, g) {}
-              );
-            })
+            r.executeSql(
+              "CREATE TABLE IF NOT EXISTS cache(id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, value TEXT NOT NULL, UNIQUE (name))",
+              [],
+              function (k, g) { },
+              function (k, g) { }
+            );
+            r.executeSql(
+              "INSERT OR REPLACE INTO cache(name, value) VALUES(?, ?)",
+              [n, e],
+              function (k, g) { },
+              function (k, g) { }
+            );
+          })
           : f.transaction(function (r) {
-              r.executeSql(
-                "SELECT value FROM cache WHERE name=?",
-                [n],
-                function (k, g) {
-                  1 <= g.rows.length && (_JdEid = g.rows.item(0).value);
-                },
-                function (k, g) {}
-              );
-            });
+            r.executeSql(
+              "SELECT value FROM cache WHERE name=?",
+              [n],
+              function (k, g) {
+                1 <= g.rows.length && (_JdEid = g.rows.item(0).value);
+              },
+              function (k, g) { }
+            );
+          });
       }
       _fingerprint_step = "n";
-    } catch (r) {}
+    } catch (r) { }
   };
   this.setCookie = function (n, e) {
     void 0 !== e &&
@@ -2303,7 +2311,7 @@ var td_collect = new (function () {
             (e.style.color = r[k]),
             (f[r[k]] = window.getComputedStyle(e).getPropertyValue("color")),
             document.body.removeChild(e);
-    } catch (D) {}
+    } catch (D) { }
     e = {
       ca: {},
       ts: {},
@@ -2317,7 +2325,7 @@ var td_collect = new (function () {
         (k = k.toLowerCase()),
         (k =
           (0 < k.indexOf("jdjr-app") || 0 <= k.indexOf("jdapp")) &&
-          (0 < k.indexOf("iphone") || 0 < k.indexOf("ipad"))
+            (0 < k.indexOf("iphone") || 0 < k.indexOf("ipad"))
             ? !0
             : !1),
         (k = !k);
@@ -2333,7 +2341,7 @@ var td_collect = new (function () {
           })) &&
             c &&
             ((b = c), a.push(m[k]));
-        } catch (D) {}
+        } catch (D) { }
       a.length &&
         (g = {
           name: a,
@@ -2350,13 +2358,13 @@ var td_collect = new (function () {
       b = [];
       try {
         (b = k.getSupportedExtensions()), (r.extensions = b);
-      } catch (D) {}
+      } catch (D) { }
       try {
         var l = k.getExtension("WEBGL_debug_renderer_info");
         l &&
           ((r.wuv = k.getParameter(l.UNMASKED_VENDOR_WEBGL)),
-          (r.wur = k.getParameter(l.UNMASKED_RENDERER_WEBGL)));
-      } catch (D) {}
+            (r.wur = k.getParameter(l.UNMASKED_RENDERER_WEBGL)));
+      } catch (D) { }
     }
     e.m.documentMode = document.documentMode;
     e.m.compatMode = document.compatMode;
@@ -2372,7 +2380,7 @@ var td_collect = new (function () {
     k.javaEnabled = false;
     try {
       k.taintEnabled = navigator.taintEnabled();
-    } catch (D) {}
+    } catch (D) { }
     e.n = k;
     k = navigator.userAgent.toLowerCase();
     if ((h = k.match(/rv:([\d.]+)\) like gecko/))) var q = h[1];
@@ -2381,10 +2389,10 @@ var td_collect = new (function () {
     if (q)
       for (
         q =
-          "AcroPDF.PDF;Adodb.Stream;AgControl.AgControl;DevalVRXCtrl.DevalVRXCtrl.1;MacromediaFlashPaper.MacromediaFlashPaper;Msxml2.DOMDocument;Msxml2.XMLHTTP;PDF.PdfCtrl;QuickTime.QuickTime;QuickTimeCheckObject.QuickTimeCheck.1;RealPlayer;RealPlayer.RealPlayer(tm) ActiveX Control (32-bit);RealVideo.RealVideo(tm) ActiveX Control (32-bit);rmocx.RealPlayer G2 Control;Scripting.Dictionary;Shell.UIHelper;ShockwaveFlash.ShockwaveFlash;SWCtl.SWCtl;TDCCtl.TDCCtl;WMPlayer.OCX".split(
-            ";"
-          ),
-          k = 0;
+        "AcroPDF.PDF;Adodb.Stream;AgControl.AgControl;DevalVRXCtrl.DevalVRXCtrl.1;MacromediaFlashPaper.MacromediaFlashPaper;Msxml2.DOMDocument;Msxml2.XMLHTTP;PDF.PdfCtrl;QuickTime.QuickTime;QuickTimeCheckObject.QuickTimeCheck.1;RealPlayer;RealPlayer.RealPlayer(tm) ActiveX Control (32-bit);RealVideo.RealVideo(tm) ActiveX Control (32-bit);rmocx.RealPlayer G2 Control;Scripting.Dictionary;Shell.UIHelper;ShockwaveFlash.ShockwaveFlash;SWCtl.SWCtl;TDCCtl.TDCCtl;WMPlayer.OCX".split(
+          ";"
+        ),
+        k = 0;
         k < q.length;
         k++
       ) {
@@ -2395,13 +2403,13 @@ var td_collect = new (function () {
           l.name = z;
           try {
             l.version = C.GetVariable("$version");
-          } catch (D) {}
+          } catch (D) { }
           try {
             l.version = C.GetVersions();
-          } catch (D) {}
+          } catch (D) { }
           (l.version && 0 < l.version.length) || (l.version = "");
           h.push(l);
-        } catch (D) {}
+        } catch (D) { }
       }
     else {
       q = navigator.plugins;
@@ -2435,7 +2443,7 @@ var td_collect = new (function () {
         (f.sessionStorage = !!window.sessionStorage),
         (f.globalStorage = !!window.globalStorage),
         (f.indexedDB = !!window.indexedDB);
-    } catch (D) {}
+    } catch (D) { }
     e.ss = f;
     e.ts.deviceTime = n.getTime();
     e.ts.deviceEndTime = new Date().getTime();
@@ -2454,39 +2462,39 @@ var td_collect = new (function () {
             void 0 != k.t &&
             "number" == typeof k.t &&
             (12e5 >= g - k.t &&
-            void 0 != k.tk &&
-            null != k.tk &&
-            "" != k.tk &&
-            k.tk.startsWith("jdd")
+              void 0 != k.tk &&
+              null != k.tk &&
+              "" != k.tk &&
+              k.tk.startsWith("jdd")
               ? ((e.deviceInfo.sdkToken = k.tk), (f = !0))
               : void 0 != k.tk &&
-                null != k.tk &&
-                "" != k.tk &&
-                (e.deviceInfo.sdkToken = k.tk));
-        } catch (m) {}
+              null != k.tk &&
+              "" != k.tk &&
+              (e.deviceInfo.sdkToken = k.tk));
+        } catch (m) { }
       r = !1;
       e.deviceInfo.isJdApp
         ? ((e.deviceInfo.clientVersion = navigator.userAgent.split(";")[2]),
           (r = 0 < e.compareVersion(e.deviceInfo.clientVersion, "7.0.2")) &&
-            !f &&
-            e.getJdSdkCacheToken(function (m) {
-              e.deviceInfo.sdkToken = m;
-              (null != m && "" != m && m.startsWith("jdd")) ||
-                e.getJdBioToken(n);
-            }))
+          !f &&
+          e.getJdSdkCacheToken(function (m) {
+            e.deviceInfo.sdkToken = m;
+            (null != m && "" != m && m.startsWith("jdd")) ||
+              e.getJdBioToken(n);
+          }))
         : e.deviceInfo.isJrApp &&
-          ((e.deviceInfo.clientVersion = navigator.userAgent.match(
-            /clientVersion=([^&]*)(&|$)/
-          )[1]),
+        ((e.deviceInfo.clientVersion = navigator.userAgent.match(
+          /clientVersion=([^&]*)(&|$)/
+        )[1]),
           (r = 0 < e.compareVersion(e.deviceInfo.clientVersion, "4.6.0")) &&
-            !f &&
-            e.getJdJrSdkCacheToken(function (m) {
-              e.deviceInfo.sdkToken = m;
-              (null != m && "" != m && m.startsWith("jdd")) ||
-                e.getJdJrBioToken(n);
-            }));
+          !f &&
+          e.getJdJrSdkCacheToken(function (m) {
+            e.deviceInfo.sdkToken = m;
+            (null != m && "" != m && m.startsWith("jdd")) ||
+              e.getJdJrBioToken(n);
+          }));
       "function" == typeof n && n(e.deviceInfo);
-    } catch (m) {}
+    } catch (m) { }
   };
   this.compareVersion = function (n, e) {
     try {
@@ -2500,7 +2508,7 @@ var td_collect = new (function () {
         if (k < g) break;
         if (k > g) return 1;
       }
-    } catch (m) {}
+    } catch (m) { }
     return -1;
   };
   this.isWKWebView = function () {
@@ -2515,7 +2523,7 @@ var td_collect = new (function () {
         var e = (n + "").match(/"token":"(.*?)"/);
         if (e && 1 < e.length) return e[1];
       }
-    } catch (f) {}
+    } catch (f) { }
     return "";
   };
   this.getJdJrBioToken = function (n) {
@@ -2525,34 +2533,34 @@ var td_collect = new (function () {
       "undefined" != typeof JrBridge._version &&
       (0 > e.compareVersion(JrBridge._version, "2.0.0")
         ? console.error(
-            "\u6865\u7248\u672c\u4f4e\u4e8e2.0\u4e0d\u652f\u6301bio"
-          )
+          "\u6865\u7248\u672c\u4f4e\u4e8e2.0\u4e0d\u652f\u6301bio"
+        )
         : JrBridge.callNative(
-            {
-              type: e.bioConfig.type,
-              operation: e.bioConfig.operation,
-              biometricData: {
-                bizId: e.bizId,
-                duraTime: e.bioConfig.duraTime,
-                interval: e.bioConfig.interval,
-              },
+          {
+            type: e.bioConfig.type,
+            operation: e.bioConfig.operation,
+            biometricData: {
+              bizId: e.bizId,
+              duraTime: e.bioConfig.duraTime,
+              interval: e.bioConfig.interval,
             },
-            function (f) {
-              try {
-                "object" != typeof f && (f = JSON.parse(f)),
-                  (e.deviceInfo.sdkToken = f.token);
-              } catch (r) {
-                console.error(r);
-              }
-              null != e.deviceInfo.sdkToken &&
-                "" != e.deviceInfo.sdkToken &&
-                ((f = {
-                  tk: e.deviceInfo.sdkToken,
-                  t: new Date().getTime(),
-                }),
-                e.store("BATQW722QTLYVCRD", JSON.stringify(f)));
+          },
+          function (f) {
+            try {
+              "object" != typeof f && (f = JSON.parse(f)),
+                (e.deviceInfo.sdkToken = f.token);
+            } catch (r) {
+              console.error(r);
             }
-          ));
+            null != e.deviceInfo.sdkToken &&
+              "" != e.deviceInfo.sdkToken &&
+              ((f = {
+                tk: e.deviceInfo.sdkToken,
+                t: new Date().getTime(),
+              }),
+                e.store("BATQW722QTLYVCRD", JSON.stringify(f)));
+          }
+        ));
   };
   this.getJdJrSdkCacheToken = function (n) {
     var e = this;
@@ -2582,15 +2590,15 @@ var td_collect = new (function () {
               "" != r &&
               "function" == typeof n &&
               (n(r),
-              r.startsWith("jdd") &&
+                r.startsWith("jdd") &&
                 ((f = {
                   tk: r,
                   t: new Date().getTime(),
                 }),
-                e.store("BATQW722QTLYVCRD", JSON.stringify(f))));
+                  e.store("BATQW722QTLYVCRD", JSON.stringify(f))));
           }
         );
-    } catch (f) {}
+    } catch (f) { }
   };
   this.getJdBioToken = function (n) {
     var e = this;
@@ -2617,9 +2625,9 @@ var td_collect = new (function () {
     });
     e.isWKWebView()
       ? window.webkit.messageHandlers.JDAppUnite.postMessage({
-          method: "notifyMessageToNative",
-          params: n,
-        })
+        method: "notifyMessageToNative",
+        params: n,
+      })
       : window.JDAppUnite && window.JDAppUnite.notifyMessageToNative(n);
     window._bioDeviceCb = function (f) {
       try {
@@ -2639,7 +2647,7 @@ var td_collect = new (function () {
           tk: e.deviceInfo.sdkToken,
           t: new Date().getTime(),
         }),
-        e.store("BATQW722QTLYVCRD", JSON.stringify(f)));
+          e.store("BATQW722QTLYVCRD", JSON.stringify(f)));
     };
   };
   this.getJdSdkCacheToken = function (n) {
@@ -2668,9 +2676,9 @@ var td_collect = new (function () {
         });
       e.isWKWebView()
         ? window.webkit.messageHandlers.JDAppUnite.postMessage({
-            method: "notifyMessageToNative",
-            params: f,
-          })
+          method: "notifyMessageToNative",
+          params: f,
+        })
         : window.JDAppUnite && window.JDAppUnite.notifyMessageToNative(f);
       window._bioDeviceSdkCacheCb = function (r) {
         var k = "";
@@ -2685,32 +2693,32 @@ var td_collect = new (function () {
           "" != k &&
           "function" == typeof n &&
           (n(k),
-          k.startsWith("jdd") &&
+            k.startsWith("jdd") &&
             ((r = {
               tk: k,
               t: new Date().getTime(),
             }),
-            e.store("BATQW722QTLYVCRD", JSON.stringify(r))));
+              e.store("BATQW722QTLYVCRD", JSON.stringify(r))));
       };
-    } catch (r) {}
+    } catch (r) { }
   };
   this.store = function (n, e) {
     try {
       this.setCookie(n, e);
-    } catch (f) {}
+    } catch (f) { }
     try {
       window.localStorage && window.localStorage.setItem(n, e);
-    } catch (f) {}
+    } catch (f) { }
     try {
       window.sessionStorage && window.sessionStorage.setItem(n, e);
-    } catch (f) {}
+    } catch (f) { }
     try {
       window.globalStorage &&
         window.globalStorage[".localdomain"].setItem(n, e);
-    } catch (f) {}
+    } catch (f) { }
     try {
       this.db(n, _JdEid);
-    } catch (f) {}
+    } catch (f) { }
   };
   this.getLocal = function (n) {
     var e = {},
@@ -2721,44 +2729,44 @@ var td_collect = new (function () {
         "$1"
       );
       0 !== r.length && (e.cookie = r);
-    } catch (g) {}
+    } catch (g) { }
     try {
       window.localStorage &&
         null !== window.localStorage &&
         0 !== window.localStorage.length &&
         (e.localStorage = window.localStorage.getItem(n));
-    } catch (g) {}
+    } catch (g) { }
     try {
       window.sessionStorage &&
         null !== window.sessionStorage &&
         (e.sessionStorage = window.sessionStorage[n]);
-    } catch (g) {}
+    } catch (g) { }
     try {
       p.globalStorage &&
         (e.globalStorage = window.globalStorage[".localdomain"][n]);
-    } catch (g) {}
+    } catch (g) { }
     try {
       d &&
         "function" == typeof d.load &&
         "function" == typeof d.getAttribute &&
         (d.load("jdgia_user_data"), (e.userData = d.getAttribute(n)));
-    } catch (g) {}
+    } catch (g) { }
     try {
       E.indexedDbId && (e.indexedDb = E.indexedDbId);
-    } catch (g) {}
+    } catch (g) { }
     try {
       E.webDbId && (e.webDb = E.webDbId);
-    } catch (g) {}
+    } catch (g) { }
     try {
       for (var k in e)
         if (32 < e[k].length) {
           f = e[k];
           break;
         }
-    } catch (g) {}
+    } catch (g) { }
     try {
       if (null == f || "undefined" === typeof f || 0 >= f.length) f = u(n);
-    } catch (g) {}
+    } catch (g) { }
     return f;
   };
   this.createWorker = function () {
@@ -2785,7 +2793,7 @@ var td_collect = new (function () {
       }
       try {
         this.worker = new Worker(URL.createObjectURL(n));
-      } catch (e) {}
+      } catch (e) { }
     }
   };
   this.reportWorker = function (n, e, f, r) {
@@ -2799,8 +2807,8 @@ var td_collect = new (function () {
             async: !1,
           })
         ),
-        (this.worker.onmessage = function (k) {}));
-    } catch (k) {}
+          (this.worker.onmessage = function (k) { }));
+    } catch (k) { }
   };
 })();
 
@@ -2821,14 +2829,14 @@ function td_collect_exe() {
   };
   try {
     (u.o = _CurrentPageUrl), (u.qs = _url_query_str);
-  } catch (w) {}
+  } catch (w) { }
   _fingerprint_step = 9;
   0 >= _JdEid.length &&
     ((_JdEid = td_collect.obtainLocal()), 0 < _JdEid.length && (_eidFlag = !0));
   u.fc = _JdEid;
   try {
     u.t = jd_risk_token_id;
-  } catch (w) {}
+  } catch (w) { }
   try {
     if ("undefined" != typeof gia_fp_qd_uuid && 0 <= gia_fp_qd_uuid.length)
       u.qi = gia_fp_qd_uuid;
@@ -2836,15 +2844,15 @@ function td_collect_exe() {
       var x = _JdJrRiskClientStorage.jdtdstorage_cookie("qd_uid");
       u.qi = void 0 == x ? "" : x;
     }
-  } catch (w) {}
+  } catch (w) { }
   "undefined" != typeof jd_shadow__ &&
     0 < jd_shadow__.length &&
     (u.jtb = jd_shadow__);
   try {
     td_collect.deviceInfo &&
-    void 0 != td_collect.deviceInfo &&
-    null != td_collect.deviceInfo.sdkToken &&
-    "" != td_collect.deviceInfo.sdkToken
+      void 0 != td_collect.deviceInfo &&
+      null != td_collect.deviceInfo.sdkToken &&
+      "" != td_collect.deviceInfo.sdkToken
       ? ((u.stk = td_collect.deviceInfo.sdkToken), (td_collect.isRpTok = !0))
       : (td_collect.isRpTok = !1);
   } catch (w) {
@@ -2860,8 +2868,8 @@ function _jdJrTdCommonsObtainPin(t) {
   "string" === typeof jd_jr_td_risk_pin && 1 == t
     ? (u = jd_jr_td_risk_pin)
     : "string" === typeof pin
-    ? (u = pin)
-    : "object" === typeof pin &&
+      ? (u = pin)
+      : "object" === typeof pin &&
       "string" === typeof jd_jr_td_risk_pin &&
       (u = jd_jr_td_risk_pin);
   return u;
@@ -2971,7 +2979,7 @@ function Env(t, e) {
       if (i)
         try {
           s = JSON.parse(this.getdata(t));
-        } catch {}
+        } catch { }
       return s;
     }
 
@@ -3038,8 +3046,8 @@ function Env(t, e) {
         s
           ? this.fs.writeFileSync(t, r)
           : i
-          ? this.fs.writeFileSync(e, r)
-          : this.fs.writeFileSync(t, r);
+            ? this.fs.writeFileSync(e, r)
+            : this.fs.writeFileSync(t, r);
       }
     }
 
@@ -3103,23 +3111,23 @@ function Env(t, e) {
       return this.isSurge() || this.isLoon()
         ? $persistentStore.read(t)
         : this.isQuanX()
-        ? $prefs.valueForKey(t)
-        : this.isNode()
-        ? ((this.data = this.loaddata()), this.data[t])
-        : (this.data && this.data[t]) || null;
+          ? $prefs.valueForKey(t)
+          : this.isNode()
+            ? ((this.data = this.loaddata()), this.data[t])
+            : (this.data && this.data[t]) || null;
     }
 
     setval(t, e) {
       return this.isSurge() || this.isLoon()
         ? $persistentStore.write(t, e)
         : this.isQuanX()
-        ? $prefs.setValueForKey(t, e)
-        : this.isNode()
-        ? ((this.data = this.loaddata()),
-          (this.data[e] = t),
-          this.writedata(),
-          !0)
-        : (this.data && this.data[e]) || null;
+          ? $prefs.setValueForKey(t, e)
+          : this.isNode()
+            ? ((this.data = this.loaddata()),
+              (this.data[e] = t),
+              this.writedata(),
+              !0)
+            : (this.data && this.data[e]) || null;
     }
 
     initGotEnv(t) {
@@ -3127,86 +3135,86 @@ function Env(t, e) {
         (this.cktough = this.cktough ? this.cktough : require("tough-cookie")),
         (this.ckjar = this.ckjar ? this.ckjar : new this.cktough.CookieJar()),
         t &&
-          ((t.headers = t.headers ? t.headers : {}),
+        ((t.headers = t.headers ? t.headers : {}),
           void 0 === t.headers.Cookie &&
-            void 0 === t.cookieJar &&
-            (t.cookieJar = this.ckjar));
+          void 0 === t.cookieJar &&
+          (t.cookieJar = this.ckjar));
     }
 
-    get(t, e = () => {}) {
+    get(t, e = () => { }) {
       t.headers &&
         (delete t.headers["Content-Type"], delete t.headers["Content-Length"]),
         this.isSurge() || this.isLoon()
           ? (this.isSurge() &&
-              this.isNeedRewrite &&
-              ((t.headers = t.headers || {}),
+            this.isNeedRewrite &&
+            ((t.headers = t.headers || {}),
               Object.assign(t.headers, { "X-Surge-Skip-Scripting": !1 })),
             $httpClient.get(t, (t, s, i) => {
               !t && s && ((s.body = i), (s.statusCode = s.status)), e(t, s, i);
             }))
           : this.isQuanX()
-          ? (this.isNeedRewrite &&
+            ? (this.isNeedRewrite &&
               ((t.opts = t.opts || {}), Object.assign(t.opts, { hints: !1 })),
-            $task.fetch(t).then(
-              (t) => {
-                const { statusCode: s, statusCode: i, headers: r, body: o } = t;
-                e(null, { status: s, statusCode: i, headers: r, body: o }, o);
-              },
-              (t) => e(t)
-            ))
-          : this.isNode() &&
-            (this.initGotEnv(t),
-            this.got(t)
-              .on("redirect", (t, e) => {
-                try {
-                  if (t.headers["set-cookie"]) {
-                    const s = t.headers["set-cookie"]
-                      .map(this.cktough.Cookie.parse)
-                      .toString();
-                    s && this.ckjar.setCookieSync(s, null),
-                      (e.cookieJar = this.ckjar);
-                  }
-                } catch (t) {
-                  this.logErr(t);
-                }
-              })
-              .then(
+              $task.fetch(t).then(
                 (t) => {
-                  const {
-                    statusCode: s,
-                    statusCode: i,
-                    headers: r,
-                    body: o,
-                  } = t;
+                  const { statusCode: s, statusCode: i, headers: r, body: o } = t;
                   e(null, { status: s, statusCode: i, headers: r, body: o }, o);
                 },
-                (t) => {
-                  const { message: s, response: i } = t;
-                  e(s, i, i && i.body);
-                }
-              ));
+                (t) => e(t)
+              ))
+            : this.isNode() &&
+            (this.initGotEnv(t),
+              this.got(t)
+                .on("redirect", (t, e) => {
+                  try {
+                    if (t.headers["set-cookie"]) {
+                      const s = t.headers["set-cookie"]
+                        .map(this.cktough.Cookie.parse)
+                        .toString();
+                      s && this.ckjar.setCookieSync(s, null),
+                        (e.cookieJar = this.ckjar);
+                    }
+                  } catch (t) {
+                    this.logErr(t);
+                  }
+                })
+                .then(
+                  (t) => {
+                    const {
+                      statusCode: s,
+                      statusCode: i,
+                      headers: r,
+                      body: o,
+                    } = t;
+                    e(null, { status: s, statusCode: i, headers: r, body: o }, o);
+                  },
+                  (t) => {
+                    const { message: s, response: i } = t;
+                    e(s, i, i && i.body);
+                  }
+                ));
     }
 
-    post(t, e = () => {}) {
+    post(t, e = () => { }) {
       if (
         (t.body &&
           t.headers &&
           !t.headers["Content-Type"] &&
           (t.headers["Content-Type"] = "application/x-www-form-urlencoded"),
-        t.headers && delete t.headers["Content-Length"],
-        this.isSurge() || this.isLoon())
+          t.headers && delete t.headers["Content-Length"],
+          this.isSurge() || this.isLoon())
       )
         this.isSurge() &&
           this.isNeedRewrite &&
           ((t.headers = t.headers || {}),
-          Object.assign(t.headers, { "X-Surge-Skip-Scripting": !1 })),
+            Object.assign(t.headers, { "X-Surge-Skip-Scripting": !1 })),
           $httpClient.post(t, (t, s, i) => {
             !t && s && ((s.body = i), (s.statusCode = s.status)), e(t, s, i);
           });
       else if (this.isQuanX())
         (t.method = "POST"),
           this.isNeedRewrite &&
-            ((t.opts = t.opts || {}), Object.assign(t.opts, { hints: !1 })),
+          ((t.opts = t.opts || {}), Object.assign(t.opts, { hints: !1 })),
           $task.fetch(t).then(
             (t) => {
               const { statusCode: s, statusCode: i, headers: r, body: o } = t;
@@ -3264,10 +3272,10 @@ function Env(t, e) {
           return this.isLoon()
             ? t
             : this.isQuanX()
-            ? { "open-url": t }
-            : this.isSurge()
-            ? { url: t }
-            : void 0;
+              ? { "open-url": t }
+              : this.isSurge()
+                ? { url: t }
+                : void 0;
         if ("object" == typeof t) {
           if (this.isLoon()) {
             let e = t.openUrl || t.url || t["open-url"],
@@ -3290,7 +3298,7 @@ function Env(t, e) {
           (this.isSurge() || this.isLoon()
             ? $notification.post(e, s, i, o(r))
             : this.isQuanX() && $notify(e, s, i, o(r))),
-        !this.isMuteLog)
+          !this.isMuteLog)
       ) {
         let t = ["", "==============📣系统通知📣=============="];
         t.push(e),
