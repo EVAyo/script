@@ -42,8 +42,6 @@
 1 1,7,12 * * * node /scripts/jd_fcwb.js >> /scripts/logs/jd_fcwb.log 2>&1
 # 沸腾之夜
 0 17,20,21,22,23 * * * node /scripts/jd_hotNeight.js >> /scripts/logs/jd_hotNeight.log 2>&1
-# phone
-10 0,20 * * * node /scripts/jd_vivo.js >> /scripts/logs/jd_vivo.log 2>&1
 ##############长期活动##############
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
