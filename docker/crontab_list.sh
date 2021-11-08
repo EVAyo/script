@@ -36,6 +36,8 @@
 10 0,8 * * * node /scripts/jd_carnivalcity_help.js >> /scripts/logs/jd_carnivalcity_help.log 2>&1
 # 双十一无门槛红包
 0 0,12,18,20 * * * node /scripts/jd_red.js >> /scripts/logs/jd_red.log 2>&1
+# 赚京豆(微信小程序)
+13 * * * * node /scripts/jd_syj.js >> /scripts/logs/jd_syj.log 2>&1
 ##############长期活动##############
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
