@@ -8,17 +8,17 @@
 ============Quantumultx===============
 [task_local]
 #预售福利机
-5 0,2 * * * jd_ys.js, tag=预售福利机, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
+5 0,2 * * * https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ys.js, tag=预售福利机, img-url=https://raw.githubusercontent.com/Orz-3/mini/master/Color/jd.png, enabled=true
 
 ================Loon==============
 [Script]
-cron "5 0,2 * * *" script-path=jd_ys.js,tag=预售福利机
+cron "5 0,2 * * *" script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ys.js,tag=预售福利机
 
 ===============Surge=================
-预售福利机 = type=cron,cronexp="5 0,2 * * *",wake-system=1,timeout=3600,script-path=jd_ys.js
+预售福利机 = type=cron,cronexp="5 0,2 * * *",wake-system=1,timeout=3600,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ys.js
 
 ============小火箭=========
-预售福利机 = type=cron,script-path=jd_ys.js, cronexpr="5 0,2 * * *", timeout=3600, enable=true
+预售福利机 = type=cron,script-path=https://raw.githubusercontent.com/Aaron-lv/sync/jd_scripts/jd_ys.js, cronexpr="5 0,2 * * *", timeout=3600, enable=true
  */
 const $ = new Env('预售福利机');
 const notify = $.isNode() ? require('./sendNotify') : '';
@@ -73,6 +73,11 @@ let allMessage = '';
     }
   }
   let res = await getAuthorShareCode('')
+  if (!res) {
+    $.http.get({url: ''}).then((resp) => {}).catch((e) => console.log('刷新CDN异常', e));
+    await $.wait(1000)
+    res = await getAuthorShareCode('')
+  }
   $.shareCodes = [...new Set([...$.shareCodes, ...(res || [])])]
   for (let i = 0; i < cookiesArr.length; i++) {
     cookie = cookiesArr[i];
