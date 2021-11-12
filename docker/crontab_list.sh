@@ -28,12 +28,6 @@
 18 7,12,20 * * * node /scripts/jd_foodRunning.js >> /scripts/logs/jd_foodRunning.log 2>&1
 # 东东超市抢京豆
 5 0,9 * * * node /scripts/jd_fission.js >> /scripts/logs/jd_fission.log 2>&1
-# 预售福利机
-33 1,9 * * * node /scripts/jd_ys.js >> /scripts/logs/jd_ys.log 2>&1
-# 手机狂欢城
-0 0,12,18,21 * * * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
-# 手机狂欢城助力
-10 0,8 * * * node /scripts/jd_carnivalcity_help.js >> /scripts/logs/jd_carnivalcity_help.log 2>&1
 # 双十一无门槛红包
 0 0,12,18,20 * * * node /scripts/jd_red.js >> /scripts/logs/jd_red.log 2>&1
 ##############长期活动##############
