@@ -26,8 +26,6 @@
 0 1,22 * * * node /scripts/jd_gold_creator.js >> /scripts/logs/jd_gold_creator.log 2>&1
 # 酷跑零食街 活动时间：2021-06-20至2021-12-31
 18 7,12,20 * * * node /scripts/jd_foodRunning.js >> /scripts/logs/jd_foodRunning.log 2>&1
-# 东东超市抢京豆
-5 0,9 * * * node /scripts/jd_fission.js >> /scripts/logs/jd_fission.log 2>&1
 # 双十一无门槛红包
 0 0,12,18,20 * * * node /scripts/jd_red.js >> /scripts/logs/jd_red.log 2>&1
 # 发财挖宝
