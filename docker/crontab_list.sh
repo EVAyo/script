@@ -30,6 +30,8 @@
 0 0,12,18,20 * * * node /scripts/jd_red.js >> /scripts/logs/jd_red.log 2>&1
 # 发财挖宝
 41 0,13,17 * * * node /scripts/jd_fcwb.js >> /scripts/logs/jd_fcwb.js.log 2>&1
+# 东东农场集勋章
+11 5,16 * * * node /scripts/jd_medal.js >> /scripts/logs/jd_medal.js.log 2>&1
 ##############长期活动##############
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
