@@ -12,6 +12,10 @@ requests.packages.urllib3.disable_warnings()
 token = ""
 username = ""
 password = ""
+
+# 自定义青龙端口：
+port = ""
+
 if username == "" or password == "":
     f = open("/ql/config/auth.json")
     auth = f.read()
@@ -27,21 +31,21 @@ def gettimestamp():
 
 
 def login(username, password):
-    url = "http://127.0.0.1:5700/api/login?t=%s" % gettimestamp()
+    url = qlurl + "/api/login?t=%s" % gettimestamp()
     data = {"username": username, "password": password}
     r = s.post(url, data)
     s.headers.update({"authorization": "Bearer " + json.loads(r.text)["data"]["token"]})
 
 
 def getitem(key):
-    url = "http://127.0.0.1:5700/api/envs?searchValue=%s&t=%s" % (key, gettimestamp())
+    url = qlurl + "/api/envs?searchValue=%s&t=%s" % (key, gettimestamp())
     r = s.get(url)
     item = json.loads(r.text)["data"]
     return item
 
 
 def getckitem(key):
-    url = "http://127.0.0.1:5700/api/envs?searchValue=JD_COOKIE&t=%s" % gettimestamp()
+    url = qlurl + "/api/envs?searchValue=JD_COOKIE&t=%s" % gettimestamp()
     r = s.get(url)
     for i in json.loads(r.text)["data"]:
         if key in i["value"]:
@@ -63,7 +67,7 @@ def wstopt(wskey):
 
 
 def update(text, qlid):
-    url = "http://127.0.0.1:5700/api/envs?t=%s" % gettimestamp()
+    url = qlurl + "/api/envs?t=%s" % gettimestamp()
     s.headers.update({"Content-Type": "application/json;charset=UTF-8"})
     data = {
         "name": "JD_COOKIE",
@@ -78,7 +82,7 @@ def update(text, qlid):
 
 
 def insert(text):
-    url = "http://127.0.0.1:5700/api/envs?t=%s" % gettimestamp()
+    url = qlurl + "/api/envs?t=%s" % gettimestamp()
     s.headers.update({"Content-Type": "application/json;charset=UTF-8"})
     data = []
     data_json = {
@@ -99,12 +103,20 @@ if __name__ == '__main__':
         login(username, password)
     else:
         s.headers.update({"authorization": "Bearer " + token})
+    if port == "":
+        try:
+            r = requests.get("http://127.0.0.1:5700/login")
+            qlurl = "http://127.0.0.1:5700"
+        except:
+            qlurl = "http://127.0.0.1:5600"
+    else:
+        qlurl = "http://127.0.0.1:" + port
     wskeys = getitem("JD_WSCK")
     count = 1
     for i in wskeys:
         if i["status"] == 0:
             r = wstopt(i["value"])
-            if r =="error":
+            if r == "error":
                 print("api请求错误")
             else:
                 ptck = r.text
