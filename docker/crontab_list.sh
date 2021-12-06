@@ -29,7 +29,7 @@
 # 东东农场集勋章
 11 5,16 * * * node /scripts/jd_medal.js >> /scripts/logs/jd_medal.log 2>&1
 # 骁龙
-3 1,20 * * * node /scripts/jd_xl.js >> /scripts/logs/jd_xl.log 2>&1
+3 1,21 * * * node /scripts/jd_xiaolong.js >> /scripts/logs/jd_xiaolong.log 2>&1
 ##############长期活动##############
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
