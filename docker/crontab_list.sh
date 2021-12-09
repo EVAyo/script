@@ -28,8 +28,8 @@
 18 7,12,20 * * * node /scripts/jd_foodRunning.js >> /scripts/logs/jd_foodRunning.log 2>&1
 # 东东农场集勋章
 11 5,16 * * * node /scripts/jd_medal.js >> /scripts/logs/jd_medal.log 2>&1
-# 骁龙
-3 1,21 * * * node /scripts/jd_xiaolong.js >> /scripts/logs/jd_xiaolong.log 2>&1
+# 1212red
+1 0,20 * * * node /scripts/jd_1212red.js >> /scripts/logs/jd_1212red.log 2>&1
 # 金榜年终奖
 4 0,2,15 * * * node /scripts/jd_split.js >> /scripts/logs/jd_split.log 2>&1
 ##############长期活动##############
