@@ -31,7 +31,7 @@
 # 金榜年终奖
 4 0,2,15 * * * node /scripts/jd_split.js >> /scripts/logs/jd_split.log 2>&1
 # 暖暖红包
-0 0,12,18,20 * * * node /scripts/jd_redEnvelope.js >> /scripts/logs/jd_redEnvelope.log 2>&1
+0 0,12 * * * node /scripts/jd_redEnvelope.js >> /scripts/logs/jd_redEnvelope.log 2>&1
 ##############长期活动##############
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
