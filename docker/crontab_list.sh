@@ -30,6 +30,8 @@
 11 5,16 * * * node /scripts/jd_medal.js >> /scripts/logs/jd_medal.log 2>&1
 # 金榜年终奖
 4 0,2,15 * * * node /scripts/jd_split.js >> /scripts/logs/jd_split.log 2>&1
+# 逛京东会场
+0 0,16 * * * node /scripts/jd_mall_active.js >> /scripts/logs/jd_mall_active.log 2>&1
 ##############长期活动##############
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
