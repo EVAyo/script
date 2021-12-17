@@ -26,8 +26,10 @@
 18 7,12,20 * * * node /scripts/jd_foodRunning.js >> /scripts/logs/jd_foodRunning.log 2>&1
 # 东东农场集勋章
 11 5,16 * * * node /scripts/jd_medal.js >> /scripts/logs/jd_medal.log 2>&1
-# 金榜年终奖
-4 0,2,15 * * * node /scripts/jd_split.js >> /scripts/logs/jd_split.log 2>&1
+# 京喜签到-喜豆
+10 7,17 * * * node /scripts/jx_sign_xd.js >> /scripts/logs/jx_sign_xd.log 2>&1
+# 京车会签到
+35 7,19 * * * node /scripts/jd_jchsign.js >> /scripts/logs/jd_jchsign.log 2>&1
 ##############长期活动##############
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
