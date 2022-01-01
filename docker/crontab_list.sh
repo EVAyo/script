@@ -30,6 +30,8 @@
 10 7,17 * * * node /scripts/jx_sign_xd.js >> /scripts/logs/jx_sign_xd.log 2>&1
 # 京车会签到
 35 7,19 * * * node /scripts/jd_jchsign.js >> /scripts/logs/jd_jchsign.log 2>&1
+# 东东世界兑换
+1 0,12,20 * * * node /scripts/jd_ddworld_exchange.js >> /scripts/logs/jd_ddworld_exchange.log 2>&1
 ##############长期活动##############
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
