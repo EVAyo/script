@@ -3,12 +3,12 @@
 cron 0 0,8,20,22 * * *  https://raw.githubusercontent.com/smiek2121/scripts/master/gua_nhjRed.js
 整点跑 红包几率大点
 
-https://u.jd.com/SCLyQi4
+https://u.jd.com/SwiOEm6
 跳转到app 可查看助力情况
 
 返利变量：gua_nhjRed_rebateCode，若需要返利给自己，请自己修改环境变量[gua_nhjRed_rebateCode]
-SCLyQi4换成自己的返利
-export gua_nhjRed_rebateCode="SCLyQi4"
+SwiOEm6换成自己的返利
+export gua_nhjRed_rebateCode="SwiOEm6"
 */
 
 let rebateCodes = 'SwiOEm6'
@@ -35,6 +35,7 @@ newCookie = ''
 resMsg = ''
 $.endFlag = false
 let shareCodeArr = {}
+$.runArr = {}
 const activeEndTime = '2022/01/27 00:00:00+08:00';//活动结束时间
 let nowTime = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 + 8 * 60 * 60 * 1000;
 !(async () => {
@@ -89,6 +90,7 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 
     if (cookie) {
       $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
       $.index = i + 1;
+      if ($.runArr[$.UserName]) continue
       console.log(`\n\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
       await getUA()
       await run();
@@ -97,9 +99,9 @@ let nowTime = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000 
   }
   if (Object.getOwnPropertyNames($.shareCodeArr).length > 0 && $.shareCodeArr["updateTime"] != pinUpdateTime) $.setdata($.shareCodeArr, 'gua_JDnhjRed')
   if (message) {
-    $.msg($.name, ``, `${message}\nhttps://u.jd.com/SCLyQi4\n\n跳转到app 可查看助力情况`);
+    $.msg($.name, ``, `${message}\nhttps://u.jd.com/SwiOEm6\n\n跳转到app 可查看助力情况`);
     if ($.isNode()) {
-      // await notify.sendNotify(`${$.name}`, `${message}\n\nhttps://u.jd.com/SCLyQi4\n跳转到app 可查看助力情况`);
+      // await notify.sendNotify(`${$.name}`, `${message}\n\nhttps://u.jd.com/SwiOEm6\n跳转到app 可查看助力情况`);
     }
   }
 })()
@@ -139,7 +141,11 @@ async function run(type = 0) {
           if (n == s) {
             $.shareCode = shareCodeArr[i] || ''
             if ($.shareCode) console.log(`助力[${i}]`)
-            await getCoupons($.shareCode, 1)
+            let res = await getCoupons($.shareCode, 1)
+            if (res.indexOf('上限') > -1) {
+              await $.wait(parseInt(Math.random() * 5000 + 3000, 10))
+              await getCoupons('', 1)
+            }
           }
           n++
         }
@@ -169,8 +175,9 @@ async function run(type = 0) {
 }
 function getCoupons(shareId = '', type = 1) {
   return new Promise(resolve => {
+    let message = ''
     let opts = {
-      url: `https://api.m.jd.com/api?functionId=getCoupons&appid=u&_=${Date.now()}&loginType=2&body={%22actId%22:%22${$.actId}%22,%22unionActId%22:%2231137%22,%22unpl%22:%22%22,%22platform%22:4,%22unionShareId%22:%22${$.shareCode}%22,%22d%22:%22${rebateCode}%22,%22eid%22:%22${$.eid}%22}&client=apple&clientVersion=8.3.6`,
+      url: `https://api.m.jd.com/api?functionId=getCoupons&appid=u&_=${Date.now()}&loginType=2&body={%22actId%22:%22${$.actId}%22,%22unionActId%22:%2231137%22,%22unpl%22:%22%22,%22platform%22:4,%22unionShareId%22:%22${shareId}%22,%22d%22:%22${rebateCode}%22,%22type%22:${type},%22eid%22:%22${$.eid}%22}&client=apple&clientVersion=8.3.6`,
       headers: {
         "Accept-Language": "zh-cn",
         "Accept-Encoding": "gzip, deflate, br",
@@ -193,7 +200,10 @@ function getCoupons(shareId = '', type = 1) {
           }
           let res = $.toObj(data, data);
           if (typeof res == 'object') {
-            if (res.msg) console.log(res.msg)
+            if (res.msg) {
+              message = res.msg
+              console.log(res.msg)
+            }
             if (res.msg.indexOf('不展示弹层') > -1) $.again = true
             if (res.msg.indexOf('上限') === -1 && res.msg.indexOf('登录') === -1) {
               $.flag = 1
@@ -226,8 +236,8 @@ function getCoupons(shareId = '', type = 1) {
               for (let i of res.data.groupInfo || []) {
                 if (i.status == 2) {
                   console.log(`助力满可以领取${i.info}元红包🧧`)
-                  // await $.wait(parseInt(Math.random() * 2000 + 2000, 10))
-                  // await getCoupons('',2)
+                  await $.wait(parseInt(Math.random() * 2000 + 2000, 10))
+                  await getCoupons('', 2)
                 }
               }
             }
@@ -238,7 +248,7 @@ function getCoupons(shareId = '', type = 1) {
       } catch (e) {
         $.logErr(e, resp)
       } finally {
-        resolve();
+        resolve(message);
       }
     })
   })
@@ -266,6 +276,7 @@ function showCoupon(shareId = '') {
           if (typeof res == 'object') {
             if (res.msg) console.log(res.msg)
             if (res.msg.indexOf('不展示弹层') > -1) $.again = true
+            if (res.msg.indexOf('领取上限') > -1) $.runArr[$.UserName] = true
             if (res.msg.indexOf('上限') === -1 && res.msg.indexOf('登录') === -1) {
               $.flag = 1
             }
@@ -378,7 +389,7 @@ function getUrl() {
     $.get(options, async (err, resp, data) => {
       try {
         setActivityCookie(resp)
-        $.url1 = data.match(/(https:\/\/u\.jd\.com\/jda[^']+)/) && data.match(/(https:\/\/u\.jd\.com\/jda[^']+)/)[1] || ''
+        $.url1 = data && data.match(/(https:\/\/u\.jd\.com\/jda[^']+)/) && data.match(/(https:\/\/u\.jd\.com\/jda[^']+)/)[1] || ''
       } catch (e) {
         $.logErr(e, resp);
       } finally {
