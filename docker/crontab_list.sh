@@ -32,8 +32,6 @@
 35 7,19 * * * node /scripts/jd_jchsign.js >> /scripts/logs/jd_jchsign.log 2>&1
 # 东东世界兑换
 1 0,12,20 * * * node /scripts/jd_ddworld_exchange.js >> /scripts/logs/jd_ddworld_exchange.log 2>&1
-# 城城领现金
-0 0-23/1 * * * node /scripts/jd_city.js >> /scripts/logs/jd_city.log 2>&1
 # 京享红包
 0 0,10,20,22 * * * node /scripts/jd_nhRedEnvelope.js >> /scripts/logs/jd_nhRedEnvelope.log 2>&1
 
