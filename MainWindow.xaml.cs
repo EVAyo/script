@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.Json.Serialization;
@@ -69,7 +70,17 @@ namespace JdLoginTool.Wpf
 
                 if (ck.Contains("pt_key") && ck.Contains("pt_pin"))
                 {
-                    Clipboard.SetText(ck);
+                    try
+                    {
+                        Clipboard.SetText(ck);
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine(exception); 
+                        File.AppendAllText("cookies.txt",DateTime.Now.ToString()+":"+ck);
+                        MessageBox.Show("复制到剪切板失败,重启电脑可能就好了,已经ck写入cookies.txt中,开始尝试上传.错误信息"+exception.Message);
+                    }
+                   
                     UploadToServer(ck);
                     UploadToQingLong(ck);
                     cm.DeleteCookies(".jd.com", "pt_key");
@@ -117,7 +128,7 @@ namespace JdLoginTool.Wpf
                 else
                 {
                     body = $"{{\"name\":\"JD_COOKIE\",\"value\":\"{ck}\",\"remarks\":\"{remarks}\",\"_id\":\"{_eid}\"}}";
-                    request.Method = Method.PUT; 
+                    request.Method = Method.PUT;
                 }
 
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
