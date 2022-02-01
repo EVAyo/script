@@ -14,8 +14,6 @@
 0 0,1-23/3 * * * node /scripts/jd_mohe.js >> /scripts/logs/jd_mohe.log 2>&1
 #特务Z
 34 12,16,18 * * * node /scripts/jd_productZ4Brand.js >> /scripts/logs/jd_productZ4Brand.log 2>&1
-#极速版发财大赢家 2021-07-15到2021-08-15
-20,40 0-23/1 * * * node /scripts/jd_big_winner.js >> /scripts/logs/jd_big_winner.log 2>&1
 #京东极速版红包(活动时间：2021-5-5至2021-5-31)
 45 0,23 * * * node /scripts/jd_speed_redpocke.js >> /scripts/logs/jd_speed_redpocke.log 2>&1
 #每日抽奖(活动时间：2021-05-01至2021-05-31)
@@ -26,8 +24,6 @@
 18 7,12,20 * * * node /scripts/jd_foodRunning.js >> /scripts/logs/jd_foodRunning.log 2>&1
 # 东东农场集勋章
 11 5,16 * * * node /scripts/jd_medal.js >> /scripts/logs/jd_medal.log 2>&1
-# 京喜签到-喜豆
-10 7,17 * * * node /scripts/jx_sign_xd.js >> /scripts/logs/jx_sign_xd.log 2>&1
 # 京车会签到
 35 7,19 * * * node /scripts/jd_jchsign.js >> /scripts/logs/jd_jchsign.log 2>&1
 # 东东世界兑换
