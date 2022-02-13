@@ -107,9 +107,9 @@ sa_check() {
     echo -e "以上如需修改，请打开ini文件修改fclone_name、safolder、pyfolder、fsa_id数值"
     echo -e "检测NG.文件目录：$safolder/invalid"
     echo -e "检测ok文件将移至：/root/AutoRclone/ok，如需更改，请修改本脚本相应目录行即可\n"
-    mkdir -p $safolder/invalid
-    mkdir -p $safolder/ok
-    sa1_sum=$(ls -l $safolder|grep "^-"| wc -l)
+    mkdir -p "$safolder"/invalid
+    mkdir -p "$safolder"/ok
+    sa1_sum=$(ls -l "$safolder"|grep "^-"| wc -l)
     echo -e "█║▌║▌║待检测sa $sa1_sum 个，开始检测║▌║▌║█\n"
     find $safolder -type f -name "*.json" | xargs -I {} -n 1 -P 10 bash -c 'fclone lsd '$fclone_name1':{'$fsa_id'} --drive-service-account-file={} --drive-service-account-file-path=""  &> /dev/null || mv {} '$safolder'/invalid '
     xsa_sum=$(ls -l $safolder/invalid|grep "^-"| wc -l)
