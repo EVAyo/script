@@ -6,6 +6,8 @@ import requests
 import time
 import json
 import re
+import sys
+
 
 requests.packages.urllib3.disable_warnings()
 
@@ -24,8 +26,13 @@ if username == "" or password == "":
     password = auth["password"]
     token = auth["token"]
     f.close()
+    
+    
+def printf(text):
+    print(text)
+    sys.stdout.flush()
 
-
+    
 def gettimestamp():
     return str(int(time.time() * 1000))
 
@@ -117,37 +124,37 @@ if __name__ == '__main__':
         if i["status"] == 0:
             r = wstopt(i["value"])
             if r == "error":
-                print("api请求错误")
+                printf("api请求错误")
             else:
                 ptck = r.text
                 if r.status_code == 429:
-                    print("您的ip请求api过于频繁，已被流控")
+                    printf("您的ip请求api过于频繁，已被流控")
                     exit()
                 else:
                     try:
                         wspin = re.findall(r"pin=(.*?);", i["value"])[0]
                         if ptck == "wskey错误":
-                            print("第%s个wskey可能过期了,pin为%s" % (count, wspin))
+                            printf("第%s个wskey可能过期了,pin为%s" % (count, wspin))
                         elif ptck == "未知错误" or ptck == "error":
-                            print("第%s个wskey发生了未知错误,pin为%s" % (count, wspin))
+                            printf("第%s个wskey发生了未知错误,pin为%s" % (count, wspin))
                         elif "</html>" in ptck:
-                            print("你的ip被cloudflare拦截")
+                            printf("你的ip被cloudflare拦截")
                         else:
                             ptpin = re.findall(r"pt_pin=(.*?);", ptck)[0]
                             item = getckitem("pt_pin=" + ptpin)
                             if item != []:
                                 qlid = item["_id"]
                                 if update(ptck, qlid):
-                                    print("第%s个wskey更新成功,pin为%s" % (count, wspin))
+                                    printf("第%s个wskey更新成功,pin为%s" % (count, wspin))
                                 else:
-                                    print("第%s个wskey更新失败,pin为%s" % (count, wspin))
+                                    printf("第%s个wskey更新失败,pin为%s" % (count, wspin))
                             else:
                                 if insert(ptck):
-                                    print("第%s个wskey添加成功" % count)
+                                    printf("第%s个wskey添加成功" % count)
                                 else:
-                                    print("第%s个wskey添加失败" % count)
+                                    printf("第%s个wskey添加失败" % count)
                     except:
-                        print("第%s个wskey出现异常错误" % count)
+                        printf("第%s个wskey出现异常错误" % count)
                     count += 1
         else:
-            print("有一个wskey被禁用了")
+            printf("有一个wskey被禁用了")
