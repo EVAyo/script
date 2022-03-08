@@ -1,0 +1,44 @@
+name: blackmatrix7_ios_rule_script #action名字，随便起 
+env:
+  ID: blackmatrix7_ios_rule_script
+  URL: https://github.com/blackmatrix7/ios_rule_script.git
+  BRANCH: master
+
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/20 0-16 * * *'
+
+jobs:
+  build:
+    
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js 10.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x      
+
+      - name: Sync
+        run: |
+          git checkout ${{ env.ID }}
+          git clone -b ${{ env.BRANCH }} ${{ env.URL }} tmp
+          cd tmp && cp -r * ..
+          cd .. && rm -rf tmp
+
+      - name: Reset Commit
+        run: |
+          git config --global user.email ${{ secrets.EMAIL }}
+          git config --global user.name ${{ secrets.USER_NAME }}
+          git add .
+          git commit -m "update by Action" -a || echo "Nothing to update"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          force: true
+          github_token: ${{ secrets.PAT }}
+          branch: ${{ env.ID }}
