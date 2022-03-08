@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -15,6 +16,24 @@ using RestSharp;
 
 namespace JdLoginTool.Wpf
 {
+    public class MenuHandler : IContextMenuHandler
+    {
+        public void OnBeforeContextMenu(IWebBrowser browserControl, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model)
+        {
+            model.Clear();
+        }
+        public bool OnContextMenuCommand(IWebBrowser browserControl, IBrowser browser, IFrame frame, IContextMenuParams parameters, CefMenuCommand commandId, CefEventFlags eventFlags)
+        {
+            return false;
+        }
+        public void OnContextMenuDismissed(IWebBrowser browserControl, IBrowser browser, IFrame frame)
+        {
+        }
+        public bool RunContextMenu(IWebBrowser browserControl, IBrowser browser, IFrame frame, IContextMenuParams parameters, IMenuModel model, IRunContextMenuCallback callback)
+        {
+            return false;
+        }
+    }
     public partial class MainWindow : Window
     {
         public MainWindow()
@@ -26,8 +45,12 @@ namespace JdLoginTool.Wpf
             {
                 Browser.Address = "m.jd.com";
             };
-
+            Browser.MenuHandler = new MenuHandler();
         }
+
+
+
+
 
         private async void TryGetUserInputPhone(object sender, KeyEventArgs e)
         {
@@ -47,48 +70,97 @@ namespace JdLoginTool.Wpf
         {
             string ck = "";
             this.Browser.Dispatcher.Invoke(new Action(() =>
+           {
+
+               ICookieManager cm = Browser.WebBrowser.GetCookieManager();
+               var visitor = new TaskCookieVisitor();
+               cm.VisitAllCookies(visitor);
+               var cks = visitor.Task.Result;
+
+               foreach (var cookie in cks)
+               {
+                   Regex reg = new Regex(@"[\u4e00-\u9fa5]");
+                   if (reg.IsMatch(cookie.Value))
+                   {
+                       if (cookie.Name == "pt_key" || cookie.Name == "pt_pin") ck = ck + $"{cookie.Name}={System.Web.HttpUtility.UrlEncode(cookie.Value)};";
+
+                   }
+                   else
+                   {
+                       if (cookie.Name == "pt_key" || cookie.Name == "pt_pin") ck = ck + $"{cookie.Name}={cookie.Value};";
+                   }
+
+               }
+
+               if (ck.Contains("pt_key") && ck.Contains("pt_pin"))
+               {
+                   try
+                   {
+                       Clipboard.SetText(ck);
+                   }
+                   catch (Exception exception)
+                   {
+                       Console.WriteLine(exception);
+                       File.AppendAllText("cookies.txt", DateTime.Now.ToString() + ":" + ck);
+                       MessageBox.Show(this, "复制到剪切板失败,重启电脑可能就好了,已经ck写入cookies.txt中,开始尝试上传.错误信息" + exception.Message);
+                   }
+
+                   UploadToServer(ck);
+                   UploadToQingLong(ck);
+                   cm.DeleteCookies(".jd.com", "pt_key");
+                   cm.DeleteCookies(".jd.com", "pt_pin");
+                   Browser.Address = "m.jd.com";
+               }
+
+           }));
+
+        }
+
+        private async void SetPhone(string phone)
+        {
+            try
             {
-                ICookieManager cm = Browser.WebBrowser.GetCookieManager();
-                var visitor = new TaskCookieVisitor();
-                cm.VisitAllCookies(visitor);
-                var cks = visitor.Task.Result;
+                var script = "if (!document.querySelector(`#app > div > p.policy_tip > input`).checked) {\r\n" +
+                             "  \r\n" +
+                             "  var xresult = document.evaluate(`//*[@id='app']/div/div[3]/p[1]/input`, document, null, XPathResult.ANY_TYPE, null);" +
+                             $"  var p=xresult.iterateNext();p.value=`{phone}`;" +
+                             "  p.dispatchEvent(new Event('input'));\r\n }";
+                var result = await Browser.EvaluateScriptAsPromiseAsync(script);
 
-                foreach (var cookie in cks)
-                {
-                    Regex reg = new Regex(@"[\u4e00-\u9fa5]");
-                    if (reg.IsMatch(cookie.Value))
-                    {
-                        if (cookie.Name == "pt_key" || cookie.Name == "pt_pin") ck = ck + $"{cookie.Name}={System.Web.HttpUtility.UrlEncode(cookie.Value)};";
+            }
+            catch (Exception e)
+            {
 
-                    }
-                    else
-                    {
-                        if (cookie.Name == "pt_key" || cookie.Name == "pt_pin") ck = ck + $"{cookie.Name}={cookie.Value};";
-                    }
+            }
 
-                }
+        }
+        private bool SetCaptcha(string captcha)
+        {
+            try
+            {
+                Browser.EvaluateScriptAsPromiseAsync($"var xresult = document.evaluate(`//*[@id=\"authcode\"]`, document, null, XPathResult.ANY_TYPE, null);var p=xresult.iterateNext();p.value=\"{captcha}\";p.dispatchEvent(new Event('input'));");
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+        private async Task<bool> ClickLoginButton()
+        {
+            try
+            {
+                await  Browser.EvaluateScriptAsync(" var xresult = document.querySelector(\"#app > div > p.policy_tip > input\").click();");
+                Thread.Sleep(500);
+                var result = await Browser.EvaluateScriptAsync(" var xresult = document.evaluate(`//*[@id=\"app\"]/div/a[1]`, document, null, XPathResult.ANY_TYPE, null);var p=xresult.iterateNext();p.click();");
 
-                if (ck.Contains("pt_key") && ck.Contains("pt_pin"))
-                {
-                    try
-                    {
-                        Clipboard.SetText(ck);
-                    }
-                    catch (Exception exception)
-                    {
-                        Console.WriteLine(exception); 
-                        File.AppendAllText("cookies.txt",DateTime.Now.ToString()+":"+ck);
-                        MessageBox.Show("复制到剪切板失败,重启电脑可能就好了,已经ck写入cookies.txt中,开始尝试上传.错误信息"+exception.Message);
-                    }
-                   
-                    UploadToServer(ck);
-                    UploadToQingLong(ck);
-                    cm.DeleteCookies(".jd.com", "pt_key");
-                    cm.DeleteCookies(".jd.com", "pt_pin");
-                    Browser.Address = "m.jd.com";
-                }
-                //todo:检测当前页面内容,如果存在
-            }));
+                return result.Success;
+            }
+            catch (Exception e)
+            {
+
+                return false;
+            }
         }
 
         private string qlToken = "";
@@ -104,7 +176,7 @@ namespace JdLoginTool.Wpf
                 }
                 if (string.IsNullOrWhiteSpace(qlToken))
                 {
-                    MessageBox.Show("登陆青龙失败:获取Token失败");
+                    MessageBox.Show(this, "登陆青龙失败:获取Token失败");
                     return;
                 }
                 var jck = JDCookie.parse(ck);
@@ -121,27 +193,27 @@ namespace JdLoginTool.Wpf
                 request.AddHeader("Content-Type", "application/json");
                 request.AddParameter("t", DateTimeOffset.Now.ToUnixTimeMilliseconds());
                 var body = $"[{{\"name\":\"JD_COOKIE\",\"value\":\"{ck}\",\"remarks\":\"{remarks}\"}}]";
-                if (CheckIsNewUser(qlUrl, ck, out var _eid))
+                if (CheckIsNewUser(qlUrl, ck, out var id))
                 {
                     request.Method = Method.POST;
                 }
                 else
                 {
-                    body = $"{{\"name\":\"JD_COOKIE\",\"value\":\"{ck}\",\"remarks\":\"{remarks}\",\"_id\":\"{_eid}\"}}";
+                    body = $"{{\"name\":\"JD_COOKIE\",\"value\":\"{ck}\",\"remarks\":\"{remarks}\",\"id\":{id}}}";
                     request.Method = Method.PUT;
                 }
 
                 request.AddParameter("application/json", body, ParameterType.RequestBody);
                 var response = client.Execute(request);
                 Console.WriteLine(response.Content);
-                MessageBox.Show(response.Content, "上传青龙成功(Cookie已复制到剪切板)");
+                MessageBox.Show(this,response.Content, "上传青龙成功(Cookie已复制到剪切板)");
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "上传青龙失败,Cookie已复制到剪切板,请自行添加处理");
+                MessageBox.Show(this, e.Message, "上传青龙失败,Cookie已复制到剪切板,请自行添加处理");
             }
         }
-        private bool CheckIsNewUser(string qlUrl, string ck, out string _eid)
+        private bool CheckIsNewUser(string qlUrl, string ck, out int id)
         {
             var newCk = JDCookie.parse(ck);
             var client = new RestClient($"{qlUrl}/open/envs");
@@ -153,7 +225,7 @@ namespace JdLoginTool.Wpf
             var result = JsonConvert.DeserializeObject<GetCookiesResult>(response.Content);
             if (result == null)
             {
-                _eid = "";
+                id = 0;
                 return true;
             }
             if (result.code != 200)
@@ -162,10 +234,20 @@ namespace JdLoginTool.Wpf
             }
             if (result.data.Any(jck => JDCookie.parse(jck.value).ptPin == newCk.ptPin))
             {
-                _eid = result.data.FirstOrDefault(jck => JDCookie.parse(jck.value).ptPin == newCk.ptPin)?._id;
+                var firstOrDefault = result.data.FirstOrDefault(jck => newCk.ptPin != null && JDCookie.parse(jck.value).ptPin == newCk.ptPin);
+                if (firstOrDefault != null)
+                {
+                    id = firstOrDefault.id;
+                }
+                else
+                {
+                    id = 0;
+                    return true;
+                }
+
                 return false;
             }
-            _eid = "";
+            id = 0;
             return true;
         }
 
@@ -186,7 +268,7 @@ namespace JdLoginTool.Wpf
             }
         }
 
-        private static void UploadToServer(string ck)
+        private  void UploadToServer(string ck)
         {
             var upload = ConfigurationManager.AppSettings["upload"] == "true";
             var ckServer = ConfigurationManager.AppSettings["server"];
@@ -202,12 +284,69 @@ namespace JdLoginTool.Wpf
                     var request = new RestRequest(method == "post" ? Method.POST : Method.GET);
                     var response = client.Execute(request);
                     Console.WriteLine(response.Content);
-                    MessageBox.Show(ck, "Cookie已上传服务器");
+                    MessageBox.Show(this, ck, "Cookie已上传服务器");
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message);
+                    MessageBox.Show(this, e.Message);
                 }
+            }
+        }
+
+        private void Browser_OnMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void Browser_OnMouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            
+            var phone = Clipboard.GetText();
+            if (IsPhoneNumber(phone))
+            {
+                SetPhone(phone);
+                ClickGetCaptchaButton();
+            }
+            else
+            {
+                SetPhone("");
+            }
+
+        }
+        public static bool IsPhoneNumber(string phoneNumber)
+        {
+            return Regex.IsMatch(phoneNumber, @"^1(3[0-9]|5[0-9]|7[6-8]|8[0-9])[0-9]{8}$");
+        }
+        public static bool IsCaptcha(string captcha)
+        {
+            return Regex.IsMatch(captcha, @"^\d{6}$");
+        }
+        private bool ClickGetCaptchaButton()
+        {
+            try
+            {
+                var result = Browser.EvaluateScriptAsync("document.querySelector('#app div button').click()");
+
+                return result.Result.Success;
+            }
+            catch (Exception e)
+            {
+               
+                return false;
+            }
+        }
+        private async void ButtonSetCaptcha_OnClick(object sender, RoutedEventArgs e)
+        {
+            var captcha = Clipboard.GetText();
+            if (IsCaptcha(captcha))
+            {
+                SetCaptcha(captcha);
+                await ClickLoginButton();
             }
         }
     }
@@ -278,7 +417,7 @@ namespace JdLoginTool.Wpf
     public class Datum
     {
         public string value { get; set; }
-        public string _id { get; set; }
+        public int id { get; set; }
         public long created { get; set; }
         public int status { get; set; }
         public string timestamp { get; set; }
