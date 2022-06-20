@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -37,8 +39,9 @@ namespace JdLoginTool.Wpf
             return false;
         }
     }
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
+       public static string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "cache.json");
         public List<UserInfo> UserList { get; set; } = new List<UserInfo>();
         public MainWindow()
         {
@@ -48,7 +51,12 @@ namespace JdLoginTool.Wpf
                "15103793217": "*3545",
                "18317520679": "*0522"
                */
-            var j = File.ReadAllText("cache.json");
+
+            if (!File.Exists(path))
+            {
+                File.Create(path);
+            }
+            var j = File.ReadAllText(path);
             if (!string.IsNullOrWhiteSpace(j))
             {
                 var tmp = JsonConvert.DeserializeObject<List<UserInfo>>(j);
@@ -71,7 +79,7 @@ namespace JdLoginTool.Wpf
             {
                 var json = JsonConvert.SerializeObject(UserList, Formatting.Indented);
                 Console.WriteLine(json);
-                File.WriteAllText("cache.json", json);
+                File.WriteAllText( path, json);
             };
         }
 
@@ -116,6 +124,10 @@ namespace JdLoginTool.Wpf
         public String PhoneNumber { get; set; }
         private void Browser_TitleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            if (this.CheckBox.IsChecked != true)
+            {
+                return;
+            }
             string ck = "";
             this.Browser.Dispatcher.Invoke(new Action(() =>
            {
@@ -150,12 +162,12 @@ namespace JdLoginTool.Wpf
                    {
                        Console.WriteLine(exception);
                        File.AppendAllText("cookies.txt", DateTime.Now.ToString() + ":" + ck);
-                       MessageBox.Show(this, "复制到剪切板失败,重启电脑可能就好了,已经ck写入cookies.txt中,开始尝试上传.错误信息" + exception.Message);
+                       MessageBox.Show(this, "复制到剪切板失败,(远程桌面下会出这个问题或重启电脑可能就好了),已经ck写入cookies.txt中,开始尝试上传.错误信息" + exception.Message);
                    }
 
-                
+
                    UploadToServer(ck);
-                   UploadToQingLong(ck); 
+                   UploadToQingLong(ck);
                    GetAndSaveUserInfo(ck);
                    cm.DeleteCookies(".jd.com", "pt_key");
                    cm.DeleteCookies(".jd.com", "pt_pin");
@@ -185,24 +197,29 @@ namespace JdLoginTool.Wpf
             Console.WriteLine(response.Content);
             var json = response.Content.Replace("cbLoadAddressListA(", "");
             json = json.Remove(json.Length - 1);
-            var result = JsonConvert.DeserializeObject<AddressObjects>(json);
+            var result = JsonConvert.DeserializeObject<ResultObject>(json);
             foreach (var address in result.list)
             {
-                if (address.default_address=="1")
+                if (address.default_address == "1")
                 {
                     if (UserList.FirstOrDefault(u => u.Phone == phone) is { } user)
                     {
-                        user.AddressName = address.name;
+                        user.UsualAddressName = address.name;
+                        user.AddressList = result.list;
                     }
                     else
                     {
-                        UserList.Add(new UserInfo(phone) { AddressName = address.name });
+                        UserList.Add(new UserInfo(phone)
+                        {
+                            UsualAddressName = address.name,
+                            AddressList = result.list
+                        });
                     }
-                } 
+                }
             }
         }
 
-        public class AddressObjects
+        public class ResultObject
         {
             public string errCode { get; set; }
             public string retCode { get; set; }
@@ -215,10 +232,10 @@ namespace JdLoginTool.Wpf
             public string jdaddrname { get; set; }
             public string siteGray { get; set; }
             public string encryptCode { get; set; }
-            public List[] list { get; set; }
+            public AddressList[] list { get; set; }
         }
 
-        public class List
+        public class AddressList
         {
             public string label { get; set; }
             public string type { get; set; }
@@ -446,7 +463,7 @@ namespace JdLoginTool.Wpf
         }
 
         private static string phone = "";
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void ButtonSetPhone_OnClick(object sender, RoutedEventArgs e)
         {
 
             phone = Clipboard.GetText();
@@ -515,18 +532,39 @@ namespace JdLoginTool.Wpf
         private void ButtonHandleId_OnClick(object sender, RoutedEventArgs e)
         {
             //todo 为了测试,先应该能够进行html打印
-            var html = Browser.GetSourceAsync().Result;
-            Trace.WriteLine(html);
+            //var html = Browser.GetSourceAsync().Result;
+            // Trace.WriteLine(html);
             if (UserList.FirstOrDefault(u => u.Phone == phone) is UserInfo user)
             {
-                TextBox.Text = user.Phone;
+                try
+                {
+                    if (string.IsNullOrEmpty(user.Id2_4))
+                    {
+                        return;
+                    }
+                    TextBox.Text = user.Id2_4;
+                    //todo
+                    for (var i = 0; i < TextBox.Text.Length; i++)
+                    {
+                        var js = $"document.querySelector(\"#app > div > div.wrap > div.input-box > div > div:nth-child({1 + i})\").innerText = {TextBox.Text[i]}";
+                        Browser.EvaluateScriptAsPromiseAsync(js);
+                    }
+                }
+                catch (Exception exception)
+                { 
+                    MessageBox.Show(exception.Message);
+                }
 
+
+                //document.querySelector("#app > div > div.wrap > div.input-box > div > div:nth-child(1)").innerText=1
+                //document.querySelector("#app > div > div.wrap > div.input-box > div > div:nth-child(1)").innerText=1
+                //document.querySelector("#app > div > div.wrap > div.input-box > div > div:nth-child(1)").innerText=1
+                //document.querySelector("#app > div > div.wrap > div.input-box > div > div:nth-child(1)").innerText=1
                 //todo:sendkey
-
             }
             //todo:获取本次登陆手机号的缓存(或textbox输入内容解析)的身份证信息,然后自动点击验证身份证,自动输入,自动执行
         }
-        private bool SetId2_4(string id2_4)
+        private bool SetUserId2_4(string id2_4)
         {
             try
             {
@@ -559,11 +597,11 @@ namespace JdLoginTool.Wpf
                     $"var xresult = document.evaluate(`//*[@id=\"authcode\"]`, document, null, XPathResult.ANY_TYPE, null);var p=xresult.iterateNext();p.value=\"{addressName}\";p.dispatchEvent(new Event('input'));");
                 if (UserList.FirstOrDefault(u => u.Phone == phone) is UserInfo user)
                 {
-                    user.AddressName = addressName;
+                    user.UsualAddressName = addressName;
                 }
                 else
                 {
-                    UserList.Add(new UserInfo(phone) { AddressName = addressName });
+                    UserList.Add(new UserInfo(phone) { UsualAddressName = addressName });
                 }
                 return true;
             }
@@ -580,6 +618,65 @@ namespace JdLoginTool.Wpf
         private void ButtonBrowSource_OnClick(object sender, RoutedEventArgs e)
         {
             Browser.ViewSource();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void ButtonSetCK_OnClick(object sender, RoutedEventArgs e)
+        {
+            //todo:判定ck合法性,设置到浏览器
+            var ck = Clipboard.GetText();
+            if (!IsCk(ck))
+            {
+                ck = TextBox.Text;
+            }
+            if (IsCk(ck))
+            {
+                SetCk(ck);
+
+                // GoToCart();
+            }
+            else
+            {
+                SetPhone("");
+            }
+        }
+
+        private void SetCk(string ck)
+        {//todo:浏览器设置ck,参考退会那个Python项目
+            /*        # 写入Cookie
+        self.browser.delete_all_cookies()
+        for cookie in self.config['cookie'].split(";", 1):
+            self.browser.add_cookie(
+                {"name": cookie.split("=")[0].strip(" "), "value": cookie.split("=")[1].strip(";"), "domain": ".jd.com"}
+            )
+        self.browser.refresh()*/
+            var cm = Cef.GetGlobalCookieManager();
+            var cookie = JDCookie.parse(ck);
+            cm.SetCookieAsync("https://m.jd.com/", new CefSharp.Cookie
+            {
+                Domain = ".jd.com",
+                Name = "pt_pin",
+                Value = cookie.ptPin,
+            });
+            cm.SetCookieAsync("https://m.jd.com/", new CefSharp.Cookie
+            {
+                Domain = ".jd.com",
+                Name = "pt_key",
+                Value = cookie.ptKey,
+            });
+
+            Browser.ReloadCommand.Execute(null);
+        }
+
+        private bool IsCk(string ck)
+        {
+            return ck.Contains("pt_key") && ck.Contains("pt_pin") && ck.Length > 20;
         }
     }
 
