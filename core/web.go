@@ -620,7 +620,7 @@ func uncapitalize(s string) string {
 }
 
 func (tfm myFieldNameMapper) MethodName(_ reflect.Type, m reflect.Method) string {
-	return uncapitalize(m.Name)
+	return m.Name //uncapitalize(m.Name)
 }
 
 func newVm(c *gin.Context) (*goja.Runtime, *goja.Object) {
