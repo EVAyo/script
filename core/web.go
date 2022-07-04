@@ -612,7 +612,7 @@ func (tfm myFieldNameMapper) FieldName(_ reflect.Type, f reflect.StructField) st
 	if parser.IsIdentifier(tag) {
 		return tag
 	}
-	return uncapitalize(f.Name)
+	return f.Name //uncapitalize()
 }
 
 func uncapitalize(s string) string {
