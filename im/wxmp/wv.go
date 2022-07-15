@@ -3,6 +3,7 @@ package wxgzh
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/cdle/sillyGirl/core"
 	"github.com/gin-gonic/gin"
@@ -35,6 +36,10 @@ func init() {
 		if ctx.Msg.Event == "subscribe" {
 			sender.admin = true
 			ctx.Msg.Content = "wxsv subscribe"
+		}
+
+		if ctx.Msg.EventKey != "" {
+			ctx.Msg.Content = "set machineId " + strings.Replace(ctx.Msg.EventKey, "qrscene_", "", -1)
 		}
 
 		if ctx.Msg.Event == "CLICK" {
