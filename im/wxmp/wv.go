@@ -53,7 +53,6 @@ func init() {
 		{
 			Admin: true,
 			Rules: []string{"init wxsv"},
-			// Cron:  "1 1 * * *",
 			Handle: func(_ core.Sender) interface{} {
 				c := &core.Faker{
 					Type:    "carry",

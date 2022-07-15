@@ -20,17 +20,21 @@ type JsReply string
 
 var o Bucket
 
+var GetMachineID = func() string {
+	id, err := machineid.ProtectedID("sillyGirl")
+	if err != nil {
+		id = sillyGirl.GetString("machineId")
+		if id == "" {
+			id = utils.GenUUID()
+			sillyGirl.Set("machineId", id)
+		}
+	}
+	return id
+}
+
 var OttoFuncs = map[string]interface{}{
 	"machineId": func(_ string) string {
-		id, err := machineid.ProtectedID("sillyGirl")
-		if err != nil {
-			id = sillyGirl.GetString("machineId")
-			if id == "" {
-				id = utils.GenUUID()
-				sillyGirl.Set("machineId", id)
-			}
-		}
-		return id
+		return GetMachineID()
 	},
 	"uuid": func(_ string) string {
 		return utils.GenUUID()
