@@ -31,7 +31,6 @@ type Function struct {
 	Hash     string
 }
 type Filter struct {
-	OnlyIf    string
 	BlackMode bool
 	Items     []string
 }
@@ -229,9 +228,6 @@ func HandleMessage(sender Sender) {
 	}
 
 	for _, function := range Functions {
-		if function.ImType != nil && function.ImType.OnlyIf != "" && function.ImType.OnlyIf != sender.GetImType() {
-			continue
-		}
 		if black(function.ImType, sender.GetImType()) || black(function.UserId, sender.GetUserID()) || black(function.GroupId, fmt.Sprint(sender.GetChatID())) {
 			continue
 		}
