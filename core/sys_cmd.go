@@ -499,6 +499,12 @@ func initSys() {
 			},
 		},
 		{
+			Rules: []string{"raw ^imType$"},
+			Handle: func(s Sender) interface{} {
+				return fmt.Sprint(s.GetImType())
+			},
+		},
+		{
 			Rules: []string{"raw ^groupCode$"},
 			Handle: func(s Sender) interface{} {
 				return fmt.Sprint(s.GetChatID())
