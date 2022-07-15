@@ -532,7 +532,7 @@ func initSys() {
 		},
 		{
 			Rules: []string{"^machineId$"},
-			Admin: true,
+			// Admin: true,
 			Handle: func(s Sender) interface{} {
 				return fmt.Sprintf("你的机器码：%s", OttoFuncs["machineId"].(func(string) string)(""))
 			},
