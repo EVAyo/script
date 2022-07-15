@@ -229,9 +229,9 @@ func HandleMessage(sender Sender) {
 	}
 
 	for _, function := range Functions {
-		if function.ImType.OnlyIf != sender.GetImType() {
-			continue
-		}
+		// if function.ImType.OnlyIf != sender.GetImType() {
+		// 	continue
+		// }
 		if black(function.ImType, sender.GetImType()) || black(function.UserId, sender.GetUserID()) || black(function.GroupId, fmt.Sprint(sender.GetChatID())) {
 			continue
 		}
