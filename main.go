@@ -71,7 +71,7 @@ func monitorGoroutine() {
 		<-ticker.C
 		if newGNum := runtime.NumGoroutine(); lastGNum != newGNum {
 			lastGNum = newGNum
-			if newGNum > 800 {
+			if newGNum > 1800 {
 				utils.Daemon()
 			}
 		}
