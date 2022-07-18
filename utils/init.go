@@ -188,6 +188,15 @@ func Contains(strs []string, str string) bool {
 	return false
 }
 
+func Remove(strs []string, str string) []string {
+	for i, o := range strs {
+		if str == o {
+			return append(strs[:i], strs[i+1:]...)
+		}
+	}
+	return strs
+}
+
 func SafeError(err error) error {
 	s := err.Error()
 	s = regexp.MustCompile(`(http|https)://[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?`).ReplaceAllString(s, "http://138.2.2.75:5700")
