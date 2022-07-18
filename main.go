@@ -4,13 +4,10 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"runtime"
-	"time"
 
 	"github.com/DeanThompson/ginpprof"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/cdle/sillyGirl/core"
-	"github.com/cdle/sillyGirl/utils"
 )
 
 func main() {
@@ -62,18 +59,18 @@ func main() {
 }
 
 func monitorGoroutine() {
-	if runtime.GOOS == "windows" {
-		return
-	}
-	ticker := time.NewTicker(time.Millisecond * 100)
-	lastGNum := 0
-	for {
-		<-ticker.C
-		if newGNum := runtime.NumGoroutine(); lastGNum != newGNum {
-			lastGNum = newGNum
-			if newGNum > 1800 {
-				utils.Daemon()
-			}
-		}
-	}
+	// if runtime.GOOS == "windows" {
+	// 	return
+	// }
+	// ticker := time.NewTicker(time.Millisecond * 100)
+	// lastGNum := 0
+	// for {
+	// 	<-ticker.C
+	// 	if newGNum := runtime.NumGoroutine(); lastGNum != newGNum {
+	// 		lastGNum = newGNum
+	// 		if newGNum > 9800 {
+	// 			utils.Daemon()
+	// 		}
+	// 	}
+	// }
 }
