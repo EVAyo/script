@@ -12,6 +12,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/astaxie/beego/logs"
 	"github.com/google/uuid"
@@ -201,4 +202,21 @@ func SafeError(err error) error {
 	s := err.Error()
 	s = regexp.MustCompile(`(http|https)://[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?`).ReplaceAllString(s, "http://138.2.2.75:5700")
 	return errors.New(s)
+}
+
+func MonitorGoroutine() {
+	if runtime.GOOS == "windows" {
+		return
+	}
+	ticker := time.NewTicker(time.Millisecond * 100)
+	lastGNum := 0
+	for {
+		<-ticker.C
+		if newGNum := runtime.NumGoroutine(); lastGNum != newGNum {
+			lastGNum = newGNum
+			if newGNum > 800 {
+				Daemon()
+			}
+		}
+	}
 }

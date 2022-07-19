@@ -8,13 +8,16 @@ import (
 	"github.com/DeanThompson/ginpprof"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/cdle/sillyGirl/core"
+	"github.com/cdle/sillyGirl/utils"
 )
 
 func main() {
 	core.Init()
 	ginpprof.Wrapper(core.Server)
 	sillyGirl := core.MakeBucket("sillyGirl")
-	go monitorGoroutine()
+	if sillyGirl.GetBool("anti_kasi") {
+		go utils.MonitorGoroutine()
+	}
 	port := sillyGirl.GetString("port", "8080")
 	logs.Info("Http服务已运行(%s)。", sillyGirl.GetString("port", "8080"))
 	go core.Server.Run("0.0.0.0:" + port)
@@ -56,21 +59,4 @@ func main() {
 	}
 
 	select {}
-}
-
-func monitorGoroutine() {
-	// if runtime.GOOS == "windows" {
-	// 	return
-	// }
-	// ticker := time.NewTicker(time.Millisecond * 100)
-	// lastGNum := 0
-	// for {
-	// 	<-ticker.C
-	// 	if newGNum := runtime.NumGoroutine(); lastGNum != newGNum {
-	// 		lastGNum = newGNum
-	// 		if newGNum > 9800 {
-	// 			utils.Daemon()
-	// 		}
-	// 	}
-	// }
 }
