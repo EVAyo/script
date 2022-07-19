@@ -328,6 +328,13 @@ func initSys() {
 			},
 		},
 		{
+			Rules: []string{"^hello$"},
+			Admin: true,
+			Handle: func(s Sender) interface{} {
+				return "你好，" + sillyGirl.GetString("name", "傻妞") + "为您服务。"
+			},
+		},
+		{
 			Rules: []string{"raw ^命令$"},
 			Admin: true,
 			Handle: func(s Sender) interface{} {
