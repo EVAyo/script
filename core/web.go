@@ -137,6 +137,9 @@ var Server *gin.Engine
 func init() {
 	gin.SetMode(gin.ReleaseMode)
 	Server = gin.New()
+	Server.GET("/name", func(ctx *gin.Context) {
+		ctx.String(200, "sillyGirl")
+	})
 	initWeb()
 }
 
