@@ -11,7 +11,6 @@ import (
 
 	"github.com/beego/beego/v2/adapter/httplib"
 	"github.com/beego/beego/v2/adapter/logs"
-	_ "github.com/boltdb/bolt"
 	"github.com/cdle/sillyGirl/utils"
 	"github.com/denisbrodbeck/machineid"
 	"github.com/dop251/goja"
