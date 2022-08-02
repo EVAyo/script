@@ -9,6 +9,7 @@ import (
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/cdle/sillyGirl/core"
 	"github.com/cdle/sillyGirl/utils"
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
@@ -20,6 +21,9 @@ func main() {
 	}
 	port := sillyGirl.GetString("port", "8080")
 	logs.Info("Http服务已运行(%s)。", sillyGirl.GetString("port", "8080"))
+	core.Server.GET("/name", func(ctx *gin.Context) {
+		ctx.String(200, "sillyGirl")
+	})
 	go core.Server.Run("0.0.0.0:" + port)
 	logs.Info("关注频道 https://t.me/kczz2021 获取最新消息。")
 	d := false

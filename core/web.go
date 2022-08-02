@@ -297,9 +297,9 @@ app.get('/lastTime', (req, res) => {
 		res = vm.ToValue(&Response{
 			Send: func(gv goja.Value) {
 				gve := gv.Export()
-				switch gve.(type) {
+				switch gve := gve.(type) {
 				case string:
-					content += gve.(string)
+					content += gve
 				default:
 					d, err := json.Marshal(gve)
 					if err == nil {
@@ -333,9 +333,9 @@ app.get('/lastTime', (req, res) => {
 				a := 302
 				b := ""
 				for _, i := range is {
-					switch i.(type) {
+					switch i := i.(type) {
 					case string:
-						b = i.(string)
+						b = i
 					default:
 						a = utils.Int(i)
 					}
@@ -379,7 +379,7 @@ app.get('/lastTime', (req, res) => {
 			return
 		}
 		if !handled {
-			c.String(404, "page nono n ot found")
+			c.String(404, "page not found")
 			return
 		}
 		if isRedirect {
