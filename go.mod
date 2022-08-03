@@ -19,7 +19,7 @@ require (
 	github.com/beego/beego/v2 v2.0.1
 	github.com/boltdb/bolt v1.3.1
 	github.com/buger/jsonparser v1.1.1
-	github.com/cdle/go-socketio-client v0.0.0-20220803094225-729ef3bdc6ac
+	github.com/cdle/go-socketio-client v0.0.0-20220803135118-57a35fb0b133
 	github.com/denisbrodbeck/machineid v1.0.1
 	github.com/dop251/goja v0.0.0-20211203105952-bf6af58bbcc8
 	github.com/gin-gonic/gin v1.7.0

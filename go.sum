@@ -38,8 +38,8 @@ github.com/bradfitz/gomemcache v0.0.0-20190913173617-a41fca850d0b/go.mod h1:H0wQ
 github.com/buger/jsonparser v1.1.1 h1:2PnMjfWD7wBILjqQbt530v576A/cAbQvEW9gGIpYMUs=
 github.com/buger/jsonparser v1.1.1/go.mod h1:6RYKKt7H4d4+iWqouImQ9R2FZql3VbhNgx27UK13J/0=
 github.com/casbin/casbin v1.7.0/go.mod h1:c67qKN6Oum3UF5Q1+BByfFxkwKvhwW57ITjqwtzR1KE=
-github.com/cdle/go-socketio-client v0.0.0-20220803094225-729ef3bdc6ac h1:gLX+L6wpNS2b/252Q816uJnLZI9pR5gddmrS5NCVlhs=
-github.com/cdle/go-socketio-client v0.0.0-20220803094225-729ef3bdc6ac/go.mod h1:Nwfx1Rp1o7yWtVzoVDopLfdU1PAU9WJtUuHVGOO/q68=
+github.com/cdle/go-socketio-client v0.0.0-20220803135118-57a35fb0b133 h1:c7Ebrte21j7Kv4CXiZoLScw7JRMB7vChzcVRoXudGuA=
+github.com/cdle/go-socketio-client v0.0.0-20220803135118-57a35fb0b133/go.mod h1:Nwfx1Rp1o7yWtVzoVDopLfdU1PAU9WJtUuHVGOO/q68=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/cespare/xxhash/v2 v2.1.1/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
