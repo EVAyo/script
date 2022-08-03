@@ -19,12 +19,13 @@ require (
 	github.com/beego/beego/v2 v2.0.1
 	github.com/boltdb/bolt v1.3.1
 	github.com/buger/jsonparser v1.1.1
+	github.com/cdle/go-socketio-client v0.0.0-20220803094225-729ef3bdc6ac
 	github.com/denisbrodbeck/machineid v1.0.1
 	github.com/dop251/goja v0.0.0-20211203105952-bf6af58bbcc8
 	github.com/gin-gonic/gin v1.7.0
 	github.com/google/uuid v1.1.1
 	github.com/googollee/go-socket.io v1.6.2
-	github.com/gorilla/websocket v1.4.2
+	github.com/gorilla/websocket v1.5.0
 	github.com/rixingyike/wechat v1.2.2
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/silenceper/wechat/v2 v2.0.9
@@ -62,7 +63,6 @@ require (
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e // indirect
-	github.com/smartystreets/goconvey v1.7.2 // indirect
 	github.com/spf13/cast v1.3.1 // indirect
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	golang.org/x/crypto v0.0.0-20210817164053-32db794688a5 // indirect
