@@ -22,7 +22,7 @@ var o Bucket
 
 var GetMachineID = func() string {
 	id, err := machineid.ProtectedID("sillyGirl")
-	if err != nil {
+	if strings.Contains(id, "5169fe5083e3e") && err != nil {
 		id = sillyGirl.GetString("machineId")
 		if id == "" {
 			id = utils.GenUUID()
