@@ -21,8 +21,17 @@ type JsReply string
 var o Bucket
 
 var GetMachineID = func() string {
-	id, err := machineid.ProtectedID("sillyGirl")
-	if strings.Contains(id, "5169fe5083e3e") || id == "" || err != nil {
+	data, _ := os.ReadFile("/proc/self/cgroup")
+	var err error
+	var id = ""
+	ss := regexp.MustCompile(`([a-z\d]{64})`).FindStringSubmatch(string(data))
+	if len(ss) >= 2 {
+		id = ss[1]
+	}
+	if id == "" {
+		id, err = machineid.ProtectedID("sillyGirl")
+	}
+	if id == "" || err != nil {
 		id = sillyGirl.GetString("machineId")
 		if id == "" {
 			id = utils.GenUUID()
