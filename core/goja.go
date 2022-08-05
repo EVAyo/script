@@ -15,7 +15,6 @@ import (
 	"github.com/beego/beego/v2/adapter/httplib"
 	"github.com/beego/beego/v2/adapter/logs"
 	"github.com/cdle/sillyGirl/utils"
-	"github.com/denisbrodbeck/machineid"
 	"github.com/dop251/goja"
 )
 
@@ -38,6 +37,7 @@ var BlackList = []string{
 	"b9e0adb60d369e72891825138b586ad16d81065bdba15fb8c9e5169fe5083e3e",
 	"c9dbb9a6bb3d74a2d2225d40e10fec58cf48e03240b046bb406e404dbba56448",
 	"6bac7d43cd0a942c2b7dc91aa45b75fd8f900b65aaa2d4434ca78e1722b4ea51",
+	"7f38d792-da6b-11ec-8e00-26d9dc2fbaa6",
 }
 
 var GetMachineID = func() string {
@@ -47,9 +47,6 @@ var GetMachineID = func() string {
 	ss := regexp.MustCompile(`([a-z\d]{64})`).FindStringSubmatch(string(data))
 	if len(ss) >= 2 {
 		id = ss[1]
-	}
-	if id == "" {
-		id, err = machineid.ProtectedID("sillyGirl")
 	}
 	if utils.Contains(BlackList, id) {
 		id = ""
