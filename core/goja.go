@@ -55,10 +55,8 @@ var GetMachineID = func() string {
 		id, _ = machineid.ProtectedID("sillyGirl")
 	}
 	if id == "" {
-		if id == "" {
-			id = protect(utils.GenUUID(), "sillyGirl")
-			sillyGirl.Set("machineId", id)
-		}
+		id = protect(utils.GenUUID(), "sillyGirl")
+		sillyGirl.Set("machineId", id)
 	}
 	return id
 }
