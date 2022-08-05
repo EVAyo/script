@@ -28,18 +28,6 @@ func protect(appID, id string) string {
 	return hex.EncodeToString(mac.Sum(nil))
 }
 
-var BlackList = []string{
-	"4be524c135a723f5244e454a6a66c8da5279698d0488d62dc26cabba3883c625",
-	"1486712a4ef6aaa5e82b3f120ae819c6ae8df63c7623cdb0456951310c7b004d",
-	"1dd5c28b977268995baeeb30ea82f699736eb068ee504db292b9bf40cc5e67a7",
-	"86b23238eddc0ac788b0cd8da02e766d916fd07d5d02f6393911fb893ef063da",
-	"12d563c903181a37b726e12025601330609168904f260ef64488eed1f78bb393",
-	"b9e0adb60d369e72891825138b586ad16d81065bdba15fb8c9e5169fe5083e3e",
-	"c9dbb9a6bb3d74a2d2225d40e10fec58cf48e03240b046bb406e404dbba56448",
-	"6bac7d43cd0a942c2b7dc91aa45b75fd8f900b65aaa2d4434ca78e1722b4ea51",
-	"7f38d792-da6b-11ec-8e00-26d9dc2fbaa6",
-}
-
 var GetMachineID = func() string {
 	data, _ := os.ReadFile("/proc/self/cgroup")
 	var err error
@@ -47,9 +35,6 @@ var GetMachineID = func() string {
 	ss := regexp.MustCompile(`([a-z\d]{64})`).FindStringSubmatch(string(data))
 	if len(ss) >= 2 {
 		id = ss[1]
-	}
-	if utils.Contains(BlackList, id) {
-		id = ""
 	}
 	if id == "" || err != nil {
 		id = sillyGirl.GetString("machineId")
