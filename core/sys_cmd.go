@@ -545,6 +545,24 @@ func initSys() {
 			},
 		},
 		{
+			Rules: []string{"^new machineId$"},
+			Admin: true,
+			Handle: func(s Sender) interface{} {
+				machineId := protect(utils.GenUUID(), "sillyGirl")
+				s.Reply("即将使用新的机器码：" + machineId + "，这将会导致授权失效和送喜官绑定失效，确认请输入“确认”：")
+				if s.Await(s, nil).(string) != "确认" {
+					return "你没有确认，已取消操作。"
+				}
+				sillyGirl.Set("machineId", machineId)
+				go func() {
+					time.Sleep(time.Second)
+					utils.Daemon()
+				}()
+				s.Reply("重启后生效，正在重启...")
+				return nil
+			},
+		},
+		{
 			Rules: []string{"^time$"},
 			Handle: func(s Sender) interface{} {
 				return OttoFuncs["timeFormat"].(func(string) string)("2006-01-02 15:04:05")
