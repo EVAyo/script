@@ -349,7 +349,7 @@ func initSys() {
 						}
 						rules := []string{}
 						for i := range f.Rules {
-							rules = append(rules, f.Rules[i])
+							rules = append(rules, f.Rules[i]+" p "+fmt.Sprint(f.Priority))
 						}
 						ruless = append(ruless, rules)
 					}
