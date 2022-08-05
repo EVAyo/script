@@ -31,6 +31,9 @@ var GetMachineID = func() string {
 	if id == "" {
 		id, err = machineid.ProtectedID("sillyGirl")
 	}
+	if id == "4be524c135a723f5244e454a6a66c8da5279698d0488d62dc26cabba3883c625" {
+		id = ""
+	}
 	if id == "" || err != nil {
 		id = sillyGirl.GetString("machineId")
 		if id == "" {
