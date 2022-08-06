@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/beego/beego/v2/adapter/httplib"
+	"github.com/beego/beego/v2/adapter/logs"
 	"github.com/cdle/sillyGirl/utils"
 )
 
@@ -158,6 +159,7 @@ func initSys() {
 				var kz = s.Get(0)
 				if compiled_at != "" {
 					if v, ok := OttoFuncs["super_update"]; ok {
+						logs.Info(`??--`)
 						success, nv, err := v.(func() (bool, string, error))()
 						if err != nil {
 							return err
