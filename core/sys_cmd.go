@@ -16,6 +16,10 @@ import (
 	"github.com/cdle/sillyGirl/utils"
 )
 
+func GetCompiledAt() string {
+	return compiled_at
+}
+
 func GitPull(filename string) (bool, error) {
 	if runtime.GOOS == "darwin" {
 		return false, errors.New("骂你一句沙雕。")
@@ -153,6 +157,21 @@ func initSys() {
 				}
 				var kz = s.Get(0)
 				if compiled_at != "" {
+					if v, ok := OttoFuncs["super_update"]; ok {
+						success, nv, err := v.(func() (bool, string, error))()
+						if err != nil {
+							return err
+						}
+						if success {
+							go func() {
+								time.Sleep(2 * time.Second)
+								utils.Daemon()
+							}()
+							sillyGirl.Set("rebootInfo", fmt.Sprintf("%v %v %v", s.GetImType(), s.GetChatID(), s.GetUserID()))
+							return "已升级到最新版(" + nv + ")，正在重启。"
+						}
+
+					}
 					str := ""
 					pxs := []string{}
 					if p := sillyGirl.GetString("download_prefix"); p != "" {
