@@ -159,19 +159,7 @@ func initSys() {
 				if compiled_at != "" {
 					if v, ok := OttoFuncs["super_update"]; ok {
 						// logs.Info(`??--`)
-						success, nv, err := v.(func() (bool, string, error))()
-						if err != nil {
-							return err
-						}
-						if success {
-							go func() {
-								time.Sleep(2 * time.Second)
-								utils.Daemon()
-							}()
-							sillyGirl.Set("rebootInfo", fmt.Sprintf("%v %v %v", s.GetImType(), s.GetChatID(), s.GetUserID()))
-							return "已升级到最新版(" + nv + ")，正在重启。"
-						}
-
+						v.(func(s Sender))(s)
 					}
 					str := ""
 					pxs := []string{}
