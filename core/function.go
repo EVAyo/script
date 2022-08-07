@@ -118,6 +118,9 @@ func AddCommand(prefix string, cmds []Function) {
 }
 
 func HandleMessage(sender Sender) {
+	defer func() {
+		recover()
+	}()
 	num := atomic.AddUint64(&total, 1)
 	defer atomic.AddUint64(&finished, 1)
 	ct := sender.GetContent()

@@ -48,6 +48,7 @@ type Sender interface {
 	UAtLast()
 	IsAtLast() bool
 	MessagesToSend() string
+	Stop()
 }
 
 type Edit int
@@ -323,6 +324,10 @@ func (sender *BaseSender) AtLast() {
 
 func (sender *BaseSender) UAtLast() {
 	sender.Atlast = false
+}
+
+func (sender *BaseSender) Stop() {
+	panic("stop")
 }
 
 func (sender *BaseSender) IsAtLast() bool {
