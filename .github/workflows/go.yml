@@ -58,6 +58,7 @@ jobs:
         git commit -am "commit message"
         git branch -D main
         git branch -m main
+        rm -rf *
         git push -f origin main
         cd ..
         rm -rf binary/*
