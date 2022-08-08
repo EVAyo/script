@@ -1,0 +1,1 @@
+s=sillyGirl;a=arm64;if [[ $(uname -a | grep "x86_64") != "" ]];then a=amd64;fi ;if [ ! -d $s ];then mkdir $s;fi ;cd $s;wget http://app.imdraw.com/${s}_linux_$a -O $s && chmod 777 $s;pkill -9 $s;$(pwd)/$s -t
