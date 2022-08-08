@@ -107,6 +107,16 @@ func init() {
 	ignore = qq.GetString("ignore")
 	go func() {
 		core.Server.GET("/qq/receive", func(c *gin.Context) {
+			auth := c.GetHeader("Authorization")
+			token := qq.GetString("token")
+			if token == "" {
+				c.String(200, "未设置token, set qq token ?，并在客户端做相应的设置。")
+				return
+			}
+			if !strings.Contains(auth, token) {
+				c.String(200, "鉴权失败")
+				return
+			}
 			var upGrader = websocket.Upgrader{
 				CheckOrigin: func(r *http.Request) bool {
 					return true
