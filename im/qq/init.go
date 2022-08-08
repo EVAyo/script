@@ -110,11 +110,13 @@ func init() {
 			auth := c.GetHeader("Authorization")
 			token := qq.GetString("token")
 			if token == "" {
-				c.String(200, "未设置token, set qq token ?，并在客户端做相应的设置。")
+				logs.Warn("Onebot token is required!")
+				c.String(200, "Onebot token is required!")
 				return
 			}
 			if !strings.Contains(auth, token) {
-				c.String(200, "鉴权失败")
+				logs.Warn("Onebot token is wrong!")
+				c.String(200, "Onebot token is wrong!")
 				return
 			}
 			var upGrader = websocket.Upgrader{
