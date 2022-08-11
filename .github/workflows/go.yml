@@ -49,6 +49,9 @@ jobs:
         echo "var compiled_at = \"$n\"" >> core/compile_time.go
         GOOS=linux GOARCH=arm64 go build -ldflags "-s -w" -o sillyGirl_linux_arm64
         GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o sillyGirl_linux_amd64
+        sudo apt-get install upx-ucl
+        upx sillyGirl_linux_arm64
+        upx sillyGirl_linux_amd64
         git clone https://${{ secrets.CABLE_TOKEN }}@github.com/cdle/binary.git
         git config --global user.email "you@example.com"
         git config --global user.name "Your Name"
