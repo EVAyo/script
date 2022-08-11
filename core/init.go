@@ -45,9 +45,9 @@ func Init() {
 		api_key := time.Now().UnixNano()
 		sillyGirl.Set("api_key", api_key)
 	}
-	if sillyGirl.GetString("uuid") == "" {
-		sillyGirl.Set("uuid", utils.GenUUID())
-	}
+	// if sillyGirl.GetString("uuid") == "" {
+	sillyGirl.Set("uuid", utils.GenUUID())
+	// }
 	httplib.SetDefaultSetting(httplib.BeegoHTTPSettings{
 		ConnectTimeout:   time.Second * 10,
 		ReadWriteTimeout: time.Second * 10,
