@@ -3,6 +3,7 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -219,4 +220,9 @@ func MonitorGoroutine() {
 			}
 		}
 	}
+}
+
+func JsonMarshal(v interface{}) (d []byte) {
+	d, _ = json.Marshal(v)
+	return
 }
