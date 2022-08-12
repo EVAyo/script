@@ -118,7 +118,7 @@ func init() {
 			// 	return
 			// }
 			if token != "" && !strings.Contains(auth, token) {
-				logs.Warn("Onebot token is wrong! %v ?? %v", auth, token)
+				logs.Warn("Onebot机器人access_token不正确，小心有人攻击你的傻妞！！！")
 				c.String(200, "Onebot token is wrong!")
 				return
 			}
