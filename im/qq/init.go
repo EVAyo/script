@@ -108,7 +108,10 @@ func init() {
 	go func() {
 		core.Server.GET("/qq/receive", func(c *gin.Context) {
 			auth := c.GetHeader("Authorization")
-			token := qq.GetString("token")
+			token := qq.GetString("access_token")
+			if token == "" {
+				token = qq.GetString("token")
+			}
 			if token == "" {
 				logs.Warn("Onebot token is required!")
 				c.String(200, "Onebot token is required! 如果你看到这条消息说明你不瞎，新版要求在第三方QQ客户端设置access_token， 同时执行 set qq token $access_token")
@@ -118,6 +121,9 @@ func init() {
 				logs.Warn("Onebot token is wrong! %v ?? %v", auth, token)
 				c.String(200, "Onebot token is wrong!")
 				return
+			}
+			if token == "" {
+				logs.Warn(`Onebot需要配置access_token和在傻妞配置(set qq access_token ?)才能保证连接安全，如果不设置将会造成信息泄露和资产损失！！！`)
 			}
 			var upGrader = websocket.Upgrader{
 				CheckOrigin: func(r *http.Request) bool {
