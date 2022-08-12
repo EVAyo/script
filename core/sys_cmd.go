@@ -404,6 +404,15 @@ func initSys() {
 			},
 		},
 		{
+			Admin:    true,
+			Priority: 10000,
+			Rules:    []string{"size of ?"},
+			Handle: func(s Sender) interface{} {
+				z, _ := MakeBucket(s.Get(0)).Size()
+				return fmt.Sprintf("%d", z)
+			},
+		},
+		{
 			Admin: true,
 			Rules: []string{"empty ?", "empty ? ?", "? empty ?"},
 			Handle: func(s Sender) interface{} {
