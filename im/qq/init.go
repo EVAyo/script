@@ -119,8 +119,6 @@ func init() {
 			// }
 			if token != "" && !strings.Contains(auth, token) {
 				logs.Warn("Onebot机器人access_token不正确，小心有人攻击你的傻妞！！！")
-				c.String(200, "Onebot token is wrong!")
-				return
 			}
 			if token == "" {
 				logs.Warn(`你需要在Onebot机器人配置access_token以及在傻妞配置对应的参数(set qq access_token ?)才能保证连接安全，如果不设置将会造成信息泄露和资产损失！！！`)
