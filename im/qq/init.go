@@ -123,7 +123,7 @@ func init() {
 				return
 			}
 			if token == "" {
-				logs.Warn(`Onebot需要配置access_token和在傻妞配置(set qq access_token ?)才能保证连接安全，如果不设置将会造成信息泄露和资产损失！！！`)
+				logs.Warn(`你需要在Onebot机器人配置access_token以及在傻妞配置对应的参数(set qq access_token ?)才能保证连接安全，如果不设置将会造成信息泄露和资产损失！！！`)
 			}
 			var upGrader = websocket.Upgrader{
 				CheckOrigin: func(r *http.Request) bool {
