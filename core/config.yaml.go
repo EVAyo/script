@@ -37,5 +37,5 @@ func ReadYaml(confDir string, conf interface{}, _ string) {
 		logs.Warn("解析配置文件%s出错: %v", path, err)
 		return
 	}
-	logs.Info("解析配置文件%s", path)
+	// logs.Info("解析配置文件%s", path)
 }

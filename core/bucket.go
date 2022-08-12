@@ -18,11 +18,12 @@ type Bucket interface {
 	Empty() (bool, error)
 	Size() (int64, error)
 	Delete() error
+	Type() string
 	Buckets() ([][]byte, error)
 	GetString(...interface{}) string
 	GetBytes(string) []byte
-	GetInt(interface{}, ...int) int
-	GetBool(interface{}, ...bool) bool
+	GetInt(string, ...int) int
+	GetBool(string, ...bool) bool
 	Foreach(func([]byte, []byte) error)
 	Create(interface{}) error
 	First(interface{}) error
