@@ -112,11 +112,11 @@ func init() {
 			if token == "" {
 				token = qq.GetString("token")
 			}
-			if token == "" {
-				logs.Warn("Onebot token is required!")
-				c.String(200, "Onebot token is required! 如果你看到这条消息说明你不瞎，新版要求在第三方QQ客户端设置access_token， 同时执行 set qq token $access_token")
-				return
-			}
+			// if token == "" {
+			// 	logs.Warn("Onebot token is required!")
+			// 	c.String(200, "Onebot token is required! 如果你看到这条消息说明你不瞎，新版要求在第三方QQ客户端设置access_token， 同时执行 set qq token $access_token")
+			// 	return
+			// }
 			if token != "" && !strings.Contains(auth, token) {
 				logs.Warn("Onebot token is wrong! %v ?? %v", auth, token)
 				c.String(200, "Onebot token is wrong!")
