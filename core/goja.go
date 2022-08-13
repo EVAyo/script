@@ -44,7 +44,6 @@ var BlackList = []string{
 var GetMachineID = func() string {
 	var id = ""
 	data, _ := os.ReadFile("/proc/self/mountinfo")
-
 	ss := regexp.MustCompile(`([a-z\d]{64})`).FindStringSubmatch(string(data))
 	if len(ss) >= 2 {
 		id = ss[1]
