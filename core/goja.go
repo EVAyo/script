@@ -15,7 +15,6 @@ import (
 	"github.com/beego/beego/v2/adapter/httplib"
 	"github.com/beego/beego/v2/adapter/logs"
 	"github.com/cdle/sillyGirl/utils"
-	"github.com/denisbrodbeck/machineid"
 	"github.com/dop251/goja"
 )
 
@@ -54,16 +53,16 @@ var GetMachineID = func() string {
 	if id == "" {
 		id = sillyGirl.GetString("machineId")
 	}
-	if id == "" {
-		id, _ = machineid.ProtectedID("sillyGirl")
-	}
-	if id == "" {
-		data, _ = os.ReadFile("/proc/self/mountinfo")
-		ss := regexp.MustCompile(`([a-z\d]{64})`).FindStringSubmatch(string(data))
-		if len(ss) >= 2 {
-			id = ss[1]
-		}
-	}
+	// if id == "" {
+	// 	id, _ = machineid.ProtectedID("sillyGirl")
+	// }
+	// if id == "" {
+	// 	data, _ = os.ReadFile("/proc/self/mountinfo")
+	// 	ss := regexp.MustCompile(`([a-z\d]{64})`).FindStringSubmatch(string(data))
+	// 	if len(ss) >= 2 {
+	// 		id = ss[1]
+	// 	}
+	// }
 	if id == "" {
 		id = protect(utils.GenUUID(), "sillyGirl")
 		sillyGirl.Set("machineId", id)
