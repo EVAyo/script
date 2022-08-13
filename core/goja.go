@@ -42,14 +42,14 @@ var BlackList = []string{
 
 var GetMachineID = func() string {
 	var id = ""
-	var data []byte
-	if id == "" {
-		data, _ = os.ReadFile("/proc/self/cgroup")
-		ss := regexp.MustCompile(`([a-z\d]{64})`).FindStringSubmatch(string(data))
-		if len(ss) >= 2 {
-			id = ss[1]
-		}
-	}
+	// var data []byte
+	// if id == "" {
+	// 	data, _ = os.ReadFile("/proc/self/cgroup")
+	// 	ss := regexp.MustCompile(`([a-z\d]{64})`).FindStringSubmatch(string(data))
+	// 	if len(ss) >= 2 {
+	// 		id = ss[1]
+	// 	}
+	// }
 	if id == "" {
 		id = sillyGirl.GetString("machineId")
 	}
