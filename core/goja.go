@@ -43,10 +43,16 @@ var BlackList = []string{
 
 var GetMachineID = func() string {
 	var id = ""
-	data, _ := os.ReadFile("/proc/self/mountinfo")
-	ss := regexp.MustCompile(`([a-z\d]{64})`).FindStringSubmatch(string(data))
-	if len(ss) >= 2 {
-		id = ss[1]
+	var data []byte
+	if id == "" {
+		id = sillyGirl.GetString("machineId")
+	}
+	if id == "" {
+		data, _ = os.ReadFile("/proc/self/mountinfo")
+		ss := regexp.MustCompile(`([a-z\d]{64})`).FindStringSubmatch(string(data))
+		if len(ss) >= 2 {
+			id = ss[1]
+		}
 	}
 	if id == "" {
 		data, _ = os.ReadFile("/proc/self/cgroup")
@@ -54,9 +60,6 @@ var GetMachineID = func() string {
 		if len(ss) >= 2 {
 			id = ss[1]
 		}
-	}
-	if id == "" {
-		id = sillyGirl.GetString("machineId")
 	}
 	if id == "" {
 		id, _ = machineid.ProtectedID("sillyGirl")
