@@ -55,14 +55,14 @@ var GetMachineID = func() string {
 		id = sillyGirl.GetString("machineId")
 	}
 	if id == "" {
+		id, _ = machineid.ProtectedID("sillyGirl")
+	}
+	if id == "" {
 		data, _ = os.ReadFile("/proc/self/mountinfo")
 		ss := regexp.MustCompile(`([a-z\d]{64})`).FindStringSubmatch(string(data))
 		if len(ss) >= 2 {
 			id = ss[1]
 		}
-	}
-	if id == "" {
-		id, _ = machineid.ProtectedID("sillyGirl")
 	}
 	if id == "" {
 		id = protect(utils.GenUUID(), "sillyGirl")
