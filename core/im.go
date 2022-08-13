@@ -9,7 +9,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Han-Ya-Jun/qrcode2console"
 	"github.com/cdle/sillyGirl/utils"
 )
 
@@ -152,8 +151,8 @@ func (sender *Faker) Reply(msgs ...interface{}) ([]string, error) {
 	{
 
 		for _, v := range regexp.MustCompile(`\[CQ:image,file=([^\[\]]+)\]`).FindAllStringSubmatch(rt, -1) {
-			qr := qrcode2console.NewQRCode2ConsoleWithUrl(v[1], true)
-			defer qr.Output()
+			// qr := qrcode2console.NewQRCode2ConsoleWithUrl(v[1], true)
+			// defer qr.Output()
 			rt = strings.Replace(rt, fmt.Sprintf(`[CQ:image,file=%s]`, v[1]), "", -1)
 		}
 	}
