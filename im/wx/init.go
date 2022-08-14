@@ -186,18 +186,10 @@ func init() {
 		if jms.Event != "EventFriendMsg" && jms.Event != "EventGroupMsg" {
 			return
 		}
-		if jms.Type == 0 { //|| jms.Type == 49
-			// if jms.Type != 1 && jms.Type != 3 && jms.Type != 5 {
+		if jms.Type == 0 { //|| jms.Type == 4
 			return
 		}
-		// if strings.Contains(fmt.Sprint(jms.Msg), `<type>57</type>`) {
-		// 	return
-		// }
 		if jms.FinalFromWxid == jms.RobotWxid {
-			return
-		}
-		listen := wx.GetString("onGroups")
-		if jms.Event == "EventGroupMsg" && listen != "" && !strings.Contains(listen, strings.Replace(fmt.Sprint(jms.FromWxid), "@chatroom", "", -1)) {
 			return
 		}
 		if robot_wxid != jms.RobotWxid {
@@ -300,12 +292,6 @@ func (sender *Sender) IsAdmin() bool {
 	return strings.Contains(wx.GetString("masters"), fmt.Sprint(sender.GetUserID()))
 }
 func (sender *Sender) Reply(msgs ...interface{}) ([]string, error) {
-	chatId := sender.GetChatID()
-	if chatId != 0 {
-		if onGroups := wx.GetString("spy_on"); onGroups != "" && strings.Contains(onGroups, fmt.Sprint(chatId)) {
-			return []string{}, nil
-		}
-	}
 	to := ""
 	if sender.value.chat_id != 0 {
 		if qy == 2 || (qy == 0 && wx.GetString("qy") == "2") {

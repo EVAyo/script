@@ -45,14 +45,34 @@ var Functions = []Function{}
 
 var Senders chan Sender
 
+var onGroups sync.Map
+
+var AddOnGroup = func(code interface{}) {
+	onGroups.Store(code, true)
+}
+
+var IsOnGroups = func(code interface{}) bool {
+	_, ok := onGroups.Load(code)
+	return ok || !strings.Contains(sillyGirl.GetString("onGroups"), fmt.Sprint(code))
+}
+
 func initToHandleMessage() {
 	reply = MakeBucket("reply")
 	Senders = make(chan Sender)
 	go func() {
 		for {
 			s := <-Senders
+			cid := s.GetChatID()
+			ignore := false
+			if cid != 0 && !IsOnGroups(cid) {
+				ignore = true
+			}
 			if s.GetImType() != "terminal" {
-				logs.Info("接收到消息：%s", s.GetContent())
+				if ignore {
+					logs.Info("接收到消息 %v@%v：%s", s.GetUserID(), cid, s.GetContent())
+				} else {
+					logs.Info("屏蔽的消息 %v@%v：%s", s.GetUserID(), cid, s.GetContent())
+				}
 			}
 			go HandleMessage(s)
 		}
