@@ -72,6 +72,7 @@ type Faker struct {
 	ChatID  int
 	Carry   chan string
 	BaseSender
+	Admin bool
 }
 
 func (sender *Faker) Listen() chan string {
@@ -125,11 +126,11 @@ func (sender *Faker) GetRawMessage() interface{} {
 }
 
 func (sender *Faker) IsAdmin() bool {
-	return true
+	return false
 }
 
 func (sender *Faker) IsMedia() bool {
-	return false
+	return sender.Admin
 }
 
 func (sender *Faker) Reply(msgs ...interface{}) ([]string, error) {
