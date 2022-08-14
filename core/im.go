@@ -126,11 +126,11 @@ func (sender *Faker) GetRawMessage() interface{} {
 }
 
 func (sender *Faker) IsAdmin() bool {
-	return false
+	return sender.Admin
 }
 
 func (sender *Faker) IsMedia() bool {
-	return sender.Admin
+	return false
 }
 
 func (sender *Faker) Reply(msgs ...interface{}) ([]string, error) {
