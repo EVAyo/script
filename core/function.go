@@ -91,6 +91,9 @@ func initToHandleMessage() {
 					logs.Info("屏蔽的消息 %v/%v@%v：%s", s.GetImType(), s.GetUserID(), cid, s.GetContent())
 				}
 			}
+			if ignore {
+				return
+			}
 			go HandleMessage(s)
 		}
 	}()
