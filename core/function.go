@@ -71,7 +71,7 @@ func initToHandleMessage() {
 				ignore = true
 			}
 			if s.GetImType() != "terminal" {
-				if ignore {
+				if !ignore {
 					logs.Info("接收到消息 %v@%v：%s", s.GetUserID(), cid, s.GetContent())
 				} else {
 					logs.Info("屏蔽的消息 %v@%v：%s", s.GetUserID(), cid, s.GetContent())
