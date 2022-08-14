@@ -45,6 +45,7 @@ func main() {
 					Type:    "terminal",
 					Message: string(data),
 					Carry:   make(chan string),
+					Admin:   true,
 				}
 				core.Senders <- f
 				go func() {
