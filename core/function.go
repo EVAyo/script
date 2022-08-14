@@ -45,18 +45,32 @@ var Functions = []Function{}
 
 var Senders chan Sender
 
-var onGroups sync.Map
+var listenOnGroups sync.Map
+var noReplyGroups sync.Map
 
-var AddOnGroup = func(code interface{}) {
-	_, loaded := onGroups.LoadOrStore(code, true)
+var AddNoReplyGroups = func(code interface{}) {
+	_, loaded := noReplyGroups.LoadOrStore(code, true)
+	if !loaded {
+		logs.Info("已动态设置无语群组(%v)。", code)
+	}
+}
+
+var AddListenOnGroup = func(code interface{}) {
+	_, loaded := listenOnGroups.LoadOrStore(code, true)
 	if !loaded {
 		logs.Info("已动态设置监听群组(%v)。", code)
 	}
 }
 
-var IsOnGroups = func(code interface{}) bool {
-	_, ok := onGroups.Load(code)
-	return ok || strings.Contains(sillyGirl.GetString("onGroups"), fmt.Sprint(code))
+var IsNoReplyGroup = func(s Sender) bool {
+	code := s.GetChatID()
+	_, ok := noReplyGroups.Load(code)
+	return ok || strings.Contains(sillyGirl.GetString("noReplyGroups"), fmt.Sprint(code))
+}
+
+var IslistenOnGroup = func(code interface{}) bool {
+	_, ok := listenOnGroups.Load(code)
+	return ok || strings.Contains(sillyGirl.GetString("listenOnGroups"), fmt.Sprint(code))
 }
 
 func initToHandleMessage() {
@@ -67,14 +81,14 @@ func initToHandleMessage() {
 			s := <-Senders
 			cid := s.GetChatID()
 			ignore := false
-			if cid != 0 && !IsOnGroups(cid) {
+			if cid != 0 && !IslistenOnGroup(cid) {
 				ignore = true
 			}
 			if s.GetImType() != "terminal" {
 				if !ignore {
-					logs.Info("接收到消息 %v@%v：%s", s.GetUserID(), cid, s.GetContent())
+					logs.Info("接收到消息 %v/%v@%v：%s", s.GetImType(), s.GetUserID(), cid, s.GetContent())
 				} else {
-					logs.Info("屏蔽的消息 %v@%v：%s", s.GetUserID(), cid, s.GetContent())
+					logs.Info("屏蔽的消息 %v/%v@%v：%s", s.GetImType(), s.GetUserID(), cid, s.GetContent())
 				}
 			}
 			go HandleMessage(s)

@@ -286,6 +286,9 @@ func (sender *Sender) IsMedia() bool {
 }
 
 func (sender *Sender) Reply(msgs ...interface{}) ([]string, error) {
+	if core.IsNoReplyGroup(sender) {
+		return nil, nil
+	}
 	msg := msgs[0]
 	ids := []string{}
 	var edit *core.Edit

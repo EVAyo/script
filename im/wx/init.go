@@ -292,6 +292,9 @@ func (sender *Sender) IsAdmin() bool {
 	return strings.Contains(wx.GetString("masters"), fmt.Sprint(sender.GetUserID()))
 }
 func (sender *Sender) Reply(msgs ...interface{}) ([]string, error) {
+	if core.IsNoReplyGroup(sender) {
+		return nil, nil
+	}
 	to := ""
 	if sender.value.chat_id != 0 {
 		if qy == 2 || (qy == 0 && wx.GetString("qy") == "2") {

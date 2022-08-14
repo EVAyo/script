@@ -365,6 +365,9 @@ func (sender *Sender) GroupBan(uid string, duration int) {
 var dd sync.Map
 
 func (sender *Sender) Reply(msgs ...interface{}) ([]string, error) {
+	if core.IsNoReplyGroup(sender) {
+		return nil, nil
+	}
 	rt := ""
 	for _, item := range msgs {
 		switch item.(type) {
