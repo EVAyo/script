@@ -56,7 +56,7 @@ var AddOnGroup = func(code interface{}) {
 
 var IsOnGroups = func(code interface{}) bool {
 	_, ok := onGroups.Load(code)
-	return ok || !strings.Contains(sillyGirl.GetString("onGroups"), fmt.Sprint(code))
+	return ok || strings.Contains(sillyGirl.GetString("onGroups"), fmt.Sprint(code))
 }
 
 func initToHandleMessage() {
