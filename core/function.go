@@ -48,7 +48,10 @@ var Senders chan Sender
 var onGroups sync.Map
 
 var AddOnGroup = func(code interface{}) {
-	onGroups.Store(code, true)
+	_, loaded := onGroups.LoadOrStore(code, true)
+	if !loaded {
+		logs.Info("动态监听群组(%v)。", code)
+	}
 }
 
 var IsOnGroups = func(code interface{}) bool {
