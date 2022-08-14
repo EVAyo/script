@@ -64,6 +64,9 @@ var AddListenOnGroup = func(code interface{}) {
 
 var IsNoReplyGroup = func(s Sender) bool {
 	code := s.GetChatID()
+	if code == 0 {
+		return false
+	}
 	_, ok := noReplyGroups.Load(code)
 	return ok || strings.Contains(sillyGirl.GetString("noReplyGroups"), fmt.Sprint(code))
 }
