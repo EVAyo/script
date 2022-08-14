@@ -50,7 +50,7 @@ var onGroups sync.Map
 var AddOnGroup = func(code interface{}) {
 	_, loaded := onGroups.LoadOrStore(code, true)
 	if !loaded {
-		logs.Info("动态监听群组(%v)。", code)
+		logs.Info("已动态设置监听群组(%v)。", code)
 	}
 }
 
