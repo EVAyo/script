@@ -92,7 +92,7 @@ func initToHandleMessage() {
 				}
 			}
 			if ignore {
-				return
+				continue
 			}
 			go HandleMessage(s)
 		}
