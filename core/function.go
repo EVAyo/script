@@ -29,6 +29,7 @@ type Function struct {
 	Priority int
 	Disable  bool
 	Hash     string
+	Hidden   bool
 }
 type Filter struct {
 	BlackMode bool
@@ -242,13 +243,17 @@ func HandleMessage(sender Sender) {
 					for i := range res {
 						tmp = append(tmp, res[i][1:])
 					}
-					logs.Info("匹配到规则：%s", rule)
+					if !function.Hidden {
+						logs.Info("匹配到规则：%s", rule)
+					}
 					sender.SetAllMatch(tmp)
 					matched = true
 				}
 			} else {
 				if res := regexp.MustCompile(rule).FindStringSubmatch(content); len(res) > 0 {
-					logs.Info("匹配到规则：%s", rule)
+					if !function.Hidden {
+						logs.Info("匹配到规则：%s", rule)
+					}
 					sender.SetMatch(res[1:])
 					matched = true
 				}
@@ -266,7 +271,9 @@ func HandleMessage(sender Sender) {
 				if sender.IsContinue() {
 					sender.ClearContinue()
 					content = utils.TrimHiddenCharacter(sender.GetContent())
-					logs.Info("继续去处理：%s", content)
+					if !function.Hidden {
+						logs.Info("继续去处理：%s", content)
+					}
 					goto next
 				}
 				return
