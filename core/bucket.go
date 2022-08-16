@@ -2,7 +2,7 @@ package core
 
 import "github.com/beego/beego/v2/adapter/logs"
 
-var sillyGirl Bucket
+var sillyGirl Bucket = MakeBucket("sillyGirl")
 var Zero Bucket
 
 func MakeBucket(name string) Bucket {

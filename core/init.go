@@ -15,7 +15,6 @@ var Duration time.Duration
 var DataHome = utils.GetDataHome()
 
 func Init() {
-	sillyGirl = MakeBucket("sillyGirl")
 	_, err := os.Stat(DataHome)
 	if err != nil {
 		os.MkdirAll(DataHome, os.ModePerm)
