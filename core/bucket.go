@@ -1,6 +1,9 @@
 package core
 
-import "github.com/beego/beego/v2/adapter/logs"
+import (
+	"github.com/beego/beego/v2/adapter/logs"
+	_ "github.com/cdle/sillyGirl/develop/boltdb"
+)
 
 var sillyGirl Bucket = MakeBucket("sillyGirl")
 var Zero Bucket
