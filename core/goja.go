@@ -51,7 +51,7 @@ var GetMachineID = func() string {
 	// 	}
 	// }
 	if id == "" {
-		id = sillyGirl.GetString("machineId")
+		id = MakeBucket("sillyGirl").GetString("machineId")
 	}
 	// if id == "" {
 	// 	id, _ = machineid.ProtectedID("sillyGirl")
