@@ -99,32 +99,39 @@ func initToHandleMessage() {
 					if !utils.Contains(listenOnGroups, groupCode) {
 						listenOnGroups = append(listenOnGroups, groupCode)
 						sillyGirl.Set("listenOnGroups", strings.Join(listenOnGroups, "&"))
+						s.Reply("已设置监听。")
+					} else {
+						s.RecallMessage(s.Reply("已设置监听。"))
 					}
-					s.Reply("已设置监听。")
-
 				case "unlisten", "nolisten":
 					listenOnGroups := regexp.MustCompile(`-?[\d]+`).FindAllString(sillyGirl.GetString("listenOnGroups"), -1)
 					if utils.Contains(listenOnGroups, groupCode) {
 						listenOnGroups = utils.Remove(listenOnGroups, groupCode)
 						sillyGirl.Set("listenOnGroups", strings.Join(listenOnGroups, "&"))
+
+					} else {
+						s.RecallMessage(s.Reply("已取消监听。"))
 					}
-					s.Reply("已取消监听。")
 
 				case "reply":
 					noReplyGroups := regexp.MustCompile(`-?[\d]+`).FindAllString(sillyGirl.GetString("noReplyGroups"), -1)
 					if utils.Contains(noReplyGroups, groupCode) {
 						noReplyGroups = utils.Remove(noReplyGroups, groupCode)
 						sillyGirl.Set("noReplyGroups", strings.Join(noReplyGroups, "&"))
+						s.Reply("已设置回复。")
+					} else {
+						s.RecallMessage(s.Reply("已设置回复。"))
 					}
-					s.Reply("已设置回复。")
 
 				case "noreply", "unreply":
 					noReplyGroups := regexp.MustCompile(`-?[\d]+`).FindAllString(sillyGirl.GetString("noReplyGroups"), -1)
 					if !utils.Contains(noReplyGroups, groupCode) {
 						noReplyGroups = append(noReplyGroups, groupCode)
 						sillyGirl.Set("noReplyGroups", strings.Join(noReplyGroups, "&"))
+						s.Reply("已取消回复。")
+					} else {
+						s.RecallMessage(s.Reply("已取消回复。"))
 					}
-					s.Reply("已取消回复。")
 
 				}
 			}
