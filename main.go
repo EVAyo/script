@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/DeanThompson/ginpprof"
 	"github.com/beego/beego/v2/core/logs"
@@ -12,6 +13,8 @@ import (
 )
 
 func main() {
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+	time.Local = loc
 	core.Init()
 	ginpprof.Wrapper(core.Server)
 	sillyGirl := core.MakeBucket("sillyGirl")
