@@ -344,7 +344,7 @@ func HandleMessage(sender Sender) {
 				}
 			}
 		}
-		if recalled == true {
+		if recalled {
 			return
 		}
 	}
