@@ -102,7 +102,7 @@ func initToHandleMessage() {
 					}
 					s.Reply("已设置监听。")
 					continue
-				case "unlisten":
+				case "unlisten", "nolisten":
 					listenOnGroups := regexp.MustCompile(`-?[\d]+`).FindAllString(sillyGirl.GetString("listenOnGroups"), -1)
 					if utils.Contains(listenOnGroups, groupCode) {
 						listenOnGroups = utils.Remove(listenOnGroups, groupCode)
@@ -118,7 +118,7 @@ func initToHandleMessage() {
 					}
 					s.Reply("已设置回复。")
 					continue
-				case "noreply":
+				case "noreply", "unreply":
 					noReplyGroups := regexp.MustCompile(`-?[\d]+`).FindAllString(sillyGirl.GetString("noReplyGroups"), -1)
 					if !utils.Contains(noReplyGroups, groupCode) {
 						noReplyGroups = append(noReplyGroups, groupCode)
