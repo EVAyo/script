@@ -91,6 +91,43 @@ func initToHandleMessage() {
 			if cid != 0 && !IslistenOnGroup(cid) {
 				ignore = true
 			}
+			if s.IsAdmin() && cid != 0 {
+				groupCode := fmt.Sprint(cid)
+				switch s.GetContent() {
+				case "listen":
+					listenOnGroups := regexp.MustCompile(`-?[\d]+`).FindAllString(sillyGirl.GetString("listenOnGroups"), -1)
+					if !utils.Contains(listenOnGroups, groupCode) {
+						listenOnGroups = append(listenOnGroups, groupCode)
+						sillyGirl.Set("listenOnGroups", strings.Join(listenOnGroups, "&"))
+					}
+					s.Reply("已设置监听。")
+					continue
+				case "unlisten":
+					listenOnGroups := regexp.MustCompile(`-?[\d]+`).FindAllString(sillyGirl.GetString("listenOnGroups"), -1)
+					if utils.Contains(listenOnGroups, groupCode) {
+						utils.Remove(listenOnGroups, groupCode)
+						sillyGirl.Set("listenOnGroups", strings.Join(listenOnGroups, "&"))
+					}
+					s.Reply("已取消监听。")
+					continue
+				case "reply":
+					noReplyGroups := regexp.MustCompile(`-?[\d]+`).FindAllString(sillyGirl.GetString("noReplyGroups"), -1)
+					if utils.Contains(noReplyGroups, groupCode) {
+						utils.Remove(noReplyGroups, groupCode)
+						sillyGirl.Set("noReplyGroups", strings.Join(noReplyGroups, "&"))
+					}
+					s.Reply("已设置回复。")
+					continue
+				case "noreply":
+					noReplyGroups := regexp.MustCompile(`-?[\d]+`).FindAllString(sillyGirl.GetString("noReplyGroups"), -1)
+					if !utils.Contains(noReplyGroups, groupCode) {
+						noReplyGroups = append(noReplyGroups, groupCode)
+						sillyGirl.Set("noReplyGroups", strings.Join(noReplyGroups, "&"))
+					}
+					s.Reply("已取消回复。")
+					continue
+				}
+			}
 			if s.GetImType() != "terminal" {
 				if !ignore {
 					logs.Info("接收到消息 %v/%v@%v：%s", s.GetImType(), s.GetUserID(), cid, s.GetContent())
