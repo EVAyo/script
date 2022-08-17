@@ -73,7 +73,11 @@ var IsNoReplyGroup = func(s Sender) bool {
 
 var IslistenOnGroup = func(code interface{}) bool {
 	_, ok := listenOnGroups.Load(code)
-	return ok || strings.Contains(sillyGirl.GetString("listenOnGroups"), fmt.Sprint(code))
+	listenOnGroups := sillyGirl.GetString("listenOnGroups")
+	if listenOnGroups == "*" {
+		return true
+	}
+	return ok || strings.Contains(listenOnGroups, fmt.Sprint(code))
 }
 
 func initToHandleMessage() {
