@@ -48,6 +48,8 @@ type Sender interface {
 	IsAtLast() bool
 	MessagesToSend() string
 	Stop()
+	SetMark(interface{})
+	GetMark() interface{}
 }
 
 type Edit int
@@ -199,12 +201,20 @@ func (sender *Faker) GroupBan(uid string, duration int) {
 type BaseSender struct {
 	matches        [][]string
 	goon           bool
-	child          Sender
 	Content        string
 	Atlast         bool
 	ToSendMessages []string
 	IsFinished     bool
 	Duration       *time.Duration
+	mark           interface{}
+}
+
+func (sender *BaseSender) SetMark(mark interface{}) {
+	sender.mark = mark
+}
+
+func (sender *BaseSender) GetMark() interface{} {
+	return sender.mark
 }
 
 func (sender *BaseSender) SetMatch(ss []string) {
