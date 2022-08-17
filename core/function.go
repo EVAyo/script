@@ -101,7 +101,7 @@ func initToHandleMessage() {
 						sillyGirl.Set("listenOnGroups", strings.Join(listenOnGroups, "&"))
 					}
 					s.Reply("已设置监听。")
-					continue
+
 				case "unlisten", "nolisten":
 					listenOnGroups := regexp.MustCompile(`-?[\d]+`).FindAllString(sillyGirl.GetString("listenOnGroups"), -1)
 					if utils.Contains(listenOnGroups, groupCode) {
@@ -109,7 +109,7 @@ func initToHandleMessage() {
 						sillyGirl.Set("listenOnGroups", strings.Join(listenOnGroups, "&"))
 					}
 					s.Reply("已取消监听。")
-					continue
+
 				case "reply":
 					noReplyGroups := regexp.MustCompile(`-?[\d]+`).FindAllString(sillyGirl.GetString("noReplyGroups"), -1)
 					if utils.Contains(noReplyGroups, groupCode) {
@@ -117,7 +117,7 @@ func initToHandleMessage() {
 						sillyGirl.Set("noReplyGroups", strings.Join(noReplyGroups, "&"))
 					}
 					s.Reply("已设置回复。")
-					continue
+
 				case "noreply", "unreply":
 					noReplyGroups := regexp.MustCompile(`-?[\d]+`).FindAllString(sillyGirl.GetString("noReplyGroups"), -1)
 					if !utils.Contains(noReplyGroups, groupCode) {
@@ -125,7 +125,7 @@ func initToHandleMessage() {
 						sillyGirl.Set("noReplyGroups", strings.Join(noReplyGroups, "&"))
 					}
 					s.Reply("已取消回复。")
-					continue
+
 				}
 			}
 			if s.GetImType() != "terminal" {
