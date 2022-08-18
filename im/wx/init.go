@@ -172,6 +172,7 @@ func init() {
 					robot_wxid = ag.Content.RobotWxid
 					wx.Set("robot_wxid", ag.Content.RobotWxid)
 				}
+				wm.content = core.AfterReceiveWechatMessage(wm.content)
 				core.Senders <- &Sender{
 					value: wm,
 				}
@@ -220,6 +221,7 @@ func init() {
 			wm.chat_id = utils.Int(strings.Replace(jms.FromWxid, "@chatroom", "", -1))
 			wm.chat_name = jms.FromName
 		}
+		wm.content = core.AfterReceiveWechatMessage(wm.content)
 		core.Senders <- &Sender{
 			value: wm,
 		}
@@ -485,6 +487,7 @@ func sendOtherMsg(pmsg *OtherMsg) {
 	if pmsg.Event == "" {
 		pmsg.Event = "SendImageMsg"
 	}
+	pmsg.Message = core.BeforeSendWechatMessage(pmsg.Message)
 	if mode == "vlw" || (mode == "" && wx.GetString("mode") == "vlw") {
 
 		// if c == nil {

@@ -6,7 +6,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/DeanThompson/ginpprof"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/cdle/sillyGirl/develop/core"
 	"github.com/cdle/sillyGirl/utils"
@@ -16,7 +15,7 @@ func main() {
 	loc, _ := time.LoadLocation("Asia/Shanghai")
 	time.Local = loc
 	core.Init()
-	ginpprof.Wrapper(core.Server)
+	// ginpprof.Wrapper(core.Server)
 	sillyGirl := core.MakeBucket("sillyGirl")
 	if sillyGirl.GetBool("anti_kasi") {
 		go utils.MonitorGoroutine()

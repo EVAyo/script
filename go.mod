@@ -9,7 +9,6 @@ replace gorm.io/driver/sqlite => github.com/go-gorm/sqlite v1.2.6
 replace gorm.io/gorm => github.com/go-gorm/gorm v1.22.5
 
 require (
-	github.com/DeanThompson/ginpprof v0.0.0-20201112072838-007b1e56b2e1
 	github.com/EDDYCJY/fake-useragent v0.2.0
 	github.com/PuerkitoBio/goquery v1.8.0
 	github.com/astaxie/beego v1.12.3
@@ -18,17 +17,14 @@ require (
 	github.com/beego/beego/v2 v2.0.1
 	github.com/boltdb/bolt v1.3.1
 	github.com/buger/jsonparser v1.1.1
-	github.com/cdle/go-socketio-client v0.0.0-20220803135118-57a35fb0b133
 	github.com/dop251/goja v0.0.0-20211203105952-bf6af58bbcc8
 	github.com/gin-gonic/gin v1.7.0
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/google/uuid v1.1.1
-	github.com/googollee/go-socket.io v1.6.2
 	github.com/gorilla/websocket v1.5.0
 	github.com/rixingyike/wechat v1.2.2
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/silenceper/wechat/v2 v2.0.9
-	github.com/webrtcn/go-socketio-client v0.0.0-20180425021613-9d0a03bb6363
 	golang.org/x/net v0.0.0-20210916014120-12bc252f5db8
 	gopkg.in/src-d/go-git.v4 v4.13.1
 	gopkg.in/telebot.v3 v3.0.0
@@ -50,7 +46,6 @@ require (
 	github.com/go-playground/universal-translator v0.17.0 // indirect
 	github.com/go-playground/validator/v10 v10.4.1 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.3+incompatible // indirect
-	github.com/gofrs/uuid v4.0.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gomodule/redigo v2.0.0+incompatible // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
