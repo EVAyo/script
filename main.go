@@ -6,6 +6,8 @@ import (
 	"os"
 	"time"
 
+	_ "github.com/cdle/sillyGirl/develop/boltdb"
+
 	"github.com/DeanThompson/ginpprof"
 	"github.com/beego/beego/v2/core/logs"
 	"github.com/cdle/sillyGirl/core"
