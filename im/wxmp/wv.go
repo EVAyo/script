@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cdle/sillyGirl/core"
+	"github.com/cdle/sillyGirl/develop/core"
 	"github.com/gin-gonic/gin"
 	server "github.com/rixingyike/wechat"
 )

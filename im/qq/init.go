@@ -11,14 +11,14 @@ import (
 	"time"
 
 	"github.com/beego/beego/v2/adapter/logs"
-	"github.com/cdle/sillyGirl/core"
-	_ "github.com/cdle/sillyGirl/develop/boltdb"
+
+	"github.com/cdle/sillyGirl/develop/core"
 	"github.com/cdle/sillyGirl/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
 
-var qq core.Bucket
+var qq = core.MakeBucket("qq")
 
 type Result struct {
 	Retcode int `json:"retcode"`
@@ -103,7 +103,6 @@ func init() {
 		}
 		return strings.Join(ss, " ")
 	}
-	qq = core.MakeBucket("qq")
 	ignore = qq.GetString("ignore")
 	go func() {
 		core.Server.GET("/qq/receive", func(c *gin.Context) {

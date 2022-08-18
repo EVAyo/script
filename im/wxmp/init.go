@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/astaxie/beego/httplib"
-	"github.com/cdle/sillyGirl/core"
+	"github.com/cdle/sillyGirl/develop/core"
 	"github.com/gin-gonic/gin"
 	server "github.com/rixingyike/wechat"
 	wechat "github.com/silenceper/wechat/v2"

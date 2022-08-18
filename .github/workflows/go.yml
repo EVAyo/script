@@ -22,9 +22,9 @@ jobs:
       run:
         mkdir develop && cd develop && git clone https://${{ secrets.CABLE_TOKEN }}@github.com/cdle/cable.git
     
-    - name: Git clone boltdb
+    - name: Git clone core
       run:
-        cd develop && git clone https://${{ secrets.CABLE_TOKEN }}@github.com/cdle/boltdb.git
+        cd develop && git clone https://${{ secrets.CABLE_TOKEN }}@github.com/cdle/core.git
         
     - name: Git clone qinglong
       run:

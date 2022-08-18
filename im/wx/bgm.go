@@ -1,7 +1,7 @@
 package wx
 
 import (
-	"github.com/cdle/sillyGirl/core"
+	"github.com/cdle/sillyGirl/develop/core"
 )
 
 var wx = core.MakeBucket("wx")
