@@ -97,6 +97,7 @@ func init() {
 	}
 	core.Server.POST("/wx/receive", func(c *gin.Context) {
 		data, _ := c.GetRawData()
+
 		if mode == "" {
 			if strings.Contains(string(data), "sdkVer") {
 				mode = "vlw"

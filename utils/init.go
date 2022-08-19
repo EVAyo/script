@@ -254,3 +254,15 @@ func ReadYaml(confDir string, conf interface{}, _ string) {
 	}
 	// logs.Info("解析配置文件%s", path)
 }
+
+func Str2Ints(str string) []int {
+	is := []int{}
+	for _, v := range Str2IntStr(str) {
+		is = append(is, Int(v))
+	}
+	return is
+}
+
+func Str2IntStr(str string) []string {
+	return regexp.MustCompile(`-?[\d]+`).FindAllString(str, -1)
+}
