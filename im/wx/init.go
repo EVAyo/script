@@ -221,7 +221,8 @@ func init() {
 			wm.chat_id = utils.Int(strings.Replace(jms.FromWxid, "@chatroom", "", -1))
 			wm.chat_name = jms.FromName
 		}
-		wm.content = core.AfterReceiveWechatMessage(wm.content)
+
+		// wm.content = core.AfterReceiveWechatMessage(wm.content)
 		core.Senders <- &Sender{
 			value: wm,
 		}
