@@ -199,8 +199,8 @@ func init() {
 			wx.Set("robot_wxid", robot_wxid)
 		}
 		if wx.GetBool("keaimao_dynamic_ip", false) {
-			ip, _ := c.RemoteIP()
-			wx.Set("api_url", fmt.Sprintf("http://%s:%s", ip.String(), wx.GetString("keaimao_port", "8080"))) //
+			ip := c.RemoteIP()
+			wx.Set("api_url", fmt.Sprintf("http://%s:%s", ip, wx.GetString("keaimao_port", "8080"))) //
 		}
 		wm := wxmsg{}
 		switch jms.Msg.(type) {
