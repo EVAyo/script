@@ -84,6 +84,9 @@ var GetDataHome = func() string {
 	if runtime.GOOS == "windows" {
 		return `C:\ProgramData\sillyGirl`
 	} else {
+		if _, err := os.Stat(`/etc/sillyGirl`); err != nil {
+			os.MkdirAll(`/etc/sillyGirl`, os.ModePerm)
+		}
 		return `/etc/sillyGirl`
 	}
 }
