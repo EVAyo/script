@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"os/signal"
 	"time"
 
 	"github.com/beego/beego/v2/core/logs"
@@ -61,8 +60,5 @@ func main() {
 		}
 	}
 
-	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan)
-	<-sigChan
-	utils.Daemon()
+	select {}
 }
