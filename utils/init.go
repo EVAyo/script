@@ -269,3 +269,7 @@ func Str2Ints(str string) []int {
 func Str2IntStr(str string) []string {
 	return regexp.MustCompile(`-?[\d]+`).FindAllString(str, -1)
 }
+
+func ToImageQrcode(url string) string {
+	return `[CQ:image,file=` + url + `]`
+}
