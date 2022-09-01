@@ -273,3 +273,27 @@ func Str2IntStr(str string) []string {
 func ToImageQrcode(url string) string {
 	return `[CQ:image,file=` + url + `]`
 }
+
+func FormatLog(f interface{}, v ...interface{}) string {
+	var msg string
+	switch f := f.(type) {
+	case string:
+		msg = f
+		if len(v) == 0 {
+			return msg
+		}
+		if strings.Contains(msg, "%") && !strings.Contains(msg, "%%") {
+			//format string
+		} else {
+			//do not contain format char
+			msg += strings.Repeat(" %v", len(v))
+		}
+	default:
+		msg = fmt.Sprint(f)
+		if len(v) == 0 {
+			return msg
+		}
+		msg += strings.Repeat(" %v", len(v))
+	}
+	return fmt.Sprintf(msg, v...)
+}
