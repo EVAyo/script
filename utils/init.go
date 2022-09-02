@@ -270,6 +270,10 @@ func Str2IntStr(str string) []string {
 	return regexp.MustCompile(`-?[\d]+`).FindAllString(str, -1)
 }
 
+func ToVideoQrcode(url string) string {
+	return `[CQ:video,file=` + url + `]`
+}
+
 func ToImageQrcode(url string) string {
 	return `[CQ:image,file=` + url + `]`
 }
