@@ -11,11 +11,12 @@ import (
 	"github.com/cdle/sillyGirl/utils"
 )
 
+var sillyGirl = core.MakeBucket("sillyGirl")
+
 func main() {
 	loc, _ := time.LoadLocation("Asia/Shanghai")
 	time.Local = loc
 	core.Init()
-	sillyGirl := core.MakeBucket("sillyGirl")
 	if sillyGirl.GetBool("anti_kasi") {
 		go utils.MonitorGoroutine()
 	}
