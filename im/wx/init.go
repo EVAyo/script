@@ -363,6 +363,11 @@ func (sender *Sender) Reply(msgs ...interface{}) ([]string, error) {
 					}
 				}
 			}
+			for _, v := range regexp.MustCompile(`\[CQ:video,file=([^\[\]]+)\]`).FindAllStringSubmatch(pmsg.Msg, -1) {
+				//v[1]
+				sender.Reply(core.VideoUrl(v[1]))
+				pmsg.Msg = strings.Replace(pmsg.Msg, fmt.Sprintf(`[CQ:video,file=%s]`, v[1]), "", -1)
+			}
 		case []byte:
 			pmsg.Msg = string(item.([]byte))
 		case error:
