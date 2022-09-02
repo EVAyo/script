@@ -363,6 +363,10 @@ func (sender *Sender) Reply(msgs ...interface{}) ([]string, error) {
 			paths = append(paths, v[1])
 			message = strings.Replace(message, fmt.Sprintf(`[CQ:image,file=%s]`, v[1]), "", -1)
 		}
+		for _, v := range regexp.MustCompile(`\[CQ:video,file=([^\[\]]+)\]`).FindAllStringSubmatch(message, -1) {
+			sender.Reply(core.VideoUrl(v[1]))
+			message = strings.Replace(message, fmt.Sprintf(`[CQ:video,file=%s]`, v[1]), "", -1)
+		}
 		if len(paths) > 0 {
 			is := tb.Album{}
 			for index, path := range paths {
@@ -441,7 +445,6 @@ func (sender *Sender) Reply(msgs ...interface{}) ([]string, error) {
 		rts, err := b.SendAlbum(r, tb.Album{&tb.Video{File: tb.FromURL(string(msg.(core.VideoUrl)))}}, options...)
 		if err == nil {
 			ids = append(ids, sender.addReplied(rts...)...)
-
 		}
 	case core.ImageData:
 		rts, err := b.SendAlbum(r, tb.Album{&tb.Photo{File: tb.FromReader(bytes.NewReader(msg.(core.ImageData)))}}, options...)
