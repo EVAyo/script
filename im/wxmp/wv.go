@@ -60,7 +60,7 @@ func init() {
 			Rules: []string{"init wxsv"},
 			Handle: func(_ core.Sender) interface{} {
 				c := &core.Faker{
-					Type:    "carry",
+					Type:    "wxsv",
 					Message: "wxsv init",
 					Carry:   make(chan string),
 				}
