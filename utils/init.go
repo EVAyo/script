@@ -87,6 +87,9 @@ var GetDataHome = func() string {
 		if _, err := os.Stat(`/etc/sillyGirl`); err != nil {
 			os.MkdirAll(`/etc/sillyGirl`, os.ModePerm)
 		}
+		if _, err := os.Stat(`/etc/sillyGirl/scripts`); err != nil {
+			os.MkdirAll(`/etc/sillyGirl/scripts`, os.ModePerm)
+		}
 		return `/etc/sillyGirl`
 	}
 }
