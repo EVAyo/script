@@ -10,7 +10,6 @@ replace gorm.io/gorm => github.com/go-gorm/gorm v1.22.5
 
 require (
 	github.com/EDDYCJY/fake-useragent v0.2.0
-	github.com/PuerkitoBio/goquery v1.8.0
 	github.com/astaxie/beego v1.12.3
 	github.com/axgle/mahonia v0.0.0-20180208002826-3358181d7394
 	github.com/beego/beego v1.12.10
@@ -27,6 +26,7 @@ require (
 	github.com/rixingyike/wechat v1.2.2
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/silenceper/wechat/v2 v2.0.9
+	github.com/wumansgy/goEncrypt v1.0.0
 	golang.org/x/net v0.0.0-20210916014120-12bc252f5db8
 	gopkg.in/src-d/go-git.v4 v4.13.1
 	gopkg.in/telebot.v3 v3.0.0
@@ -34,7 +34,10 @@ require (
 	gorm.io/gorm v1.22.3
 )
 
-require github.com/pelletier/go-toml/v2 v2.0.1 // indirect
+require (
+	github.com/PuerkitoBio/goquery v1.8.0 // indirect
+	github.com/pelletier/go-toml/v2 v2.0.1 // indirect
+)
 
 require (
 	github.com/andybalholm/cascadia v1.3.1 // indirect
