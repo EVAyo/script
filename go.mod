@@ -17,7 +17,7 @@ require (
 	github.com/boltdb/bolt v1.3.1
 	github.com/buger/jsonparser v1.1.1
 	github.com/dop251/goja v0.0.0-20211203105952-bf6af58bbcc8
-	github.com/fsnotify/fsnotify v1.4.9
+	github.com/dop251/goja_nodejs v0.0.0-20210225215109-d91c329300e7
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/goccy/go-json v0.9.7
@@ -26,7 +26,6 @@ require (
 	github.com/rixingyike/wechat v1.2.2
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/silenceper/wechat/v2 v2.0.9
-	github.com/wumansgy/goEncrypt v1.0.0
 	golang.org/x/net v0.0.0-20210916014120-12bc252f5db8
 	gopkg.in/src-d/go-git.v4 v4.13.1
 	gopkg.in/telebot.v3 v3.0.0
