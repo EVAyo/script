@@ -87,7 +87,7 @@ func init() {
 			tg.Set("http_proxy", "sock5://"+tg.GetString("sock5"))
 			tg.Set("sock5", "")
 		}
-		if !core.SlaveMode {
+		if !utils.SlaveMode {
 			buildHttpTransportWithProxy()
 			core.Transport = Transport
 		}

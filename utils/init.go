@@ -21,6 +21,8 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+var SlaveMode bool
+
 func GenUUID() string {
 	u2, _ := uuid.NewUUID()
 	return u2.String()
