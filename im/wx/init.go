@@ -161,10 +161,10 @@ func init() {
 				if ag.Content.FromGroup != "" {
 					// logs.Info(ag.Content.FromGroup, wm.chat_id, qy)
 					if qy == 2 {
-						wm.chat_id = utils.Int(strings.Replace(ag.Content.FromGroup, "R:", "", -1))
+						wm.chat_id = utils.Int64(strings.Replace(ag.Content.FromGroup, "R:", "", -1))
 
 					} else {
-						wm.chat_id = utils.Int(strings.Replace(ag.Content.FromGroup, "@chatroom", "", -1))
+						wm.chat_id = utils.Int64(strings.Replace(ag.Content.FromGroup, "@chatroom", "", -1))
 					}
 
 					wm.chat_name = ag.Content.FromGroupName
@@ -219,7 +219,7 @@ func init() {
 		wm.user_id = jms.FinalFromWxid
 		wm.user_name = jms.FinalFromName
 		if strings.Contains(jms.FromWxid, "@chatroom") {
-			wm.chat_id = utils.Int(strings.Replace(jms.FromWxid, "@chatroom", "", -1))
+			wm.chat_id = utils.Int64(strings.Replace(jms.FromWxid, "@chatroom", "", -1))
 			wm.chat_name = jms.FromName
 		}
 
@@ -273,7 +273,7 @@ func (sender *Sender) GetContent() string {
 func (sender *Sender) GetUserID() string {
 	return sender.value.user_id
 }
-func (sender *Sender) GetChatID() int {
+func (sender *Sender) GetChatID() int64 {
 	return sender.value.chat_id
 }
 

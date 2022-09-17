@@ -45,7 +45,7 @@ type Msg struct {
 type wxmsg struct {
 	content   string
 	user_id   string
-	chat_id   int
+	chat_id   int64
 	user_name string
 	chat_name string
 }

@@ -51,7 +51,7 @@ type sender struct {
 type Message struct {
 	Anonymous   interface{} `json:"anonymous"`
 	Font        int         `json:"font"`
-	GroupID     int         `json:"group_id"`
+	GroupID     int64       `json:"group_id"`
 	Message     string      `json:"message"`
 	MessageID   interface{} `json:"message_id"`
 	MessageType string      `json:"message_type"`
@@ -302,7 +302,7 @@ func (sender *Sender) GetUserID() string {
 	return fmt.Sprint(sender.Message.UserID)
 }
 
-func (sender *Sender) GetChatID() int {
+func (sender *Sender) GetChatID() int64 {
 	return sender.Message.GroupID
 }
 

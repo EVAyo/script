@@ -230,11 +230,11 @@ func (sender *Sender) GetUserID() string {
 	return fmt.Sprint(sender.Message.Sender.ID)
 }
 
-func (sender *Sender) GetChatID() int {
+func (sender *Sender) GetChatID() int64 {
 	if sender.Message.Private() {
 		return 0
 	} else {
-		return int(sender.Message.Chat.ID)
+		return sender.Message.Chat.ID
 	}
 }
 

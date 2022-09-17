@@ -159,7 +159,7 @@ func (sender *Sender) GetUserID() string {
 	return sender.uid
 }
 
-func (sender *Sender) GetChatID() int {
+func (sender *Sender) GetChatID() int64 {
 	return 0
 }
 
