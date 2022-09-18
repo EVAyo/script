@@ -26,7 +26,7 @@ func main() {
 	}
 	logs.Info("Http服务已运行(%s)。", sillyGirl.GetString("port", "8080"))
 	go core.Server.Run("0.0.0.0:" + port)
-	logs.Info("命令怎么失效了？关注频道 https://t.me/kczz2021 获取最新消息，进群暗号“傻妞”")
+	logs.Info("命令怎么失效了？关注频道 https://t.me/kczz2021 获取最新消息，发言关注微信公众号送喜官获取暗号。")
 	d := false
 	for _, arg := range os.Args {
 		if arg == "-d" {
