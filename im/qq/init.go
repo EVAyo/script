@@ -440,13 +440,17 @@ func (sender *Sender) Copy() core.Sender {
 	return &new
 }
 
-func (sender *Sender) GetUsername() string {
+func (sender *Sender) GetUserName() string {
 	return sender.Message.Sender.Nickname
+}
+
+func (sender *Sender) GetChatName() string {
+	return ""
 }
 
 func (sender *Sender) RecallMessage(ps ...interface{}) error {
 	for _, p := range ps {
-		switch p.(type) {
+		switch p := p.(type) {
 		case string:
 			sender.Conn.WriteJSON(CallApi{
 				Action: "delete_msg",
@@ -455,7 +459,7 @@ func (sender *Sender) RecallMessage(ps ...interface{}) error {
 				},
 			})
 		case []string:
-			for _, v := range p.([]string) {
+			for _, v := range p {
 				sender.Conn.WriteJSON(CallApi{
 					Action: "delete_msg",
 					Params: map[string]interface{}{

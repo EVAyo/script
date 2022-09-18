@@ -280,10 +280,10 @@ func (sender *Sender) GetChatID() int64 {
 func (sender *Sender) GetImType() string {
 	return "wx"
 }
-func (sender *Sender) GetUsername() string {
+func (sender *Sender) GetUserName() string {
 	return sender.value.user_name
 }
-func (sender *Sender) GetChatname() string {
+func (sender *Sender) GetChatName() string {
 	return sender.value.chat_name
 }
 func (sender *Sender) GetReplySenderUserID() int {

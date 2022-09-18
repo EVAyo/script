@@ -246,7 +246,7 @@ func (sender *Sender) GetMessageID() string {
 	return "-1"
 }
 
-func (sender *Sender) GetUsername() string {
+func (sender *Sender) GetUserName() string {
 	name := sender.Message.Sender.Username
 	if name == "" {
 		name = fmt.Sprint(sender.Message.Sender.ID)
@@ -254,7 +254,7 @@ func (sender *Sender) GetUsername() string {
 	return name
 }
 
-func (sender *Sender) GetChatname() string {
+func (sender *Sender) GetChatName() string {
 	return sender.Message.Chat.Title
 }
 
