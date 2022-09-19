@@ -8,6 +8,7 @@ import (
 	_ "github.com/cdle/sillyGirl/develop/core/senders/wx"
 	_ "github.com/cdle/sillyGirl/develop/core/senders/pgm"
 	_ "github.com/cdle/sillyGirl/develop/core/senders/sxg"
+	_ "github.com/cdle/sillyGirl/develop/core/senders/web"
 	_ "github.com/cdle/sillyGirl/develop/jd_cookie"
 	_ "github.com/cdle/sillyGirl/develop/cable"
 )
