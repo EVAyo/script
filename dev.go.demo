@@ -2,11 +2,12 @@ package main
 
 import (
 	_ "github.com/cdle/sillyGirl/develop/qinglong"
-	_ "github.com/cdle/sillyGirl/im/qq"
-	_ "github.com/cdle/sillyGirl/im/tg"
-	_ "github.com/cdle/sillyGirl/im/wxmp"
-	_ "github.com/cdle/sillyGirl/im/wx"
-	//_ "github.com/cdle/sillyGirl/develop/jd_price"
+	_ "github.com/cdle/sillyGirl/develop/core/senders/qq"
+	_ "github.com/cdle/sillyGirl/develop/core/senders/tg"
+	_ "github.com/cdle/sillyGirl/develop/core/senders/wxmp"
+	_ "github.com/cdle/sillyGirl/develop/core/senders/wx"
+	_ "github.com/cdle/sillyGirl/develop/core/senders/pgm"
+	_ "github.com/cdle/sillyGirl/develop/core/senders/sxg"
 	_ "github.com/cdle/sillyGirl/develop/jd_cookie"
 	_ "github.com/cdle/sillyGirl/develop/cable"
 )
