@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "github.com/cdle/sillyGirl/develop/qinglong"
+	//_ "github.com/cdle/sillyGirl/develop/qinglong"
 	_ "github.com/cdle/sillyGirl/develop/core/senders/qq"
 	_ "github.com/cdle/sillyGirl/develop/core/senders/tg"
 	_ "github.com/cdle/sillyGirl/develop/core/senders/wxmp"
@@ -9,6 +9,6 @@ import (
 	_ "github.com/cdle/sillyGirl/develop/core/senders/pgm"
 	_ "github.com/cdle/sillyGirl/develop/core/senders/sxg"
 	_ "github.com/cdle/sillyGirl/develop/core/senders/web"
-	_ "github.com/cdle/sillyGirl/develop/jd_cookie"
+	//_ "github.com/cdle/sillyGirl/develop/jd_cookie"
 	_ "github.com/cdle/sillyGirl/develop/cable"
 )
